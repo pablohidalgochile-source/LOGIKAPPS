@@ -1,0 +1,10 @@
+.build/
+dist/
+.DS_Store
+node_modules/
+.env
+.env.*
+*.p12
+*.mobileprovision
+*.key
+private/

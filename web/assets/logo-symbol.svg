@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="25 0 285 264" width="285" height="264" role="img" aria-label="LOGIKAPPS"><style>.rounded{font-family:"Arial Rounded MT Bold","Avenir Next",sans-serif;font-weight:800}</style><g>
+    <g fill="none" stroke="#7C6CFF" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M58 35V226H282" />
+      <circle cx="58" cy="35" r="19" fill="#7C6CFF" stroke="none" />
+      <circle cx="58" cy="226" r="19" fill="#7C6CFF" stroke="none" />
+      <circle cx="282" cy="226" r="19" fill="#7C6CFF" stroke="none" />
+    </g>
+
+    <g transform="translate(92 57)">
+      <rect x="0" y="0" width="72" height="68" rx="15" fill="#7C6CFF" />
+      <rect x="84" y="0" width="72" height="68" rx="15" fill="none" stroke="#7C6CFF" stroke-width="8" />
+      <rect x="0" y="80" width="72" height="68" rx="15" fill="none" stroke="#7C6CFF" stroke-width="8" />
+      <rect x="84" y="80" width="72" height="68" rx="15" fill="#7C6CFF" />
+
+      <text x="36" y="47" text-anchor="middle" class="rounded" font-size="34" fill="#0B0A12">A</text>
+      <text x="120" y="47" text-anchor="middle" class="rounded" font-size="34" fill="#F8F4EE">P</text>
+      <text x="36" y="127" text-anchor="middle" class="rounded" font-size="34" fill="#F8F4EE">P</text>
+      <text x="120" y="127" text-anchor="middle" class="rounded" font-size="34" fill="#0B0A12">S</text>
+    </g>
+  </g>
+
+  
+  </svg>

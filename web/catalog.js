@@ -1,0 +1,1 @@
+window.LOGIKAPPS_CATALOG = [];
