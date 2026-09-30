@@ -4,7 +4,7 @@
 
 La entrega pública es un DMG universal para macOS 13 o posterior, con ejecutables arm64 y x86_64. El catálogo incluido es `[]`; no contiene las herramientas, rutas o datos personales del autor. La configuración de cada persona se crea al usar la app.
 
-Sin variables de firma, el build usa firma **ad-hoc**, sin Developer ID y sin notarización. La verificación local de `codesign` no equivale a la aceptación de Gatekeeper. Los metadatos de la app y el archivo `.dmg.metadata.json` declaran el estado real de firma y del envío a Apple.
+Sin variables de firma, la app usa firma **ad-hoc** y el contenedor DMG queda sin firma propia, sin Developer ID y sin notarización. La verificación local de `codesign` no equivale a la aceptación de Gatekeeper. Los metadatos de la app y el archivo `.dmg.metadata.json` declaran el estado real: `signature` se refiere a la app, `diskImageSignature` al contenedor y `notarization` al envío a Apple.
 
 ## Verificar una entrega
 

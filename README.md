@@ -2,6 +2,8 @@
 
 # LOGIKAPPS
 
+[![Pruebas y compilación para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml/badge.svg)](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml)
+
 **Tus herramientas, a un clic. Un lugar para tu próxima idea.**
 
 LOGIKAPPS es una biblioteca personal de aplicaciones, enlaces y proyectos, con una ventana propia en Mac. Organiza tus herramientas por colecciones, guarda favoritos y acompaña tus ideas desde el primer apunte hasta una app lista para abrir.
@@ -82,5 +84,7 @@ La interfaz no necesita Node.js ni Python para funcionar. Una herramienta extern
 ## Estado de esta beta
 
 El proyecto está en fase de pruebas. El ejecutable universal contiene ambas arquitecturas; la validación local se realiza en Apple Silicon. Las comprobaciones de integración continua aparecen en la pestaña **Actions**. No se afirma que las herramientas añadidas por cada persona hayan sido probadas por LOGIKAPPS.
+
+La beta pasó 58 comprobaciones nativas, 21 pruebas de interfaz y una prueba de formularios en la app extraída del DMG. Consulta el [alcance de la verificación](docs/VERIFICACION.md).
 
 Puedes comunicar un fallo en [Issues](https://github.com/pablohidalgochile-source/LOGIKAPPS/issues). Indica tu versión de macOS, el tipo de Mac y los pasos para reproducirlo. Evita adjuntar bibliotecas completas, credenciales o capturas con información personal.
