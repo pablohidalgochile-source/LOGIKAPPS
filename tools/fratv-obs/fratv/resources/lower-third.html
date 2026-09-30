@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Lower Third</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-radius-plate: 14px;
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-dur: 9000ms;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: 5%; border: 1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  .lt {
+    position: absolute; left: 5%; bottom: 12%;
+    display: flex; align-items: stretch;
+    border-radius: var(--fr-radius-plate); overflow: hidden;
+    animation: wipe var(--fr-dur) cubic-bezier(.3,0,.2,1) forwards;
+  }
+  .mark { background: var(--fr-accent); display: flex; align-items: center; padding: 0 30px; }
+  .mark svg { width: 76px; display: block; }
+  .mark path { fill: var(--fr-on-accent); }
+  .mark .f { fill: none; stroke: var(--fr-on-accent); stroke-width: 54; stroke-linecap: round; stroke-linejoin: round; }
+
+  .plate { background: var(--fr-plate); padding: 26px 54px 30px; }
+  .name {
+    font-family: var(--fr-font-display); font-weight: 600; font-size: 54px;
+    letter-spacing: -.01em; line-height: 1; color: var(--fr-text);
+    animation: rise var(--fr-dur) ease forwards;
+  }
+  .role {
+    font-family: var(--fr-font-mono); font-weight: 400; font-size: 19px;
+    letter-spacing: .2em; color: var(--fr-text-dim); margin-top: 17px;
+    animation: rise var(--fr-dur) ease forwards; animation-delay: 0ms;
+  }
+  .topic {
+    position: absolute; right: 5%; bottom: 12%;
+    display: flex; align-items: stretch; border-radius: 12px; overflow: hidden;
+    animation: wipeR var(--fr-dur) cubic-bezier(.3,0,.2,1) forwards;
+  }
+  .topic-tag {
+    background: var(--fr-accent); color: var(--fr-on-accent);
+    font-family: var(--fr-font-mono); font-weight: 700; font-size: 15px;
+    letter-spacing: .16em; display: flex; align-items: center; padding: 0 20px;
+  }
+  .topic-text {
+    background: var(--fr-plate); color: var(--fr-text);
+    font-family: var(--fr-font-display); font-weight: 500; font-size: 25px;
+    display: flex; align-items: center; padding: 18px 32px;
+  }
+  [hidden] { display: none !important; }
+
+  @keyframes wipe  { 0%,4% { clip-path: inset(0 100% 0 0) } 14%,84% { clip-path: inset(0 0 0 0) } 94%,100% { clip-path: inset(0 0 0 100%) } }
+  @keyframes wipeR { 0%,16% { clip-path: inset(0 0 0 100%) } 26%,84% { clip-path: inset(0 0 0 0) } 94%,100% { clip-path: inset(0 100% 0 0) } }
+  @keyframes rise  { 0%,12% { opacity: 0; transform: translateY(12px) } 24%,82% { opacity: 1; transform: translateY(0) } 90%,100% { opacity: 0 } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+
+  <div class="lt">
+    <div class="mark">
+      <!-- Símbolo sin contenedor. Ids de capa del master: NO renombrar. -->
+      <svg viewBox="56 162 430 276" aria-label="FRATV">
+        <g id="icon-f" transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)">
+          <g transform="translate(90 195) scale(.75)">
+            <path class="f" d="M42 250V30H204M42 138H174"></path>
+          </g>
+        </g>
+        <g id="icon-play" transform="translate(21 0)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z"></path>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="plate">
+      <div class="name" data-field="name">TU NOMBRE</div>
+      <div class="role" data-field="role">CONDUCTOR · FRATV</div>
+    </div>
+  </div>
+
+  <div class="topic">
+    <div class="topic-tag" data-field="topicLabel">TEMA</div>
+    <div class="topic-text" data-field="topic" hidden></div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+  var api = window.FRATVRuntime.create(
+    { id: 'lower-third', durationMs: 9000, loop: false, alpha: true },
+    { onSeek: function () {} }
+  );
+  /* La etiqueta de tema solo aparece si hay texto. */
+  var topic = document.querySelector('[data-field="topic"]');
+  var wrap  = document.querySelector('.topic');
+  new MutationObserver(function () {
+    wrap.hidden = topic.hidden || !topic.textContent.trim();
+  }).observe(topic, { childList: true, attributes: true, subtree: true });
+  wrap.hidden = !topic.textContent.trim();
+</script>
+</body>
+</html>

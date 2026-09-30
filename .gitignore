@@ -8,3 +8,8 @@ node_modules/
 *.mobileprovision
 *.key
 private/
+__pycache__/
+*.py[cod]
+.venv/
+tools/surco/biblioteca/
+*.log

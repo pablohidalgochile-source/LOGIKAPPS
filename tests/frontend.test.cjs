@@ -15,7 +15,7 @@ const app = (overrides = {}) => ({ id: 'one', name: 'Música personal', descript
 const idea = (overrides = {}) => ({ id: 'idea', title: 'Una idea', description: '', status: 'idea', ...overrides });
 const library = (apps = [], ideas = []) => ({ ...blank(), apps, ideas });
 
-function harness({ stored, native = false, initial = blank() } = {}) {
+function harness({ stored, native = false, initial = blank(), discover = [] } = {}) {
   const elements = new Map();
   const listeners = new Map();
   const timers = new Map();
@@ -41,12 +41,12 @@ function harness({ stored, native = false, initial = blank() } = {}) {
   const document = { querySelector: get, body: get('body'), activeElement: get('active'), createElement: (tag) => new Element(`created:${tag}`), addEventListener: (name, fn) => listeners.set(name, fn) };
   const setTimeout = (callback, delay) => { const id = ++timerId; timers.set(id, { callback, delay }); return id; };
   const clearTimeout = (id) => timers.delete(id);
-  const window = { LogikappsState: core, LOGIKAPPS_CATALOG: [], crypto: { randomUUID }, setTimeout, scrollTo() {} };
+  const window = { LogikappsState: core, LOGIKAPPS_CATALOG: [], LOGIKAPPS_DISCOVER: discover, crypto: { randomUUID }, setTimeout, scrollTo() {} };
   if (native) window.webkit = { messageHandlers: { logikapps: { postMessage(request) { requests.push(request); if (request.action === 'getState') window.logikappsReply({ id: request.id, ok: true, result: initial }); } } } };
   const localStorage = { getItem(key) { return storage.get(key) ?? null; }, setItem(key, value) { if (key === failKey) throw new Error('Quota exceeded'); storage.set(key, value); } };
   const context = vm.createContext({ window, document, localStorage, console, Map, Set, Date, JSON, URL, Blob, TextEncoder, setTimeout, clearTimeout, requestAnimationFrame: (fn) => fn(), FormData: class { constructor(form) { this.fields = form.fields; } get(name) { return this.fields[name] ?? null; } } });
   const source = fs.readFileSync(path.join(root, 'web/app.js'), 'utf8');
-  const instrumented = source.replace(/\}\)\(\);\s*$/, `window.__test = { bridge, validatedState, mutate, submitApp, submitIdea, appCard, openAppEditor, openIdeaEditor, launch, importFile, importBrowser, handleAction, renderApps, renderIdeas, renderSettings, changeView, filteredApps, filteredIdeas, load, getState: () => state, getPendingImport: () => pendingImport, setQuery: (value) => { query = value; }, setView: (value) => { view = value; }, setCategory: (value) => { category = value; } }; })();`);
+  const instrumented = source.replace(/\}\)\(\);\s*$/, `window.__test = { bridge, validatedState, mutate, submitApp, submitIdea, appCard, openAppEditor, openIdeaEditor, launch, importFile, importBrowser, handleAction, renderApps, renderIdeas, renderSettings, changeView, filteredApps, filteredIdeas, readDiscoverCatalog, filteredDiscover, renderDiscover, addDiscover, connectDiscover, getView: () => view, load, getState: () => state, getPendingImport: () => pendingImport, setQuery: (value) => { query = value; }, setView: (value) => { view = value; }, setCategory: (value) => { category = value; } }; })();`);
   vm.runInContext(instrumented, context, { filename: 'app.js' });
   return { api: window.__test, window, storage, timers, requests, links, elements, listeners, get, failStorage(key) { failKey = key; } };
 }
@@ -64,8 +64,10 @@ test('public package starts empty and uses neutral profile with local scripts on
   assert.deepEqual(plain(sandbox.window.LOGIKAPPS_CATALOG), []);
   const h = harness();
   assert.equal(h.api.getState().apps.length, 0);
+  assert.equal(h.api.getView(), 'discover');
+  h.api.changeView('apps');
   const html = h.get('#main-content').innerHTML;
-  for (const value of ['.app', '.command', 'Carpeta', 'Enlace web', 'Agregar mi primera app', 'Guardar una idea']) assert.ok(html.includes(value), value);
+  for (const value of ['.app', '.command', 'Carpeta', 'Enlace web', 'Explorar herramientas', 'Agregar una app propia', 'Guardar una idea']) assert.ok(html.includes(value), value);
 });
 
 test('validates allowed schema and discards unknown/imported environment data', () => {
@@ -312,4 +314,128 @@ test('native human dialogs have no premature 30-second timeout; automatic action
   assert.ok(timer);
   timer.callback();
   await assert.rejects(waiting, /tardó en responder/);
+});
+
+
+const sharedTool = (overrides = {}) => ({ id: 'shared-web', name: 'Herramienta pública', description: 'Una herramienta para explorar', category: 'creative', icon: 'sparkles', kind: 'web', url: 'https://example.com/tool', requirements: 'Navegador e internet', ...overrides });
+
+test('empty first launch opens Explore while existing libraries preserve My apps and content', async () => {
+  const discover = [sharedTool()];
+  const fresh = harness({ discover });
+  assert.equal(fresh.api.getView(), 'discover');
+  assert.match(fresh.get('#main-content').innerHTML, /Descubre lo que puedes usar/);
+  assert.match(fresh.get('#main-content').innerHTML, /Herramienta pública/);
+  assert.match(fresh.get('#main-content').innerHTML, /Mis apps es tu biblioteca personal/);
+  assert.equal(JSON.parse(fresh.storage.get(storageKey)).apps.length, 0);
+  const personal = library([app({ target: 'https://personal.example' })], [idea()]);
+  const returning = harness({ discover, stored: { [storageKey]: JSON.stringify(personal) } });
+  assert.equal(returning.api.getView(), 'apps');
+  assert.equal(returning.api.getState().apps[0].target, 'https://personal.example');
+  assert.equal(returning.api.getState().ideas.length, 1);
+  assert.match(returning.get('#main-content').innerHTML, /Tus herramientas, a un clic/);
+  const nativeFresh = harness({ discover, native: true });
+  await Promise.resolve(); await Promise.resolve();
+  assert.equal(nativeFresh.api.getView(), 'discover');
+  assert.equal(nativeFresh.api.getState().apps.length, 0);
+});
+
+test('Explore validates public URLs, escapes all content, and ignores private catalog fields', () => {
+  const unsafe = ['javascript:alert(1)', 'data:text/html,x', 'file:///Users/private/app.app', 'https://user:secret@example.com', 'https://exa\tmple.com', 'https://example.com\\path'].map((url, index) => sharedTool({ id: `unsafe-${index}`, url }));
+  const h = harness({ discover: [sharedTool({ name: '<script>unsafe</script>', description: '<img src=x>', requirements: '</p><script>x</script>', sourcePath: '/Users/private/project', target: '/Users/private/App.app', favorite: true }), ...unsafe] });
+  assert.equal(h.api.filteredDiscover().length, 1);
+  const html = h.get('#main-content').innerHTML;
+  assert.doesNotMatch(html, /<script>|<img src=x>|javascript:|file:\/\/|\/Users\/private/);
+  assert.match(html, /&lt;script&gt;unsafe&lt;\/script&gt;/);
+  assert.match(html, /href="https:\/\/example.com\/tool" target="_blank" rel="noopener noreferrer"/);
+  assert.equal(h.api.getState().apps.length, 0);
+  assert.equal(h.api.filteredDiscover()[0].sourcePath, undefined);
+  assert.equal(h.api.filteredDiscover()[0].target, undefined);
+  assert.equal(h.api.filteredDiscover()[0].favorite, undefined);
+});
+
+test('Explore search filters accents, requirements, category, and every search term', () => {
+  const h = harness({ discover: [sharedTool({ name: 'Música en línea', category: 'music', requirements: 'Cuenta gratuita' }), sharedTool({ id: 'download', name: 'Editor', category: 'creative', kind: 'download', url: 'https://example.com/download' })] });
+  h.api.setQuery('MUSICA gratuita');
+  assert.deepEqual(plain(h.api.filteredDiscover().map((entry) => entry.id)), ['shared-web']);
+  h.api.setQuery(''); h.api.setCategory('creative');
+  assert.deepEqual(plain(h.api.filteredDiscover().map((entry) => entry.id)), ['download']);
+  h.api.setQuery('no coincide'); h.api.renderDiscover();
+  assert.match(h.get('#main-content').innerHTML, /No encontramos coincidencias/);
+});
+
+test('adding a shared web tool uses a new personal ID, ignores private fields, and deduplicates URLs', async () => {
+  const h = harness({ discover: [sharedTool({ url: 'https://example.com:443/tool', sourcePath: '/Users/private', kind: 'web' })] });
+  await Promise.all([h.api.addDiscover('shared-web'), h.api.addDiscover('shared-web')]);
+  assert.equal(h.api.getState().apps.length, 1);
+  const saved = h.api.getState().apps[0];
+  assert.notEqual(saved.id, 'shared-web');
+  assert.equal(saved.target, 'https://example.com/tool');
+  assert.equal(saved.kind, 'url');
+  assert.equal(saved.status, 'ready');
+  assert.equal(saved.sourcePath, undefined);
+  assert.equal(saved.favorite, false);
+  await h.api.addDiscover('shared-web');
+  assert.equal(h.api.getState().apps.length, 1);
+  assert.match(h.get('#main-content').innerHTML, /Ya está en Mis apps/);
+  const existing = harness({ discover: [sharedTool({ url: 'https://example.com:443/tool' })], stored: { [storageKey]: JSON.stringify(library([app({ target: 'https://example.com/tool' })])) } });
+  await existing.api.addDiscover('shared-web');
+  assert.equal(existing.api.getState().apps.length, 1);
+  await assert.rejects(h.api.addDiscover('missing'), /ya no está disponible/);
+});
+
+test('download cards connect the correct local type only after the person chooses a path', () => {
+  for (const [connectKind, label] of [['app', 'Conectar app'], ['command', 'Conectar lanzador'], ['folder', 'Conectar carpeta']]) {
+    const h = harness({ discover: [sharedTool({ kind: 'download', connectKind, url: 'https://example.com/download', description: 'Archivo compartido' })] });
+    const html = h.get('#main-content').innerHTML;
+    assert.match(html, /Ver descarga/);
+    assert.ok(html.includes(label));
+    h.api.connectDiscover('shared-web');
+    const editor = h.get('#dialog-content').innerHTML;
+    assert.match(editor, /value="Herramienta pública"/);
+    assert.match(editor, /Archivo compartido/);
+    assert.ok(editor.includes(`<option value="${connectKind}" selected>`));
+    assert.match(editor, /id="app-target" value=""/);
+    assert.equal(h.api.getState().apps.length, 0);
+    assert.equal(h.links.length, 0);
+  }
+  const defaultApp = harness({ discover: [sharedTool({ kind: 'download' })] });
+  defaultApp.api.connectDiscover('shared-web');
+  assert.match(defaultApp.get('#dialog-content').innerHTML, /value="app" selected/);
+});
+
+test('import and export keep the shared catalog separate from personal state', async () => {
+  const h = harness({ discover: [sharedTool()] });
+  h.api.changeView('ideas');
+  h.api.importBrowser(library([app({ id: 'personal-only' })]));
+  assert.equal(h.api.getView(), 'ideas');
+  assert.deepEqual(plain(h.api.getState().apps.map((entry) => entry.id)), ['personal-only']);
+  assert.equal(h.api.filteredDiscover().length, 1);
+  await h.api.handleAction('export');
+  const exported = JSON.parse(await resolveObjectURL(h.links.at(-1).href).text());
+  assert.equal(exported.discover, undefined);
+  assert.deepEqual(exported.apps.map((entry) => entry.id), ['personal-only']);
+});
+
+test('missing or wholly invalid shared catalog has a safe public guide fallback', () => {
+  for (const discover of [undefined, [], {}, [sharedTool({ url: 'javascript:alert(1)' })], [sharedTool({ connectKind: 'shell' })]]) {
+    const h = harness({ discover });
+    assert.equal(h.api.getView(), 'discover');
+    assert.match(h.get('#main-content').innerHTML, /Ver guía de LOGIKAPPS/);
+    assert.match(h.get('#main-content').innerHTML, /href="https:\/\/github.com\/pablohidalgochile-source\/LOGIKAPPS#readme" target="_blank" rel="noopener noreferrer"/);
+    assert.equal(h.api.getState().apps.length, 0);
+  }
+});
+
+
+test('a pending native catalog save cannot create duplicate apps from a second click', async () => {
+  const h = harness({ native: true, discover: [sharedTool()] });
+  await Promise.resolve(); await Promise.resolve();
+  const first = h.api.addDiscover('shared-web');
+  const second = h.api.addDiscover('shared-web');
+  const saves = h.requests.filter((request) => request.action === 'saveApp');
+  assert.equal(saves.length, 1);
+  h.window.logikappsReply({ id: saves[0].id, ok: true, result: library([saves[0].payload.app]) });
+  await Promise.all([first, second]);
+  assert.equal(h.api.getState().apps.length, 1);
+  assert.match(h.get('#main-content').innerHTML, /Ya está en Mis apps/);
 });

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>FRATV · Pack de gráficos para OBS</title>
+  <style>
+    :root{color-scheme:dark;--red:#B72A3A;--ink:#100B18;--ivory:#F5F1E8;--line:rgba(245,241,232,.14)}
+    *{box-sizing:border-box}body{margin:0;background:#09070d;color:var(--ivory);font-family:Inter,Arial,sans-serif}
+    main{width:min(1120px,calc(100% - 40px));margin:0 auto;padding:52px 0 72px}
+    header{display:grid;grid-template-columns:1fr auto;gap:28px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--line)}
+    .eyebrow{color:var(--red);font-size:12px;font-weight:800;letter-spacing:.18em}h1{margin:10px 0 8px;font-size:38px;line-height:1}
+    header p{margin:0;color:rgba(245,241,232,.62);line-height:1.55}.status{padding:12px 16px;border:1px solid rgba(183,42,58,.55);border-radius:999px;color:#ff7e8b;font-size:12px;font-weight:800}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0 34px}.step{padding:18px;background:#120f17;border:1px solid var(--line);border-radius:12px}.step b{display:block;color:var(--red);font-size:12px;letter-spacing:.12em}.step span{display:block;margin-top:9px;color:rgba(245,241,232,.7);font-size:13px;line-height:1.45}
+    h2{margin:0 0 16px;font-size:17px;letter-spacing:.04em}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    a{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:15px 16px;border:1px solid var(--line);border-radius:9px;background:#120f17;color:var(--ivory);text-decoration:none;font-size:13px}a:hover{border-color:var(--red);background:#18111a}a small{color:rgba(245,241,232,.42)}
+    .note{margin-top:28px;padding:18px 20px;border-left:4px solid var(--red);background:#120f17;color:rgba(245,241,232,.72);font-size:13px;line-height:1.6}.note b{color:var(--ivory)}
+    code{color:#ff8793}@media(max-width:760px){header{grid-template-columns:1fr}.steps,.grid{grid-template-columns:1fr}h1{font-size:30px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div><div class="eyebrow">FRATV · SALIDA LOCAL</div><h1>Pack de gráficos para OBS</h1><p>Gráficas transparentes y animadas que funcionan como archivos locales.</p></div>
+    <div class="status">15 RECURSOS LISTOS</div>
+  </header>
+  <section class="steps">
+    <div class="step"><b>01 · DESCOMPRIME</b><span>Mantén juntas las carpetas <strong>fratv</strong> y <strong>brand</strong>.</span></div>
+    <div class="step"><b>02 · AGREGA EN OBS</b><span>Fuentes → Navegador → activar “Archivo local”.</span></div>
+    <div class="step"><b>03 · RESOLUCIÓN</b><span>Usa 1920 × 1080. Para una escena vertical, ajusta o recorta la fuente en OBS.</span></div>
+  </section>
+  <h2>Previsualizar recursos</h2>
+  <div class="grid">
+    <a href="resources/ident-long.html"><span>Logo Ident</span><small>1.9 s</small></a>
+    <a href="resources/ident-short.html"><span>Ident Short</span><small>0.9 s</small></a>
+    <a href="resources/stinger.html"><span>Stinger</span><small>0.8 s</small></a>
+    <a href="resources/flag.html"><span>Mosca de canal</span><small>loop</small></a>
+    <a href="resources/live-badge.html"><span>EN VIVO</span><small>loop</small></a>
+    <a href="resources/countdown.html"><span>Cuenta regresiva</span><small>temporizador</small></a>
+    <a href="resources/bumper-in.html"><span>En breve comienza</span><small>7 s</small></a>
+    <a href="resources/bumper-out.html"><span>Gracias por ver</span><small>7 s</small></a>
+    <a href="resources/lower-third.html"><span>Lower third</span><small>9 s</small></a>
+    <a href="resources/program-title.html"><span>Título de programa</span><small>8 s</small></a>
+    <a href="resources/schedule.html"><span>Programación</span><small>8 s</small></a>
+    <a href="resources/engagement.html"><span>Interacción</span><small>8 s</small></a>
+    <a href="resources/sponsor.html"><span>Sponsor</span><small>8 s</small></a>
+    <a href="resources/ticker.html"><span>Ticker</span><small>loop</small></a>
+    <a href="resources/end-credits.html"><span>Créditos</span><small>22 s</small></a>
+  </div>
+  <div class="note"><b>Personaliza los ejemplos:</b> consulta <code>LEER-PRIMERO.txt</code> para cambiar nombres y textos. Este pack contiene gráficas HTML, no incluye el editor Overlay Studio. Necesitas OBS por separado; en el navegador puedes previsualizarlas. Las tipografías usan Google Fonts; sin conexión pueden cambiar.</div>
+</main>
+</body>
+</html>

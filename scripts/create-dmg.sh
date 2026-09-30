@@ -38,8 +38,12 @@ LOGIKAPPS $VERSION — beta para macOS 13 o posterior (Apple Silicon e Intel)
 3. En el Dock: menú del icono > Opciones > Mantener en el Dock.
 
 También puedes copiarla a ~/Applications para instalarla solo para tu usuario.
-El catálogo inicial está vacío. Agrega tus apps, sitios y carpetas desde la app.
-LOGIKAPPS no incluye las herramientas privadas de su creador ni sus datos.
+Explorar muestra el catálogo público incluido en esta versión.
+Mis apps empieza vacío: agrega tus apps, sitios y carpetas desde la app.
+Al actualizar se conservan tu biblioteca, ideas y favoritos. Cierra y vuelve a
+abrir LOGIKAPPS para ver Explorar en la nueva versión. Su catálogo se actualiza
+instalando nuevas versiones de LOGIKAPPS; no se descarga automáticamente.
+LOGIKAPPS no incluye rutas privadas ni datos personales de su creador.
 Las herramientas conectadas conservan sus propios requisitos y licencias.
 
 Estado de firma de la app: $SIGNATURE.
@@ -67,7 +71,7 @@ if [[ -n "$NOTARY_PROFILE" ]]; then
     NOTARIZATION='accepted-and-stapled'
 fi
 /usr/bin/hdiutil verify "$TEMP_DMG"
-printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty"}\n' \
+printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty-personal-library","discoverCatalog":"bundled-static"}\n' \
     "$VERSION" "$BUILD_ID" "$FILENAME" "$MIN_MACOS" "$SIGNATURE" "$DMG_SIGNATURE" "$NOTARIZATION" > "$STAGING_DIR/$FILENAME.metadata.json"
 /usr/bin/plutil -convert xml1 -o /dev/null "$STAGING_DIR/$FILENAME.metadata.json"
 if [[ -e "$DMG_PATH" ]]; then

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · EN VIVO</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-radius-pill: 22px;
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1920px; height: 1080px; background: transparent; overflow: hidden; }
+  .stage { position: relative; width: 100%; height: 100%; }
+  .safe { position: absolute; inset: 5%; border: 1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  .badge { position: absolute; left: 5%; top: 5%; display: flex; align-items: center; gap: 18px; border-radius: var(--fr-radius-pill); }
+  .badge.pastilla { background: var(--fr-accent); padding: 18px 32px; }
+  .badge.reloj, .badge.audio { background: var(--fr-plate); padding: 16px 30px 16px 24px; }
+
+  .dot { width: 18px; height: 18px; border-radius: 50%; animation: pulse 1500ms ease-in-out infinite; }
+  .pastilla .dot { background: var(--fr-on-accent); }
+  .reloj .dot, .audio .dot { background: var(--fr-accent); }
+
+  .label { font-family: var(--fr-font-display); font-weight: 700; font-size: 26px; letter-spacing: .22em; }
+  .pastilla .label { color: var(--fr-on-accent); }
+  .reloj .label, .audio .label { color: var(--fr-text); font-size: 23px; letter-spacing: .2em; }
+
+  .rule { width: 1px; height: 28px; background: var(--fr-text-dim); opacity: .4; }
+  .clock { font-family: var(--fr-font-mono); font-weight: 700; font-size: 23px; letter-spacing: .1em; color: var(--fr-text-dim); font-variant-numeric: tabular-nums; }
+
+  .meter { display: flex; align-items: flex-end; gap: 5px; height: 26px; }
+  .meter i { display: block; width: 5px; height: 100%; background: var(--fr-accent); transform-origin: bottom; animation: bars 850ms ease-in-out infinite; }
+  .meter i:nth-child(2) { animation-delay: 120ms; }
+  .meter i:nth-child(3) { background: var(--fr-text-dim); animation-delay: 240ms; }
+
+  [hidden] { display: none !important; }
+  @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .25 } }
+  @keyframes bars  { 0%,100% { transform: scaleY(.22) } 50% { transform: scaleY(1) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="badge pastilla" id="badge">
+    <span class="dot"></span>
+    <span class="label" data-field="label">EN VIVO</span>
+    <span class="rule" hidden></span>
+    <span class="clock" data-field="clock" hidden>00:00:00</span>
+    <span class="meter" hidden><i></i><i></i><i></i></span>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+  var api = window.FRATVRuntime.create({ id: 'live-badge', durationMs: 1500, loop: true, alpha: true });
+
+  var badge = document.getElementById('badge');
+  var q = new URLSearchParams(location.search);
+  var variant = q.get('variant') || 'pastilla';
+  badge.className = 'badge ' + variant;
+
+  var rule = badge.querySelector('.rule');
+  var clock = badge.querySelector('.clock');
+  var meter = badge.querySelector('.meter');
+  rule.hidden = variant === 'pastilla';
+  clock.hidden = variant !== 'reloj';
+  meter.hidden = variant !== 'audio';
+
+  /* El reloj NO forma parte de la animación: se actualiza aparte para no romper seek(). */
+  if (variant === 'reloj') {
+    var t0 = Date.now() - (parseInt(q.get('desde'), 10) || 0) * 1000;
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    setInterval(function () {
+      var s = Math.floor((Date.now() - t0) / 1000);
+      clock.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+    }, 1000);
+  }
+</script>
+</body>
+</html>

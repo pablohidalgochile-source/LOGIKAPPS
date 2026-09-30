@@ -8,13 +8,13 @@
 
 LOGIKAPPS es una biblioteca personal de aplicaciones, enlaces y proyectos, con una ventana propia en Mac. Organiza tus herramientas por colecciones, guarda favoritos y acompaña tus ideas desde el primer apunte hasta una app lista para abrir.
 
-![Primera apertura de LOGIKAPPS en Mac: biblioteca personal vacía, verde lima y violeta](docs/onboarding.png)
+![Primera apertura de LOGIKAPPS en Mac: catálogo Explorar con herramientas compartidas](docs/onboarding.png)
 
 ## Descargar para Mac
 
-**[Descargar LOGIKAPPS 0.2.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.2.0-beta.1/LOGIKAPPS-0.2.0-macos-universal.dmg)**
+**[Descargar LOGIKAPPS 0.3.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.3.0-beta.1/LOGIKAPPS-0.3.0-macos-universal.dmg)**
 
-[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.2.0-beta.1)
+[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.3.0-beta.1)
 
 - macOS 13 o posterior; ejecutable universal para Apple Silicon e Intel.
 - **Beta sin notarización de Apple.** macOS puede advertir o impedir la apertura de esta descarga. Consulta [Instalación](docs/INSTALACION.md) antes de descargarla. No se requiere desactivar las protecciones del sistema.
@@ -22,16 +22,27 @@ LOGIKAPPS es una biblioteca personal de aplicaciones, enlaces y proyectos, con u
 
 ## Empieza con tus herramientas
 
-1. Instala la app y abre **LOGIKAPPS**.
-2. Pulsa **Agregar app** y elige una aplicación de tu Mac, una carpeta, un lanzador `.command` o un enlace web.
+1. Instala la app y abre **LOGIKAPPS**. En una biblioteca vacía verás **Explorar**, con herramientas compartidas.
+2. Abre una web o descarga un paquete y sigue sus instrucciones. Después, usa **Agregar a Mis apps**, **Conectar lanzador** o **Conectar carpeta**. También puedes pulsar **Agregar app** para conectar tus propias herramientas.
 3. Organiza tus accesos en **Música y video, Negocios, Personal o Creatividad** y marca tus favoritos.
 4. Guarda una **Nueva idea**, cambia su etapa y vincúlala a una app de tu biblioteca cuando exista.
 5. Para conservar el icono: menú del icono en el Dock → **Opciones → Mantener en el Dock**.
 
-Cada persona empieza con su propia biblioteca vacía. La descarga **no incluye aplicaciones ajenas, cuentas, contraseñas, rutas personales ni proyectos del creador**. Agregar una herramienta a LOGIKAPPS no la instala ni concede acceso a sus servicios.
+Cada persona recibe el catálogo público **Explorar** y una biblioteca personal **Mis apps**. Esta biblioteca se llena con lo que elija agregar. El instalador no contiene cuentas, contraseñas, rutas personales ni bibliotecas del creador. Las herramientas seleccionadas tienen descargas separadas con requisitos propios; conectar un acceso no instala sus dependencias ni concede acceso a servicios privados.
+
+## Primera selección compartida
+
+| Herramienta | Disponible | Requisitos principales |
+|---|---|---|
+| **Surco** | Beta portable para organizar audio y enlaces | Mac, Python 3.10+; yt-dlp para enlaces y herramientas opcionales de audio |
+| **FRATV para OBS** | Pack descargable de 15 gráficas HTML | Navegador para previsualizar; OBS Studio por separado para transmitir |
+| **FRATE Web** | Enlace al sitio de Fraternidad Campus Central | Internet, mayores de 18 años y cuenta propia para algunas funciones |
+
+[Descargas, instrucciones y alcance de cada herramienta](docs/CONTENIDO.md). Las bibliotecas existentes se conservan al actualizar. Si probaste la beta anterior y quedó vacía, instala esta versión y vuelve a abrirla: aparecerá **Explorar** sin importar una copia.
 
 ## Funciones
 
+- Catálogo compartido con enlaces públicos y descargas verificadas.
 - Búsqueda de aplicaciones e ideas, incluidas palabras con o sin acentos.
 - Colecciones, favoritos y accesos recientes.
 - Agregar, editar y quitar accesos sin eliminar las aplicaciones originales.
@@ -79,12 +90,12 @@ Para crear el instalador:
 ./scripts/create-dmg.sh
 ```
 
-La interfaz no necesita Node.js ni Python para funcionar. Una herramienta externa conectada puede tener sus propios requisitos. Consulta [Distribución](docs/DISTRIBUCION.md) para compilar, firmar y notarizar una futura entrega.
+LOGIKAPPS no necesita Node.js ni Python para funcionar. Una herramienta externa conectada puede tener sus propios requisitos. Consulta [Distribución](docs/DISTRIBUCION.md) para compilar, firmar y notarizar una futura entrega.
 
 ## Estado de esta beta
 
 El proyecto está en fase de pruebas. El ejecutable universal contiene ambas arquitecturas; la validación local se realiza en Apple Silicon. Las comprobaciones de integración continua aparecen en la pestaña **Actions**. No se afirma que las herramientas añadidas por cada persona hayan sido probadas por LOGIKAPPS.
 
-La beta pasó 58 comprobaciones nativas, 21 pruebas de interfaz y una prueba de formularios en la app extraída del DMG. Consulta el [alcance de la verificación](docs/VERIFICACION.md).
+Consulta el [alcance de la verificación](docs/VERIFICACION.md) y los resultados de cada versión en GitHub Actions.
 
 Puedes comunicar un fallo en [Issues](https://github.com/pablohidalgochile-source/LOGIKAPPS/issues). Indica tu versión de macOS, el tipo de Mac y los pasos para reproducirlo. Evita adjuntar bibliotecas completas, credenciales o capturas con información personal.

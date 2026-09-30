@@ -27,6 +27,28 @@ func runStoreTests() throws {
     try expect(try relaunched.app("seed")["favorite"] as? Bool == true, "actualizar con catálogo vacío conserva biblioteca v1")
     let clean = try StateStore(directory: temp.appendingPathComponent("clean"), catalog: catalog)
     try expect((clean.state["apps"] as? [[String: Any]])?.isEmpty == true, "primera instalación inicia vacía")
+    // Version 0.2 stored the same schema. Discovery must never seed or replace it.
+    let emptyBytes = try Data(contentsOf: clean.fileURL)
+    try JSONSerialization.data(withJSONObject: [app]).write(to: catalog)
+    let upgradedEmpty = try StateStore(directory: clean.directory, catalog: catalog)
+    try expect((upgradedEmpty.state["apps"] as? [[String: Any]])?.isEmpty == true, "actualizar biblioteca vacía 0.2 no agrega catálogo compartido")
+    try expect(try Data(contentsOf: upgradedEmpty.fileURL) == emptyBytes, "actualizar biblioteca vacía no reescribe sus datos")
+    try Data("[]".utf8).write(to: catalog)
+    let legacyDirectory = temp.appendingPathComponent("legacy-0.2")
+    try fm.createDirectory(at: legacyDirectory, withIntermediateDirectories: true)
+    var legacyApp = app
+    legacyApp["favorite"] = true
+    legacyApp["notes"] = "Una nota personal conservada"
+    legacyApp["lastOpenedAt"] = "2026-09-28T12:00:00Z"
+    let legacy: [String: Any] = ["schemaVersion": 1, "apps": [legacyApp], "ideas": [["id": "linked-legacy", "title": "Idea existente", "status": "development", "appId": "seed", "description": "Se conserva al actualizar"]], "settings": [:]]
+    let legacyFile = legacyDirectory.appendingPathComponent("state.json")
+    let legacyBytes = try JSONSerialization.data(withJSONObject: legacy, options: [.prettyPrinted, .sortedKeys])
+    try legacyBytes.write(to: legacyFile)
+    let upgraded = try StateStore(directory: legacyDirectory, catalog: catalog)
+    try expect(try Data(contentsOf: legacyFile) == legacyBytes, "actualizar 0.2 a 0.3 conserva archivo de biblioteca existente")
+    try expect(try upgraded.app("seed")["favorite"] as? Bool == true && upgraded.app("seed")["notes"] as? String == "Una nota personal conservada", "actualizar conserva favoritos y notas")
+    try expect((upgraded.state["ideas"] as? [[String: Any]])?.first?["appId"] as? String == "seed", "actualizar conserva ideas vinculadas")
+    try expect((upgraded.snapshot()["environment"] as? [String: Any])?["version"] as? String == "0.3.0" && upgraded.state["environment"] == nil, "versión 0.3 solo en entorno, schema 1 conservado")
     for schema: Any in [true, false, "1", 1.5, 2] {
         var invalid = store.state; invalid["schemaVersion"] = schema
         try rejected("rechazar esquema incompatible \(schema)") { _ = try store.validatedState(invalid) }

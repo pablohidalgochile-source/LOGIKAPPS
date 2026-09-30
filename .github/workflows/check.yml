@@ -36,7 +36,11 @@ jobs:
         run: |
           for script in scripts/*.sh; do /bin/bash -n "$script"; done
       - name: Test frontend logic
-        run: node --test tests/frontend.test.cjs
+        run: node --test tests/*.test.cjs
+      - name: Package public Surco and FRATV tools
+        run: |
+          python3 scripts/package-surco.py
+          python3 scripts/package-fratv.py
       - name: Build universal macOS application
         run: /bin/bash scripts/build-macos.sh
       - name: Test native storage and validation
@@ -50,9 +54,13 @@ jobs:
         with:
           name: LOGIKAPPS-beta-${{ matrix.runner }}
           path: |
-            dist/LOGIKAPPS-0.2.0-macos-universal.dmg
-            dist/LOGIKAPPS-0.2.0-macos-universal.dmg.sha256
-            dist/LOGIKAPPS-0.2.0-macos-universal.dmg.metadata.json
+            dist/LOGIKAPPS-0.3.0-macos-universal.dmg
+            dist/LOGIKAPPS-0.3.0-macos-universal.dmg.sha256
+            dist/LOGIKAPPS-0.3.0-macos-universal.dmg.metadata.json
+            dist/Surco-0.1.0-beta.zip
+            dist/Surco-0.1.0-beta.zip.sha256
+            dist/FRATV-OBS-Pack-0.1.0-beta.zip
+            dist/FRATV-OBS-Pack-0.1.0-beta.zip.sha256
           if-no-files-found: error
           compression-level: 0
           retention-days: 14

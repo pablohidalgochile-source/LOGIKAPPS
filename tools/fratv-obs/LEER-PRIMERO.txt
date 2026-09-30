@@ -1,0 +1,29 @@
+FRATV · Pack de gráficos para OBS · beta 0.1.0
+
+Contiene 15 gráficas de FRATV: rótulos, identidad, avisos, cuenta regresiva,
+programación y créditos. Es un pack HTML, no el editor Overlay Studio.
+
+1. Descomprime todo. Mantén juntas las carpetas fratv y brand.
+2. Abre fratv/GUIA-OBS.html en tu navegador para elegir un recurso.
+3. En OBS: Fuentes > + > Navegador > Archivo local. Elige su archivo HTML.
+4. Usa 1920 x 1080. Las piezas actuales son horizontales; una escena vertical
+   necesita ajustar o recortar la fuente en OBS.
+5. Activa Actualizar navegador cuando la escena se active para reiniciar.
+
+Puedes previsualizar en un navegador actualizado de Mac, Windows o Linux.
+Para usarlas en una transmisión necesitas OBS Studio por separado.
+No requiere Python, Node, cuentas ni claves.
+
+Personalizar: los archivos HTML incluyen textos de ejemplo. Puedes editar
+los textos data-field en los HTML; los recursos compartidos usan valores
+por defecto en fratv/resources/fratv-resource.js. Conserva una copia.
+En un navegador también puedes añadir parámetros al URL, por ejemplo:
+lower-third.html?name=TU%20NOMBRE&role=CONDUCTOR
+countdown.html?clock=00:05:00
+
+Las tipografías Google Fonts se consultan por Internet. Sin conexión se usan
+las fuentes del sistema, por lo que el aspecto puede variar. No hay analítica
+ni envío de tus textos. La marca FRATV permanece en las piezas.
+
+LOGIKAPPS > Explorar > FRATV para OBS > Conectar carpeta permite guardar
+un acceso a la carpeta descomprimida. La descarga no instala OBS ni un editor.

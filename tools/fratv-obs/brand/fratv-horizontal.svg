@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600" role="img" aria-labelledby="title desc">
+  <title id="title">FRATV — Contenido Digital Humano</title>
+  <desc id="desc">Logo horizontal separado en capas para animación web y overlays OBS.</desc>
+
+  <g id="fratv-logo">
+    <g id="icon-tile">
+      <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+    </g>
+
+    <g id="icon-f" transform="translate(90 195) scale(.75)">
+      <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+    </g>
+
+    <g id="icon-play" transform="translate(90 195) scale(.75)">
+      <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+    </g>
+
+    <g id="icon-tv" transform="translate(90 195) scale(.75)" fill="none" stroke="#B72A3A" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M301 112H347M324 112V170"></path>
+      <path d="M354 114L370 167L388 114"></path>
+    </g>
+
+    <g id="wordmark" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165">
+      <text id="word-fra" x="650" y="333" fill="#F5F1E8">FRA</text>
+      <text id="word-tv" x="973" y="333" fill="#B72A3A">TV</text>
+    </g>
+
+    <g id="tagline">
+      <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#B72A3A">CONTENIDO DIGITAL HUMANO</text>
+    </g>
+  </g>
+</svg>

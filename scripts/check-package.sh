@@ -16,5 +16,8 @@ if /usr/bin/strings "$BINARY" | /usr/bin/grep -E '/Users/|/home/|/Volumes/|/priv
     fail "El ejecutable contiene rutas absolutas locales; revisa su compilación."
 fi
 CATALOG_CONTENT="$(tr -d '[:space:]' < "$APP_PATH/Contents/Resources/catalog.json")"
-[[ "$CATALOG_CONTENT" == '[]' ]] || fail "La distribución pública debe incluir un catálogo vacío."
-printf 'Paquete verificado: universal, versión %s, macOS %s+, catálogo vacío y sin rutas personales.\n' "$VERSION" "$MIN_MACOS"
+[[ "$CATALOG_CONTENT" == '[]' ]] || fail "La distribución debe iniciar la biblioteca personal vacía (catalog.json=[])."
+DISCOVER_CATALOG="$APP_PATH/Contents/Resources/web/discover-catalog.js"
+[[ -s "$DISCOVER_CATALOG" ]] || fail "Falta el catálogo público separado de Explorar."
+/usr/bin/cmp -s "$PROJECT_ROOT/web/discover-catalog.js" "$DISCOVER_CATALOG" || fail "El catálogo Explorar del paquete no coincide con las fuentes; recompila."
+printf 'Paquete verificado: universal, versión %s, macOS %s+, biblioteca personal vacía, Explorar incluido y sin rutas personales.\n' "$VERSION" "$MIN_MACOS"

@@ -1,0 +1,79 @@
+:root {
+  --fr-accent:#B72A3A;
+  --fr-on-accent:#F5F1E8;
+  --fr-plate:rgba(16,11,24,.94);
+  --fr-surface:#100B18;
+  --fr-text:#F5F1E8;
+  --fr-text-dim:rgba(245,241,232,.72);
+  --fr-hairline:rgba(245,241,232,.18);
+  --fr-font-display:'Poppins',system-ui,sans-serif;
+  --fr-font-mono:'JetBrains Mono',ui-monospace,monospace;
+  --fr-font-wordmark:'Arial Rounded MT Bold','Poppins',sans-serif;
+  --fr-dur:8000ms;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:1920px;height:1080px;overflow:hidden;background:transparent}
+body{font-family:var(--fr-font-display);color:var(--fr-text)}
+.stage{position:relative;width:100%;height:100%;overflow:hidden}
+.safe{position:absolute;inset:5%;border:1px dashed var(--fr-accent);opacity:0;pointer-events:none}
+:root[data-safe="1"] .safe{opacity:.55}
+.full{position:absolute;inset:0;background:var(--fr-surface)}
+.logo{display:block;object-fit:contain}
+.center-logo{position:absolute;left:50%;top:50%;width:820px;height:310px;transform:translate(-50%,-50%);animation:ident var(--fr-dur) cubic-bezier(.22,.9,.24,1) both}
+.flag-logo{position:absolute;right:5%;top:5%;width:360px;height:135px;animation:fade var(--fr-dur) ease both}
+.label{font-family:var(--fr-font-mono);font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.headline{font-weight:700;line-height:.98;letter-spacing:-.025em;white-space:pre-line}
+.plate{background:var(--fr-plate);border-radius:14px}
+.red{background:var(--fr-accent);color:var(--fr-on-accent)}
+.bumper{position:absolute;inset:0;background:var(--fr-surface);display:grid;place-content:center;justify-items:center;text-align:center}
+.bumper .logo{width:610px;height:230px;margin-bottom:40px}
+.bumper h1{margin:0;font-size:82px;white-space:pre-line;line-height:.96}
+.bumper p{margin:30px 0 0;color:var(--fr-accent);font-family:var(--fr-font-mono);font-size:18px;letter-spacing:.2em}
+.countdown{position:absolute;right:5%;top:10%;padding:28px 34px;text-align:center;animation:wipe var(--fr-dur) cubic-bezier(.3,0,.2,1) both}
+.countdown strong{display:block;font-family:var(--fr-font-mono);font-size:64px;letter-spacing:.08em}
+.countdown span{display:block;margin-top:10px;color:var(--fr-accent);font:700 16px var(--fr-font-mono);letter-spacing:.2em}
+.program{position:absolute;left:6%;bottom:12%;max-width:900px}
+.program .tag{display:inline-block;padding:12px 20px;border-radius:10px;font:700 16px var(--fr-font-mono);letter-spacing:.18em}
+.program h1{margin:24px 0 14px;font-size:78px;white-space:pre-line}
+.program p{margin:0;color:var(--fr-text-dim);font:500 19px var(--fr-font-mono);letter-spacing:.16em}
+.schedule{position:absolute;left:10%;top:14%;width:80%;padding:54px 64px}
+.schedule h1{margin:0 0 36px;color:var(--fr-accent);font-size:46px;letter-spacing:.06em}
+.schedule pre{margin:0;color:var(--fr-text);font:600 31px/2 var(--fr-font-mono)}
+.stack{position:absolute;left:15%;right:15%;top:22%;display:grid;gap:20px}
+.eng-card{padding:28px 34px}
+.eng-card small{display:block;color:var(--fr-accent);font:700 14px var(--fr-font-mono);letter-spacing:.18em;margin-bottom:12px}
+.eng-card strong{font-size:30px}
+.sponsor{position:absolute;left:20%;right:20%;top:30%;padding:60px;background:var(--fr-on-accent);color:var(--fr-surface);border-radius:24px;text-align:center}
+.sponsor small{display:block;color:var(--fr-accent);font:700 17px var(--fr-font-mono);letter-spacing:.2em}
+.sponsor strong{display:block;margin-top:32px;font-size:64px}
+.ticker{position:absolute;left:0;right:0;bottom:0;height:104px;display:flex;overflow:hidden;background:var(--fr-plate)}
+.ticker b{display:grid;place-items:center;min-width:230px;background:var(--fr-accent);font:700 17px var(--fr-font-mono);letter-spacing:.18em}
+.ticker span{display:flex;align-items:center;white-space:nowrap;padding-left:36px;font:500 21px var(--fr-font-mono);letter-spacing:.08em;animation:ticker var(--fr-dur) linear infinite}
+.credits{position:absolute;inset:0;background:var(--fr-surface);display:grid;place-items:center;text-align:center}
+.credits pre{margin:0;color:var(--fr-text);font:600 25px/1.7 var(--fr-font-display)}
+.credits .logo{position:absolute;right:5%;bottom:5%;width:330px;height:125px}
+.stinger-a,.stinger-b{position:absolute;top:0;bottom:0;animation:stinger var(--fr-dur) cubic-bezier(.3,0,.2,1) both}
+.stinger-a{left:-10%;width:78%;background:var(--fr-accent);clip-path:polygon(0 0,82% 0,100% 100%,0 100%)}
+.stinger-b{right:-10%;width:55%;background:var(--fr-surface);clip-path:polygon(30% 0,100% 0,100% 100%,0 100%)}
+.stinger-logo{position:absolute;left:50%;top:50%;width:660px;height:250px;transform:translate(-50%,-50%);animation:fade var(--fr-dur) ease both}
+@keyframes fade{0%,4%{opacity:0}16%,86%{opacity:1}96%,100%{opacity:0}}
+@keyframes ident{0%{opacity:0;transform:translate(-50%,-50%) scale(.94)}18%,84%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.985)}}
+@keyframes wipe{0%,4%{opacity:0;clip-path:inset(0 100% 0 0)}18%,84%{opacity:1;clip-path:inset(0)}96%,100%{opacity:0;clip-path:inset(0 0 0 100%)}}
+@keyframes stinger{0%{transform:translateX(-120%)}45%,58%{transform:translateX(0)}100%{transform:translateX(140%)}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-45%)}}
+@media (orientation:portrait){
+  html,body{width:1080px;height:1920px}
+  .safe{inset:12% 6% 22%}
+  .center-logo{width:760px;height:285px}
+  .flag-logo{right:8%;top:14%;width:300px;height:113px}
+  .countdown{left:14%;right:14%;top:42%}
+  .bumper .logo{width:720px;height:270px}
+  .bumper h1{font-size:92px}
+  .program{left:8%;right:8%;bottom:25%;max-width:none}
+  .program h1{font-size:88px}
+  .schedule{left:8%;width:84%;top:25%}
+  .stack{left:8%;right:8%;top:34%}
+  .sponsor{left:8%;right:8%;top:36%}
+  .ticker{bottom:22%;height:120px}
+  .credits .logo{right:10%;bottom:24%;width:360px}
+}

@@ -34,11 +34,21 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
       const deadline = Date.now() + 5000;
       while (!condition()) { if (Date.now() > deadline) throw new Error(message); await delay(40); }
     };
-    await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.empty-state'), 'No se mostró la biblioteca vacía.');
+    await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.discover-card'), 'No se mostró el catálogo de Explorar.');
     assert(typeof window.logikappsReply === 'function', 'Falta el receptor del puente nativo.');
     assert(Boolean(window.webkit?.messageHandlers?.logikapps), 'Falta el puente WKWebView.');
-    assert(document.querySelectorAll('.app-card').length === 0, 'La instalación nueva debe iniciar vacía.');
-    checks.push('interfaz vacía y puente nativo');
+    const sharedCards = [...document.querySelectorAll('.discover-card')];
+    assert(sharedCards.length > 0, 'Explorar no contiene herramientas compartidas.');
+    for (const card of sharedCards) {
+      const links = [...card.querySelectorAll('a[href]')];
+      assert(links.length > 0, 'Una herramienta compartida no tiene enlace.');
+      for (const link of links) {
+        const url = new URL(link.href);
+        assert(['http:', 'https:'].includes(url.protocol) && !url.username && !url.password, 'Hay un enlace incompatible en Explorar.');
+        assert(!['localhost', '127.0.0.1', '[::1]'].includes(url.hostname), 'El catálogo compartido contiene un enlace local.');
+      }
+    }
+    checks.push('Explorar muestra catálogo y enlaces HTTP(S) sin abrirlos');
     const previousReply = window.logikappsReply;
     const pending = new Map();
     let sequence = 0;
@@ -60,7 +70,12 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     const saveForm = async selector => { document.querySelector(selector).requestSubmit(); await wait(() => !document.querySelector('#editor-dialog').open, 'El formulario no se guardó: ' + (document.querySelector('#form-error')?.textContent || selector)); };
     try {
       const initial = await request('getState');
-      assert(initial.environment?.native && initial.apps.length === 0 && initial.ideas.length === 0, 'Se requiere un catálogo temporal vacío.');
+      assert(initial.environment?.native && initial.apps.length === 0 && initial.ideas.length === 0, 'Explorar debe estar separado de la biblioteca temporal vacía.');
+      click('[data-view="apps"]');
+      await wait(() => document.querySelector('.empty-state') && document.querySelectorAll('.app-card').length === 0, 'Mis apps no mostró biblioteca vacía.');
+      const personal = await request('getState');
+      assert(personal.apps.length === 0 && personal.ideas.length === 0, 'Consultar el catálogo modificó la biblioteca personal.');
+      checks.push('Mis apps vacía: el catálogo no crea accesos personales');
       click('#add-app-button');
       await wait(() => document.querySelector('#app-form'), 'No se abrió agregar app.');
       field('#app-form', 'name', 'Prueba WebKit 🌱');
@@ -121,7 +136,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
       click('[data-view="apps"]');
       assert(document.querySelectorAll('.app-card').length === 0, 'Quedaron tarjetas de prueba.');
       checks.push('quitar acceso, conservar idea, editar y borrar idea desde interfaz');
-      return { ok: true, test: 'webkit-smoke', checks, cards: 0, native: restored.environment.native };
+      return { ok: true, test: 'webkit-smoke', checks, cards: 0, sharedCards: sharedCards.length, native: restored.environment.native };
     } finally {
       window.logikappsReply = previousReply;
       for (const entry of pending.values()) clearTimeout(entry.timer);
@@ -146,8 +161,8 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     }
     let ready = #"""
       const deadline = Date.now() + 5000;
-      while (!(document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.empty-state'))) {
-        if (Date.now() > deadline) throw new Error('No se mostró el inicio vacío para la captura.');
+      while (!(document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.discover-card'))) {
+        if (Date.now() > deadline) throw new Error('No se mostró Explorar para la captura.');
         await new Promise(resolve => setTimeout(resolve, 50));
       }
       return true;
@@ -162,7 +177,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
                 if let error = error { throw error }
                 guard let tiff = image?.tiffRepresentation, let bitmap = NSBitmapImageRep(data: tiff),
                       let png = bitmap.representation(using: .png, properties: [:]) else {
-                    throw LogikError.message("No pudimos capturar el primer inicio vacío.")
+                    throw LogikError.message("No pudimos capturar Explorar al iniciar.")
                 }
                 try png.write(to: delegate.store.directory.appendingPathComponent("onboarding.png"), options: .atomic)
                 runChecks()

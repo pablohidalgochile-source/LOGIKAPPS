@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2ea">
+  <meta name="description" content="Surco, tu estudio local para guardar y organizar audio.">
+  <title>Surco · Tu música, a mano</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script defer src="/static/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir al contenido</a>
+  <aside class="sidebar">
+    <a class="brand" href="#main" aria-label="Surco, inicio"><span class="brand-symbol" aria-hidden="true"><i></i></span><span>surco<span class="brand-dot">.</span></span></a>
+    <p class="brand-caption">TU ESTUDIO PERSONAL</p>
+    <nav class="navigation" aria-label="Navegación principal">
+      <a class="nav-link active" href="#studio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6m8 4v6"/></svg>Capturar audio<span class="nav-arrow">↗</span></a>
+      <a class="nav-link" href="#library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M10 4v16m5-15 5 14"/></svg>Mi biblioteca<span id="nav-count" class="count">0</span></a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="local-mark"><span class="status-dot" id="connection-dot"></span><span id="connection-label">Conectando…</span></div>
+      <p>Los archivos se guardan en tu equipo. Sin subir tus grabaciones a la nube.</p>
+      <button id="open-folder" class="text-button folder-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>Abrir carpeta local ↗</button>
+      <span class="version">HECHO PARA ESCUCHAR. HECHO PARA TI.</span>
+    </div>
+  </aside>
+
+  <main id="main">
+    <header class="topbar"><span>AUDIO, SIN COMPLICACIONES</span><span class="local-badge"><span></span>En tu computador</span></header>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">GUARDA LO QUE TE MUEVE</p><h1 id="page-title">Tu música,<br><em>a mano.</em></h1><p class="intro-copy">Trae un enlace de música o graba el audio de una pestaña. Dale un lugar a tu próxima escucha.</p></div>
+      <div class="record-art" aria-hidden="true"><div class="record-disc"><span class="record-center">S<span>33⅓</span></span></div><span class="art-caption">SIDE A — YOUR COLLECTION</span></div>
+    </section>
+
+    <div id="connection-error" class="notice notice-error" role="alert" hidden><span id="connection-error-text"></span><button class="text-button" id="retry-connection" type="button">Reconectar</button></div>
+
+    <section id="studio" class="studio panel" aria-labelledby="studio-title">
+      <div class="section-heading"><div><p class="eyebrow">01 / CAPTURAR</p><h2 id="studio-title">Empieza por aquí.</h2></div><span class="section-note">Dos caminos, una biblioteca.</span></div>
+      <div class="mode-tabs" role="tablist" aria-label="Cómo guardar audio">
+        <button id="link-tab" type="button" class="mode-tab active" role="tab" aria-selected="true" aria-controls="link-panel" tabindex="0"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 3 1-1a4 4 0 0 1 6 6l-4 4a4 4 0 0 1-6 0" transform="translate(1 1)"/></svg>Desde un enlace</button>
+        <button id="record-tab" type="button" class="mode-tab" role="tab" aria-selected="false" aria-controls="record-panel" tabindex="-1"><span class="record-small" aria-hidden="true"></span>Grabar una pestaña<span class="tab-tag">AUDIO</span></button>
+      </div>
+
+      <div id="link-panel" class="mode-panel" role="tabpanel" aria-labelledby="link-tab">
+        <form id="inspect-form">
+          <label for="bandcamp-url">Enlace de una canción, un álbum o una lista</label>
+          <div class="url-input-row"><div class="input-with-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 15 6-6m-6-2 2-2a4 4 0 0 1 6 6l-2 2m-6-2-2 2a4 4 0 0 0 6 6l2-2"/></svg><input id="bandcamp-url" name="url" type="url" placeholder="Pega aquí el enlace completo: https://…" autocomplete="off" spellcheck="false" required></div><button id="inspect-button" class="button button-dark" type="submit">Explorar enlace <span aria-hidden="true">↗</span></button></div>
+          <p class="field-hint">Revisamos las descargas gratuitas oficiales y el audio de escucha disponible.</p>
+          <div id="platforms-section" class="platforms-section" hidden><span class="platforms-label">Plataformas compatibles</span><div id="platforms-list" class="platforms-list" aria-label="Plataformas compatibles"></div></div>
+        </form>
+        <p id="inspect-error" class="notice notice-error" role="alert" hidden></p>
+        <div id="inspect-empty" class="inspect-empty"><span class="empty-mini-disc" aria-hidden="true"></span><div><strong>Cada escucha empieza con un hallazgo.</strong><p>Pega un enlace para ver qué puedes guardar.</p></div></div>
+        <div id="inspect-result" class="inspect-result" hidden>
+          <div class="release-heading"><div class="release-art" aria-hidden="true"><span>♪</span></div><div class="release-info"><span id="release-type" class="eyebrow"></span><h3 id="release-title"></h3><p id="release-artist"></p><span id="release-details" class="field-hint"></span></div><a id="release-source" class="round-button" href="#" target="_blank" rel="noopener noreferrer" aria-label="Abrir publicación original">↗</a></div>
+          <p id="inspect-notice" class="notice" role="status" hidden></p>
+          <div id="download-options" class="download-options"><div class="format-field"><label for="download-format">Audio disponible</label><select id="download-format"></select></div><button id="download-button" type="button" class="button button-coral">Guardar en biblioteca <span aria-hidden="true">↓</span></button></div>
+          <p id="format-description" class="field-hint"></p>
+          <p id="no-formats" class="notice" hidden>No encontramos una descarga disponible. Si puedes reproducirlo en Chrome, puedes grabar el audio de esa pestaña.</p>
+          <section id="album-download" class="album-download" aria-labelledby="album-download-title" hidden>
+            <div class="album-download-heading"><h3 id="album-download-title">El álbum, pista a pista.</h3><span id="album-download-count" class="subtle"></span></div>
+            <div class="album-download-actions"><div class="format-field"><label for="album-preference">Preferencia de formato</label><select id="album-preference"><option value="mp3">MP3 cuando esté disponible</option><option value="best">Mejor calidad disponible</option></select></div><button id="album-download-button" type="button" class="button button-coral">Descargar álbum completo <span aria-hidden="true">↓</span></button></div>
+            <p id="collection-format-note" class="field-hint">Cada canción se guarda numerada en la misma carpeta de la colección. La opción MP3 prioriza ese formato cuando está disponible; si no, conservamos el formato de origen. «Mejor calidad» elige el mejor audio disponible sin aumentar la calidad de la fuente.</p>
+            <div id="album-job" class="album-job" hidden>
+              <div class="album-progress-heading"><span id="album-job-status" role="status" aria-live="polite">Preparando el álbum…</span><span id="album-job-percent"></span></div>
+              <progress id="album-progress-bar" max="100" value="0" aria-label="Progreso del álbum"></progress>
+              <p id="album-job-counts" class="field-hint"></p>
+              <ol id="album-job-tracks" class="album-job-tracks" aria-label="Estado de cada canción"></ol>
+              <div id="album-summary" class="album-summary" role="status" hidden><strong id="album-summary-text"></strong><ul id="album-failures"></ul></div>
+              <div class="album-job-actions"><button id="album-cancel-button" type="button" class="text-button" hidden>Cancelar descarga</button><button id="album-retry-button" type="button" class="button button-dark" hidden>Reintentar pendientes ↗</button><button id="album-resume-button" type="button" class="text-button" hidden>Recuperar seguimiento ↗</button></div>
+            </div>
+            <p id="album-job-error" class="notice notice-error" role="alert" hidden></p>
+          </section>
+          <details id="album-tracks" class="album-tracks" hidden><summary id="album-track-summary">Canciones del álbum</summary><ol id="track-list"></ol></details>
+          <div id="download-progress" class="download-progress" role="status" hidden><div><span id="download-status">Preparando descarga…</span><span id="download-percent"></span></div><progress id="download-progress-bar" max="100" value="0" aria-label="Progreso de descarga"></progress></div>
+          <p id="download-error" class="notice notice-error" role="alert" hidden></p>
+        </div>
+        <div class="mode-footnote"><span aria-hidden="true">ⓘ</span><p>La reproducción gratuita y la descarga oficial pueden tener condiciones distintas. Surco muestra el origen del audio y no recupera contenido que no esté disponible.</p></div>
+      </div>
+
+      <div id="record-panel" class="mode-panel" role="tabpanel" aria-labelledby="record-tab" hidden>
+        <div class="recorder-intro"><h3>De la pestaña a tu colección.</h3><p>Graba lo que se reproduce en una pestaña de Chrome. Se guarda solamente el audio, sin micrófono ni video.</p></div>
+        <ol class="steps"><li><span>1</span>Abre la música en otra pestaña.</li><li><span>2</span>Elige esa pestaña y activa <strong>Compartir audio de pestaña</strong>.</li><li><span>3</span>Al comenzar la grabación, reproduce desde el inicio.</li></ol>
+        <div id="recording-deck" class="recording-deck">
+          <div class="deck-top"><span id="record-state" class="deck-status"><span></span>LISTO PARA GRABAR</span><span class="deck-label">SOLO AUDIO</span></div>
+          <div class="recording-clock" id="recording-clock" role="timer" aria-label="Duración de la grabación">00:00<span>.00</span></div>
+          <div id="audio-meter" class="audio-meter" role="img" aria-label="Nivel de audio"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p id="record-hint" class="deck-hint">La captura comienza después de elegir y compartir una pestaña.</p>
+          <button id="start-recording" type="button" class="button button-coral record-action"><span class="record-button-icon" aria-hidden="true"></span>Elegir pestaña y grabar</button>
+          <button id="stop-recording" type="button" class="button button-light record-action" hidden><span class="stop-icon" aria-hidden="true"></span>Detener grabación</button>
+        </div>
+        <p id="record-error" class="notice notice-error" role="alert" hidden></p>
+        <div id="record-preview" class="record-preview" hidden>
+          <div class="preview-heading"><h3>Escúchala antes de guardar.</h3><span id="recording-size" class="subtle"></span></div>
+          <audio id="preview-audio" controls preload="metadata" aria-label="Escuchar la grabación"></audio>
+          <form id="save-recording-form">
+            <div class="metadata-grid"><div><label for="record-title">Título</label><input id="record-title" placeholder="Mi nueva grabación" maxlength="180"></div><div><label for="record-artist">Artista <span class="optional">opcional</span></label><input id="record-artist" placeholder="Nombre del artista" maxlength="180"></div><div><label for="record-album">Álbum <span class="optional">opcional</span></label><input id="record-album" placeholder="Nombre del álbum" maxlength="180"></div><div><label for="record-format">Formato</label><select id="record-format"><option value="webm">WebM · audio original</option><option value="mp3">MP3 · compatible</option><option value="flac">FLAC · archivo sin pérdida adicional</option></select></div></div>
+            <div class="source-field"><label for="record-source">Enlace de origen <span class="optional">opcional</span></label><input id="record-source" type="url" placeholder="https://…" maxlength="2048"></div>
+            <p id="conversion-hint" class="field-hint">MP3 y FLAC se crean a partir de lo grabado. Convertir a FLAC no mejora la calidad del audio de origen.</p>
+            <div class="save-actions"><button id="save-recording" class="button button-coral" type="submit">Guardar en biblioteca <span aria-hidden="true">↓</span></button><button id="save-original" type="button" class="text-button">Descargar WebM original ↗</button><button id="discard-recording" type="button" class="text-button discard-button">Descartar</button></div>
+            <p id="save-status" class="notice" role="status" hidden></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="library" class="library-section" aria-labelledby="library-title">
+      <div class="section-heading"><div><p class="eyebrow">02 / TU COLECCIÓN</p><h2 id="library-title">Buenas escuchas, bien guardadas.</h2></div><button id="refresh-library" class="text-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7"/></svg>Actualizar</button></div>
+      <div class="library-toolbar"><span><strong id="library-count">0</strong> archivos en tu biblioteca</span><label class="search-field"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><input id="library-search" type="search" placeholder="Buscar en tu colección" aria-label="Buscar en tu colección"></label></div>
+      <p id="library-error" class="notice notice-error" role="alert" hidden></p>
+      <div id="library-empty" class="library-empty"><div class="empty-collection" aria-hidden="true"><span></span><span></span><span></span></div><h3>Aquí empieza tu colección.</h3><p>Los archivos que guardes aparecerán aquí,<br>listos para volver a escucharlos.</p></div>
+      <p id="library-no-results" class="library-no-results" hidden>No hay archivos que coincidan con tu búsqueda.</p>
+      <div id="library-list" class="library-list"></div>
+      <p id="directory-label" class="directory-label"></p>
+    </section>
+    <footer>Surco<span>El placer de volver a escuchar.</span><span>LOCAL / PERSONAL / TUYO</span></footer>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
