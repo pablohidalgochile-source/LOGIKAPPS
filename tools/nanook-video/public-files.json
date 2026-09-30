@@ -1,0 +1,20 @@
+[
+  ".gitignore",
+  "Abrir NANOOK VIDEO.command",
+  "LEEME.md",
+  "Preparar NANOOK VIDEO.command",
+  "ai-upscale.py",
+  "launcher.mjs",
+  "lib.mjs",
+  "media.mjs",
+  "package.json",
+  "public/app.js",
+  "public/favicon.svg",
+  "public/index.html",
+  "public/studio.js",
+  "public/style.css",
+  "requirements.txt",
+  "server.mjs",
+  "tests/core.test.mjs",
+  "tests/media.test.mjs"
+]

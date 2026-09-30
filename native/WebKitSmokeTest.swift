@@ -34,7 +34,24 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
       const deadline = Date.now() + 5000;
       while (!condition()) { if (Date.now() > deadline) throw new Error(message); await delay(40); }
     };
-    await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.discover-card'), 'No se mostró el catálogo de Explorar.');
+    await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.pack-card'), 'No se mostraron los packs al iniciar.');
+    const packCards = [...document.querySelectorAll('.pack-card')];
+    assert(packCards.length === 2, 'Se esperan los packs DJ y Fraternidad.');
+    for (const card of packCards) {
+      const url = new URL(card.querySelector('a[href]').href);
+      assert(url.protocol === 'https:' && !url.username && !url.password, 'Descarga de pack incompatible.');
+    }
+    document.querySelector('[data-action="view-pack"][data-id="dj"]').click();
+    await wait(() => document.querySelector('.pack-start'), 'No abrió la guía del pack DJ.');
+    assert(document.querySelectorAll('.discover-card').length === 5, 'El pack DJ debe mostrar sus cinco herramientas.');
+    document.querySelector('[data-view="packs"]').click();
+    await wait(() => document.querySelectorAll('.pack-card').length === 2, 'No volvió a la lista de packs.');
+    document.querySelector('[data-action="view-pack"][data-id="fraternidad"]').click();
+    await wait(() => document.querySelector('.pack-start'), 'No abrió la guía de Fraternidad.');
+    assert(document.querySelectorAll('.discover-card').length === 5, 'Fraternidad debe mostrar cinco accesos.');
+    checks.push('Packs DJ y Fraternidad con cinco herramientas cada uno y descarga HTTPS');
+    document.querySelector('[data-view="discover"]').click();
+    await wait(() => document.querySelector('.discover-card'), 'No se mostró Explorar.');
     assert(typeof window.logikappsReply === 'function', 'Falta el receptor del puente nativo.');
     assert(Boolean(window.webkit?.messageHandlers?.logikapps), 'Falta el puente WKWebView.');
     const sharedCards = [...document.querySelectorAll('.discover-card')];
@@ -136,7 +153,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
       click('[data-view="apps"]');
       assert(document.querySelectorAll('.app-card').length === 0, 'Quedaron tarjetas de prueba.');
       checks.push('quitar acceso, conservar idea, editar y borrar idea desde interfaz');
-      return { ok: true, test: 'webkit-smoke', checks, cards: 0, sharedCards: sharedCards.length, native: restored.environment.native };
+      return { ok: true, test: 'webkit-smoke', checks, cards: 0, sharedCards: sharedCards.length, packs: packCards.length, native: restored.environment.native };
     } finally {
       window.logikappsReply = previousReply;
       for (const entry of pending.values()) clearTimeout(entry.timer);
@@ -161,8 +178,8 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     }
     let ready = #"""
       const deadline = Date.now() + 5000;
-      while (!(document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.discover-card'))) {
-        if (Date.now() > deadline) throw new Error('No se mostró Explorar para la captura.');
+      while (!(document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.pack-card'))) {
+        if (Date.now() > deadline) throw new Error('No se mostraron Packs para la captura.');
         await new Promise(resolve => setTimeout(resolve, 50));
       }
       return true;

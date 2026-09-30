@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "packId": "fraternidad",
+  "files": [
+    "GUIA.html",
+    "pack.json",
+    "public-files.json",
+    "01-FRATE-ERP.webloc",
+    "02-FRATE-WEB.webloc",
+    "03-FRATE-FLYER.webloc",
+    "04-FRATE-POS.webloc",
+    "05-FRATE-CAST.webloc"
+  ],
+  "excludedByDesign": [
+    "Código fuente de los servicios",
+    "Bases de datos y respaldos",
+    "Credenciales, sesiones y claves de acceso",
+    "Rutas de equipos personales"
+  ]
+}

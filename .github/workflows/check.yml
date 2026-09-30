@@ -37,10 +37,16 @@ jobs:
           for script in scripts/*.sh; do /bin/bash -n "$script"; done
       - name: Test frontend logic
         run: node --test tests/*.test.cjs
-      - name: Package public Surco and FRATV tools
+      - name: Check portable DJ tools
+        run: |
+          python3 tools/vj-lab/test-pack.py
+          python3 tools/hit-lab/test-pack.py
+          node --test tools/nanook-video/tests/*.test.mjs
+      - name: Package public tools and activity packs
         run: |
           python3 scripts/package-surco.py
           python3 scripts/package-fratv.py
+          python3 scripts/package-packs.py
       - name: Build universal macOS application
         run: /bin/bash scripts/build-macos.sh
       - name: Test native storage and validation
@@ -54,13 +60,17 @@ jobs:
         with:
           name: LOGIKAPPS-beta-${{ matrix.runner }}
           path: |
-            dist/LOGIKAPPS-0.3.0-macos-universal.dmg
-            dist/LOGIKAPPS-0.3.0-macos-universal.dmg.sha256
-            dist/LOGIKAPPS-0.3.0-macos-universal.dmg.metadata.json
+            dist/LOGIKAPPS-0.4.0-macos-universal.dmg
+            dist/LOGIKAPPS-0.4.0-macos-universal.dmg.sha256
+            dist/LOGIKAPPS-0.4.0-macos-universal.dmg.metadata.json
             dist/Surco-0.1.0-beta.zip
             dist/Surco-0.1.0-beta.zip.sha256
             dist/FRATV-OBS-Pack-0.1.0-beta.zip
             dist/FRATV-OBS-Pack-0.1.0-beta.zip.sha256
+            dist/LOGIKAPPS-Pack-DJ-0.1.0-beta.zip
+            dist/LOGIKAPPS-Pack-DJ-0.1.0-beta.zip.sha256
+            dist/LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip
+            dist/LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip.sha256
           if-no-files-found: error
           compression-level: 0
           retention-days: 14

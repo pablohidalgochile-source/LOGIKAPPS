@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "id": "fraternidad",
+  "name": "Pack Fraternidad",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip",
+  "platforms": [
+    "macOS",
+    "web"
+  ],
+  "description": "Cinco accesos oficiales y una guía de ingreso para el equipo de Fraternidad.",
+  "guide": "GUIA.html",
+  "containsApplications": false,
+  "requiresInternet": true,
+  "accessPolicy": "Cada persona usa su cuenta autorizada. El pack entrega accesos, no credenciales ni permisos.",
+  "verificationSummary": "Las cinco direcciones respondieron HTTP 200 el 30 de septiembre de 2026. FRATE POS redirigió a /login. No se iniciaron sesiones ni se probaron operaciones de negocio.",
+  "tools": [
+    {
+      "id": "frate-erp",
+      "name": "FRATE ERP",
+      "description": "Acceso al sistema de gestión operativa de Fraternidad.",
+      "url": "https://erp.frate.cl/",
+      "category": "business",
+      "icon": "briefcase",
+      "shortcut": "01-FRATE-ERP.webloc",
+      "access": "Acceso personal autorizado por la administración. El perfil asignado determina las secciones disponibles.",
+      "steps": [
+        "Abre FRATE ERP.",
+        "Elige el acceso correspondiente a tu perfil e ingresa con tus datos personales habilitados.",
+        "Si tu cuenta no tiene acceso, solicita al administrador que revise tu perfil."
+      ],
+      "requirements": [
+        "Navegador actualizado e internet.",
+        "Cuenta o perfil personal habilitado para FRATE ERP."
+      ],
+      "verification": {
+        "status": 200,
+        "finalURL": "https://erp.frate.cl/",
+        "title": "FRATE ERP (SISTEMA)",
+        "accessEvidence": "El proyecto muestra Login cuando no existe sesión.",
+        "method": "GET",
+        "checkedOn": "2026-09-30",
+        "authenticated": false,
+        "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
+      },
+      "kind": "web"
+    },
+    {
+      "id": "frate-web",
+      "name": "FRATE WEB",
+      "description": "Acceso al panel de administración de la web y ticketera de Fraternidad.",
+      "url": "https://www.frate.cl/admin",
+      "category": "business",
+      "icon": "globe",
+      "shortcut": "02-FRATE-WEB.webloc",
+      "access": "Panel restringido: requiere cuenta propia con permisos de administración de la web.",
+      "steps": [
+        "Abre el panel FRATE WEB.",
+        "Inicia sesión con el correo y la contraseña de tu cuenta autorizada.",
+        "Si solo necesitas visitar la página de Fraternidad, usa el enlace al sitio público."
+      ],
+      "requirements": [
+        "Navegador actualizado e internet.",
+        "Cuenta autorizada para el panel FRATE WEB."
+      ],
+      "secondaryLinks": [
+        {
+          "label": "Visitar sitio público",
+          "url": "https://www.frate.cl/"
+        }
+      ],
+      "verification": {
+        "status": 200,
+        "finalURL": "https://www.frate.cl/admin",
+        "title": "FRATE WEB (TICKETERA)",
+        "accessEvidence": "El HTML incluye un panel de acceso restringido con formulario de ingreso.",
+        "method": "GET",
+        "checkedOn": "2026-09-30",
+        "authenticated": false,
+        "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
+      },
+      "kind": "web"
+    },
+    {
+      "id": "frate-flyer",
+      "name": "FRATE FLYER",
+      "description": "Acceso a FRATE FLYER LAB · EXPRESS para el trabajo creativo del equipo.",
+      "url": "https://flyer.frate.cl/",
+      "category": "creative",
+      "icon": "sparkles",
+      "shortcut": "03-FRATE-FLYER.webloc",
+      "access": "Requiere cuenta propia habilitada para FLYER. Algunas funciones pueden necesitar integraciones configuradas por el responsable del sistema.",
+      "steps": [
+        "Abre FRATE FLYER.",
+        "Ingresa con el correo y la contraseña de tu cuenta habilitada.",
+        "Si falta acceso a una función o integración, solicita su habilitación al administrador."
+      ],
+      "requirements": [
+        "Navegador actualizado e internet.",
+        "Cuenta autorizada para FRATE FLYER.",
+        "Configuración de integraciones para las funciones que las requieran."
+      ],
+      "verification": {
+        "status": 200,
+        "finalURL": "https://flyer.frate.cl/",
+        "title": "FRATE FLYER LAB · EXPRESS",
+        "accessEvidence": "El proyecto muestra Login cuando no existe sesión.",
+        "method": "GET",
+        "checkedOn": "2026-09-30",
+        "authenticated": false,
+        "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
+      },
+      "kind": "web"
+    },
+    {
+      "id": "frate-pos",
+      "name": "FRATE POS",
+      "description": "Acceso al punto de venta de Fraternidad.",
+      "url": "https://pos.frate.cl/",
+      "category": "business",
+      "icon": "grid",
+      "shortcut": "04-FRATE-POS.webloc",
+      "access": "Requiere cuenta propia y permisos para el punto de venta. La configuración de cajas, terminales o impresión la coordina el responsable de operación.",
+      "steps": [
+        "Abre FRATE POS; sin sesión se muestra la página de ingreso.",
+        "Inicia sesión con el correo y la contraseña de tu cuenta autorizada.",
+        "Antes de operar, confirma con el responsable qué caja y dispositivos te corresponden."
+      ],
+      "requirements": [
+        "Navegador actualizado e internet.",
+        "Cuenta autorizada para FRATE POS.",
+        "Configuración del puesto y periféricos, cuando corresponda."
+      ],
+      "verification": {
+        "status": 200,
+        "finalURL": "https://pos.frate.cl/login",
+        "title": "FRATE POS",
+        "accessEvidence": "El GET de la dirección principal redirige a /login.",
+        "method": "GET",
+        "checkedOn": "2026-09-30",
+        "authenticated": false,
+        "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
+      },
+      "kind": "web"
+    },
+    {
+      "id": "frate-cast",
+      "name": "FRATE CAST",
+      "description": "Acceso al portal de casting de Fraternidad.",
+      "url": "https://cast.frate.cl/auth",
+      "category": "business",
+      "icon": "heart",
+      "shortcut": "05-FRATE-CAST.webloc",
+      "access": "Usa tu cuenta personal. Los paneles internos requieren el rol que asigne la administración; crear una cuenta no concede permisos internos.",
+      "steps": [
+        "Abre FRATE CAST e inicia sesión con tu cuenta personal.",
+        "Para tareas de equipo, solicita el rol que corresponda a tu trabajo.",
+        "Para consultar la convocatoria, puedes visitar la página pública del casting."
+      ],
+      "requirements": [
+        "Navegador actualizado e internet.",
+        "Cuenta personal para ingresar.",
+        "Rol autorizado para funciones internas."
+      ],
+      "secondaryLinks": [
+        {
+          "label": "Visitar casting público",
+          "url": "https://cast.frate.cl/"
+        }
+      ],
+      "verification": {
+        "status": 200,
+        "finalURL": "https://cast.frate.cl/auth",
+        "title": "FRATE Casting — Fraternidad Campus Central",
+        "accessEvidence": "El proyecto define ingreso personal y rutas internas protegidas por rol.",
+        "method": "GET",
+        "checkedOn": "2026-09-30",
+        "authenticated": false,
+        "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
+      },
+      "kind": "web"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101111">
+  <meta name="description" content="Tu espacio personal para descargar videos de YouTube en su mejor calidad disponible.">
+  <title>NANOOK VIDEO — Tu archivo personal</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+  <script src="/studio.js" defer></script>
+</head>
+<body>
+  <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 13 4-4m-6 6-1 1a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m0 14a4 4 0 0 0 6 0l5-5a4 4 0 0 0-6-6l-1 1" transform="translate(1 0) scale(.92)"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m9 5 11 7-11 7z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V4h7l3 3h8v13H3z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6zM8 12l3 3 5-6"/></symbol>
+    <symbol id="i-paste" viewBox="0 0 24 24"><path d="M8 5H5v16h14V5h-3M8 3h8v5H8z"/></symbol>
+  </svg>
+
+  <header class="header">
+    <a class="brand" href="/" aria-label="Nanook Video, inicio"><span class="brand-icon"><svg><use href="#i-download"/></svg></span><span>NANOOK<span class="brand-light">VIDEO</span></span></a>
+    <div class="header-right"><span class="personal-label">PERSONAL EDITION</span><span class="connection" id="connection">Conectando…</span></div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="heading">
+      <div><div class="eyebrow"><span class="tiny-square"></span> TU ARCHIVO, A TU RITMO</div><h1 id="heading">Del enlace<br class="mobile-break"> a tu <span>colección.</span></h1><p>Audio, video y nuevas versiones con tu toque.</p></div>
+      <div class="quality-stamp" aria-hidden="true"><strong>HQ</strong><span>VIDEO + AUDIO</span></div>
+    </section>
+
+    <nav class="app-tabs" aria-label="Herramientas"><button type="button" data-tab="download" aria-pressed="true">Descargar</button><button type="button" data-tab="studio" aria-pressed="false">Mejorar archivo <span class="tab-badge">NUEVO</span></button></nav>
+    <section class="workspace" id="download-view" aria-label="Nueva descarga">
+      <div class="workspace-heading"><span class="section-label"><span class="step">01</span> NUEVA DESCARGA</span><span class="youtube-label"><span class="youtube-icon">▶</span> YouTube</span></div>
+      <form id="analyze-form" class="url-form">
+        <label for="url">Enlace del video</label>
+        <div class="url-controls"><div class="input-wrap"><svg class="icon"><use href="#i-link"/></svg><input id="url" name="url" type="url" placeholder="Pega aquí tu enlace de YouTube…" autocomplete="off" spellcheck="false" required aria-describedby="url-help"><button type="button" class="paste-button" id="paste" aria-label="Pegar enlace del portapapeles"><svg class="icon"><use href="#i-paste"/></svg><span>Pegar</span></button></div><button class="button primary analyze-button" id="analyze" type="submit"><span>Analizar video</span><svg class="icon"><use href="#i-arrow"/></svg></button></div>
+        <div class="input-hint" id="url-help"><span>Videos y Shorts · Un enlace a la vez</span><span>Sin cuentas. Sin anuncios.</span></div>
+      </form>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+      <div class="editor">
+        <div class="video-pane" id="video-pane">
+          <div class="video-empty" id="video-empty"><div class="frame-corner top-left"></div><div class="frame-corner top-right"></div><div class="frame-corner bottom-left"></div><div class="frame-corner bottom-right"></div><span class="preview-caption">VISTA PREVIA</span><div class="play-circle"><svg><use href="#i-play"/></svg></div><strong>Todo empieza con un enlace</strong><span>Tu video aparecerá aquí</span><div class="preview-bottom"><span>VIDEO / AUDIO</span><span>—:—</span></div></div>
+          <div class="video-details" id="video-details" hidden><div class="thumbnail-wrap"><img id="thumbnail" alt="Miniatura del video" width="640" height="360"><span class="duration" id="duration"></span><span class="resolution" id="resolution"></span></div><div class="video-meta"><h2 id="video-title"></h2><p id="video-channel"></p></div></div>
+        </div>
+        <div class="settings-pane">
+          <div class="settings-title"><span class="step">02</span><h2>Elige cómo guardarlo</h2></div>
+          <div class="target-control"><label for="target">Quiero descargar</label><select id="target"><option value="video">Video con audio</option><option value="audio">Solo audio</option><option value="both">Video y audio por separado</option></select></div>
+          <div id="video-settings"><fieldset class="formats"><legend>Formato de video</legend><label class="format-option"><input type="radio" name="mode" value="original" checked><span class="radio-indicator"></span><span class="format-copy"><span class="format-name">Calidad original <span class="recommended">MÁXIMA</span></span><span class="format-description">MKV · Mejor video + mejor audio, sin recodificar.</span></span></label><label class="format-option"><input type="radio" name="mode" value="mp4"><span class="radio-indicator"></span><span class="format-copy"><span class="format-name">MP4 compatible</span><span class="format-description">H.264 + AAC · Para más reproductores.</span></span></label></fieldset>
+          <div class="quality-control"><label for="quality">Resolución</label><select id="quality"><option value="best">La mejor disponible</option></select></div>
+          <p class="quality-note" id="quality-note">Se conserva la calidad de la fuente. Hasta 4K u 8K cuando el video lo ofrezca.</p>
+          </div>
+          <div id="audio-settings" hidden><div class="quality-control"><label for="audio-format">Formato de audio</label><select id="audio-format"><option value="original">Original · sin convertir</option><option value="mp3">MP3 · compatible</option><option value="m4a">M4A · AAC</option><option value="wav">WAV · para editar</option><option value="flac">FLAC · para archivar</option></select></div><div class="quality-control bitrate-control" id="audio-bitrate-row" hidden><label for="audio-quality">Salida</label><select id="audio-quality"><option value="320">320 kbps</option><option value="256">256 kbps</option><option value="192">192 kbps</option><option value="128">128 kbps</option></select></div><p id="audio-note" class="quality-note">Descarga la mejor pista disponible conservando su formato.</p><p id="source-audio" class="source-details"></p></div>
+          <button class="button primary download-button" id="download" disabled><svg class="icon"><use href="#i-download"/></svg><span>Descargar video</span></button>
+          <div class="download-caption" id="download-caption">Analiza un enlace para comenzar</div>
+        </div>
+      </div>
+      <div class="workspace-footer"><span><svg class="icon"><use href="#i-shield"/></svg> Procesado en tu Mac</span><span>Primero el original. Después, tus mejoras.</span></div>
+    </section>
+
+    <section class="workspace studio" id="studio-view" aria-label="Mejorar archivo" hidden>
+      <div class="workspace-heading"><span class="section-label"><span class="step">✦</span> TALLER DE MEJORA</span><span class="local-label" id="ai-status">Procesamiento local</span></div>
+      <div class="studio-intro"><h2>Dale una nueva versión.</h2><p>Ajusta el sonido, limpia la imagen o escala con IA. Tu original se conserva.</p></div>
+      <div id="studio-notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div class="studio-grid">
+        <div class="studio-source"><label class="field-label" for="enhance-source">1. Elige un archivo de tu colección</label><select class="field" id="enhance-source"><option value="">Selecciona una descarga…</option></select><p id="source-info" class="source-details">También puedes importar un archivo de tu Mac.</p>
+          <label class="upload-card" for="upload-file"><span class="upload-symbol">＋</span><strong>Importar desde mi Mac</strong><span>Audio o video · Hasta 2 GB y 6 horas</span><input id="upload-file" type="file" accept=".mp4,.mkv,.mov,.webm,.m4v,.mp3,.m4a,.aac,.opus,.ogg,.flac,.wav"></label><p id="upload-progress" class="source-details" role="status"></p>
+          <div class="studio-tip"><strong>Calidad con contexto</strong><p>Un archivo más grande no recupera detalles perdidos. Las mejoras y la IA cambian el resultado: escucha o mira una muestra antes de procesarlo completo.</p></div>
+        </div>
+        <form id="enhance-form" class="studio-settings">
+          <label class="field-label" for="enhance-target">2. Crea una copia de</label><select class="field" id="enhance-target"><option value="audio">Solo audio</option><option value="video">Video con audio</option></select>
+          <div id="enhance-video-settings" hidden><div class="field-pair"><div><label class="field-label" for="enhance-engine">Procesamiento</label><select class="field" id="enhance-engine"><option value="standard">Estándar · rápido</option><option value="ai" id="ai-option" disabled>IA local · Real-ESRGAN</option></select></div><div><label class="field-label" for="enhance-resolution">Tamaño de salida</label><select class="field" id="enhance-resolution"><option value="source">Conservar tamaño</option><option value="1080">Full HD · 1080p</option><option value="2160">4K · 2160p</option></select></div></div><p class="quality-note" id="ai-note">El escalado conserva la proporción del video.</p><div class="check-row"><label><input type="checkbox" id="denoise-video"> Reducir ruido de imagen</label><label><input type="checkbox" id="sharpen"> Nitidez suave</label></div></div>
+          <div id="enhance-audio-settings"><div class="field-pair"><div><label class="field-label" for="enhance-audio-format">Formato de audio</label><select class="field" id="enhance-audio-format"><option value="mp3">MP3</option><option value="m4a">M4A</option><option value="wav">WAV · 24 bits</option><option value="flac">FLAC</option></select></div><div id="enhance-bitrate-row"><label class="field-label" for="enhance-audio-quality">Calidad de salida</label><select class="field" id="enhance-audio-quality"><option value="320">320 kbps</option><option value="256">256 kbps</option><option value="192">192 kbps</option><option value="128">128 kbps</option></select></div></div><p class="quality-note">El formato de salida no aumenta la fidelidad de la fuente.</p></div>
+          <div id="sound-controls"><label class="field-label" for="audio-profile">Tratamiento del sonido</label><select class="field" id="audio-profile"><option value="preserve">Sin ecualización</option><option value="music">Música / DJ · ajuste suave</option><option value="voice">Voz · claridad</option></select><div class="check-row"><label><input type="checkbox" id="normalize"> Nivelar volumen</label><label><input type="checkbox" id="denoise-audio"> Reducir ruido de audio</label></div></div>
+          <div class="studio-actions"><button class="button secondary" type="button" id="sample-button" disabled>Probar 5 segundos</button><button class="button primary" type="submit" id="enhance-button" disabled>Crear copia completa</button></div><p class="quality-note">La muestra usa los primeros 5 segundos. El progreso aparecerá en tu colección.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="comparison" class="comparison" aria-label="Comparar original y mejora" hidden><div class="downloads-heading"><h2>Escucha o mira la diferencia</h2><button type="button" class="small-button" id="close-comparison">Cerrar</button></div><p id="comparison-status" role="status" class="source-details"></p><div class="compare-switch"><button type="button" data-compare="original" aria-pressed="true">Original</button><button type="button" data-compare="improved" aria-pressed="false">Mejora</button></div><video id="compare-video" controls playsinline preload="metadata" hidden></video><audio id="compare-audio" controls preload="metadata" hidden></audio><p class="quality-note">Comparación de los primeros 5 segundos. Ambos fragmentos se preparan en un formato reproducible.</p></section>
+
+    <section class="downloads-section" aria-labelledby="downloads-heading"><div class="downloads-heading"><h2 id="downloads-heading">Tus descargas <span class="count" id="count">0</span></h2><span class="local-label"><svg class="icon"><use href="#i-folder"/></svg> Guardadas en este equipo</span></div><div id="jobs"></div><div class="downloads-empty" id="downloads-empty"><span class="empty-folder"><svg class="icon"><use href="#i-folder"/></svg></span><div><strong>Tu colección empieza aquí</strong><p>El progreso y los archivos listos aparecerán en este espacio.</p></div><span class="empty-line" aria-hidden="true"></span></div><p class="folder-note" id="folder-note" hidden></p></section>
+    <footer class="footer"><span>NANOOK VIDEO <span class="footer-slash">/</span> PERSONAL EDITION</span><span>Hecho para guardar lo que te inspira.</span></footer>
+  </main>
+</body>
+</html>

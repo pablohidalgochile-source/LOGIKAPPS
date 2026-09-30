@@ -1,0 +1,23 @@
+VJ/LAB · Pack local 0.1.0-beta
+
+PARA USAR
+1. Extrae el ZIP completo. Mantén sus archivos juntos.
+2. Necesitas Python 3.10 o posterior y un navegador actual (Chrome, Safari o Firefox).
+3. En Mac, abre «Abrir VJ LAB.command». Si no se abre por doble clic, entra a esta carpeta en Terminal y ejecuta: python3 launcher.py
+4. Mantén Terminal abierto mientras lo usas. Control+C lo cierra.
+
+El lanzador elige un puerto libre automáticamente y sirve la app solo en 127.0.0.1. No necesita Node.js, cuenta, internet ni claves API para funcionar. No instala servicios de inicio automático.
+
+QUÉ INCLUYE
+Tres presets genéricos, tres escenas por preset, texto editable, formato horizontal/vertical/cuadrado, velocidad, intensidad, grano, pausa, pantalla completa y exportación PNG. Las animaciones son CSS. El PNG es una composición estática recreada en Canvas: no es una captura exacta de cada fotograma del efecto y no exporta vídeo ni audio.
+
+La generación de logos con IA del proyecto original requiere un backend y NO está incluida. No hay un motor de IA simulado, ni sincronía con música o mediciones reales de FPS. Los cambios duran esta sesión; exporta el PNG antes de cerrar.
+
+DATOS
+No se incluyen nombres de artistas de los presets originales, bibliotecas, fotos, vídeos, historiales, credenciales ni datos personales. Los presets llevan «TU NOMBRE». No hay llamadas de red automáticas.
+
+PARA QUIEN QUIERA MODIFICAR EL CÓDIGO
+La app lista para usar está en site/. Las fuentes mínimas están en src/. Para reconstruir: Node.js >=22.13.0, npm install y npm run build. Eso descarga dependencias desde npm; no es necesario para usar el pack. Las licencias de las dependencias incluidas en el navegador están en THIRD-PARTY-NOTICES.txt.
+
+VERIFICACIÓN
+python3 test-pack.py prueba una copia temporal separada: arranque, recursos estáticos, archivos fuera de site no expuestos y acceso solo local. public-files.json es la lista exacta de archivos que se distribuyen.

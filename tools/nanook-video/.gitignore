@@ -1,0 +1,9 @@
+downloads/
+.data/
+.runtime/
+node_modules/
+__pycache__/
+*.pyc
+*.log
+.env*
+.DS_Store

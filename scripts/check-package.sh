@@ -20,4 +20,5 @@ CATALOG_CONTENT="$(tr -d '[:space:]' < "$APP_PATH/Contents/Resources/catalog.jso
 DISCOVER_CATALOG="$APP_PATH/Contents/Resources/web/discover-catalog.js"
 [[ -s "$DISCOVER_CATALOG" ]] || fail "Falta el catálogo público separado de Explorar."
 /usr/bin/cmp -s "$PROJECT_ROOT/web/discover-catalog.js" "$DISCOVER_CATALOG" || fail "El catálogo Explorar del paquete no coincide con las fuentes; recompila."
+/usr/bin/cmp -s "$PROJECT_ROOT/web/packs-catalog.js" "$APP_PATH/Contents/Resources/web/packs-catalog.js" || fail "Los packs del paquete no coinciden con las fuentes; recompila."
 printf 'Paquete verificado: universal, versión %s, macOS %s+, biblioteca personal vacía, Explorar incluido y sin rutas personales.\n' "$VERSION" "$MIN_MACOS"

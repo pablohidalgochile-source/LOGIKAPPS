@@ -55,6 +55,7 @@
   const iconAliases = { video: 'play', youtube: 'play', nanook: 'play', waveform: 'waves', audio: 'waves', trackhunt: 'waves', vinyl: 'disc', record: 'disc', surco: 'disc', gem: 'diamond', jewelry: 'diamond', navarro: 'diamond', snowflake: 'snow', clima: 'snow', event: 'frate', palette: 'sparkles', layout: 'grid', activity: 'heart', home: 'house' };
   let state = { schemaVersion: 1, apps: [], ideas: [], settings: {}, environment: { native } };
   let view = 'apps';
+  let selectedPack = '';
   let category = 'all';
   let query = '';
   let loaded = false;
@@ -71,6 +72,8 @@
   const ideaById = (id) => state.ideas.find((idea) => idea.id === id);
   const clone = (value) => JSON.parse(JSON.stringify(value));
   const discoverCatalog = readDiscoverCatalog(window.LOGIKAPPS_DISCOVER);
+  const packCatalog = readPackCatalog(window.LOGIKAPPS_PACKS);
+  const sharedTools = [...discoverCatalog, ...packCatalog.flatMap((pack) => pack.tools)];
   const readableDate = (value) => {
     const date = new Date(value);
     return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('es-CL', { day: 'numeric', month: 'short' });
@@ -144,7 +147,7 @@
   }
 
   function renderNavigation() {
-    const nav = [['discover', 'globe', 'Explorar'], ['home', 'home', 'Inicio'], ['apps', 'grid', 'Mis apps'], ['ideas', 'bulb', 'Ideas'], ['favorites', 'star', 'Favoritos']];
+    const nav = [['packs', 'grid', 'Packs de apps'], ['discover', 'globe', 'Explorar'], ['home', 'home', 'Inicio'], ['apps', 'grid', 'Mis apps'], ['ideas', 'bulb', 'Ideas'], ['favorites', 'star', 'Favoritos']];
     $('#primary-nav').innerHTML = nav.map(([id, symbol, label]) => `<button class="nav-item${view === id ? ' active' : ''}" data-view="${id}"${view === id ? ' aria-current="page"' : ''}>${icon(symbol)}<span>${label}</span>${id === 'apps' && state.apps.length ? `<span class="nav-count">${state.apps.length}</span>` : ''}</button>`).join('');
     $('#collection-nav').innerHTML = Object.entries(categories).map(([id, label]) => `<button class="nav-item${view === 'apps' && category === id ? ' active' : ''}" data-category="${id}">${icon('folder')}<span>${label}</span></button>`).join('');
     $('#settings-link').classList.toggle('active', view === 'settings');
@@ -220,6 +223,38 @@
     return discoverCatalog.filter((entry) => (category === 'all' || category === entry.category) && terms.every((term) => normalize(`${entry.name} ${entry.description} ${categories[entry.category]} ${entry.requirements}`).includes(term)));
   }
 
+  function readPackCatalog(source) {
+    if (!Array.isArray(source)) return [];
+    const ids = new Set();
+    const text = (value, max) => typeof value === 'string' && value.trim() && value.length <= max && !value.includes('\0');
+    return source.filter((pack) => {
+      if (!pack || !text(pack.id, 100) || ids.has(pack.id) || !text(pack.name, 100) || !text(pack.description, 2000) || !text(pack.requirements, 2000) || !text(pack.version, 40) || !validURL(pack.url) || !Object.hasOwn(categories, pack.category) || !Array.isArray(pack.tools) || !pack.tools.length || pack.tools.length > 30 || !Array.isArray(pack.steps) || !pack.steps.length || pack.steps.length > 8 || !pack.steps.every((step) => text(step, 1000))) return false;
+      const tools = readDiscoverCatalog(pack.tools);
+      if (tools.length !== pack.tools.length) return false;
+      ids.add(pack.id);
+      return true;
+    }).map((pack) => ({ id: pack.id, name: pack.name, description: pack.description, requirements: pack.requirements, version: pack.version, url: validURL(pack.url), category: pack.category, icon: Object.hasOwn(iconStyles, pack.icon) ? pack.icon : 'grid', tools: readDiscoverCatalog(pack.tools), steps: [...pack.steps] }));
+  }
+
+  function filteredPacks() {
+    const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+    return packCatalog.filter((pack) => (category === 'all' || category === pack.category) && terms.every((term) => normalize(`${pack.name} ${pack.description} ${pack.requirements} ${pack.tools.map((tool) => `${tool.name} ${tool.description}`).join(' ')}`).includes(term)));
+  }
+
+  function packCard(pack) {
+    return `<article class="pack-card pack-${escapeHTML(pack.category)}"><div class="card-top">${appIcon(pack)}<span class="badge">${pack.tools.length} herramientas · ${escapeHTML(pack.version)}</span></div><h2>${escapeHTML(pack.name)}</h2><p class="pack-description">${escapeHTML(pack.description)}</p><div class="pack-tools">${pack.tools.map((tool) => `<span>${icon(tool.icon)}${escapeHTML(tool.name)}</span>`).join('')}</div><p class="discover-requirements">${escapeHTML(pack.requirements)}</p><div class="pack-actions"><button class="button button-primary" data-action="view-pack" data-id="${escapeHTML(pack.id)}">Ver contenido ${icon('arrow')}</button><a class="button" href="${escapeHTML(pack.url)}" target="_blank" rel="noopener noreferrer">${icon('download')}Descargar pack</a></div></article>`;
+  }
+
+  function renderPacks() {
+    const pack = packCatalog.find((entry) => entry.id === selectedPack);
+    if (pack) {
+      $('#main-content').innerHTML = `<button class="text-button pack-back" data-view="packs">${icon('arrow')}Todos los packs</button><div class="page-heading"><p class="eyebrow">${pack.tools.length} herramientas · ${escapeHTML(pack.version)}</p><div class="heading-row"><div><h1>${escapeHTML(pack.name)}</h1><p class="intro">${escapeHTML(pack.description)}</p></div><a class="button button-primary" href="${escapeHTML(pack.url)}" target="_blank" rel="noopener noreferrer">${icon('download')}Descargar pack</a></div></div><section class="pack-start"><h2>Empieza aquí</h2><ol>${pack.steps.map((step) => `<li>${escapeHTML(step)}</li>`).join('')}</ol><p>${escapeHTML(pack.requirements)}</p></section><div class="section-heading"><h2>Dentro de este pack</h2><span>${pack.tools.length} herramientas</span></div><div class="app-grid discover-grid">${pack.tools.map(discoverCard).join('')}</div>`;
+      return;
+    }
+    const packs = filteredPacks();
+    $('#main-content').innerHTML = `<div class="page-heading"><p class="eyebrow">Tu próximo proyecto, equipado</p><h1>Un pack. Todo para empezar.</h1><p class="intro">Descarga tus herramientas por actividad, con sus lanzadores, accesos e instrucciones en una misma carpeta.</p></div>${filters()}<div class="results-meta"><span>${packs.length} ${packs.length === 1 ? 'pack disponible' : 'packs disponibles'}</span><span>Elige · Descarga · Prepara</span></div><div class="pack-grid">${packs.length ? packs.map(packCard).join('') : emptyState('search', 'No encontramos packs', 'Prueba con otra herramienta o colección.', 'clear-search', 'Limpiar filtros')}</div><div class="discover-note">${icon('folder')}<span><strong>Cada pack incluye una guía de inicio.</strong> Los accesos se agregan a Mis apps cuando tú los conectas. Las herramientas web conservan sus cuentas y permisos propios.</span></div>`;
+  }
+
   function connectedDiscover(entry) {
     return entry.kind === 'web' && state.apps.some((app) => app.kind === 'url' && validURL(app.target) === entry.url);
   }
@@ -241,7 +276,7 @@
   }
 
   async function addDiscover(id) {
-    const entry = discoverCatalog.find((item) => item.id === id && item.kind === 'web');
+    const entry = sharedTools.find((item) => item.id === id && item.kind === 'web');
     if (!entry) throw new Error('Esta herramienta ya no está disponible en el catálogo.');
     if (connectedDiscover(entry)) { toast('Esta herramienta ya está en Mis apps.'); return; }
     if (discoverAdding.has(entry.url)) return;
@@ -253,7 +288,7 @@
   }
 
   function connectDiscover(id) {
-    const entry = discoverCatalog.find((item) => item.id === id && item.kind === 'download');
+    const entry = sharedTools.find((item) => item.id === id && item.kind === 'download');
     if (!entry) throw new Error('Esta descarga ya no está disponible en el catálogo.');
     openAppEditor('', { name: entry.name, description: entry.description, category: entry.category, icon: entry.icon, kind: entry.connectKind, target: '' });
   }
@@ -270,19 +305,21 @@
   function render() {
     renderNavigation();
     if (!loaded) return;
-    const wide = view === 'ideas' || view === 'settings' || view === 'discover';
+    const wide = view === 'ideas' || view === 'settings' || view === 'discover' || view === 'packs';
     $('.content-layout').classList.toggle('full-width', wide);
     $('#ideas-rail').hidden = wide;
-    if (view === 'discover') renderDiscover();
+    if (view === 'packs') renderPacks();
+    else if (view === 'discover') renderDiscover();
     else if (view === 'ideas') renderIdeas();
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.3.0'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.4.0'}`;
   }
 
   function changeView(next, nextCategory = 'all') {
-    view = ['discover', 'home', 'apps', 'ideas', 'favorites', 'settings'].includes(next) ? next : 'apps';
+    view = ['packs', 'discover', 'home', 'apps', 'ideas', 'favorites', 'settings'].includes(next) ? next : 'apps';
+    selectedPack = '';
     category = nextCategory;
     query = '';
     $('#search').value = '';
@@ -450,6 +487,9 @@
 
   async function handleAction(action, id) {
     switch (action) {
+      case 'view-pack':
+        if (!packCatalog.some((pack) => pack.id === id)) throw new Error('Este pack ya no está disponible.');
+        changeView('packs'); selectedPack = id; render(); break;
       case 'new-app': openAppEditor(); break;
       case 'add-discover': await addDiscover(id); break;
       case 'connect-discover': connectDiscover(id); break;
@@ -532,7 +572,7 @@
           saveBrowser(state);
         }
       }
-      if (!loaded && state.apps.length === 0) view = 'discover';
+      if (!loaded && state.apps.length === 0) view = packCatalog.length ? 'packs' : 'discover';
       loaded = true;
       $('#add-app-button').disabled = false;
       render();
@@ -579,6 +619,7 @@
   document.addEventListener('change', (event) => { if (event.target.id === 'app-kind') updateTargetField(); });
   $('#search').addEventListener('input', (event) => {
     query = event.target.value;
+    if (view === 'packs') selectedPack = '';
     if (view === 'settings') view = 'apps';
     render();
   });

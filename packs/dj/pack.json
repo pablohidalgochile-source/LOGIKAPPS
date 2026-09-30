@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "dj",
+  "name": "Pack DJ",
+  "version": "0.1.0-beta",
+  "platform": "macOS",
+  "guide": "EMPIEZA-AQUI.html",
+  "tools": [
+    {"id":"surco","name":"Surco","folder":"Surco","kind":"local"},
+    {"id":"trackhunt","name":"TRACKHUNT","folder":"TRACKHUNT","kind":"local"},
+    {"id":"nanook-video","name":"NANOOK VIDEO","folder":"NANOOK-VIDEO","kind":"local"},
+    {"id":"vj-lab","name":"VJ/LAB","folder":"VJ-LAB","kind":"local"},
+    {"id":"hit-lab","name":"Hit Lab","folder":"Hit-Lab","kind":"local"}
+  ]
+}

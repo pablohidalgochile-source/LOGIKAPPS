@@ -4,7 +4,7 @@ export LC_ALL=C
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$PROJECT_ROOT/.build"
 APP_PATH="$BUILD_DIR/LOGIKAPPS.app"
-VERSION="0.3.0"
+VERSION="0.4.0"
 MIN_MACOS="13.0"
 BUNDLE_ID="cl.logikapps.desktop"
 SIGN_IDENTITY="${LOGIKAPPS_SIGN_IDENTITY:-}"
@@ -22,7 +22,7 @@ require_macos() {
 
 check_sources() {
     cd "$PROJECT_ROOT"
-    for INPUT in native/main.swift native/AppDelegate.swift native/StateStore.swift native/SelfTests.swift native/WebKitSmokeTest.swift web/index.html web/app.js web/state.js web/catalog.js web/discover-catalog.js web/styles.css web/assets/logo-symbol.svg catalog.json scripts/assets/LOGIKAPPS.icns scripts/assets/icon-source.sha256; do
+    for INPUT in native/main.swift native/AppDelegate.swift native/StateStore.swift native/SelfTests.swift native/WebKitSmokeTest.swift web/index.html web/app.js web/state.js web/catalog.js web/discover-catalog.js web/packs-catalog.js web/styles.css web/assets/logo-symbol.svg catalog.json scripts/assets/LOGIKAPPS.icns scripts/assets/icon-source.sha256; do
         [[ -s "$INPUT" ]] || fail "Falta un archivo necesario o está vacío: $INPUT"
     done
     /usr/bin/shasum -a 256 -c scripts/assets/icon-source.sha256 >/dev/null || fail "El SVG cambió: regenera el icono con scripts/render-icon.sh."
@@ -40,7 +40,7 @@ compute_build_id() {
             xcrun --sdk macosx --show-sdk-version
             printf '%s\n' "$SIGN_IDENTITY" | shasum -a 256 | awk '{print $1}'
             if [[ -n "$NOTARY_PROFILE" ]]; then printf 'notary-requested\n'; else printf 'notary-not-requested\n'; fi
-            find native web scripts -type f ! -name '.DS_Store' -print | LC_ALL=C sort | while IFS= read -r INPUT; do shasum -a 256 "$INPUT"; done
+            find native web scripts -type f ! -name '.DS_Store' ! -path '*/__pycache__/*' ! -name '*.pyc' -print | LC_ALL=C sort | while IFS= read -r INPUT; do shasum -a 256 "$INPUT"; done
             shasum -a 256 catalog.json
         } | shasum -a 256 | awk '{print $1}'
     )

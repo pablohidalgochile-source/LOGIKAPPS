@@ -1,0 +1,22 @@
+[
+  "Abrir VJ LAB.command",
+  "LEER-PRIMERO.txt",
+  "THIRD-PARTY-NOTICES.txt",
+  "build.mjs",
+  "index.html",
+  "launcher.py",
+  "package.json",
+  "public-files.json",
+  "site/assets/index-AyL_rnDk.js",
+  "site/assets/index-NRlc7ONf.css",
+  "site/index.html",
+  "src/App.tsx",
+  "src/components/ui/button.tsx",
+  "src/components/ui/input.tsx",
+  "src/components/ui/slider.tsx",
+  "src/components/ui/switch.tsx",
+  "src/lib/utils.ts",
+  "src/main.tsx",
+  "src/styles.css",
+  "test-pack.py"
+]

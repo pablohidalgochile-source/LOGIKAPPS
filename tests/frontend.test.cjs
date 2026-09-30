@@ -15,7 +15,7 @@ const app = (overrides = {}) => ({ id: 'one', name: 'Música personal', descript
 const idea = (overrides = {}) => ({ id: 'idea', title: 'Una idea', description: '', status: 'idea', ...overrides });
 const library = (apps = [], ideas = []) => ({ ...blank(), apps, ideas });
 
-function harness({ stored, native = false, initial = blank(), discover = [] } = {}) {
+function harness({ stored, native = false, initial = blank(), discover = [], packs = [] } = {}) {
   const elements = new Map();
   const listeners = new Map();
   const timers = new Map();
@@ -41,12 +41,12 @@ function harness({ stored, native = false, initial = blank(), discover = [] } = 
   const document = { querySelector: get, body: get('body'), activeElement: get('active'), createElement: (tag) => new Element(`created:${tag}`), addEventListener: (name, fn) => listeners.set(name, fn) };
   const setTimeout = (callback, delay) => { const id = ++timerId; timers.set(id, { callback, delay }); return id; };
   const clearTimeout = (id) => timers.delete(id);
-  const window = { LogikappsState: core, LOGIKAPPS_CATALOG: [], LOGIKAPPS_DISCOVER: discover, crypto: { randomUUID }, setTimeout, scrollTo() {} };
+  const window = { LogikappsState: core, LOGIKAPPS_CATALOG: [], LOGIKAPPS_DISCOVER: discover, LOGIKAPPS_PACKS: packs, crypto: { randomUUID }, setTimeout, scrollTo() {} };
   if (native) window.webkit = { messageHandlers: { logikapps: { postMessage(request) { requests.push(request); if (request.action === 'getState') window.logikappsReply({ id: request.id, ok: true, result: initial }); } } } };
   const localStorage = { getItem(key) { return storage.get(key) ?? null; }, setItem(key, value) { if (key === failKey) throw new Error('Quota exceeded'); storage.set(key, value); } };
   const context = vm.createContext({ window, document, localStorage, console, Map, Set, Date, JSON, URL, Blob, TextEncoder, setTimeout, clearTimeout, requestAnimationFrame: (fn) => fn(), FormData: class { constructor(form) { this.fields = form.fields; } get(name) { return this.fields[name] ?? null; } } });
   const source = fs.readFileSync(path.join(root, 'web/app.js'), 'utf8');
-  const instrumented = source.replace(/\}\)\(\);\s*$/, `window.__test = { bridge, validatedState, mutate, submitApp, submitIdea, appCard, openAppEditor, openIdeaEditor, launch, importFile, importBrowser, handleAction, renderApps, renderIdeas, renderSettings, changeView, filteredApps, filteredIdeas, readDiscoverCatalog, filteredDiscover, renderDiscover, addDiscover, connectDiscover, getView: () => view, load, getState: () => state, getPendingImport: () => pendingImport, setQuery: (value) => { query = value; }, setView: (value) => { view = value; }, setCategory: (value) => { category = value; } }; })();`);
+  const instrumented = source.replace(/\}\)\(\);\s*$/, `window.__test = { bridge, validatedState, mutate, submitApp, submitIdea, appCard, openAppEditor, openIdeaEditor, launch, importFile, importBrowser, handleAction, renderApps, renderIdeas, renderSettings, changeView, filteredApps, filteredIdeas, readDiscoverCatalog, filteredDiscover, renderDiscover, addDiscover, connectDiscover, readPackCatalog, filteredPacks, renderPacks, getView: () => view, load, getState: () => state, getPendingImport: () => pendingImport, setQuery: (value) => { query = value; }, setView: (value) => { view = value; }, setCategory: (value) => { category = value; } }; })();`);
   vm.runInContext(instrumented, context, { filename: 'app.js' });
   return { api: window.__test, window, storage, timers, requests, links, elements, listeners, get, failStorage(key) { failKey = key; } };
 }
@@ -438,4 +438,69 @@ test('a pending native catalog save cannot create duplicate apps from a second c
   await Promise.all([first, second]);
   assert.equal(h.api.getState().apps.length, 1);
   assert.match(h.get('#main-content').innerHTML, /Ya está en Mis apps/);
+});
+
+
+const sharedPack = (overrides = {}) => ({ id: 'dj', name: 'Pack DJ', description: 'Herramientas para tu sesión', category: 'music', icon: 'disc', version: '0.1 beta', url: 'https://example.com/pack.zip', requirements: 'Mac y guía', steps: ['Descarga', 'Prepara', 'Conecta'], tools: [sharedTool({ id: 'pack-web' }), sharedTool({ id: 'pack-local', name: 'VJ/LAB', kind: 'download', connectKind: 'command', url: 'https://example.com/pack.zip' })], ...overrides });
+
+test('packs are the first screen for empty libraries and never populate or export personal state', async () => {
+  const h = harness({ packs: [sharedPack()] });
+  assert.equal(h.api.getView(), 'packs');
+  assert.match(h.get('#main-content').innerHTML, /Pack DJ/);
+  assert.match(h.get('#main-content').innerHTML, /2 herramientas/);
+  assert.equal(h.api.getState().apps.length, 0);
+  await h.api.handleAction('view-pack', 'dj');
+  assert.match(h.get('#main-content').innerHTML, /Empieza aquí/);
+  assert.match(h.get('#main-content').innerHTML, /Conectar lanzador/);
+  assert.equal(h.api.getState().apps.length, 0);
+  await h.api.handleAction('export');
+  const exported = JSON.parse(await resolveObjectURL(h.links.at(-1).href).text());
+  assert.equal(exported.packs, undefined);
+  assert.deepEqual(exported.apps, []);
+  const existing = harness({ packs: [sharedPack()], stored: { [storageKey]: JSON.stringify(library([app()], [idea()])) } });
+  assert.equal(existing.api.getView(), 'apps');
+  existing.api.changeView('packs');
+  assert.equal(existing.api.getState().apps.length, 1);
+  assert.equal(existing.api.getState().ideas.length, 1);
+});
+
+test('pack content can add web access without duplicates and connect local tools without copying paths', async () => {
+  const h = harness({ packs: [sharedPack()] });
+  await h.api.handleAction('view-pack', 'dj');
+  await h.api.addDiscover('pack-web');
+  await h.api.addDiscover('pack-web');
+  assert.equal(h.api.getState().apps.length, 1);
+  assert.equal(h.api.getState().apps[0].target, 'https://example.com/tool');
+  assert.match(h.get('#main-content').innerHTML, /Ya está en Mis apps/);
+  h.api.connectDiscover('pack-local');
+  assert.match(h.get('#dialog-content').innerHTML, /value="VJ\/LAB"/);
+  assert.match(h.get('#dialog-content').innerHTML, /value="command" selected/);
+  assert.match(h.get('#dialog-content').innerHTML, /id="app-target" value=""/);
+  assert.equal(h.links.length, 0);
+  await assert.rejects(h.api.handleAction('view-pack', 'absent'), /ya no está disponible/);
+});
+
+test('pack search matches contained apps and moving back clears detail selection', async () => {
+  const h = harness({ packs: [sharedPack(), sharedPack({ id: 'fraternity', name: 'Fraternidad', category: 'business', tools: [sharedTool({ name: 'ERP' })] })] });
+  h.api.setQuery('vj');
+  assert.deepEqual(plain(h.api.filteredPacks().map(p => p.id)), ['dj']);
+  h.api.setQuery(''); h.api.setCategory('business');
+  assert.deepEqual(plain(h.api.filteredPacks().map(p => p.id)), ['fraternity']);
+  await h.api.handleAction('view-pack', 'dj');
+  h.api.changeView('packs');
+  assert.match(h.get('#main-content').innerHTML, /Un pack. Todo para empezar/);
+  assert.doesNotMatch(h.get('#main-content').innerHTML, /Dentro de este pack/);
+});
+
+test('packs reject unsafe or incomplete manifests and render supplied text safely', () => {
+  for (const change of [{ url: 'file:///private' }, { url: 'https://user:password@example.com' }, { tools: [] }, { tools: [sharedTool({ url: 'javascript:alert(1)' })] }, { steps: null }, { steps: ['x'.repeat(1001)] }, { category: '__proto__' }, { version: undefined }]) {
+    const h = harness({ packs: [sharedPack(change)] });
+    assert.equal(h.api.filteredPacks().length, 0);
+    assert.equal(h.api.getView(), 'discover');
+  }
+  const h = harness({ packs: [sharedPack({ name: '<script>Pack</script>', sourcePath: '/Users/private', steps: ['<img src=x>'] })] });
+  assert.match(h.get('#main-content').innerHTML, /&lt;script&gt;Pack/);
+  assert.doesNotMatch(h.get('#main-content').innerHTML, /<script>|\/Users\/private/);
+  assert.equal(h.api.filteredPacks()[0].sourcePath, undefined);
+  assert.equal(h.api.readPackCatalog([sharedPack(), sharedPack()]).length, 1);
 });
