@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "design",
+  "name": "Pack Diseño y Joyería",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
+  "guide": "GUIA.html",
+  "tools": [
+    {
+      "id": "pack-design-teatina",
+      "name": "Taller Teatina",
+      "description": "Estudio de joyería: contornos 2D, medidas, componentes 3D y exportaciones SVG, OBJ, STL y 3MF.",
+      "category": "creative",
+      "icon": "diamond",
+      "kind": "download",
+      "connectKind": "app",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
+      "requirements": "Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar."
+    },
+    {
+      "id": "pack-design-fratv",
+      "name": "FRATV para OBS",
+      "description": "15 gráficas HTML: rótulos, identidad de canal, cuenta regresiva, programación y créditos. Descarga el pack y previsualízalo en tu navegador.",
+      "category": "creative",
+      "icon": "film",
+      "kind": "download",
+      "connectKind": "folder",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
+      "requirements": "Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio."
+    }
+  ]
+}

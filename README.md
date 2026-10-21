@@ -8,13 +8,13 @@
 
 LOGIKAPPS reúne packs de herramientas, accesos personales e ideas en una ventana propia para Mac. Elige un pack, prepara lo que quieras usar y conecta sus lanzadores o enlaces a **Mis apps**.
 
-![Packs DJ y Fraternidad en la primera apertura de LOGIKAPPS](docs/packs.png)
+![Pantalla de packs en la primera apertura de LOGIKAPPS](docs/packs.png)
 
 ## Descargar para Mac
 
-**[Descargar LOGIKAPPS 0.4.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-0.4.0-macos-universal.dmg)**
+**[Descargar LOGIKAPPS 0.5.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-0.5.0-macos-universal.dmg)**
 
-[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.4.0-beta.1)
+[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.0-beta.1)
 
 - macOS 13 o posterior; ejecutable universal para Apple Silicon e Intel.
 - **Beta sin notarización de Apple.** Consulta [Instalación](docs/INSTALACION.md) si macOS impide abrirla. No se requiere desactivar las protecciones del sistema.
@@ -24,12 +24,19 @@ LOGIKAPPS reúne packs de herramientas, accesos personales e ideas en una ventan
 
 | Pack | Contenido | Cómo empezar |
 |---|---|---|
-| **[Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-DJ-0.1.0-beta.zip)** | Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab; herramientas locales y lanzadores | Descomprime y abre `EMPIEZA-AQUI.html`. Prepara los requisitos de cada herramienta antes de conectar su lanzador. |
-| **[Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip)** | Cinco accesos oficiales: ERP, WEB, FLYER, POS y CAST | Descomprime y abre `GUIA.html`. Usa tu cuenta autorizada en cada servicio. |
+| **[Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-DJ-0.2.0-beta.zip)** | Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab; acceso privado a MAGIC MUSIC PROMPT | Descomprime y abre `EMPIEZA-AQUI.html`. Prepara los requisitos de cada herramienta antes de conectar su lanzador. |
+| **[Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip)** | Cinco accesos oficiales: ERP, WEB, FLYER, POS y CAST | Descomprime y abre `GUIA.html`. Usa tu cuenta autorizada en cada servicio. |
+
+| **[Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip)** | Taller Teatina 0.4.0 para Apple Silicon y FRATV para OBS | Abre `GUIA.html`; descomprime el ZIP de Teatina y copia la app a Aplicaciones. |
+| **[Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip)** | FrateIA 0.3.1 de prueba, ChatGPT/Cloud, ArtCraft y guía de incorporación | Abre `GUIA.html`; FrateIA requiere Apple Silicon y macOS 14+. Solicita tus invitaciones por separado. |
 
 **Descargar un pack no instala automáticamente sus dependencias ni concede permisos.** El Pack DJ incluye fuentes o interfaces preparadas y lanzadores locales; no son cinco aplicaciones `.app` autónomas. El Pack Fraternidad contiene enlaces y una guía, sin código privado, credenciales ni datos del negocio.
 
-[Consulta los requisitos, instrucciones y límites de cada herramienta](docs/CONTENIDO.md). **Explorar** conserva la selección individual de Surco, FRATV para OBS y FRATE Web.
+[Consulta los requisitos, instrucciones y límites de cada herramienta](docs/CONTENIDO.md). **Explorar** permite encontrar también Magic Music Prompt, Taller Teatina, FrateIA y ChatGPT. [Guía para incorporar a un compañero](docs/PRIMEROS-PASOS-EQUIPO.html).
+
+## Otras apps interesantes
+
+**Otras apps interesantes** incluye [ArtCraft](https://getartcraft.com/apps), con su página oficial de apps y descargas. Cada herramienta externa mantiene sus requisitos y condiciones.
 
 ## Empieza a usar LOGIKAPPS
 
@@ -92,6 +99,7 @@ Para crear los paquetes y el instalador:
 python3 scripts/package-surco.py
 python3 scripts/package-fratv.py
 python3 scripts/package-packs.py
+python3 scripts/check-packs.py
 ./scripts/create-dmg.sh
 ```
 
@@ -99,7 +107,7 @@ Consulta [Distribución](docs/DISTRIBUCION.md) para compilar, verificar, firmar 
 
 ## Estado de esta beta
 
-La suite principal de entrega incluye **108 comprobaciones automatizadas**: 64 nativas, 33 del frontend y 11 de FRATV. La prueba de la interfaz nativa recorre ambos packs y sus cinco herramientas, además de la biblioteca personal. Las comprobaciones de las herramientas del Pack DJ se detallan por separado en [Verificación](docs/VERIFICACION.md).
+La suite principal de entrega incluye **109 comprobaciones automatizadas**: 64 nativas, 34 del frontend y 11 de FRATV. La prueba de la interfaz nativa recorre los cuatro packs y sus 16 fichas, además de la biblioteca personal. Las comprobaciones de las herramientas del Pack DJ se detallan por separado en [Verificación](docs/VERIFICACION.md).
 
 La validación local se realiza en Apple Silicon; el ejecutable universal contiene también Intel. No se afirma que todas las herramientas o versiones de macOS estén certificadas. En esta preparación no se descargó música de plataformas, no se capturó audio ni se realizaron operaciones dentro de los sistemas de Fraternidad. Hit Lab sí se comprobó exportando un sonido sintetizado por la propia herramienta.
 

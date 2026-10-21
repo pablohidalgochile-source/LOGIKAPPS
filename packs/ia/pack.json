@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "id": "ia",
+  "name": "Pack IA y Equipo",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip",
+  "guide": "GUIA.html",
+  "tools": [
+    {
+      "id": "pack-ia-frateia",
+      "name": "FrateIA · Prueba",
+      "description": "Prepara tu estación de IA, reúne herramientas y trabaja con proyectos locales. Versión 0.3.1 de prueba.",
+      "category": "personal",
+      "icon": "sparkles",
+      "kind": "download",
+      "connectKind": "app",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip",
+      "requirements": "Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac."
+    },
+    {
+      "id": "pack-ia-chatgpt",
+      "name": "ChatGPT y Codex Cloud",
+      "description": "Acceso a ChatGPT y al trabajo en la nube. La guía explica cómo recibir acceso a proyectos y repositorios.",
+      "category": "personal",
+      "icon": "globe",
+      "kind": "web",
+      "url": "https://chatgpt.com/",
+      "requirements": "Cuenta propia de ChatGPT y acceso a cada proyecto. Para código, GitHub propio con permisos. La disponibilidad de Cloud depende de tu cuenta y entorno."
+    },
+    {
+      "id": "pack-ia-artcraft",
+      "name": "ArtCraft",
+      "description": "Página oficial de apps creativas y descargas de otros desarrolladores.",
+      "category": "creative",
+      "icon": "sparkles",
+      "kind": "web",
+      "url": "https://getartcraft.com/apps",
+      "requirements": "Herramientas externas en alfa o desarrollo; consulta la disponibilidad y requisitos de cada descarga."
+    }
+  ]
+}

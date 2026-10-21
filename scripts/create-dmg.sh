@@ -38,7 +38,12 @@ LOGIKAPPS $VERSION — beta para macOS 13 o posterior (Apple Silicon e Intel)
 3. En el Dock: menú del icono > Opciones > Mantener en el Dock.
 
 También puedes copiarla a ~/Applications para instalarla solo para tu usuario.
-Explorar muestra el catálogo público incluido en esta versión.
+Packs de apps muestra DJ, Fraternidad, Diseño y Joyería, e IA y Equipo.
+Descarga el pack elegido y abre su guía: incluye requisitos y acceso de cada app.
+Consulta PRIMEROS-PASOS-EQUIPO.html para preparar el Mac y colaborar.
+Los packs se descargan por separado; no incluyen credenciales ni permisos.
+Explorar muestra también herramientas individuales.
+Otras apps interesantes incluye el acceso oficial a las apps y descargas de ArtCraft.
 Mis apps empieza vacío: agrega tus apps, sitios y carpetas desde la app.
 Al actualizar se conservan tu biblioteca, ideas y favoritos. Cierra y vuelve a
 abrir LOGIKAPPS para ver Explorar en la nueva versión. Su catálogo se actualiza
@@ -53,6 +58,7 @@ Si macOS impide abrirla, consulta la explicación oficial de Apple:
 https://support.apple.com/es-cl/102445
 No es necesario desactivar las protecciones de macOS.
 README
+/bin/cp "$PROJECT_ROOT/docs/PRIMEROS-PASOS-EQUIPO.html" "$CONTENTS/PRIMEROS-PASOS-EQUIPO.html"
 /usr/bin/hdiutil create -volname "LOGIKAPPS" -srcfolder "$CONTENTS" -format UDZO -fs HFS+ "$TEMP_DMG"
 NOTARIZATION='not-requested'
 DMG_SIGNATURE='unsigned'
@@ -71,7 +77,7 @@ if [[ -n "$NOTARY_PROFILE" ]]; then
     NOTARIZATION='accepted-and-stapled'
 fi
 /usr/bin/hdiutil verify "$TEMP_DMG"
-printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty-personal-library","discoverCatalog":"bundled-static"}\n' \
+printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty-personal-library","discoverCatalog":"bundled-static","packsCatalog":"bundled-static","packCount":4}\n' \
     "$VERSION" "$BUILD_ID" "$FILENAME" "$MIN_MACOS" "$SIGNATURE" "$DMG_SIGNATURE" "$NOTARIZATION" > "$STAGING_DIR/$FILENAME.metadata.json"
 /usr/bin/plutil -convert xml1 -o /dev/null "$STAGING_DIR/$FILENAME.metadata.json"
 if [[ -e "$DMG_PATH" ]]; then

@@ -29,11 +29,27 @@ def read_public(source: Path, relative: str):
     assert source.resolve() in file.resolve().parents, f'Path outside source: {relative}'
     data = file.read_bytes()
     assert not SECRET.search(data), f'Privacy check failed in: {relative}'
+    if relative.endswith('.zip'):
+        review = json.loads((source / 'binary-review.json').read_text())
+        assert review['file'] == relative and hashlib.sha256(data).hexdigest() == review['sha256'], 'Unreviewed native archive'
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            assert archive.testzip() is None
+            assert len(archive.namelist()) == len(set(archive.namelist()))
+            assert set(archive.namelist()) == set(review['members'])
+            for entry in archive.infolist():
+                member = PurePosixPath(entry.filename)
+                assert not member.is_absolute() and '..' not in member.parts and not any(p.startswith('.') for p in member.parts)
+                assert '.app/' in entry.filename and not stat.S_ISLNK(entry.external_attr >> 16)
+                content = archive.read(entry)
+                assert not SECRET.search(content), f'Privacy check failed inside: {entry.filename}'
+                assert hashlib.sha256(content).hexdigest() == review['members'][entry.filename]
+                if '/Contents/MacOS/' in entry.filename:
+                    assert entry.external_attr >> 16 & 0o111, 'Missing executable permission'
     return data
 
 def package(name, sources):
     stream = io.BytesIO()
-    prefix = name.removesuffix('-0.1.0-beta.zip')
+    prefix = re.sub(r'-[0-9]+\.[0-9]+\.[0-9]+-beta\.zip$', '', name)
     names = set()
     with zipfile.ZipFile(stream, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as output:
         for source, subfolder, files in sources:
@@ -68,7 +84,7 @@ def package(name, sources):
 
 def main():
     dj = ROOT / 'packs/dj'
-    sources = [(dj, '', ['EMPIEZA-AQUI.html', 'pack.json'])]
+    sources = [(dj, '', ['EMPIEZA-AQUI.html', 'pack.json', 'MAGIC-MUSIC-PROMPT.webloc'])]
     # Surco already has a reviewed explicit source list used for its standalone ZIP.
     import importlib.util
     sys.dont_write_bytecode = True
@@ -78,9 +94,18 @@ def main():
     for folder, target in [('trackhunt','TRACKHUNT'), ('nanook-video','NANOOK-VIDEO'), ('vj-lab','VJ-LAB'), ('hit-lab','Hit-Lab')]:
         source = ROOT / 'tools' / folder
         sources.append((source, target, allowlist(source)))
-    package('LOGIKAPPS-Pack-DJ-0.1.0-beta.zip', sources)
+    package('LOGIKAPPS-Pack-DJ-0.2.0-beta.zip', sources)
     frate = ROOT / 'packs/fraternidad'
-    package('LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip', [(frate, '', allowlist(frate))])
+    package('LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip', [(frate, '', allowlist(frate))])
+
+    design = ROOT / 'packs/design'
+    fratv = ROOT / 'tools/fratv-obs'
+    # Reuse the reviewed FRATV file types; no editor or personal state.
+    graphics = sorted(p.relative_to(fratv).as_posix() for p in fratv.rglob('*') if p.is_file())
+    assert graphics and all(Path(p).suffix in {'.txt', '.html', '.js', '.css', '.svg'} for p in graphics)
+    package('LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip', [(design, '', allowlist(design)), (fratv, 'FRATV', graphics)])
+    ia = ROOT / 'packs/ia'
+    package('LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip', [(ia, '', allowlist(ia))])
 
 if __name__ == '__main__':
     main()

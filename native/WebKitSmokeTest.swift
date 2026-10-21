@@ -36,20 +36,29 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     };
     await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.pack-card'), 'No se mostraron los packs al iniciar.');
     const packCards = [...document.querySelectorAll('.pack-card')];
-    assert(packCards.length === 2, 'Se esperan los packs DJ y Fraternidad.');
+    assert(packCards.length === 4, 'Se esperan cuatro packs.');
     for (const card of packCards) {
       const url = new URL(card.querySelector('a[href]').href);
       assert(url.protocol === 'https:' && !url.username && !url.password, 'Descarga de pack incompatible.');
     }
     document.querySelector('[data-action="view-pack"][data-id="dj"]').click();
     await wait(() => document.querySelector('.pack-start'), 'No abrió la guía del pack DJ.');
-    assert(document.querySelectorAll('.discover-card').length === 5, 'El pack DJ debe mostrar sus cinco herramientas.');
+    assert(document.querySelectorAll('.discover-card').length === 6, 'DJ debe mostrar cinco herramientas locales y Magic Music Prompt.');
     document.querySelector('[data-view="packs"]').click();
-    await wait(() => document.querySelectorAll('.pack-card').length === 2, 'No volvió a la lista de packs.');
+    await wait(() => document.querySelectorAll('.pack-card').length === 4, 'No volvió a la lista de packs.');
     document.querySelector('[data-action="view-pack"][data-id="fraternidad"]').click();
     await wait(() => document.querySelector('.pack-start'), 'No abrió la guía de Fraternidad.');
     assert(document.querySelectorAll('.discover-card').length === 5, 'Fraternidad debe mostrar cinco accesos.');
-    checks.push('Packs DJ y Fraternidad con cinco herramientas cada uno y descarga HTTPS');
+    for (const [id, count] of [['design', 2], ['ia', 3]]) {
+      document.querySelector('[data-view="packs"]').click();
+      document.querySelector(`[data-action="view-pack"][data-id="${id}"]`).click();
+      await wait(() => document.querySelector('.pack-start'), 'No abrió el pack ' + id);
+      assert(document.querySelectorAll('.discover-card').length === count, 'Contenido incompleto en ' + id);
+      assert(document.querySelector('[data-action="connect-discover"]')?.textContent.includes('Conectar app'), 'Falta conexión de app nativa');
+    }
+    document.querySelector('[data-view="interesting"]').click();
+    assert(document.querySelector('a[href="https://getartcraft.com/apps"]'), 'Falta ArtCraft');
+    checks.push('Cuatro packs, 16 fichas, conexión de apps nativas, acceso privado y ArtCraft');
     document.querySelector('[data-view="discover"]').click();
     await wait(() => document.querySelector('.discover-card'), 'No se mostró Explorar.');
     assert(typeof window.logikappsReply === 'function', 'Falta el receptor del puente nativo.');

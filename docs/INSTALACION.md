@@ -10,7 +10,7 @@ LOGIKAPPS reúne tus aplicaciones, sitios y carpetas y guarda tus ideas en tu Ma
 
 ## Descargar la beta
 
-Comprueba en [Releases](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases) si está publicada la **beta 0.4.0**, etiqueta `v0.4.0-beta.1`. El archivo de esta versión se llama **LOGIKAPPS-0.4.0-macos-universal.dmg**. Si esa entrega todavía no aparece, puedes compilar el código siguiendo la alternativa de abajo; esta guía no confirma por sí sola que la descarga esté publicada.
+Descarga la **beta 0.5.0**, etiqueta [v0.5.0-beta.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.0-beta.1). El archivo se llama **LOGIKAPPS-0.5.0-macos-universal.dmg**.
 
 1. Abre el DMG y arrastra LOGIKAPPS a Aplicaciones.
 2. Abre LOGIKAPPS desde Aplicaciones.
@@ -27,16 +27,20 @@ Si prefieres revisar y compilar el código, sigue la alternativa siguiente. Una 
 
 ## Actualizar desde la beta anterior
 
-Cierra LOGIKAPPS, reemplaza su copia en Aplicaciones por la nueva versión y ábrela de nuevo. Si instalaste la beta anterior y la veías vacía, **Packs de apps aparecerá al iniciar la versión 0.4.0**. No necesitas borrar datos ni reiniciar tu biblioteca: se conservan los accesos, ideas y favoritos que ya tengas.
+Cierra LOGIKAPPS, reemplaza su copia en Aplicaciones por la nueva versión y ábrela de nuevo. Si instalaste la beta anterior y la veías vacía, **Packs de apps aparecerá al iniciar la versión 0.5.0**. No necesitas borrar datos ni reiniciar tu biblioteca: se conservan los accesos, ideas y favoritos que ya tengas.
 
 Packs de apps y Explorar vienen dentro de la app. No descargan novedades en segundo plano: para recibir una nueva selección de contenido tendrás que instalar una versión posterior de LOGIKAPPS. Las bibliotecas existentes conservan sus accesos y pueden abrir los packs desde la barra lateral.
+
+## Incorporar a tu compañero
+
+Abre `PRIMEROS-PASOS-EQUIPO.html`, incluido en el DMG, o la guía del Pack IA y Equipo. Usa cuentas propias e invitaciones a los proyectos y repositorios concretos. Instalar LOGIKAPPS no concede acceso a los sistemas privados.
 
 ## Descargar y preparar un pack
 
 Los ZIP se descargan por separado del DMG:
 
-- **[Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-DJ-0.1.0-beta.zip):** descomprime y abre `EMPIEZA-AQUI.html`. Incluye Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab con sus lanzadores y archivos. Python 3.10+ permite usar las herramientas Python; TRACKHUNT y NANOOK VIDEO requieren Node.js 22.13+. Hay requisitos adicionales por función, detallados en sus LEEME o LEER-PRIMERO. Prepara cada herramienta y conecta su archivo `Abrir … .command`, no el ZIP ni el preparador.
-- **[Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip):** descomprime y abre `GUIA.html` o sus accesos `.webloc`. Incluye ERP, WEB, FLYER, POS y CAST. Necesitas internet y una cuenta propia autorizada para cada servicio; solicita los permisos a su administrador.
+- **[Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-DJ-0.2.0-beta.zip):** descomprime y abre `EMPIEZA-AQUI.html`. Incluye Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab con sus lanzadores y archivos. Python 3.10+ permite usar las herramientas Python; TRACKHUNT y NANOOK VIDEO requieren Node.js 22.13+. Hay requisitos adicionales por función, detallados en sus LEEME o LEER-PRIMERO. Prepara cada herramienta y conecta su archivo `Abrir … .command`, no el ZIP ni el preparador.
+- **[Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip):** descomprime y abre `GUIA.html` o sus accesos `.webloc`. Incluye ERP, WEB, FLYER, POS y CAST. Necesitas internet y una cuenta propia autorizada para cada servicio; solicita los permisos a su administrador.
 
 **Descargar o conectar no instala las dependencias automáticamente.** El Pack DJ no contiene cinco `.app` autónomas y el Pack Fraternidad no contiene copias locales de los servicios. Conserva las carpetas completas de las herramientas locales, porque sus lanzadores necesitan los archivos que las acompañan. Si las mueves, edita su ubicación en Mis apps.
 
@@ -59,7 +63,7 @@ La app resultante funciona en Apple Silicon e Intel. Puedes copiar `.build/LOGIK
 /bin/bash scripts/create-dmg.sh
 ```
 
-El instalador aparece en `dist/LOGIKAPPS-0.4.0-macos-universal.dmg`. La compilación local también usa firma ad-hoc salvo que configures una identidad Developer ID; crear un DMG no lo notariza automáticamente.
+El instalador aparece en `dist/LOGIKAPPS-0.5.0-macos-universal.dmg`. La compilación local también usa firma ad-hoc salvo que configures una identidad Developer ID; crear un DMG no lo notariza automáticamente.
 
 ## Tus datos
 
@@ -68,3 +72,5 @@ Ideas, favoritos y herramientas personales se guardan localmente en `~/Library/A
 Actualizar LOGIKAPPS conserva esa carpeta. Antes de cambiar de Mac o desinstalar definitivamente, cierra la app y guarda una copia de esa carpeta en un lugar privado. Eliminar la app de Aplicaciones no elimina automáticamente tus datos.
 
 Agregar una herramienta registra un acceso: no instala su software ni concede sus licencias a otras personas. Una carpeta compartida o enlace puede requerir permisos adicionales.
+
+Los nuevos packs **Diseño y Joyería** e **IA y Equipo** se descargan desde la app. Consulta [Contenido](CONTENIDO.md) para requisitos de Taller Teatina, FrateIA y accesos web.

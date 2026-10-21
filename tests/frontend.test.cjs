@@ -504,3 +504,20 @@ test('packs reject unsafe or incomplete manifests and render supplied text safel
   assert.equal(h.api.filteredPacks()[0].sourcePath, undefined);
   assert.equal(h.api.readPackCatalog([sharedPack(), sharedPack()]).length, 1);
 });
+
+
+test('release catalogue exposes all four packs and native connection forms without personal imports', async () => {
+  const sandbox = { window: {} };
+  for (const name of ['packs', 'discover']) vm.runInNewContext(fs.readFileSync(path.join(root, 'web', name + '-catalog.js'), 'utf8'), sandbox);
+  const packs = sandbox.window.LOGIKAPPS_PACKS;
+  const h = harness({ packs, discover: sandbox.window.LOGIKAPPS_DISCOVER });
+  assert.equal(h.api.getView(), 'packs');
+  for (const pack of packs) {
+    await h.api.handleAction('view-pack', pack.id);
+    for (const item of pack.tools) assert(h.get('#main-content').innerHTML.includes(item.name), item.name);
+  }
+  assert.equal(h.api.getState().apps.length, 0);
+  h.api.connectDiscover('pack-design-teatina');
+  assert.match(h.get('#dialog-content').innerHTML, /value="app" selected/);
+  assert.equal(h.get('#app-target').value, '');
+});

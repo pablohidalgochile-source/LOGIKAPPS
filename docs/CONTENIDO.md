@@ -1,4 +1,4 @@
-# Packs y herramientas de LOGIKAPPS 0.4.0
+# Packs y herramientas de LOGIKAPPS 0.5.0
 
 **Packs de apps** reúne herramientas por actividad. **Explorar** conserva la selección individual y **Mis apps** contiene solo los accesos que cada persona agrega. Con una biblioteca vacía, la app abre Packs de apps; una biblioteca existente conserva sus accesos e ideas.
 
@@ -6,7 +6,7 @@ El DMG instala LOGIKAPPS. Los packs se descargan por separado y no instalan depe
 
 ## Pack DJ · cinco herramientas locales
 
-[Descargar Pack DJ 0.1.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-DJ-0.1.0-beta.zip)
+[Descargar Pack DJ 0.2.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-DJ-0.2.0-beta.zip)
 
 Abre **EMPIEZA-AQUI.html**. El pack contiene Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab en carpetas independientes, con sus lanzadores. Conserva cada carpeta completa en una ubicación donde puedas guardar archivos.
 
@@ -32,7 +32,7 @@ Los detalles y límites vigentes de esta entrega están en el LEEME o LEER-PRIME
 
 ## Pack Fraternidad · cinco accesos oficiales
 
-[Descargar Pack Fraternidad 0.1.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip)
+[Descargar Pack Fraternidad 0.2.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip)
 
 Abre **GUIA.html** o uno de los cinco accesos `.webloc` incluidos. La guía explica cómo entrar a cada servicio y cómo guardar sus enlaces en Mis apps.
 
@@ -46,17 +46,38 @@ Abre **GUIA.html** o uno de los cinco accesos `.webloc` incluidos. La guía expl
 
 El pack contiene **enlaces y una guía**, no una copia local de ERP, WEB, FLYER, POS o CAST. Requiere internet; descargarlo no crea cuentas, concede permisos ni incluye credenciales o datos del negocio. Solicita al administrador el acceso que corresponda a tu función. La revisión comprobó las páginas iniciales sin iniciar sesión ni ejecutar operaciones internas.
 
+## Pack Diseño y Joyería
+
+[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip). Abre `GUIA.html`.
+
+- **Taller Teatina 0.4.0:** descomprime su ZIP y copia la app a Aplicaciones. Apple Silicon, macOS 13+. Contornos 2D, medidas, componentes 3D y exportaciones locales; analizar fotos necesita tu propia configuración de OpenAI y facturación de API. No contiene claves. Revisa medidas y materiales antes de fabricar: no se verificó corte físico ni importación real en LightBurn.
+- **FRATV para OBS:** 15 gráficas HTML y guía en `FRATV/fratv/GUIA-OBS.html`. OBS se instala aparte.
+
+## Pack IA y Equipo
+
+[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip). Abre `GUIA.html`.
+
+- **FrateIA 0.3.1 de prueba:** ZIP con la aplicación, Apple Silicon y macOS 14+. La preparación local de modelos y herramientas se realiza en cada Mac. Equipo requiere invitación del administrador; no se configuraron cuentas al publicar este pack y queda pendiente la prueba entre dos Mac.
+- **ChatGPT y Codex Cloud:** acceso web y pasos para trabajar con cuentas propias, proyectos y GitHub autorizado. Los entornos compartidos descritos en la guía corresponden a espacios Enterprise. LOGIKAPPS no sincroniza archivos locales ni concede acceso a proyectos.
+- **ArtCraft:** acceso a su página oficial de apps y descargas.
+
+FrateIA y Taller Teatina tienen firma ad-hoc y no están notarizadas por Apple. La guía incluida explica la primera apertura mediante las opciones de macOS, sin desactivar sus protecciones.
+
+## MAGIC MUSIC PROMPT · acceso en Pack DJ
+
+[Abrir MAGIC MUSIC PROMPT](https://nanook-suno-bridge.nanook.chatgpt.site/). Es un sitio privado: el acceso sin sesión respondió 401 el 21 de octubre de 2026. Solicita habilitación al responsable. Incluye Songs, Speech, Sounds y Albums para preparar textos/prompts y organizar audio importado; la integración automática de Suno continúa pendiente. Los datos del navegador no se comparten automáticamente.
+
 ## Descargas individuales en Explorar
 
 ### Surco
 
-[Descargar Surco 0.1.0 beta por separado](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/Surco-0.1.0-beta.zip)
+[Descargar Surco 0.1.0 beta por separado](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/Surco-0.1.0-beta.zip)
 
 Incluye la misma herramienta portable y su LEEME. Sigue los requisitos de Surco indicados arriba; no necesitas descargarla dos veces si ya tienes el Pack DJ.
 
 ### FRATV para OBS
 
-[Descargar FRATV para OBS 0.1.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.4.0-beta.1/FRATV-OBS-Pack-0.1.0-beta.zip)
+[Descargar FRATV para OBS 0.1.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/FRATV-OBS-Pack-0.1.0-beta.zip)
 
 Contiene 15 gráficas HTML con identidad FRATV: rótulos, avisos, cuenta regresiva, programación y créditos. Descomprime y abre `fratv/GUIA-OBS.html`; mantén juntas las carpetas `fratv` y `brand`. En LOGIKAPPS puedes seleccionar **Conectar carpeta**.
 
@@ -68,6 +89,6 @@ Requiere un navegador actualizado para previsualizar y OBS Studio por separado p
 
 ## Actualizar desde una beta anterior
 
-Instala LOGIKAPPS 0.4.0 y vuelve a abrirlo. Si tu biblioteca está vacía, aparecerá **Packs de apps**. Si ya tienes accesos, favoritos e ideas, se conservarán; abre Packs de apps o Explorar desde la barra lateral. No hace falta borrar datos ni importar la biblioteca de otra persona.
+Instala LOGIKAPPS 0.5.0 y vuelve a abrirlo. Si tu biblioteca está vacía, aparecerá **Packs de apps**. Si ya tienes accesos, favoritos e ideas, se conservarán; abre Packs de apps o Explorar desde la barra lateral. No hace falta borrar datos ni importar la biblioteca de otra persona.
 
 Los catálogos están incluidos en cada versión. No consultan un servidor ni descargan herramientas en segundo plano. Una nueva versión de LOGIKAPPS puede actualizar las fichas; tus herramientas descargadas se mantienen en sus propias carpetas.

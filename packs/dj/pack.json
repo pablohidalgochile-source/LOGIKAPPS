@@ -2,14 +2,49 @@
   "schemaVersion": 1,
   "id": "dj",
   "name": "Pack DJ",
-  "version": "0.1.0-beta",
+  "version": "0.2.0-beta",
   "platform": "macOS",
   "guide": "EMPIEZA-AQUI.html",
   "tools": [
-    {"id":"surco","name":"Surco","folder":"Surco","kind":"local"},
-    {"id":"trackhunt","name":"TRACKHUNT","folder":"TRACKHUNT","kind":"local"},
-    {"id":"nanook-video","name":"NANOOK VIDEO","folder":"NANOOK-VIDEO","kind":"local"},
-    {"id":"vj-lab","name":"VJ/LAB","folder":"VJ-LAB","kind":"local"},
-    {"id":"hit-lab","name":"Hit Lab","folder":"Hit-Lab","kind":"local"}
+    {
+      "id": "surco",
+      "name": "Surco",
+      "folder": "Surco",
+      "kind": "local"
+    },
+    {
+      "id": "trackhunt",
+      "name": "TRACKHUNT",
+      "folder": "TRACKHUNT",
+      "kind": "local"
+    },
+    {
+      "id": "nanook-video",
+      "name": "NANOOK VIDEO",
+      "folder": "NANOOK-VIDEO",
+      "kind": "local"
+    },
+    {
+      "id": "vj-lab",
+      "name": "VJ/LAB",
+      "folder": "VJ-LAB",
+      "kind": "local"
+    },
+    {
+      "id": "hit-lab",
+      "name": "Hit Lab",
+      "folder": "Hit-Lab",
+      "kind": "local"
+    },
+    {
+      "id": "magic-music-prompt",
+      "name": "MAGIC MUSIC PROMPT",
+      "description": "Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente.",
+      "category": "music",
+      "icon": "music",
+      "kind": "web",
+      "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
+      "requirements": "Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno."
+    }
   ]
 }

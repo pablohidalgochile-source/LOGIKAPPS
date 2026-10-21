@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "fraternidad",
   "name": "Pack Fraternidad",
-  "version": "0.1.0-beta",
-  "archiveName": "LOGIKAPPS-Pack-Fraternidad-0.1.0-beta.zip",
+  "version": "0.2.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip",
   "platforms": [
     "macOS",
     "web"
@@ -13,7 +13,7 @@
   "containsApplications": false,
   "requiresInternet": true,
   "accessPolicy": "Cada persona usa su cuenta autorizada. El pack entrega accesos, no credenciales ni permisos.",
-  "verificationSummary": "Las cinco direcciones respondieron HTTP 200 el 30 de septiembre de 2026. FRATE POS redirigió a /login. No se iniciaron sesiones ni se probaron operaciones de negocio.",
+  "verificationSummary": "Las cinco direcciones respondieron HTTP 200 el 21 de octubre de 2026; POS redirige a /login. Sin iniciar sesión ni probar operaciones de negocio.",
   "tools": [
     {
       "id": "frate-erp",
@@ -39,7 +39,7 @@
         "title": "FRATE ERP (SISTEMA)",
         "accessEvidence": "El proyecto muestra Login cuando no existe sesión.",
         "method": "GET",
-        "checkedOn": "2026-09-30",
+        "checkedOn": "2026-10-21",
         "authenticated": false,
         "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
       },
@@ -75,7 +75,7 @@
         "title": "FRATE WEB (TICKETERA)",
         "accessEvidence": "El HTML incluye un panel de acceso restringido con formulario de ingreso.",
         "method": "GET",
-        "checkedOn": "2026-09-30",
+        "checkedOn": "2026-10-21",
         "authenticated": false,
         "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
       },
@@ -106,7 +106,7 @@
         "title": "FRATE FLYER LAB · EXPRESS",
         "accessEvidence": "El proyecto muestra Login cuando no existe sesión.",
         "method": "GET",
-        "checkedOn": "2026-09-30",
+        "checkedOn": "2026-10-21",
         "authenticated": false,
         "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
       },
@@ -137,7 +137,7 @@
         "title": "FRATE POS",
         "accessEvidence": "El GET de la dirección principal redirige a /login.",
         "method": "GET",
-        "checkedOn": "2026-09-30",
+        "checkedOn": "2026-10-21",
         "authenticated": false,
         "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
       },
@@ -174,7 +174,7 @@
         "title": "FRATE Casting — Fraternidad Campus Central",
         "accessEvidence": "El proyecto define ingreso personal y rutas internas protegidas por rol.",
         "method": "GET",
-        "checkedOn": "2026-09-30",
+        "checkedOn": "2026-10-21",
         "authenticated": false,
         "scope": "Respuesta HTTP y documento inicial. No se comprobaron funciones detrás del acceso."
       },

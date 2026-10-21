@@ -1,0 +1,17 @@
+{
+  "file": "Taller-Teatina-0.4.0-AppleSilicon.zip",
+  "sha256": "2b5e622be347c3ea2d93bb559d9f5ec573e6e1e97ed7c5f2e6f428b9d913edf4",
+  "members": {
+    "Taller Teatina.app/Contents/Info.plist": "79ee2f4aca25df60baf4a0177f2a2a5124093ba43c08025af1a662248eb8e7ae",
+    "Taller Teatina.app/Contents/MacOS/TallerTeatina": "87159238b1057802d0276c8d16b2ebaf854cd6e088f6b32298c0e15233d63b79",
+    "Taller Teatina.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b"
+  },
+  "version": "0.4.0",
+  "minimumMacOS": "13.0",
+  "architecture": "arm64",
+  "signature": "ad-hoc",
+  "notarized": false,
+  "checkedOn": "2026-10-21",
+  "testedOnAnotherMac": false,
+  "preparation": "Solo archivos del bundle; sin metadatos Finder. FrateIA: símbolos de depuración retirados y firma ad-hoc renovada."
+}

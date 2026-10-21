@@ -1,0 +1,19 @@
+{
+  "file": "FrateIA-0.3.1-PRUEBA-AppleSilicon.zip",
+  "sha256": "886048f80689df50c66bab64eab5faca25e11c6a8bd8ce5279ab96a3c3051f71",
+  "members": {
+    "FrateIA.app/Contents/Info.plist": "00eccc21fbf2a8a7c14c2b4d301000920f3a0de8ba6c44df338d39dfba5af6fb",
+    "FrateIA.app/Contents/MacOS/FrateIA": "fc8d91cf7fc2512d029be36e75332e1ccc9aeb3be177585186cd3c0becd3530f",
+    "FrateIA.app/Contents/MacOS/FrateTeamServer": "063125ba0f39490713ce92cc541ab745a8f4a51562ff6f15429767a2330d0a61",
+    "FrateIA.app/Contents/Resources/FrateIA.icns": "cd6298842a684307cc20e0efd3b21a2e57e946c2c713777219e755de7aac251e",
+    "FrateIA.app/Contents/_CodeSignature/CodeResources": "7d81a6103e33f2866ff70b61fec40f88ad6888551b0f2cfb1280f9b8299c045f"
+  },
+  "version": "0.3.1",
+  "minimumMacOS": "14.0",
+  "architecture": "arm64",
+  "signature": "ad-hoc",
+  "notarized": false,
+  "checkedOn": "2026-10-21",
+  "testedOnAnotherMac": false,
+  "preparation": "Solo archivos del bundle; sin metadatos Finder. FrateIA: símbolos de depuración retirados y firma ad-hoc renovada."
+}

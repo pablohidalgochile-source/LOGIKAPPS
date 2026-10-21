@@ -147,7 +147,7 @@
   }
 
   function renderNavigation() {
-    const nav = [['packs', 'grid', 'Packs de apps'], ['discover', 'globe', 'Explorar'], ['home', 'home', 'Inicio'], ['apps', 'grid', 'Mis apps'], ['ideas', 'bulb', 'Ideas'], ['favorites', 'star', 'Favoritos']];
+    const nav = [['packs', 'grid', 'Packs de apps'], ['discover', 'globe', 'Explorar'], ['home', 'home', 'Inicio'], ['apps', 'grid', 'Mis apps'], ['ideas', 'bulb', 'Ideas'], ['favorites', 'star', 'Favoritos'], ['interesting', 'sparkles', 'Otras apps interesantes']];
     $('#primary-nav').innerHTML = nav.map(([id, symbol, label]) => `<button class="nav-item${view === id ? ' active' : ''}" data-view="${id}"${view === id ? ' aria-current="page"' : ''}>${icon(symbol)}<span>${label}</span>${id === 'apps' && state.apps.length ? `<span class="nav-count">${state.apps.length}</span>` : ''}</button>`).join('');
     $('#collection-nav').innerHTML = Object.entries(categories).map(([id, label]) => `<button class="nav-item${view === 'apps' && category === id ? ' active' : ''}" data-category="${id}">${icon('folder')}<span>${label}</span></button>`).join('');
     $('#settings-link').classList.toggle('active', view === 'settings');
@@ -298,6 +298,16 @@
     $('#main-content').innerHTML = `<div class="page-heading"><p class="eyebrow">De la idea a la acción</p><div class="heading-row"><div><h1>Un lugar para lo que viene.</h1><p class="intro">Captura una idea, dale forma y conecta su app cuando esté lista.</p></div><button class="button button-purple" data-action="new-idea">${icon('plus')}Nueva idea</button></div></div>${query ? `<div class="results-meta"><span>${ideas.length} ${ideas.length === 1 ? 'idea encontrada' : 'ideas encontradas'}</span><button data-action="clear-search">Limpiar búsqueda</button></div>` : ''}<div class="idea-board">${Object.entries(ideaStatuses).map(([status, label]) => { const entries = ideas.filter((idea) => idea.status === status).sort((a, b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || ''))); return `<section class="idea-column"><h2 class="idea-column-title">${label}<span>${entries.length}</span></h2>${entries.length ? entries.map((idea) => { const linked = appById(idea.appId); return `<article class="idea-card"><div class="idea-card-top"><h3>${escapeHTML(idea.title)}</h3><button class="icon-button" data-action="edit-idea" data-id="${escapeHTML(idea.id)}" aria-label="Editar idea: ${escapeHTML(idea.title)}">${icon('edit')}</button></div>${idea.description ? `<p>${escapeHTML(idea.description)}</p>` : ''}${linked ? `<button class="text-button idea-linked" data-action="${linked.kind === 'folder' ? 'reveal' : linked.status === 'setup' ? 'edit-app' : 'launch'}" data-id="${escapeHTML(linked.id)}">${icon(linked.kind === 'folder' ? 'folder' : 'link')}${linked.kind === 'folder' ? 'Carpeta · ' : ''}${escapeHTML(linked.name)}</button>` : ''}<span class="idea-date">${readableDate(idea.updatedAt || idea.createdAt)}</span></article>`; }).join('') : `<p class="column-empty">${status === 'idea' ? 'Guarda aquí esa primera chispa.' : status === 'development' ? 'Las ideas que estás construyendo.' : 'Tus ideas convertidas en herramientas.'}</p>`}</section>`; }).join('')}</div>`;
   }
 
+  function renderInteresting() {
+    const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
+    const entries = (window.LOGIKAPPS_INTERESTING || []).filter((entry) =>
+      entry && typeof entry.name === 'string' && typeof entry.description === 'string' &&
+      typeof entry.details === 'string' && Array.isArray(entry.tags) && validURL(entry.url) &&
+      terms.every((term) => normalize([entry.name, entry.category, entry.description, entry.details, ...entry.tags].join(' ')).includes(term))
+    );
+    $('#main-content').innerHTML = `<div class="page-heading"><p class="eyebrow">Amplía tu espacio</p><h1>Otras apps interesantes</h1><p class="intro">Herramientas de otros creadores, plataformas de IA y recursos para descubrir nuevas posibilidades.</p></div><div class="interesting-grid">${entries.length ? entries.map((entry) => `<article class="interesting-card"><div class="interesting-top"><span class="interesting-icon">${icon('sparkles')}</span><span class="badge">Proyecto externo</span></div><p class="eyebrow">${escapeHTML(entry.category)}</p><h2>${escapeHTML(entry.name)}</h2><p class="interesting-description">${escapeHTML(entry.description)}</p><div class="interesting-tags">${entry.tags.map((tag) => `<span>${escapeHTML(tag)}</span>`).join('')}</div><p class="interesting-details">${escapeHTML(entry.details)}</p><a class="button button-primary" href="${escapeHTML(validURL(entry.url))}" target="_blank" rel="noopener noreferrer">${icon('external')}Ver apps y descargas</a><p class="interesting-domain">${escapeHTML(new URL(entry.url).hostname)}</p></article>`).join('') : emptyState('search', 'No encontramos coincidencias', 'Prueba con ArtCraft, diseño, audio, video o MCP.', 'clear-search', 'Limpiar búsqueda')}</div><p class="interesting-footnote">Cada proyecto mantiene sus propias descargas, cuentas y condiciones. Estos enlaces están disponibles para quienes instalen esta versión de LOGIKAPPS.</p>`;
+  }
+
   function renderSettings() {
     $('#main-content').innerHTML = `<div class="page-heading"><p class="eyebrow">Tu espacio, a tu manera</p><h1>Todo bajo tu control.</h1><p class="intro">Tus accesos e ideas se guardan ${native ? 'en este Mac' : 'en este navegador'}.</p></div><div class="settings-grid"><section class="settings-card"><h2>${icon('shield')}Datos personales</h2><p>LOGIKAPPS conserva tu biblioteca, favoritos e ideas en tu equipo. Los accesos apuntan a tus herramientas: quitarlos de aquí no elimina tus apps.</p><ul><li>${state.apps.length} apps en tu biblioteca</li><li>${state.ideas.length} ideas guardadas</li><li>${state.apps.filter((app) => app.favorite).length} favoritas</li></ul>${native && state.environment.dataPath ? `<span class="settings-value">${escapeHTML(state.environment.dataPath)}</span><button class="button" data-action="open-data">${icon('folder')}Ver carpeta de datos</button>` : ''}</section><section class="settings-card"><h2>${icon('download')}Copias y traslado</h2><p>Exporta tus accesos e ideas para tener una copia. Al importar, se guardará una copia previa y se reemplazará la biblioteca actual. Las apps y sus archivos permanecen en su ubicación. Si compartes una copia, quien la reciba deberá ajustar las rutas a su propio Mac; la copia no incluye tus apps.</p><div class="settings-actions"><button class="button button-primary" data-action="export">${icon('download')}Exportar copia</button><button class="button" data-action="import">${icon('upload')}Importar copia</button>${!native && browserBackupAvailable() ? `<button class="button button-quiet" data-action="export-previous">${icon('download')}Descargar copia anterior</button>` : ''}</div></section><section class="settings-card"><h2>${icon('monitor')}${native ? 'Lista para tu Mac' : 'Vista web'}</h2><p>${native ? 'Abre LOGIKAPPS desde Aplicaciones o déjala en el Dock. Desde aquí puedes abrir apps, carpetas, enlaces y accesos locales que hayas configurado.' : 'Puedes organizar tu biblioteca e ideas aquí. Para abrir herramientas locales, usa LOGIKAPPS para Mac. Los datos de esta vista web y de la app se guardan por separado; usa una copia para trasladarlos.'}</p><span class="badge ${native ? 'ready' : ''}">${native ? 'App de Mac' : 'Guardado en el navegador'}</span></section><section class="settings-card"><h2>${icon('bulb')}De una idea a una app</h2><p>Guarda el nombre y la intención de tu proyecto en Ideas. Cuando avances, cambia su estado. Al tener una herramienta lista, agrégala a la biblioteca y vincúlala con su idea.</p><button class="button button-purple" data-action="new-idea">${icon('plus')}Guardar una idea</button></section></div>`;
   }
@@ -305,20 +315,21 @@
   function render() {
     renderNavigation();
     if (!loaded) return;
-    const wide = view === 'ideas' || view === 'settings' || view === 'discover' || view === 'packs';
+    const wide = view === 'interesting' || view === 'ideas' || view === 'settings' || view === 'discover' || view === 'packs';
     $('.content-layout').classList.toggle('full-width', wide);
     $('#ideas-rail').hidden = wide;
-    if (view === 'packs') renderPacks();
+    if (view === 'interesting') renderInteresting();
+    else if (view === 'packs') renderPacks();
     else if (view === 'discover') renderDiscover();
     else if (view === 'ideas') renderIdeas();
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.4.0'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.5.0'}`;
   }
 
   function changeView(next, nextCategory = 'all') {
-    view = ['packs', 'discover', 'home', 'apps', 'ideas', 'favorites', 'settings'].includes(next) ? next : 'apps';
+    view = ['interesting', 'packs', 'discover', 'home', 'apps', 'ideas', 'favorites', 'settings'].includes(next) ? next : 'apps';
     selectedPack = '';
     category = nextCategory;
     query = '';

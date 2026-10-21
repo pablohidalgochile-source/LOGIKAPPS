@@ -48,7 +48,7 @@ func runStoreTests() throws {
     try expect(try Data(contentsOf: legacyFile) == legacyBytes, "actualizar 0.2 a 0.4 conserva archivo de biblioteca existente")
     try expect(try upgraded.app("seed")["favorite"] as? Bool == true && upgraded.app("seed")["notes"] as? String == "Una nota personal conservada", "actualizar conserva favoritos y notas")
     try expect((upgraded.state["ideas"] as? [[String: Any]])?.first?["appId"] as? String == "seed", "actualizar conserva ideas vinculadas")
-    try expect((upgraded.snapshot()["environment"] as? [String: Any])?["version"] as? String == "0.4.0" && upgraded.state["environment"] == nil, "versión 0.4 solo en entorno, schema 1 conservado")
+    try expect((upgraded.snapshot()["environment"] as? [String: Any])?["version"] as? String == StateStore.version && upgraded.state["environment"] == nil, "versión actual solo en entorno, schema 1 conservado")
     for schema: Any in [true, false, "1", 1.5, 2] {
         var invalid = store.state; invalid["schemaVersion"] = schema
         try rejected("rechazar esquema incompatible \(schema)") { _ = try store.validatedState(invalid) }
