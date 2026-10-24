@@ -151,5 +151,6 @@ func runStoreTests() throws {
     let corrupt = Data("{broken".utf8); try corrupt.write(to: store.fileURL)
     try rejected("detectar archivo corrupto al iniciar") { _ = try StateStore(directory: folder, catalog: catalog) }
     try expect(try Data(contentsOf: store.fileURL) == corrupt, "conservar datos corruptos sin resetear")
+    count += try runStartupTests()
     print("\(count) pruebas correctas; ninguna app externa fue lanzada.")
 }

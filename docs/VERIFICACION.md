@@ -1,4 +1,27 @@
-# Verificación de LOGIKAPPS 0.5.0 beta
+# Verificación de LOGIKAPPS 0.5.1 beta
+
+Revisión del 24 de octubre de 2026 en Apple Silicon con macOS 14.8.3. La causa de la ventana completamente negra reportada en otro Mac no está confirmada; falta probar esta entrega allí.
+
+| Comprobación de la corrección | Resultado |
+|---|---|
+| Interfaz y recursos JavaScript/FRATV | 45 pruebas aprobadas |
+| Almacenamiento, rutas, recursos integrados y validación nativa | 81 pruebas aprobadas |
+| Apertura WKWebView por archivos locales | Cuatro packs, 16 fichas, siete entradas en Explorar y biblioteca temporal restaurada |
+| Apertura integrada con CSP y nonce | Mismo recorrido completo aprobado, sin scripts externos |
+| Fallo simulado de lectura inicial | La recuperación automática carga la interfaz integrada y completa el recorrido |
+| Recursos de interfaz ausentes | Panel nativo de recuperación y diagnóstico sin rutas personales |
+| Instalador | Universal arm64/x86_64 para macOS 13+; firma ad-hoc y SHA-256 verificados |
+
+Son **126 comprobaciones automatizadas**; los recorridos de WKWebView se ejecutan por separado con datos temporales. Los modos de prueba rechazan carpetas de datos personales. La copia personal instalada no se reemplaza durante la validación.
+
+La recuperación usa APIs públicas de WebKit, normaliza las rutas del documento local y ofrece «Volver a abrir» y «Copiar diagnóstico». El diagnóstico contiene versión, sistema, arquitectura y códigos de carga; no incluye biblioteca, cuentas ni rutas personales. La interfaz espera hasta 12 segundos por intento antes de recuperar o informar el fallo.
+
+La aplicación conserva firma ad-hoc y no está notarizada por Apple. La compilación Intel se verifica en CI; no se ha probado esta corrección en otro Mac físico. Los resultados de la matriz Apple Silicon e Intel están en [GitHub Actions](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml). El instalador está en la [Release v0.5.1-beta.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.1-beta.1).
+
+Los packs no cambian en esta corrección y mantienen las descargas de v0.5.0-beta.1. Sus comprobaciones y límites se conservan a continuación como registro de la revisión anterior.
+
+## Registro de packs 0.5.0
+
 
 Revisión local del 21 de octubre de 2026 en Apple Silicon. No sustituye una prueba en el Mac del destinatario.
 

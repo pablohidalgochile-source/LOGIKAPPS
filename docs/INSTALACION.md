@@ -10,7 +10,7 @@ LOGIKAPPS reúne tus aplicaciones, sitios y carpetas y guarda tus ideas en tu Ma
 
 ## Descargar la beta
 
-Descarga la **beta 0.5.0**, etiqueta [v0.5.0-beta.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.0-beta.1). El archivo se llama **LOGIKAPPS-0.5.0-macos-universal.dmg**.
+Descarga la **beta 0.5.1**, etiqueta [v0.5.1-beta.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.1-beta.1). El archivo se llama **LOGIKAPPS-0.5.1-macos-universal.dmg**.
 
 1. Abre el DMG y arrastra LOGIKAPPS a Aplicaciones.
 2. Abre LOGIKAPPS desde Aplicaciones.
@@ -27,7 +27,7 @@ Si prefieres revisar y compilar el código, sigue la alternativa siguiente. Una 
 
 ## Actualizar desde la beta anterior
 
-Cierra LOGIKAPPS, reemplaza su copia en Aplicaciones por la nueva versión y ábrela de nuevo. Si instalaste la beta anterior y la veías vacía, **Packs de apps aparecerá al iniciar la versión 0.5.0**. No necesitas borrar datos ni reiniciar tu biblioteca: se conservan los accesos, ideas y favoritos que ya tengas.
+Cierra LOGIKAPPS, reemplaza su copia en Aplicaciones por la nueva versión y ábrela de nuevo. Si instalaste la beta anterior y la veías vacía, **Packs de apps aparecerá al iniciar la versión 0.5.1**. No necesitas borrar datos ni reiniciar tu biblioteca: se conservan los accesos, ideas y favoritos que ya tengas.
 
 Packs de apps y Explorar vienen dentro de la app. No descargan novedades en segundo plano: para recibir una nueva selección de contenido tendrás que instalar una versión posterior de LOGIKAPPS. Las bibliotecas existentes conservan sus accesos y pueden abrir los packs desde la barra lateral.
 
@@ -63,7 +63,7 @@ La app resultante funciona en Apple Silicon e Intel. Puedes copiar `.build/LOGIK
 /bin/bash scripts/create-dmg.sh
 ```
 
-El instalador aparece en `dist/LOGIKAPPS-0.5.0-macos-universal.dmg`. La compilación local también usa firma ad-hoc salvo que configures una identidad Developer ID; crear un DMG no lo notariza automáticamente.
+El instalador aparece en `dist/LOGIKAPPS-0.5.1-macos-universal.dmg`. La compilación local también usa firma ad-hoc salvo que configures una identidad Developer ID; crear un DMG no lo notariza automáticamente.
 
 ## Tus datos
 
@@ -74,3 +74,12 @@ Actualizar LOGIKAPPS conserva esa carpeta. Antes de cambiar de Mac o desinstalar
 Agregar una herramienta registra un acceso: no instala su software ni concede sus licencias a otras personas. Una carpeta compartida o enlace puede requerir permisos adicionales.
 
 Los nuevos packs **Diseño y Joyería** e **IA y Equipo** se descargan desde la app. Consulta [Contenido](CONTENIDO.md) para requisitos de Taller Teatina, FrateIA y accesos web.
+
+## Si la ventana se queda negra o no termina de abrir
+
+1. Descarga la actualización **0.5.1**, cierra LOGIKAPPS con ⌘Q y copia la app del nuevo DMG a **Aplicaciones**, reemplazando la copia anterior. Abre esa copia desde Aplicaciones; no borres la carpeta de datos.
+2. El arranque muestra «Preparando LOGIKAPPS». Si la lectura inicial falla, intenta una carga alternativa. Si ambas fallan, aparece una pantalla nativa con botones de recuperación.
+3. Pulsa **Volver a abrir**. También está disponible en el menú LOGIKAPPS → Volver a abrir la interfaz, o ⌘R.
+4. Si persiste, pulsa **Copiar diagnóstico** o usa LOGIKAPPS → Copiar diagnóstico de apertura y comparte ese texto con soporte. Indica si instalaste en Aplicaciones y si toda la ventana sigue negra. El texto no incluye tu biblioteca, rutas ni cuentas.
+
+La alternativa utiliza los mismos archivos incluidos en la app; no descarga ni ejecuta código remoto y no cambia las protecciones de macOS. La falta de notarización es independiente del fallo de carga: esta versión sigue usando firma ad-hoc.

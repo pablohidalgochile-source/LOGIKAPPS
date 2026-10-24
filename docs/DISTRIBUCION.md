@@ -1,8 +1,8 @@
 # Compilación y distribución de LOGIKAPPS
 
-## Estado de la beta 0.5.0
+## Estado de la beta 0.5.1
 
-El paquete se prepara como DMG universal para macOS 13 o posterior, con ejecutables arm64 y x86_64. La entrega se identifica por la etiqueta `v0.5.0-beta.1`; consulta la Release para descargar sus archivos.
+El paquete se prepara como DMG universal para macOS 13 o posterior, con ejecutables arm64 y x86_64. La entrega se identifica por la etiqueta `v0.5.1-beta.1`; consulta la Release para descargar sus archivos.
 
 `catalog.json` sigue siendo `[]`: inicia una biblioteca personal vacía. `web/discover-catalog.js` contiene **Explorar** y `web/packs-catalog.js` contiene **Packs de apps**, con sus herramientas, guías resumidas y enlaces de descarga. Ambos son catálogos públicos estáticos separados de los accesos, rutas, ideas y favoritos personales. Con una biblioteca vacía se abre Packs de apps; las bibliotecas existentes se conservan. Cambiar los catálogos requiere compilar y distribuir una nueva versión; no hay actualización remota ni instalación de herramientas en segundo plano.
 
@@ -23,7 +23,7 @@ python3 scripts/check-packs.py
 /bin/bash scripts/check-package.sh
 /bin/bash scripts/create-dmg.sh
 cd dist
-shasum -a 256 -c LOGIKAPPS-0.5.0-macos-universal.dmg.sha256
+shasum -a 256 -c LOGIKAPPS-0.5.1-macos-universal.dmg.sha256
 shasum -a 256 -c LOGIKAPPS-Pack-DJ-0.2.0-beta.zip.sha256
 shasum -a 256 -c LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip.sha256
 ```
@@ -57,9 +57,9 @@ Los ZIP se publican por separado del DMG:
 
 `package-packs.py` usa listas explícitas de archivos revisados. Rechaza rutas ajenas, enlaces simbólicos, archivos de entorno privados y patrones conocidos de secretos o rutas personales. Estos controles acompañan la revisión del contenido; no sustituyen la inspección antes de publicar. Las fuentes de los packs no se obtienen de carpetas personales durante la compilación.
 
-Las fichas deben enlazar nombres exactos de archivos publicados. Las descargas individuales existentes pueden conservar enlaces a la Release anterior; comprueba también que sigan disponibles. Para `v0.5.0-beta.1`, sube los seis ZIP y sus SHA-256 junto al DMG y sus archivos de verificación antes de anunciar la entrega.
+Las fichas deben enlazar nombres exactos de archivos publicados. Las descargas individuales existentes pueden conservar enlaces a la Release anterior; comprueba también que sigan disponibles. Para `v0.5.1-beta.1`, conserva los packs publicados en `v0.5.0-beta.1` y sube únicamente el DMG actualizado, sus metadatos y su SHA-256.
 
-La prueba gráfica anterior se realiza localmente y se informa por separado. Los artefactos de Actions sirven para revisión; para colegas utiliza una Release pública, cuyo enlace no exige acceso a una ejecución autenticada. La publicación prevista es una **prerelease** con etiqueta `v0.5.0-beta.1`. Una vez publicada, se enlaza por su etiqueta porque `/releases/latest` puede excluir las versiones preliminares. Verifica los archivos y sus enlaces antes de anunciar la descarga.
+La prueba gráfica anterior se realiza localmente y se informa por separado. Los artefactos de Actions sirven para revisión; para colegas utiliza una Release pública, cuyo enlace no exige acceso a una ejecución autenticada. La publicación prevista es una **prerelease** con etiqueta `v0.5.1-beta.1`. Una vez publicada, se enlaza por su etiqueta porque `/releases/latest` puede excluir las versiones preliminares. Verifica los archivos y sus enlaces antes de anunciar la descarga.
 
 Las acciones están fijadas por SHA a versiones verificadas en sus repositorios oficiales: [checkout 7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1), [setup-node 7.0.0](https://github.com/actions/setup-node/releases/tag/v7.0.0) y [upload-artifact 7.0.1](https://github.com/actions/upload-artifact/releases/tag/v7.0.1). La matriz usa las [etiquetas de runners documentadas por GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
 
@@ -94,3 +94,11 @@ Incluye en el mismo commit el SVG, `scripts/assets/LOGIKAPPS.icns` y `scripts/as
 `packs/design` y `packs/ia` contienen únicamente ZIP de las apps, sus guías y un manifiesto `binary-review.json` con SHA-256 de cada miembro. El empaquetador valida hashes, rutas, permisos ejecutables y patrones conocidos de secretos también dentro de estos ZIP. No vuelve a compilar esas apps ni incluye sus proyectos personales. Taller Teatina conserva su ejecutable 0.4.0; de FrateIA 0.3.1 se retiraron símbolos de depuración con rutas de compilación y se renovaron sus firmas locales. Estos cambios de distribución no añaden funciones ni certificación Apple. Las firmas se validaron después de extraer las copias preparadas.
 
 La guía HTML del DMG forma parte del identificador de compilación. No se distribuyen datos de biblioteca, sesiones, modelos ni claves del titular.
+
+## Pruebas de apertura de 0.5.1
+
+Además de la prueba normal, ejecuta `--ui-smoke-test --embedded-startup` para comprobar la interfaz integrada y `--ui-smoke-test --simulate-file-load-failure` para inyectar una denegación de lectura y probar la recuperación automática real. `--ui-startup-error-test` utiliza una carpeta de interfaz inexistente y comprueba que aparece la recuperación nativa y que el diagnóstico no contiene rutas personales. Todos estos modos exigen LOGIKAPPS_DATA_DIR en una subcarpeta temporal; nunca se ejecutan contra una biblioteca real.
+
+El arranque tiene una espera máxima de 12 segundos por intento. La alternativa incorpora scripts, estilos y logo revisados desde el bundle y usa una CSP con nonce, sin unsafe-inline, sin red y sin lectura de archivos desde WebKit. No concede acceso nuevo al puente: solo se admiten la página propia normalizada y about:blank durante la carga integrada. Se eliminaron los ajustes privados de transparencia de WKWebView. Las fallas y la terminación de su proceso tienen una pantalla nativa; no se asume que esa sea la causa del equipo reportado.
+
+Los packs conservan las descargas verificadas de v0.5.0-beta.1. La corrección v0.5.1-beta.1 publica solo el DMG actualizado, metadatos y SHA-256; no cambia los binarios de las herramientas.

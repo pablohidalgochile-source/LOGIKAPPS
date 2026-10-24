@@ -43,6 +43,9 @@ Descarga el pack elegido y abre su guía: incluye requisitos y acceso de cada ap
 Consulta PRIMEROS-PASOS-EQUIPO.html para preparar el Mac y colaborar.
 Los packs se descargan por separado; no incluyen credenciales ni permisos.
 Explorar muestra también herramientas individuales.
+Si la interfaz no abre: menú LOGIKAPPS > Volver a abrir la interfaz (Cmd+R).
+Si persiste, usa Copiar diagnóstico de apertura y comparte ese texto con soporte.
+No borres la carpeta de datos para solucionar un fallo de apertura.
 Otras apps interesantes incluye el acceso oficial a las apps y descargas de ArtCraft.
 Mis apps empieza vacío: agrega tus apps, sitios y carpetas desde la app.
 Al actualizar se conservan tu biblioteca, ideas y favoritos. Cierra y vuelve a

@@ -325,7 +325,7 @@
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.5.0'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.5.1'}`;
   }
 
   function changeView(next, nextCategory = 'all') {
@@ -568,6 +568,11 @@
     else toast(message, true);
   }
 
+  function signalStartupReady() {
+    window.logikappsStartupReady = true;
+    window.webkit?.messageHandlers?.startup?.postMessage({ status: 'ready' });
+  }
+
   async function load() {
     $('#add-app-button').disabled = true;
     $('#main-content').innerHTML = '<div class="loading-state"><span class="loading-dot"></span>Preparando tu espacio…</div>';
@@ -592,7 +597,7 @@
       $('#main-content').innerHTML = emptyState('folder', 'Tu espacio no terminó de cargar', error.message, 'retry-load', 'Volver a intentar');
       $('#ideas-rail').hidden = true;
       $('.content-layout').classList.add('full-width');
-    }
+    } finally { signalStartupReady(); }
   }
 
   document.addEventListener('click', async (event) => {

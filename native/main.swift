@@ -19,7 +19,7 @@ do {
     } else {
         directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("LOGIKAPPS", isDirectory: true)
     }
-    if CommandLine.arguments.contains("--ui-smoke-test") {
+    if CommandLine.arguments.contains("--ui-smoke-test") || CommandLine.arguments.contains("--ui-startup-error-test") {
         guard ProcessInfo.processInfo.environment["LOGIKAPPS_DATA_DIR"] != nil,
               StateStore.isTemporaryTestDirectory(directory) else {
             fputs("El test de interfaz requiere LOGIKAPPS_DATA_DIR en una subcarpeta temporal. No se modificaron datos.\n", stderr)
@@ -28,7 +28,8 @@ do {
     }
     let catalog = resources.appendingPathComponent("catalog.json")
     let store = try StateStore(directory: directory, catalog: catalog)
-    let delegate = AppDelegate(store: store, webDirectory: resources.appendingPathComponent("web", isDirectory: true), catalog: catalog)
+    let webDirectory = CommandLine.arguments.contains("--ui-startup-error-test") ? directory.appendingPathComponent("missing-web") : resources.appendingPathComponent("web", isDirectory: true)
+    let delegate = AppDelegate(store: store, webDirectory: webDirectory, catalog: catalog)
     app.delegate = delegate
     withExtendedLifetime(delegate) { app.run() }
 } catch {

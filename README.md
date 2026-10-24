@@ -12,13 +12,19 @@ LOGIKAPPS reúne packs de herramientas, accesos personales e ideas en una ventan
 
 ## Descargar para Mac
 
-**[Descargar LOGIKAPPS 0.5.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-0.5.0-macos-universal.dmg)**
+**[Descargar LOGIKAPPS 0.5.1 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.1-beta.1/LOGIKAPPS-0.5.1-macos-universal.dmg)**
 
-[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.0-beta.1)
+[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.1-beta.1)
 
 - macOS 13 o posterior; ejecutable universal para Apple Silicon e Intel.
 - **Beta sin notarización de Apple.** Consulta [Instalación](docs/INSTALACION.md) si macOS impide abrirla. No se requiere desactivar las protecciones del sistema.
 - LOGIKAPPS funciona sin Node.js ni Python. Las herramientas de los packs tienen sus propios requisitos.
+
+## Apertura de la app · 0.5.1
+
+Esta actualización atiende el reporte de una ventana completamente negra al iniciar en otro Mac. Muestra un estado nativo de carga, intenta una alternativa con la interfaz integrada si falla la lectura inicial y ofrece **Volver a abrir** y **Copiar diagnóstico** si no puede iniciar. Los packs y la biblioteca personal se conservan.
+
+También puedes usar el menú **LOGIKAPPS → Volver a abrir la interfaz** (⌘R). El diagnóstico contiene versión, macOS, arquitectura y códigos de carga, sin biblioteca, rutas, cuentas ni claves. Las pruebas locales incluyen errores provocados; el resultado en el Mac que reportó el problema todavía debe confirmarse.
 
 ## Elige tu pack
 
@@ -107,7 +113,7 @@ Consulta [Distribución](docs/DISTRIBUCION.md) para compilar, verificar, firmar 
 
 ## Estado de esta beta
 
-La suite principal de entrega incluye **109 comprobaciones automatizadas**: 64 nativas, 34 del frontend y 11 de FRATV. La prueba de la interfaz nativa recorre los cuatro packs y sus 16 fichas, además de la biblioteca personal. Las comprobaciones de las herramientas del Pack DJ se detallan por separado en [Verificación](docs/VERIFICACION.md).
+La suite principal de entrega incluye **126 comprobaciones automatizadas**: 81 nativas, 34 del frontend y 11 de FRATV. La prueba de la interfaz nativa recorre los cuatro packs y sus 16 fichas, además de la biblioteca personal. Las comprobaciones de las herramientas del Pack DJ se detallan por separado en [Verificación](docs/VERIFICACION.md).
 
 La validación local se realiza en Apple Silicon; el ejecutable universal contiene también Intel. No se afirma que todas las herramientas o versiones de macOS estén certificadas. En esta preparación no se descargó música de plataformas, no se capturó audio ni se realizaron operaciones dentro de los sistemas de Fraternidad. Hit Lab sí se comprobó exportando un sonido sintetizado por la propia herramienta.
 

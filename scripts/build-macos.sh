@@ -50,7 +50,7 @@ cat > "$CONTENTS/Info.plist" <<PLIST
     <key>CFBundleDisplayName</key><string>LOGIKAPPS</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>$VERSION</string>
-    <key>CFBundleVersion</key><string>6</string>
+    <key>CFBundleVersion</key><string>7</string>
     <key>CFBundleIconFile</key><string>LOGIKAPPS</string>
     <key>LSMinimumSystemVersion</key><string>$MIN_MACOS</string>
     <key>NSHighResolutionCapable</key><true/>

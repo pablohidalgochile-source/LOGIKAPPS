@@ -11,6 +11,9 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
         guard !completed else { return }
         completed = true
         var result = report
+        result["startupMode"] = delegate.embeddedStartup ? "embedded" : "file"
+        result["startupEvents"] = delegate.startupEvents
+        result["nativeLoadingPanelHidden"] = delegate.startupPanel.isHidden
         var exitCode = code
         do { try delegate.store.persist(original); result["temporaryStateRestored"] = true }
         catch { result["ok"] = false; result["restoreError"] = error.localizedDescription; exitCode = 1 }

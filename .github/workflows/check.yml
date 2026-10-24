@@ -62,9 +62,9 @@ jobs:
         with:
           name: LOGIKAPPS-beta-${{ matrix.runner }}
           path: |
-            dist/LOGIKAPPS-0.5.0-macos-universal.dmg
-            dist/LOGIKAPPS-0.5.0-macos-universal.dmg.sha256
-            dist/LOGIKAPPS-0.5.0-macos-universal.dmg.metadata.json
+            dist/LOGIKAPPS-0.5.1-macos-universal.dmg
+            dist/LOGIKAPPS-0.5.1-macos-universal.dmg.sha256
+            dist/LOGIKAPPS-0.5.1-macos-universal.dmg.metadata.json
             dist/Surco-0.1.0-beta.zip
             dist/Surco-0.1.0-beta.zip.sha256
             dist/FRATV-OBS-Pack-0.1.0-beta.zip

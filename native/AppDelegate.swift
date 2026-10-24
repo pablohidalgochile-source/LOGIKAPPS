@@ -8,6 +8,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
     let launcher: ManagedLauncher
     var window: NSWindow!
     var webView: WKWebView!
+    var startupPanel: NSView!
+    var startupTitle: NSTextField!
+    var startupDetail: NSTextField!
+    var startupRetry: NSButton!
+    var startupCopy: NSButton!
+    var startupTimer: Timer?
+    var embeddedStartup = false
+    var startupReady = false
+    var startupStatus = "iniciando"
+    var startupEvents: [String] = []
 
     init(store: StateStore, webDirectory: URL, catalog: URL) {
         self.store = store
@@ -23,6 +33,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
         let rootItem = NSMenuItem()
         let appMenu = NSMenu()
         appMenu.addItem(withTitle: "Acerca de LOGIKAPPS", action: #selector(about), keyEquivalent: "")
+        appMenu.addItem(withTitle: "Volver a abrir la interfaz", action: #selector(retryStartup), keyEquivalent: "r")
+        appMenu.addItem(withTitle: "Copiar diagnóstico de apertura", action: #selector(copyStartupDiagnostic), keyEquivalent: "")
         appMenu.addItem(withTitle: "Abrir carpeta de datos", action: #selector(openDataFolder), keyEquivalent: "")
         appMenu.addItem(.separator())
         appMenu.addItem(withTitle: "Ocultar LOGIKAPPS", action: #selector(NSApplication.hide(_:)), keyEquivalent: "h")
@@ -36,31 +48,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
         let editItem = NSMenuItem(title: "Edición", action: nil, keyEquivalent: "")
         editItem.submenu = edit; menu.addItem(editItem)
         NSApp.mainMenu = menu
-        let config = WKWebViewConfiguration()
-        config.userContentController.add(self, name: "logikapps")
-        config.websiteDataStore = .nonPersistent()
-        webView = WKWebView(frame: .zero, configuration: config)
-        webView.navigationDelegate = self
-        webView.uiDelegate = self
-        webView.setValue(false, forKey: "drawsBackground")
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1440, height: 880), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
         window.title = "LOGIKAPPS"
         window.minSize = NSSize(width: 1000, height: 680)
         window.backgroundColor = NSColor(srgbRed: 17/255, green: 19/255, blue: 17/255, alpha: 1)
-        window.contentView = webView
+        configureStartupView()
         window.setFrameAutosaveName("LOGIKAPPSMainWindow")
         window.center()
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
-        webView.loadFileURL(webDirectory.appendingPathComponent("index.html"), allowingReadAccessTo: webDirectory)
+        beginStartup(embedded: CommandLine.arguments.contains("--ui-smoke-test") && CommandLine.arguments.contains("--embedded-startup"))
     }
 
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         window.makeKeyAndOrderFront(nil); return true
     }
-    func applicationWillTerminate(_ notification: Notification) { launcher.stop() }
+    func applicationWillTerminate(_ notification: Notification) { startupTimer?.invalidate(); launcher.stop() }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        if CommandLine.arguments.contains("--ui-smoke-test") { runWebKitSmokeTest(self) }
+        guard webView === self.webView else { return }
+        webView.evaluateJavaScript("window.logikappsStartupReady === true") { [weak self, weak webView] result, _ in
+            guard let self = self, webView === self.webView else { return }
+            if result as? Bool == true { self.completeStartup() }
+        }
     }
     @objc func openDataFolder() { NSWorkspace.shared.open(store.directory) }
     @objc func about() {
@@ -69,9 +78,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard message.frameInfo.isMainFrame, message.webView === webView,
-              let url = message.frameInfo.request.url, url.isFileURL,
-              url.standardizedFileURL.path == webDirectory.appendingPathComponent("index.html").path,
-              let body = message.body as? [String: Any], let id = body["id"] as? String, id.count <= 100,
+              isTrustedDocument(message.frameInfo.request.url) else { return }
+        if message.name == "startup" {
+            guard let body = message.body as? [String: String], body["status"] == "ready" else { return }
+            completeStartup(); return
+        }
+        guard let body = message.body as? [String: Any], let id = body["id"] as? String, id.count <= 100,
               let action = body["action"] as? String else { return }
         let payload = body["payload"] as? [String: Any] ?? [:]
         do {
@@ -190,8 +202,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
     }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        if let url = navigationAction.request.url, url.isFileURL,
-           url.standardizedFileURL.path == webDirectory.appendingPathComponent("index.html").path {
+        guard webView === self.webView else { decisionHandler(.cancel); return }
+        if isTrustedDocument(navigationAction.request.url) {
             decisionHandler(.allow)
         } else {
             decisionHandler(.cancel)
