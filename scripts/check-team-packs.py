@@ -26,13 +26,15 @@ with tempfile.TemporaryDirectory(prefix='logikapps-team-') as temporary:
         process = subprocess.Popen([sys.executable, str(app/'launcher.py'), '--no-open'], cwd=app, stdout=log, stderr=subprocess.STDOUT)
     try:
         base = None
-        for _ in range(80):
+        # A cold Python child on a shared Intel runner can take longer to start.
+        deadline = time.monotonic() + 40
+        while time.monotonic() < deadline:
             match = re.search(r'http://127\.0\.0\.1:\d+', logpath.read_text())
             if match:
                 base = match.group(); break
             assert process.poll() is None, logpath.read_text()
             time.sleep(.1)
-        assert base, 'Launcher did not become ready'
+        assert base, 'Launcher did not become ready: '+logpath.read_text()
         for route in ['cam-fiesta', 'muro', 'moderador', 'cam', 'estudio', 'programa', 'switch']:
             with urllib.request.urlopen(base+'/'+route+'?sala=DEMO', timeout=3) as response:
                 assert response.status == 200 and b'<!DOCTYPE html>' in response.read()[:100]
