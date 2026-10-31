@@ -1,4 +1,17 @@
-# Verificación de LOGIKAPPS 0.6.0 beta
+# Verificación de LOGIKAPPS 0.6.1 beta
+
+## Revisión de entrega al equipo
+
+- 48 pruebas de interfaz/FRATV y 81 nativas aprobadas en 0.6.1.
+- Seis packs y 25 fichas; todos los enlaces de descarga, guías, permisos de lanzadores y hashes revisados.
+- Pack Laboratorio extraído en una carpeta nueva: NANOOKEY y Multicam arrancan con sus archivos distribuidos.
+- Las 13 pantallas del prototipo NANOOKEY cargan en el navegador con datos ficticios. Se corrigió la fase inicial para que no dependa de una quinta fase inexistente. No se ejecutó AudD ni se importó una biblioteca personal.
+- Siete rutas locales de Multicam responden; archivos privados y Host ajenos se rechazan.
+- Guía de equipo incluida en el DMG, con ubicación y preparación de las ocho nuevas apps y conexión sin duplicados.
+
+## Comprobaciones de herramientas heredadas de 0.6.0
+
+Las siguientes pruebas se realizaron en 0.6.0 y sus herramientas se conservan salvo los cambios de Laboratorio indicados arriba.
 
 Revisión local del 31 de octubre de 2026.
 
@@ -16,4 +29,4 @@ Revisión local del 31 de octubre de 2026.
 
 Esta beta no tiene notarización de Apple. Falta probarla físicamente en el otro Mac que reportó la pantalla negra. No se han comprobado permisos de cuentas ajenas, conexiones de negocio, proveedores de IA, captura multicámara, fabricación ni traducciones facturadas. Estudio Multicam y las otras fichas de Laboratorio mantienen sus requisitos y estado de desarrollo. Las webs privadas necesitan acceso propio. Los modelos y credenciales no están incluidos.
 
-El resultado de la compilación en Apple Silicon e Intel se consulta en [Actions](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml). La [release 0.6.0](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.6.0-beta.1) incluye los archivos y sus SHA-256. La descarga pública se vuelve a comprobar después de publicarlos.
+El resultado de la compilación en Apple Silicon e Intel se consulta en [Actions](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml). La [release 0.6.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.6.1-beta.1) incluye los archivos y sus SHA-256. La descarga pública se vuelve a comprobar después de publicarlos.

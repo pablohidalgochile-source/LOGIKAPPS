@@ -18,6 +18,18 @@ class Handler(SimpleHTTPRequestHandler):
         if any(p.startswith('.') or p in {'node_modules','data','downloads'} for p in parts):
             self.send_error(404); return False
         return True
+    def send_head(self):
+        raw = unquote(urlsplit(self.path).path)
+        relative = raw.lstrip('/') or 'index.html'
+        allowed = set(json.loads((ROOT/'public-files.json').read_text()))
+        if relative not in allowed and relative + '.html' in allowed:
+            relative += '.html'
+            query = urlsplit(self.path).query
+            self.path = '/' + relative + ('?' + query if query else '')
+        target = (directory/relative).resolve()
+        if relative not in allowed or directory not in target.parents or not target.is_file():
+            self.send_error(404); return None
+        return super().send_head()
     def do_GET(self):
         if self.allowed(): super().do_GET()
     def do_HEAD(self):

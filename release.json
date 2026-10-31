@@ -1,6 +1,6 @@
 {
-  "version": "0.6.0",
-  "tag": "v0.6.0-beta.1",
+  "version": "0.6.1",
+  "tag": "v0.6.1-beta.1",
   "packs": [
     {
       "id": "dj",
@@ -29,7 +29,7 @@
     },
     {
       "id": "lab",
-      "file": "LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip",
+      "file": "LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip",
       "count": 4
     }
   ]

@@ -1,17 +1,20 @@
-# NANOOKEY · prototipo y escáner
+# NANOOKEY · DJ Brain público
 
-Escáner local de archivos y metadatos de biblioteca.
+Incluye el mismo prototipo visual DJ Brain y el escáner local. Los datos de ejemplo son ficticios: no se distribuyen bibliotecas, rutas, historiales, cuentas ni música de otra persona.
 
-## Requisitos
+## Abrir y agregar a Mis apps
 
-Python 3; mutagen opcional para metadatos.
+1. Instala Python 3 desde python.org si no lo tienes. Para ver el prototipo necesitas internet: carga React, Babel y otros recursos de sus CDN públicos.
+2. Descomprime el pack completo en una carpeta permanente. Abre `Abrir NANOOKEY.command`. Mantén esa ventana abierta mientras lo usas; Control+C detiene el servidor.
+3. En LOGIKAPPS → Packs de apps → Laboratorio → NANOOKEY → Conectar lanzador, elige ese mismo archivo y guarda. Si ya tienes NANOOKEY, edita su acceso para elegir el nuevo lanzador en lugar de crear otra ficha.
+4. Para explorar, usa los datos ficticios. Para importar un resultado propio, usa el ZIP generado por el escáner. No necesitas una cuenta para la demo.
 
-## Cómo abrir
+## Escáner opcional
 
-Abre Abrir NANOOKEY.command para consultar el estado. Para el escáner, ejecuta python3 nanookey_local_scanner.py --help y utiliza tu propia importación Serato, carpetas autorizadas y carpeta de salida nueva.
+Ejecuta `python3 nanookey_local_scanner.py --help` y usa tus propias carpetas, una importación Serato autorizada y una carpeta de salida nueva. `mutagen` es opcional para metadatos. El escaneo es local y no modifica los archivos musicales. No se ejecuta automáticamente al abrir el prototipo.
 
-## Estado y límites
+## Límites
 
-La app completa y su relación con NANOOK BRIDGE siguen pendientes. No incluye exportaciones Serato, música ni resultados de bibliotecas personales. No modifica tus archivos musicales.
+La app completa sigue en desarrollo. Varias pantallas y botones son maquetas; las propuestas IA y conexiones del panel Ajustes no representan servicios conectados. La identificación de audio con AudD es opcional y requiere tu propia cuenta: al ejecutarla con una clave, envía fragmentos de audio al proveedor según sus condiciones. No se comprobó esa operación en esta entrega.
 
-Las actualizaciones se descargan desde la release de LOGIKAPPS. Conserva tus datos antes de reemplazar una carpeta.
+Los datos importados se guardan en este navegador y dirección local. Exporta una copia antes de sustituir el pack o cambiar de puerto/navegador. Consulta las condiciones actuales de los proveedores; no se incluyen claves ni cuotas pagadas.

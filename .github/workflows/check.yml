@@ -48,7 +48,9 @@ jobs:
           python3 scripts/package-fratv.py
           python3 scripts/package-packs.py
       - name: Validate distribution contents
-        run: python3 scripts/check-packs.py
+        run: |
+          python3 scripts/check-packs.py
+          python3 scripts/check-team-packs.py
       - name: Build universal macOS application
         run: /bin/bash scripts/build-macos.sh
       - name: Test native storage and validation
@@ -62,7 +64,8 @@ jobs:
         with:
           name: LOGIKAPPS-beta-${{ matrix.runner }}
           path: |
-            dist/LOGIKAPPS-0.6.0-macos-universal.dmg*
+            dist/LOGIKAPPS-0.6.1-macos-universal.dmg*
+            dist/LOGIKAPPS-Guia-Equipo-*.html*
             dist/LOGIKAPPS-Pack-*.zip*
             dist/Surco-0.1.0-beta.zip*
             dist/FRATV-OBS-Pack-0.1.0-beta.zip*

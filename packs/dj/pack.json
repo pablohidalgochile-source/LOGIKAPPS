@@ -14,7 +14,7 @@
       "icon": "disc",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
       "requirements": "Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar."
     },
     {
@@ -25,7 +25,7 @@
       "icon": "waves",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
       "requirements": "Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.",
       "version": "0.2.0 beta portable"
     },
@@ -37,7 +37,7 @@
       "icon": "play",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
       "requirements": "Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.",
       "version": "3.0.4",
       "logoPending": true
@@ -50,7 +50,7 @@
       "icon": "sparkles",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
       "requirements": "Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida."
     },
     {
@@ -61,7 +61,7 @@
       "icon": "music",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
       "requirements": "Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo."
     },
     {

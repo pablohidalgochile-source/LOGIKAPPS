@@ -17,5 +17,6 @@
   "program.html",
   "programa.html",
   "switch.html",
-  "vendor/qrcode.js"
+  "vendor/qrcode.js",
+  "public-files.json"
 ]

@@ -13,6 +13,9 @@ FILENAME="LOGIKAPPS-$VERSION-macos-universal.dmg"
 DMG_PATH="$DIST_DIR/$FILENAME"
 METADATA="$DMG_PATH.metadata.json"
 mkdir -p "$DIST_DIR"
+GUIDE_FILENAME="LOGIKAPPS-Guia-Equipo-$VERSION.html"
+/bin/cp "$PROJECT_ROOT/docs/PRIMEROS-PASOS-EQUIPO.html" "$DIST_DIR/$GUIDE_FILENAME"
+(cd "$DIST_DIR" && shasum -a 256 "$GUIDE_FILENAME" > "$GUIDE_FILENAME.sha256")
 
 if [[ -f "$DMG_PATH" && -f "$METADATA" && -f "$DMG_PATH.sha256" ]]; then
     PREVIOUS_ID="$(/usr/bin/plutil -extract buildID raw -o - "$METADATA" 2>/dev/null || true)"

@@ -1,5 +1,13 @@
 # Cambios
 
+## 0.6.1 beta · 2026-10-31
+
+- Guía para incorporar al compañero: ubicación de las ocho apps nuevas, requisitos, conexión de lanzadores y edición sin duplicados.
+- NANOOKEY incluye DJ Brain, el mismo prototipo visual con un conjunto ficticio y sin cuentas, rutas, historiales ni bibliotecas personales. Se mantiene el escáner opcional.
+- Estudio Multicam resuelve sus enlaces locales sin extensión; cámaras y servicios remotos continúan pendientes de configuración.
+- Se mantienen seis packs y 25 fichas. No cambia la biblioteca personal ni se conceden accesos a webs privadas.
+
+
 ## 0.6.0 beta — 31 de octubre de 2026
 
 - Seis packs y 25 fichas, con Elephant y ocho herramientas nuevas.

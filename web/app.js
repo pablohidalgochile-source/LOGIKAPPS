@@ -336,7 +336,7 @@
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.6.0'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.6.1'}`;
   }
 
   function changeView(next, nextCategory = 'all') {

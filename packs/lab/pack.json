@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "lab",
   "name": "Pack Laboratorio",
-  "version": "0.1.0-beta",
-  "archiveName": "LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip",
+  "version": "0.1.1-beta",
+  "archiveName": "LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip",
   "guide": "GUIA.html",
   "tools": [
     {
@@ -18,7 +18,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": true,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
     },
     {
       "id": "pack-lab-subtitles",
@@ -32,7 +32,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
     },
     {
       "id": "pack-lab-multicam",
@@ -46,7 +46,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
     },
     {
       "id": "pack-lab-nanookey",
@@ -55,12 +55,12 @@
       "icon": "disc",
       "version": "prototipo",
       "stage": "prototype",
-      "description": "Escáner local de archivos y metadatos de biblioteca.",
-      "requirements": "Python 3; mutagen opcional para metadatos.",
+      "description": "DJ Brain: prototipo visual y escáner de biblioteca, con datos de demostración.",
+      "requirements": "Python 3 y navegador con internet para el prototipo. mutagen opcional para el escáner; servicios externos con cuenta propia.",
       "kind": "download",
-      "connectKind": "folder",
+      "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
     }
   ],
   "sources": [

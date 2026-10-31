@@ -1,4 +1,4 @@
-/* Public links do not grant access to private projects. */
+/* Reviewed public catalogue; no personal state. */
 window.LOGIKAPPS_DISCOVER = [
   {
     "id": "pack-dj-surco",
@@ -8,7 +8,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "disc",
     "kind": "download",
     "connectKind": "command",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
     "requirements": "Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar."
   },
   {
@@ -19,7 +19,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "waves",
     "kind": "download",
     "connectKind": "command",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
     "requirements": "Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.",
     "version": "0.2.0 beta portable"
   },
@@ -31,7 +31,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "play",
     "kind": "download",
     "connectKind": "command",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
     "requirements": "Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.",
     "version": "3.0.4",
     "logoPending": true
@@ -44,7 +44,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "sparkles",
     "kind": "download",
     "connectKind": "command",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
     "requirements": "Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida."
   },
   {
@@ -55,7 +55,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "music",
     "kind": "download",
     "connectKind": "command",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
     "requirements": "Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo."
   },
   {
@@ -130,7 +130,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip"
   },
   {
     "id": "pack-design-teatina",
@@ -140,7 +140,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "diamond",
     "kind": "download",
     "connectKind": "app",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
     "requirements": "Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar.",
     "version": "0.4.0",
     "stage": "beta",
@@ -154,7 +154,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "film",
     "kind": "download",
     "connectKind": "folder",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
     "requirements": "Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio."
   },
   {
@@ -169,7 +169,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "app",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
   },
   {
     "id": "pack-design-mi-talla",
@@ -183,7 +183,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": true,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
   },
   {
     "id": "pack-ia-frateia",
@@ -193,7 +193,7 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "sparkles",
     "kind": "download",
     "connectKind": "app",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
     "requirements": "Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.",
     "version": "0.3.1 de prueba",
     "stage": "beta"
@@ -230,7 +230,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
   },
   {
     "id": "pack-organization-jacinta",
@@ -244,7 +244,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
   },
   {
     "id": "pack-lab-club",
@@ -258,7 +258,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": true,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
   },
   {
     "id": "pack-lab-subtitles",
@@ -272,7 +272,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
   },
   {
     "id": "pack-lab-multicam",
@@ -286,7 +286,7 @@ window.LOGIKAPPS_DISCOVER = [
     "kind": "download",
     "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
   },
   {
     "id": "pack-lab-nanookey",
@@ -295,12 +295,12 @@ window.LOGIKAPPS_DISCOVER = [
     "icon": "disc",
     "version": "prototipo",
     "stage": "prototype",
-    "description": "Escáner local de archivos y metadatos de biblioteca.",
-    "requirements": "Python 3; mutagen opcional para metadatos.",
+    "description": "DJ Brain: prototipo visual y escáner de biblioteca, con datos de demostración.",
+    "requirements": "Python 3 y navegador con internet para el prototipo. mutagen opcional para el escáner; servicios externos con cuenta propia.",
     "kind": "download",
-    "connectKind": "folder",
+    "connectKind": "command",
     "logoPending": false,
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
   },
   {
     "id": "site-appgprj_6ada9d61808c8191aa8b94118c694869",

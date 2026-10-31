@@ -1,6 +1,6 @@
-# Compilación y distribución de LOGIKAPPS 0.6.0
+# Compilación y distribución de LOGIKAPPS 0.6.1
 
-La release es `v0.6.0-beta.1`. El DMG universal funciona en macOS 13+, Apple Silicon e Intel. `release.json` enumera los seis packs y los archivos publicados. El catálogo personal incluido es vacío; Explorar y Packs son catálogos públicos estáticos. No hay actualización remota automática.
+La release es `v0.6.1-beta.1`. El DMG universal funciona en macOS 13+, Apple Silicon e Intel. `release.json` enumera los seis packs y los archivos publicados. El catálogo personal incluido es vacío; Explorar y Packs son catálogos públicos estáticos. No hay actualización remota automática.
 
 ## Verificación local
 

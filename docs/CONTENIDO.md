@@ -1,10 +1,10 @@
-# Herramientas de LOGIKAPPS 0.6.0 beta
+# Herramientas de LOGIKAPPS 0.6.1 beta
 
 Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGIKAPPS y los packs se descargan por separado. Cada guía distingue apps locales, webs privadas y prototipos. Mis apps conserva los accesos elegidos por cada persona.
 
 ## Pack DJ
 
-[Descargar Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip)
+[Descargar Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip)
 
 - **Surco**: Biblioteca musical, enlaces y captura de audio. Incluida en la carpeta Surco del pack. Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar.
 - **TRACKHUNT** · 0.2.0 beta portable: Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026. Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.
@@ -15,7 +15,7 @@ Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGI
 
 ## Pack Fraternidad
 
-[Descargar Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip)
+[Descargar Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip)
 
 - **FRATE ERP**: Administración y operación de Fraternidad. Internet y cuenta autorizada. Utiliza información del sistema en línea; no es una copia sin conexión.
 - **FRATE Web · Administración**: Administración de la web y ticketera. La guía también incluye el sitio público. Cuenta con permisos de administración. El sitio público está en www.frate.cl.
@@ -26,7 +26,7 @@ Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGI
 
 ## Pack Diseño y Joyería
 
-[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip)
+[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip)
 
 - **Taller Teatina** · 0.4.0: Estudio de joyería: contornos 2D, medidas, componentes 3D y exportaciones SVG, OBJ, STL y 3MF. Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar. Logo pendiente de elección.
 - **FRATV para OBS**: 15 gráficas HTML: rótulos, identidad de canal, cuenta regresiva, programación y créditos. Descarga el pack y previsualízalo en tu navegador. Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio.
@@ -35,7 +35,7 @@ Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGI
 
 ## Pack IA y Equipo
 
-[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip)
+[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip)
 
 - **FrateIA · Prueba** · 0.3.1 de prueba: Prepara tu estación de IA, reúne herramientas y trabaja con proyectos locales. Versión 0.3.1 de prueba. Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.
 - **ChatGPT y Codex Cloud**: Acceso a ChatGPT y al trabajo en la nube. La guía explica cómo recibir acceso a proyectos y repositorios. Cuenta propia de ChatGPT y acceso a cada proyecto. Para código, GitHub propio con permisos. La disponibilidad de Cloud depende de tu cuenta y entorno.
@@ -43,19 +43,19 @@ Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGI
 
 ## Pack Organización
 
-[Descargar Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip)
+[Descargar Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip)
 
 - **Orgalina** · 0.2.0: Presupuesto doméstico, servicios y lectura de texto de boletas PDF. Node.js 22.13 o posterior y npm.
 - **Jacinta M. Pastelería** · local · sin número: Caja del día, pedidos de tortas y carta. Python 3 y navegador actualizado.
 
 ## Pack Laboratorio
 
-[Descargar Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip)
+[Descargar Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip)
 
 - **CLUB SANTA CRUZ** · 0.2.0: Demostración de comercios, beneficios y roles. Python 3 y navegador actualizado. Nombre/logo Pasaporte Colchagua pendientes. Logo pendiente de elección.
 - **Subtitle Translator Pro** · 0.1.0: Edición y traducción de SRT/VTT conservando tiempos y formato. Node.js 22.13 o posterior y npm. Traducción requiere proveedor y cuenta propios.
 - **Estudio Multicam** · 1.0.0 en código: Mesa de realización, cámaras y salida de programa. Bullet Cam y retratos 3D son conceptos separados. Python 3, navegador con permisos de cámara/micrófono y servicios propios de señalización.
-- **NANOOKEY** · prototipo: Escáner local de archivos y metadatos de biblioteca. Python 3; mutagen opcional para metadatos.
+- **NANOOKEY** · prototipo: DJ Brain: prototipo visual y escáner de biblioteca, con datos de demostración. Python 3 y navegador con internet para el prototipo. mutagen opcional para el escáner; servicios externos con cuenta propia.
 
 ## Acceso y límites
 
