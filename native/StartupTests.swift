@@ -19,7 +19,7 @@ func runStartupTests() throws -> Int {
     try fm.copyItem(at: source, to: web)
     let nonce = UUID().uuidString
     let html = try BundledPage.embeddedHTML(in: web, nonce: nonce)
-    try expect(html.components(separatedBy: "<script nonce=\"\(nonce)\">").count == 7, "integrar los seis scripts sin acceso de archivos de WebKit")
+    try expect(html.components(separatedBy: "<script nonce=\"\(nonce)\">").count == BundledPage.scripts.count + 1, "integrar todos los scripts sin acceso de archivos de WebKit")
     try expect(!html.contains("<script src="), "no solicitar scripts externos durante la carga alternativa")
     try expect(html.contains("<style nonce=\"\(nonce)\">"), "estilos integrados con nonce")
     try expect(html.contains("data:image/svg+xml;base64,") && !html.contains("\"assets/logo-symbol.svg\""), "logo disponible sin lectura externa")

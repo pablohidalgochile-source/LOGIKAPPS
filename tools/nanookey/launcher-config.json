@@ -1,0 +1,6 @@
+{
+  "name": "NANOOKEY",
+  "port": 4500,
+  "directory": ".",
+  "page": "index.html"
+}

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "id": "lab",
+  "name": "Pack Laboratorio",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip",
+  "guide": "GUIA.html",
+  "tools": [
+    {
+      "id": "pack-lab-club",
+      "name": "CLUB SANTA CRUZ",
+      "category": "business",
+      "icon": "grid",
+      "version": "0.2.0",
+      "stage": "prototype",
+      "description": "Demostración de comercios, beneficios y roles.",
+      "requirements": "Python 3 y navegador actualizado. Nombre/logo Pasaporte Colchagua pendientes.",
+      "kind": "download",
+      "connectKind": "command",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-lab-subtitles",
+      "name": "Subtitle Translator Pro",
+      "category": "creative",
+      "icon": "film",
+      "version": "0.1.0",
+      "stage": "prototype",
+      "description": "Edición y traducción de SRT/VTT conservando tiempos y formato.",
+      "requirements": "Node.js 22.13 o posterior y npm. Traducción requiere proveedor y cuenta propios.",
+      "kind": "download",
+      "connectKind": "command",
+      "logoPending": false,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-lab-multicam",
+      "name": "Estudio Multicam",
+      "category": "creative",
+      "icon": "film",
+      "version": "1.0.0 en código",
+      "stage": "prototype",
+      "description": "Mesa de realización, cámaras y salida de programa. Bullet Cam y retratos 3D son conceptos separados.",
+      "requirements": "Python 3, navegador con permisos de cámara/micrófono y servicios propios de señalización.",
+      "kind": "download",
+      "connectKind": "command",
+      "logoPending": false,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-lab-nanookey",
+      "name": "NANOOKEY",
+      "category": "music",
+      "icon": "disc",
+      "version": "prototipo",
+      "stage": "prototype",
+      "description": "Escáner local de archivos y metadatos de biblioteca.",
+      "requirements": "Python 3; mutagen opcional para metadatos.",
+      "kind": "download",
+      "connectKind": "folder",
+      "logoPending": false,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip"
+    }
+  ],
+  "sources": [
+    {
+      "folder": "club-santa-cruz",
+      "target": "Club-Santa-Cruz"
+    },
+    {
+      "folder": "subtitle-translator-pro",
+      "target": "Subtitle-Translator-Pro"
+    },
+    {
+      "folder": "estudio-multicam",
+      "target": "Estudio-Multicam"
+    },
+    {
+      "folder": "nanookey",
+      "target": "NANOOKEY"
+    }
+  ]
+}

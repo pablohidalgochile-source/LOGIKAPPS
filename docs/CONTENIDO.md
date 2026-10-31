@@ -1,94 +1,66 @@
-# Packs y herramientas de LOGIKAPPS 0.5.0
+# Herramientas de LOGIKAPPS 0.6.0 beta
 
-**Packs de apps** reúne herramientas por actividad. **Explorar** conserva la selección individual y **Mis apps** contiene solo los accesos que cada persona agrega. Con una biblioteca vacía, la app abre Packs de apps; una biblioteca existente conserva sus accesos e ideas.
+Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGIKAPPS y los packs se descargan por separado. Cada guía distingue apps locales, webs privadas y prototipos. Mis apps conserva los accesos elegidos por cada persona.
 
-El DMG instala LOGIKAPPS. Los packs se descargan por separado y no instalan dependencias automáticamente. Para empezar, descomprime la carpeta completa y abre su guía.
+## Pack DJ
 
-## Pack DJ · cinco herramientas locales
+[Descargar Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip)
 
-[Descargar Pack DJ 0.2.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-DJ-0.2.0-beta.zip)
+- **Surco**: Biblioteca musical, enlaces y captura de audio. Incluida en la carpeta Surco del pack. Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar.
+- **TRACKHUNT** · 0.2.0 beta portable: Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026. Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.
+- **INGESTA** · 3.0.4: Descarga, lotes y conversión MP4 desde enlaces públicos. El nombre anterior era NANOOK VIDEO. Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen. Logo pendiente de elección.
+- **VJ/LAB**: Visuales de escenario y composición gráfica. Incluida en la carpeta VJ-LAB del pack. Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida.
+- **DJ Nanook Hit Lab**: Crates, muestras sintetizadas y herramientas de preparación musical. Incluida en la carpeta Hit-Lab del pack. Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo.
+- **MAGIC MUSIC PROMPT**: Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente. Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno.
 
-Abre **EMPIEZA-AQUI.html**. El pack contiene Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab en carpetas independientes, con sus lanzadores. Conserva cada carpeta completa en una ubicación donde puedas guardar archivos.
+## Pack Fraternidad
 
-| Herramienta | Requisitos para usarla | Preparación e instrucciones |
-|---|---|---|
-| **Surco** | Python 3.10+; yt-dlp para enlaces; FFmpeg para algunas conversiones; Chrome para capturar audio de pestaña | Sigue [LEEME](../tools/surco/LEEME.md) y prepara su entorno. Conecta `Abrir Surco.command`. |
-| **TRACKHUNT** | Node.js 22.13+ con npm e internet; conexiones propias para algunas fuentes | Ejecuta `Preparar TRACKHUNT.command` y después conecta `Abrir TRACKHUNT.command`. Consulta [LEEME](../tools/trackhunt/LEEME.md). |
-| **NANOOK VIDEO** | Node.js 22.13+, Python 3.10+, FFmpeg y ffprobe; internet para YouTube | Ejecuta `Preparar NANOOK VIDEO.command`, que prepara yt-dlp, y después conecta `Abrir NANOOK VIDEO.command`. Consulta [LEEME](../tools/nanook-video/LEEME.md). |
-| **VJ/LAB** | Python 3.10+ y navegador actualizado; no requiere Node para usarlo | Conecta `Abrir VJ LAB.command`. Lee [LEER-PRIMERO](../tools/vj-lab/LEER-PRIMERO.txt). |
-| **Hit Lab** | Python 3.10+ y navegador con Web Audio; no requiere Node para usarlo | Conecta `Abrir Hit Lab.command`. Lee [LEER-PRIMERO](../tools/hit-lab/LEER-PRIMERO.txt). |
+[Descargar Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip)
 
-Estos lanzadores abren herramientas locales en el navegador. Mantén su ventana de Terminal abierta mientras las uses y pulsa **Control+C** para detenerlas. En LOGIKAPPS selecciona **Conectar lanzador** y elige el archivo `Abrir … .command`, no el ZIP ni el preparador. Los requisitos se preparan solo cuando decides hacerlo; abrir LOGIKAPPS o consultar el catálogo no instala programas.
-
-### Alcance de las herramientas DJ
-
-- **Surco:** biblioteca musical, exploración de enlaces y captura de pestaña. No incluye música ni bibliotecas previas. Las plataformas pueden limitar la disponibilidad de archivos.
-- **TRACKHUNT:** búsquedas, versiones y exportación de enlaces, incluido Sets → Deezer. No descarga música. El reconocimiento de audio utiliza AudD y envía un fragmento al proveedor; algunas conexiones requieren configuración propia y están sujetas a sus cuotas.
-- **NANOOK VIDEO:** interfaz y servidor para descargar y convertir archivos, con motor yt-dlp preparado por cada persona. Real-ESRGAN y sus modelos de IA no están incluidos. No garantiza acceso a todos los videos o resoluciones.
-- **VJ/LAB:** presets y composición visual, con exportación PNG estática. No incluye generación de logos con IA ni exportación de video o audio; los cambios duran la sesión.
-- **Hit Lab:** sonidos sintetizados, estimación orientativa de tempo y un catálogo fijo de demostración. Radar y similitud no son datos musicales en vivo. Exporta tu selección antes de cerrar.
-
-Los detalles y límites vigentes de esta entrega están en el LEEME o LEER-PRIMERO de cada carpeta. El pack no incluye cuentas, claves, historial ni archivos musicales del creador. No son cinco aplicaciones `.app` autónomas.
-
-## Pack Fraternidad · cinco accesos oficiales
-
-[Descargar Pack Fraternidad 0.2.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip)
-
-Abre **GUIA.html** o uno de los cinco accesos `.webloc` incluidos. La guía explica cómo entrar a cada servicio y cómo guardar sus enlaces en Mis apps.
-
-| Servicio | Acceso oficial | Qué necesitas |
-|---|---|---|
-| **FRATE ERP** | [erp.frate.cl](https://erp.frate.cl/) | Cuenta o perfil personal habilitado por la administración. |
-| **FRATE WEB** | [Panel de administración](https://www.frate.cl/admin) | Cuenta propia con permisos para la web y ticketera. La guía también enlaza el [sitio público](https://www.frate.cl/). |
-| **FRATE FLYER** | [flyer.frate.cl](https://flyer.frate.cl/) | Cuenta autorizada; algunas funciones dependen de integraciones del servicio. |
-| **FRATE POS** | [pos.frate.cl](https://pos.frate.cl/) | Cuenta y permisos de operación; coordina caja y dispositivos con el responsable. |
-| **FRATE CAST** | [Ingreso de casting](https://cast.frate.cl/auth) | Cuenta personal y rol autorizado para funciones internas. |
-
-El pack contiene **enlaces y una guía**, no una copia local de ERP, WEB, FLYER, POS o CAST. Requiere internet; descargarlo no crea cuentas, concede permisos ni incluye credenciales o datos del negocio. Solicita al administrador el acceso que corresponda a tu función. La revisión comprobó las páginas iniciales sin iniciar sesión ni ejecutar operaciones internas.
+- **FRATE ERP**: Administración y operación de Fraternidad. Internet y cuenta autorizada. Utiliza información del sistema en línea; no es una copia sin conexión.
+- **FRATE Web · Administración**: Administración de la web y ticketera. La guía también incluye el sitio público. Cuenta con permisos de administración. El sitio público está en www.frate.cl.
+- **FRATE FLYER EXPRESS**: Acceso a Flyer Express para preparar las piezas del equipo. Internet y acceso autorizado. Las funciones de generación dependen de la configuración del servicio.
+- **FRATE POS**: Acceso al punto de venta de Fraternidad. Cuenta y permisos de caja asignados. No incluye credenciales ni habilita transacciones por sí solo.
+- **FRATE Cast**: Acceso a la plataforma de casting. Internet. Las funciones de gestión requieren una cuenta y el rol correspondiente.
+- **FRATE FLYER STUDIO** · 0.1.0: Editor y plantillas de flyers; proyecto distinto de Flyer Express. Python 3; editor local sin bandeja Express configurada. Exportación automatizada y servicios necesitan preparación propia.
 
 ## Pack Diseño y Joyería
 
-[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip). Abre `GUIA.html`.
+[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip)
 
-- **Taller Teatina 0.4.0:** descomprime su ZIP y copia la app a Aplicaciones. Apple Silicon, macOS 13+. Contornos 2D, medidas, componentes 3D y exportaciones locales; analizar fotos necesita tu propia configuración de OpenAI y facturación de API. No contiene claves. Revisa medidas y materiales antes de fabricar: no se verificó corte físico ni importación real en LightBurn.
-- **FRATV para OBS:** 15 gráficas HTML y guía en `FRATV/fratv/GUIA-OBS.html`. OBS se instala aparte.
+- **Taller Teatina** · 0.4.0: Estudio de joyería: contornos 2D, medidas, componentes 3D y exportaciones SVG, OBJ, STL y 3MF. Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar. Logo pendiente de elección.
+- **FRATV para OBS**: 15 gráficas HTML: rótulos, identidad de canal, cuenta regresiva, programación y créditos. Descarga el pack y previsualízalo en tu navegador. Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio.
+- **Elephant** · 0.2.0: Ampliación local de fotos y video, modo Fiel e IA, muestras y cola de trabajo. Apple Silicon, macOS 14+, Python 3, ImageMagick y FFmpeg/ffprobe. IA opcional; modelos no incluidos.
+- **Mi Talla** · 0.1.0: Medidas de anillos, tablas y calibración visual. Python 3 y navegador actualizado. Validación física pendiente. Logo pendiente de elección.
 
 ## Pack IA y Equipo
 
-[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip). Abre `GUIA.html`.
+[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip)
 
-- **FrateIA 0.3.1 de prueba:** ZIP con la aplicación, Apple Silicon y macOS 14+. La preparación local de modelos y herramientas se realiza en cada Mac. Equipo requiere invitación del administrador; no se configuraron cuentas al publicar este pack y queda pendiente la prueba entre dos Mac.
-- **ChatGPT y Codex Cloud:** acceso web y pasos para trabajar con cuentas propias, proyectos y GitHub autorizado. Los entornos compartidos descritos en la guía corresponden a espacios Enterprise. LOGIKAPPS no sincroniza archivos locales ni concede acceso a proyectos.
-- **ArtCraft:** acceso a su página oficial de apps y descargas.
+- **FrateIA · Prueba** · 0.3.1 de prueba: Prepara tu estación de IA, reúne herramientas y trabaja con proyectos locales. Versión 0.3.1 de prueba. Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.
+- **ChatGPT y Codex Cloud**: Acceso a ChatGPT y al trabajo en la nube. La guía explica cómo recibir acceso a proyectos y repositorios. Cuenta propia de ChatGPT y acceso a cada proyecto. Para código, GitHub propio con permisos. La disponibilidad de Cloud depende de tu cuenta y entorno.
+- **ArtCraft**: Página oficial de apps creativas y descargas de otros desarrolladores. Herramientas externas en alfa o desarrollo; consulta la disponibilidad y requisitos de cada descarga.
 
-FrateIA y Taller Teatina tienen firma ad-hoc y no están notarizadas por Apple. La guía incluida explica la primera apertura mediante las opciones de macOS, sin desactivar sus protecciones.
+## Pack Organización
 
-## MAGIC MUSIC PROMPT · acceso en Pack DJ
+[Descargar Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip)
 
-[Abrir MAGIC MUSIC PROMPT](https://nanook-suno-bridge.nanook.chatgpt.site/). Es un sitio privado: el acceso sin sesión respondió 401 el 21 de octubre de 2026. Solicita habilitación al responsable. Incluye Songs, Speech, Sounds y Albums para preparar textos/prompts y organizar audio importado; la integración automática de Suno continúa pendiente. Los datos del navegador no se comparten automáticamente.
+- **Orgalina** · 0.2.0: Presupuesto doméstico, servicios y lectura de texto de boletas PDF. Node.js 22.13 o posterior y npm.
+- **Jacinta M. Pastelería** · local · sin número: Caja del día, pedidos de tortas y carta. Python 3 y navegador actualizado.
 
-## Descargas individuales en Explorar
+## Pack Laboratorio
 
-### Surco
+[Descargar Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip)
 
-[Descargar Surco 0.1.0 beta por separado](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/Surco-0.1.0-beta.zip)
+- **CLUB SANTA CRUZ** · 0.2.0: Demostración de comercios, beneficios y roles. Python 3 y navegador actualizado. Nombre/logo Pasaporte Colchagua pendientes. Logo pendiente de elección.
+- **Subtitle Translator Pro** · 0.1.0: Edición y traducción de SRT/VTT conservando tiempos y formato. Node.js 22.13 o posterior y npm. Traducción requiere proveedor y cuenta propios.
+- **Estudio Multicam** · 1.0.0 en código: Mesa de realización, cámaras y salida de programa. Bullet Cam y retratos 3D son conceptos separados. Python 3, navegador con permisos de cámara/micrófono y servicios propios de señalización.
+- **NANOOKEY** · prototipo: Escáner local de archivos y metadatos de biblioteca. Python 3; mutagen opcional para metadatos.
 
-Incluye la misma herramienta portable y su LEEME. Sigue los requisitos de Surco indicados arriba; no necesitas descargarla dos veces si ya tienes el Pack DJ.
+## Acceso y límites
 
-### FRATV para OBS
+Descomprime la carpeta completa y abre GUIA.html (EMPIEZA-AQUI.html para DJ). Usa Preparar cuando la herramienta lo indique y después conecta Abrir en LOGIKAPPS. Las apps nativas se copian a Aplicaciones. Las webs privadas requieren invitación o cuenta autorizada; el enlace no concede acceso.
 
-[Descargar FRATV para OBS 0.1.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/FRATV-OBS-Pack-0.1.0-beta.zip)
+Elephant y Trueke usan sus logos originales confirmados. Los demás iconos funcionales no se presentan como identidades aprobadas. INGESTA y Club Santa Cruz conservan la elección pendiente. No se incluyen bibliotecas, pedidos, cuentas, claves ni modelos personales.
 
-Contiene 15 gráficas HTML con identidad FRATV: rótulos, avisos, cuenta regresiva, programación y créditos. Descomprime y abre `fratv/GUIA-OBS.html`; mantén juntas las carpetas `fratv` y `brand`. En LOGIKAPPS puedes seleccionar **Conectar carpeta**.
-
-Requiere un navegador actualizado para previsualizar y OBS Studio por separado para transmitir. No incluye Overlay Studio. Las piezas son horizontales a 1920 × 1080; una escena vertical necesita ajustes. Consulta [LEER-PRIMERO](../tools/fratv-obs/LEER-PRIMERO.txt) para personalizar textos. Google Fonts requiere internet; sin conexión se usan fuentes del sistema. [Guía oficial de fuentes de navegador en OBS](https://obsproject.com/kb/browser-source).
-
-### FRATE Web público
-
-[Abrir el sitio de Fraternidad Campus Central](https://www.frate.cl/). Usa **Agregar a Mis apps** para conservar el acceso. Es un sitio para mayores de 18 años y algunas funciones requieren una cuenta propia. Este acceso público es distinto del panel de administración del Pack Fraternidad.
-
-## Actualizar desde una beta anterior
-
-Instala LOGIKAPPS 0.5.0 y vuelve a abrirlo. Si tu biblioteca está vacía, aparecerá **Packs de apps**. Si ya tienes accesos, favoritos e ideas, se conservarán; abre Packs de apps o Explorar desde la barra lateral. No hace falta borrar datos ni importar la biblioteca de otra persona.
-
-Los catálogos están incluidos en cada versión. No consultan un servidor ni descargan herramientas en segundo plano. Una nueva versión de LOGIKAPPS puede actualizar las fichas; tus herramientas descargadas se mantienen en sus propias carpetas.
+ADN MUSIC continúa como inicio de proyecto sin producto funcional. Las ideas sin desarrollo y Colchagua Tiny Lodge no se publican. FRATV para OBS es distinto del editor privado FRATV Overlay Studio. FRATE FLYER EXPRESS es distinto del prototipo Studio y de las variantes Original y Reel.

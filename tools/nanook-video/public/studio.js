@@ -2,10 +2,16 @@
   let busy = false, selectedId = '', comparison = null, comparisonSide = 'original', playerUrl = '';
   const message = (text, success = false) => { const el = $('#studio-notice'); el.hidden = !text; el.textContent = text; el.classList.toggle('success', success); };
   function tab(name) {
-    $('#download-view').hidden = name !== 'download'; $('#studio-view').hidden = name !== 'studio';
-    document.querySelectorAll('[data-tab]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tab === name)));
+    $('#download-view').hidden=name!=='download';$('#studio-view').hidden=name!=='studio';$('#bulk-view').hidden=!['bulk','discover'].includes(name);
+    document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===name)));
+    const hash={download:'ingestar',bulk:'lotes',discover:'descubrir',studio:'mejorar',collection:'coleccion'}[name]||'ingestar';
+    history.replaceState(null,'','#'+hash);
+    if(name==='collection')$('#downloads-heading').scrollIntoView({behavior:'smooth'});
+    document.dispatchEvent(new CustomEvent('ingesta:tab',{detail:name}));
   }
-  document.querySelectorAll('[data-tab]').forEach(b => b.addEventListener('click', () => tab(b.dataset.tab)));
+  window.ingestaTab=tab;
+  document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>tab(b.dataset.tab)));
+  tab({'#lotes':'bulk','#descubrir':'discover','#mejorar':'studio','#coleccion':'collection'}[location.hash]||'download');
   function source() { return state.jobs.find(j => j.id === $('#enhance-source').value && j.status === 'done'); }
   function updateControls() {
     const job = source(), video = $('#enhance-target').value === 'video';

@@ -5,6 +5,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = dirname(fileURLToPath(import.meta.url));
+process.chdir(root);
+if (existsSync(join(root, '.env.local'))) process.loadEnvFile(join(root, '.env.local'));
 const [major, minor] = process.versions.node.split('.').map(Number);
 if (major < 22 || (major === 22 && minor < 13)) throw new Error('TRACKHUNT necesita Node.js 22.13 o posterior. Consulta LEEME.md.');
 const cli = join(root, 'node_modules/vinext/dist/cli.js');

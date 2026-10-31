@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Muro · Fiesta</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#000;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#fff;}
+  #grid{position:fixed;inset:0;display:grid;gap:6px;padding:6px;background:#000;transition:opacity .4s;}
+  #grid.fading{opacity:0;}
+  .cell{position:relative;background:#0a0510;border-radius:10px;overflow:hidden;animation:pop .35s ease;}
+  @keyframes pop{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+  .cell video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;}
+  .cell .nm{position:absolute;left:8px;bottom:8px;font-size:.8rem;font-weight:800;padding:3px 9px;border-radius:7px;background:rgba(0,0,0,.5);backdrop-filter:blur(4px);text-shadow:0 1px 6px rgba(0,0,0,.8);}
+  .live{position:fixed;top:14px;left:16px;z-index:5;display:flex;align-items:center;gap:7px;font-weight:900;font-size:.85rem;letter-spacing:1px;padding:6px 12px;border-radius:9px;background:rgba(255,61,139,.14);color:#ff6aa8;}
+  .live .d{width:9px;height:9px;border-radius:50%;background:#ff3d8b;animation:pl 1.4s infinite;}
+  @keyframes pl{0%{opacity:1;}50%{opacity:.3;}100%{opacity:1;}}
+  .pager{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:5;display:none;align-items:center;gap:7px;padding:6px 12px;border-radius:20px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);}
+  .pager .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);transition:.3s;}
+  .pager .dot.on{background:#ff3d8b;width:22px;border-radius:4px;}
+  .gate{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 30%,#1a0e2a,#000 70%);z-index:10;}
+  .gate.hide{display:none;}
+  .gate h1{font-size:1.6rem;font-weight:900;background:linear-gradient(90deg,#ff3d8b,#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gate input{background:#0d0715;border:1px solid #2e1b3f;color:#fff;padding:13px;border-radius:11px;font-size:1rem;text-align:center;letter-spacing:3px;text-transform:uppercase;font-family:ui-monospace,monospace;width:240px;}
+  .gate button{background:linear-gradient(90deg,#ff3d8b,#8b5cf6);border:0;color:#fff;font-weight:800;font-size:1rem;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:inherit;}
+  .empty{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#6b5b7d;text-align:center;z-index:2;pointer-events:none;}
+  .empty.hide{display:none;}
+  .hud{position:fixed;top:14px;right:16px;z-index:5;font-size:.72rem;color:#8b7ba0;font-family:ui-monospace,monospace;background:rgba(0,0,0,.4);padding:5px 10px;border-radius:8px;opacity:0;transition:.2s;}
+  body:hover .hud{opacity:1;}
+</style>
+</head>
+<body>
+  <div id="grid"></div>
+  <div class="live" id="liveBadge" style="display:none;"><span class="d"></span>EN VIVO</div>
+  <div class="pager" id="pager"></div>
+  <div class="empty" id="empty"><div style="font-size:2rem;">✦</div><div>Esperando feeds aprobados…</div></div>
+  <div class="hud" id="hud">—</div>
+
+  <div class="gate" id="gate">
+    <h1>✦ MURO</h1>
+    <p style="color:#a99bb8;font-size:.9rem;">Pantalla de la fiesta. Muestra los feeds aprobados por el moderador.</p>
+    <input id="sala" placeholder="FIESTA" maxlength="16" />
+    <button onclick="entrar()">Abrir muro</button>
+  </div>
+
+<script>
+  const LK = window.LivekitClient;
+  const myId = 'muro-' + Math.random().toString(36).slice(2, 9);
+  const params = new URL(location.href).searchParams;
+  const PER_PAGE = Math.max(1, parseInt(params.get('per')) || 12);   // feeds por página
+  const ROT_MS   = Math.max(2000, parseInt(params.get('rot')) || 8000); // ms por página
+  let room = null, sala = '';
+  let approved = [];        // lista ordenada de identities aprobadas
+  let page = 0, rotTimer = null;
+  const tiles = {};         // identity -> { el, video, nm }
+  const $ = id => document.getElementById(id);
+
+  // Auto-entrar: modo egress (LiveKit inyecta url+token) o modo normal (?sala=).
+  try {
+    if (params.get('token') && params.get('url')) entrar();
+    else { const s = (params.get('sala') || '').toUpperCase(); if (s) { $('sala').value = s; entrar(); } }
+  } catch (e) {}
+
+  async function entrar(){
+    const egToken = params.get('token'), egUrl = params.get('url');
+    if (egToken && egUrl) {
+      // MODO EGRESS: LiveKit renderiza esta página server-side y nos pasa su token.
+      sala = (params.get('room') || params.get('sala') || '').toUpperCase();
+      $('gate').classList.add('hide');
+      try {
+        room = new LK.Room({ adaptiveStream: true, dynacast: true });
+        await room.connect(egUrl, egToken, { autoSubscribe: false });
+      } catch (e) { return; }
+    } else {
+      sala = ($('sala').value || '').trim().toUpperCase();
+      if (!sala) { $('sala').focus(); return; }
+      $('gate').classList.add('hide');
+      try {
+        room = await MXLK.connect({ room: sala, identity: myId, name: 'muro', role: 'muro', connectOptions: { autoSubscribe: false } });
+      } catch (e) { alert('No se pudo conectar: ' + (e.message || e)); return; }
+    }
+
+    room.on(LK.RoomEvent.TrackSubscribed, onSub);
+    room.on(LK.RoomEvent.TrackUnsubscribed, (t, p, part) => { if (t.kind === LK.Track.Kind.Video) removeTile(part.identity); });
+    room.on(LK.RoomEvent.ParticipantDisconnected, p => { approved = approved.filter(x => x !== p.identity); removeTile(p.identity); applyPage(); });
+    room.on(LK.RoomEvent.DataReceived, (payload) => {
+      try { const m = JSON.parse(new TextDecoder().decode(payload)); if (m && m.t === 'wall') setApproved(m.approved || []); } catch (e) {}
+    });
+    updateHud();
+  }
+
+  function videoPubs(p){ const out = []; p.trackPublications.forEach(pub => { if (pub.kind === LK.Track.Kind.Video) out.push(pub); }); return out; }
+
+  function pages(){ return Math.max(1, Math.ceil(approved.length / PER_PAGE)); }
+  function pageIds(){ return approved.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE); }
+
+  function setApproved(list){
+    // El moderador reenvía el set cada 3s (heartbeat). Si no cambió, no tocar
+    // nada (si no, reiniciaríamos el timer de rotación en cada latido).
+    const same = list.length === approved.length && list.every(id => approved.includes(id));
+    if (same) return;
+    // Mantén orden estable: conserva los que siguen, agrega nuevos al final.
+    const prev = approved.filter(id => list.includes(id));
+    const added = list.filter(id => !approved.includes(id));
+    approved = [...prev, ...added];
+    if (page >= pages()) page = 0;
+    applyPage(); scheduleRotate(); updateHud();
+  }
+
+  // Solo suscribe/decodifica la página visible (con 30 aprobados, decodifica <=PER_PAGE).
+  function applyPage(){
+    const show = new Set(pageIds());
+    room.remoteParticipants.forEach(p => {
+      const on = show.has(p.identity);
+      videoPubs(p).forEach(pub => { try { pub.setSubscribed(on); } catch (e) {} });
+      if (!on) removeTile(p.identity);
+    });
+    relayout(); renderPager();
+  }
+
+  function scheduleRotate(){
+    clearInterval(rotTimer); rotTimer = null;
+    if (pages() > 1) rotTimer = setInterval(nextPage, ROT_MS);
+  }
+  function nextPage(){
+    const g = $('grid'); g.classList.add('fading');
+    setTimeout(() => { page = (page + 1) % pages(); applyPage(); g.classList.remove('fading'); }, 400);
+  }
+
+  function onSub(track, pub, participant){
+    if (track.kind !== LK.Track.Kind.Video) return;
+    if (!pageIds().includes(participant.identity)) { try { pub.setSubscribed(false); } catch (e) {} return; }
+    let t = tiles[participant.identity];
+    if (!t){
+      const el = document.createElement('div'); el.className = 'cell';
+      const nm = document.createElement('div'); nm.className = 'nm'; nm.textContent = participant.name || participant.identity;
+      el.appendChild(nm); $('grid').appendChild(el);
+      t = tiles[participant.identity] = { el, nm };
+    }
+    const video = track.attach(); t.el.insertBefore(video, t.nm); t.video = video;
+    relayout();
+  }
+
+  function removeTile(identity){ const t = tiles[identity]; if (!t) return; t.el.remove(); delete tiles[identity]; relayout(); }
+
+  function relayout(){
+    const n = Object.keys(tiles).length;
+    $('empty').classList.toggle('hide', approved.length > 0);
+    $('liveBadge').style.display = approved.length > 0 ? 'flex' : 'none';
+    const cols = Math.max(1, Math.ceil(Math.sqrt(n)));
+    const rows = Math.max(1, Math.ceil(n / cols));
+    const g = $('grid'); g.style.gridTemplateColumns = `repeat(${cols},1fr)`; g.style.gridTemplateRows = `repeat(${rows},1fr)`;
+    updateHud();
+  }
+
+  function renderPager(){
+    const np = pages(), pg = $('pager');
+    if (np <= 1) { pg.style.display = 'none'; return; }
+    pg.style.display = 'flex';
+    pg.innerHTML = Array.from({ length: np }, (_, i) => `<span class="dot ${i === page ? 'on' : ''}"></span>`).join('');
+  }
+  function updateHud(){ $('hud').textContent = `${Object.keys(tiles).length}/${approved.length} · pág ${page + 1}/${pages()} · ${sala}`; }
+</script>
+</body>
+</html>

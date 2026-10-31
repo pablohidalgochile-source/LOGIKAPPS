@@ -1,1 +1,2 @@
-yt-dlp[default]>=2026.5.16
+yt-dlp[default,curl-cffi]==2026.10.26
+curl-cffi==0.17.0

@@ -1,0 +1,22 @@
+[
+  "Abrir Mi Talla.command",
+  "LEEME.md",
+  "index.html",
+  "launcher-config.json",
+  "launcher.py",
+  "package-lock.json",
+  "package.json",
+  "scripts/portable.mjs",
+  "site/Mi-Talla.html",
+  "site/Tabla-tallas-Chile-1-a-40.csv",
+  "site/assets/index-CeO0n37J.js",
+  "site/assets/index-lkU7IxXv.css",
+  "site/index.html",
+  "src/App.jsx",
+  "src/PhotoMeasure.jsx",
+  "src/geometry.mjs",
+  "src/main.jsx",
+  "src/sizing.mjs",
+  "src/styles.css",
+  "tests/measurements.test.mjs"
+]

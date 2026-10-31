@@ -1,16 +1,50 @@
-export type Song = { title: string; artist: string; artwork?: string; source: string; url?: string };
+export type Song = { title: string; artist: string; artwork?: string; source: string; url?: string; album?: string; isrc?: string; releaseDate?: string };
 export type Version = { id: string; title: string; creator: string; platform: "SoundCloud" | "Bandcamp"; url: string; kind: string; evidence: string; match: "title-artist" | "title"; artwork?: string };
 export type SourceStatus = { name: "SoundCloud" | "Bandcamp"; status: "ok" | "empty" | "unavailable" | "not-configured"; message: string; searchUrl: string };
+export type RemixDestination = { name: "YouTube" | "Beatport" | "Traxsource"; url: string; note: string };
 
 export function normalize(value: string) {
   return value.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
 export function versionKind(value: string) {
-  const match = value.match(/\b(remix|bootleg|mashup|extended|flip|rework|edit)\b/i);
-  return match ? match[1].charAt(0).toUpperCase() + match[1].slice(1).toLowerCase() : null;
+  const kinds: Array<[RegExp, string]> = [
+    [/\bre[- ]?drum\b/i, "Re-Drum"],
+    [/\btoneplay\b/i, "Toneplay"],
+    [/\btransition\b/i, "Transition"],
+    [/\bbootleg\b/i, "Bootleg"],
+    [/\bmashup\b/i, "Mashup"],
+    [/\bextended\b/i, "Extended"],
+    [/\brework\b/i, "Rework"],
+    [/\bremix\b/i, "Remix"],
+    [/\brefix\b/i, "Refix"],
+    [/\bblend\b/i, "Blend"],
+    [/\bintro\b/i, "Intro"],
+    [/\bflip\b/i, "Flip"],
+    [/\bedit\b/i, "Edit"],
+    [/\bvip\b/i, "VIP"],
+    [/\bdub\b/i, "Dub"],
+  ];
+  return kinds.find(([pattern]) => pattern.test(value))?.[1] ?? null;
 }
 export function originalTitle(value: string) {
   return value.replace(/\s*[([]\s*(?:feat\.?|ft\.?|featuring)\s+[^)\]]*[)\]]/gi, "").replace(/\s+(?:feat\.?|ft\.?|featuring)\s+.*$/i, "").replace(/\s+/g, " ").trim();
+}
+export function explorationTitle(value: string) {
+  const keyword = "(?:remix|re[- ]?drum|edit|intro|transition|blend|toneplay|bootleg|mashup|extended|rework|flip|vip|refix|dub)";
+  return originalTitle(value)
+    .replace(new RegExp(`\\s*[([][^)\\]]*\\b${keyword}\\b[^)\\]]*[)\\]]\\s*$`, "i"), "")
+    .replace(new RegExp(`\\s+(?:[-–—]\\s*)?[^–—|()\\[\\]]*\\b${keyword}\\b\\s*$`, "i"), "")
+    .replace(/\s+/g, " ")
+    .trim() || originalTitle(value);
+}
+
+export function remixDestinations(song: Pick<Song, "title" | "artist">): RemixDestination[] {
+  const query = `${song.artist} ${explorationTitle(song.title)} remix edit bootleg`.trim();
+  return [
+    { name: "YouTube", url: `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, note: "Videos, DJ edits y publicaciones de creadores." },
+    { name: "Beatport", url: `https://www.beatport.com/search?q=${encodeURIComponent(query)}`, note: "Versiones comerciales y extended mixes." },
+    { name: "Traxsource", url: `https://www.traxsource.com/search?term=${encodeURIComponent(query)}`, note: "Catálogo DJ y sellos independientes." },
+  ];
 }
 export function trackUrl(raw: string): { url: string; platform: Version["platform"] } | null {
   try {
@@ -48,10 +82,15 @@ export function toVersion(raw: { title: string; url: string; description?: strin
   const kind = versionKind(raw.title);
   if (!link || !kind) return null;
   const title = normalize(raw.title);
-  const wanted = normalize(originalTitle(song.title)).split(" ").filter(Boolean);
+  const wanted = normalize(explorationTitle(song.title)).split(" ").filter(Boolean);
   // Title evidence is required; snippets alone are not enough to link two songs.
-  if (!wanted.length || !wanted.every(word => title.split(" ").includes(word))) return null;
-  const artistWords = normalize(song.artist).split(" ").filter(word => word.length > 1);
-  const hasArtist = artistWords.length > 0 && artistWords.every(word => normalize(`${raw.title} ${raw.description ?? ""}`).split(" ").includes(word));
+  const titleWords = new Set(title.split(" "));
+  const sharedTitleWords = wanted.filter((word) => titleWords.has(word)).length;
+  const requiredCoverage = wanted.length <= 2 ? 1 : .67;
+  if (!wanted.length || sharedTitleWords / wanted.length < requiredCoverage) return null;
+  const primaryArtist = song.artist.split(/\s+(?:feat\.?|ft\.?|featuring|x|vs\.?)\s+|\s*[,;&]\s*/i)[0] ?? song.artist;
+  const artistWords = normalize(primaryArtist).split(" ").filter(word => word.length > 1);
+  const evidenceWords = new Set(normalize(`${raw.title} ${raw.description ?? ""}`).split(" "));
+  const hasArtist = artistWords.length > 0 && artistWords.every(word => evidenceWords.has(word));
   return { id: link.url, ...link, title: raw.title.slice(0, 260), creator: raw.creator || "Consultar creador en la fuente", kind, evidence: (raw.description ?? "").slice(0, 400), match: hasArtist ? "title-artist" : "title", artwork: raw.artwork };
 }

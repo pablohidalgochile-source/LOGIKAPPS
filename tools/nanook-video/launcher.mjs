@@ -5,7 +5,7 @@ import { createServer } from 'node:net';
 
 const root = dirname(fileURLToPath(import.meta.url));
 const [major, minor] = process.versions.node.split('.').map(Number);
-if (major < 22 || (major === 22 && minor < 13)) throw new Error('NANOOK VIDEO necesita Node.js 22.13 o posterior. Consulta LEEME.md.');
+if (major < 22 || (major === 22 && minor < 13)) throw new Error('INGESTA necesita Node.js 22.13 o posterior. Consulta LEEME.md.');
 const basePort = Number(process.env.PORT || 4317);
 if (!Number.isInteger(basePort) || basePort < 1024 || basePort > 65525) throw new Error('PORT debe estar entre 1024 y 65525.');
 function openBrowser(url) {
@@ -23,7 +23,7 @@ async function running(port) {
 }
 for (let candidate = basePort; candidate < basePort + 10; candidate++) {
   if (await running(candidate)) {
-    console.log(`NANOOK VIDEO ya está abierto en http://127.0.0.1:${candidate}`);
+    console.log(`INGESTA ya está abierto en http://127.0.0.1:${candidate}`);
     openBrowser(`http://127.0.0.1:${candidate}`); process.exit(0);
   }
 }
@@ -49,8 +49,8 @@ for (let attempt = 0; attempt < 120 && child.exitCode === null; attempt++) {
   if (await running(port)) { ready = true; break; }
   await new Promise(resolve => setTimeout(resolve, 250));
 }
-if (!ready) { startupFailed = true; console.error('NANOOK VIDEO no pudo iniciar. Revisa el mensaje de Terminal.'); stop(); process.exitCode = 1; }
+if (!ready) { startupFailed = true; console.error('INGESTA no pudo iniciar. Revisa el mensaje de Terminal.'); stop(); process.exitCode = 1; }
 else {
-  console.log(`NANOOK VIDEO listo: http://127.0.0.1:${port}\nMantén esta ventana abierta. Para cerrar: Control+C.`);
+  console.log(`INGESTA listo: http://127.0.0.1:${port}\nMantén esta ventana abierta. Para cerrar: Control+C.`);
   openBrowser(`http://127.0.0.1:${port}`);
 }

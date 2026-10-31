@@ -12,33 +12,32 @@ LOGIKAPPS reúne packs de herramientas, accesos personales e ideas en una ventan
 
 ## Descargar para Mac
 
-**[Descargar LOGIKAPPS 0.5.1 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.1-beta.1/LOGIKAPPS-0.5.1-macos-universal.dmg)**
+**[Descargar LOGIKAPPS 0.6.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-0.6.0-macos-universal.dmg)**
 
-[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.5.1-beta.1)
+[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.6.0-beta.1)
 
 - macOS 13 o posterior; ejecutable universal para Apple Silicon e Intel.
 - **Beta sin notarización de Apple.** Consulta [Instalación](docs/INSTALACION.md) si macOS impide abrirla. No se requiere desactivar las protecciones del sistema.
 - LOGIKAPPS funciona sin Node.js ni Python. Las herramientas de los packs tienen sus propios requisitos.
 
-## Apertura de la app · 0.5.1
+## Novedades de 0.6.0
 
-Esta actualización atiende el reporte de una ventana completamente negra al iniciar en otro Mac. Muestra un estado nativo de carga, intenta una alternativa con la interfaz integrada si falla la lectura inicial y ofrece **Volver a abrir** y **Copiar diagnóstico** si no puede iniciar. Los packs y la biblioteca personal se conservan.
+Se agregan Elephant y ocho herramientas que faltaban en los packs: Mi Talla, Orgalina, Jacinta M. Pastelería, FRATE FLYER STUDIO, CLUB SANTA CRUZ, Subtitle Translator Pro, Estudio Multicam y NANOOKEY. INGESTA sustituye al nombre anterior NANOOK VIDEO y se entrega en versión 3.0.4; TRACKHUNT incorpora Playlist Hunt y las conexiones recientes en su edición local.
 
-También puedes usar el menú **LOGIKAPPS → Volver a abrir la interfaz** (⌘R). El diagnóstico contiene versión, macOS, arquitectura y códigos de carga, sin biblioteca, rutas, cuentas ni claves. Las pruebas locales incluyen errores provocados; el resultado en el Mac que reportó el problema todavía debe confirmarse.
+Elephant y Trueke muestran sus logos confirmados. Las identidades por decidir se mantienen pendientes. Las fichas indican versiones verificadas, prototipos y requisitos. Se conserva la recuperación de apertura de 0.5.1 para el caso de ventana negra; aún debe comprobarse el resultado en el otro Mac físico.
 
 ## Elige tu pack
 
-| Pack | Contenido | Cómo empezar |
-|---|---|---|
-| **[Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-DJ-0.2.0-beta.zip)** | Surco, TRACKHUNT, NANOOK VIDEO, VJ/LAB y Hit Lab; acceso privado a MAGIC MUSIC PROMPT | Descomprime y abre `EMPIEZA-AQUI.html`. Prepara los requisitos de cada herramienta antes de conectar su lanzador. |
-| **[Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip)** | Cinco accesos oficiales: ERP, WEB, FLYER, POS y CAST | Descomprime y abre `GUIA.html`. Usa tu cuenta autorizada en cada servicio. |
+| Pack | Fichas | Contenido |
+|---|---:|---|
+| [Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip) | 6 | Surco, TRACKHUNT, INGESTA, VJ/LAB, DJ Nanook Hit Lab, MAGIC MUSIC PROMPT |
+| [Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip) | 6 | FRATE ERP, FRATE Web · Administración, FRATE FLYER EXPRESS, FRATE POS, FRATE Cast, FRATE FLYER STUDIO |
+| [Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip) | 4 | Taller Teatina, FRATV para OBS, Elephant, Mi Talla |
+| [Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip) | 3 | FrateIA · Prueba, ChatGPT y Codex Cloud, ArtCraft |
+| [Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip) | 2 | Orgalina, Jacinta M. Pastelería |
+| [Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip) | 4 | CLUB SANTA CRUZ, Subtitle Translator Pro, Estudio Multicam, NANOOKEY |
 
-| **[Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip)** | Taller Teatina 0.4.0 para Apple Silicon y FRATV para OBS | Abre `GUIA.html`; descomprime el ZIP de Teatina y copia la app a Aplicaciones. |
-| **[Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip)** | FrateIA 0.3.1 de prueba, ChatGPT/Cloud, ArtCraft y guía de incorporación | Abre `GUIA.html`; FrateIA requiere Apple Silicon y macOS 14+. Solicita tus invitaciones por separado. |
-
-**Descargar un pack no instala automáticamente sus dependencias ni concede permisos.** El Pack DJ incluye fuentes o interfaces preparadas y lanzadores locales; no son cinco aplicaciones `.app` autónomas. El Pack Fraternidad contiene enlaces y una guía, sin código privado, credenciales ni datos del negocio.
-
-[Consulta los requisitos, instrucciones y límites de cada herramienta](docs/CONTENIDO.md). **Explorar** permite encontrar también Magic Music Prompt, Taller Teatina, FrateIA y ChatGPT. [Guía para incorporar a un compañero](docs/PRIMEROS-PASOS-EQUIPO.html).
+Abre la guía incluida en cada ZIP. **Descargar un pack no instala sus dependencias ni concede permisos en sitios privados.** [Requisitos y límites de cada herramienta](docs/CONTENIDO.md) · [Guía de incorporación](docs/PRIMEROS-PASOS-EQUIPO.html).
 
 ## Otras apps interesantes
 

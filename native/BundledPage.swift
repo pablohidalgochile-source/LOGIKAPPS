@@ -3,7 +3,7 @@ import Foundation
 // The fallback contains only reviewed bundle resources. WebKit never needs to
 // request scripts, styles or images from a translocated application's file URL.
 enum BundledPage {
-    static let scripts = ["catalog.js", "discover-catalog.js", "packs-catalog.js", "state.js", "interests-catalog.js", "app.js"]
+    static let scripts = ["catalog.js", "discover-catalog.js", "packs-catalog.js", "state.js", "interests-catalog.js", "identities.js", "app.js"]
     static func embeddedHTML(in directory: URL, nonce: String) throws -> String {
         guard nonce.range(of: "^[A-Za-z0-9-]+$", options: .regularExpression) != nil else {
             throw LogikError.message("Identificador de carga inválido.")

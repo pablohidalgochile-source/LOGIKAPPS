@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Moderador · Fiesta</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<style>
+  :root{--bg:#0a0510;--card:#170d22;--borde:#2e1b3f;--gris:#a99bb8;--rosa:#ff3d8b;--morado:#8b5cf6;--verde:#22d37a;--gold:#f0c84a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:#fff;font-family:'Inter',system-ui,sans-serif;overflow:hidden;}
+  .app{display:flex;flex-direction:column;height:100vh;}
+  .top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--borde);}
+  .logo{font-weight:900;letter-spacing:1px;font-size:1.05rem;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .cnt{margin-left:auto;font-size:.82rem;color:var(--gris);}
+  .cnt b{color:#fff;}
+  .streambar{display:flex;align-items:center;gap:10px;padding:10px 18px;border-bottom:1px solid var(--borde);background:#0d0715;}
+  .streambar .slbl{font-size:.72rem;color:var(--gris);white-space:nowrap;font-weight:800;letter-spacing:.5px;}
+  .streambar input{flex:1;min-width:0;background:#0a0510;border:1px solid var(--borde);color:#fff;padding:9px 11px;border-radius:9px;font-size:.82rem;font-family:ui-monospace,monospace;}
+  .sbtn{background:var(--rosa);border:0;color:#fff;font-family:inherit;font-weight:800;font-size:.82rem;padding:9px 16px;border-radius:9px;cursor:pointer;white-space:nowrap;}
+  .sbtn:disabled{opacity:.5;cursor:wait;}
+  .sbtn.live{background:#2a0f1c;color:#ffb3cf;border:1px solid #5a2036;}
+  .sst{font-size:.74rem;color:var(--gris);white-space:nowrap;}
+  .streambar .ingout{flex:1;min-width:110px;background:#0a0510;border:1px solid var(--borde);color:#9ecbff;padding:8px 10px;border-radius:8px;font-size:.76rem;font-family:ui-monospace,monospace;}
+  .grid{flex:1;padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;align-content:start;overflow-y:auto;}
+  .tile{background:var(--card);border:2px solid var(--borde);border-radius:14px;overflow:hidden;position:relative;transition:border-color .15s;}
+  .tile.ok{border-color:var(--verde);}
+  .tile.pending{border-color:var(--gold);}
+  .tile video{width:100%;aspect-ratio:16/9;object-fit:cover;background:#000;display:block;}
+  .tile .info{display:flex;align-items:center;gap:8px;padding:9px 11px;}
+  .tile .nm{font-weight:800;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;}
+  .tile .st{font-size:.6rem;font-weight:800;letter-spacing:1px;padding:3px 8px;border-radius:6px;text-transform:uppercase;}
+  .st.p{background:rgba(240,200,74,.16);color:var(--gold);} .st.o{background:rgba(34,211,122,.16);color:var(--verde);}
+  .st.g{background:rgba(255,61,139,.18);color:var(--rosa);}
+  .tile.pgm{border-color:var(--rosa);box-shadow:0 0 0 1px var(--rosa),0 0 26px rgba(255,61,139,.32);}
+  .act{display:flex;gap:8px;padding:0 11px 11px;}
+  .act button{flex:1;font-family:inherit;font-weight:800;font-size:.82rem;border:0;border-radius:9px;padding:10px;cursor:pointer;}
+  .b-ok{background:var(--verde);color:#04120a;} .b-no{background:#2a0f1c;color:#ffb3cf;border:1px solid #5a2036;}
+  .b-ok.dim{background:#123a24;color:#6bbf8c;}
+  .b-pgm{background:transparent;border:1px solid var(--borde);color:var(--gris);}
+  .b-pgm.on{background:var(--rosa);color:#fff;border-color:var(--rosa);}
+  .empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gris);height:60vh;text-align:center;}
+  .gate{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 30%,#1a0e2a,#0a0510 70%);z-index:10;}
+  .gate.hide{display:none;}
+  .gate h1{font-size:1.5rem;font-weight:900;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gate input{background:#0d0715;border:1px solid var(--borde);color:#fff;padding:13px;border-radius:11px;font-size:1rem;text-align:center;letter-spacing:3px;text-transform:uppercase;font-family:ui-monospace,monospace;width:240px;}
+  .gate button{background:linear-gradient(90deg,var(--rosa),var(--morado));border:0;color:#fff;font-weight:800;font-size:1rem;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:inherit;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="logo">✦ MODERADOR</div>
+    <div class="cnt"><b id="okN">0</b> en muro · <b id="pendN">0</b> en cola · sala <b id="salaN">—</b></div>
+  </div>
+  <div class="streambar">
+    <span class="slbl">🔴 STREAM RTMP</span>
+    <input id="rtmp" placeholder="rtmp://a.rtmp.youtube.com/live2/TU-CLAVE  (o Twitch, etc.)" />
+    <button id="streamBtn" class="sbtn" onclick="toggleStream()">Transmitir</button>
+    <span id="streamSt" class="sst"></span>
+  </div>
+  <div class="streambar">
+    <span class="slbl">🎥 ENTRADA RTMP (gafas/GoPro)</span>
+    <input id="ingName" value="DJ POV" style="max-width:130px;" />
+    <button id="ingBtn" class="sbtn" style="background:var(--morado);" onclick="toggleIngress()">Crear entrada</button>
+    <input id="ingUrl" class="ingout" readonly placeholder="Servidor RTMP…" style="display:none;" onclick="this.select()" />
+    <input id="ingKey" class="ingout" readonly placeholder="Stream Key…" style="display:none;" onclick="this.select()" />
+    <span id="ingSt" class="sst"></span>
+  </div>
+  <div class="grid" id="grid">
+    <div class="empty" id="empty"><div style="font-size:2rem;">🎥</div><div>Esperando que la gente se conecte…</div></div>
+  </div>
+</div>
+
+<div class="gate" id="gate">
+  <h1>✦ MODERADOR</h1>
+  <p style="color:#a99bb8;font-size:.9rem;">Apruebas qué feeds salen al muro. Nada sale sin tu OK.</p>
+  <input id="sala" placeholder="FIESTA" maxlength="16" />
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<script>
+  const LK = window.LivekitClient;
+  const myId = 'mod-' + Math.random().toString(36).slice(2, 9);
+  let room = null, sala = '', program = null;
+  const approved = new Set();
+  const tiles = {}; // identity -> { el, video, stEl, okBtn, name }
+  const $ = id => document.getElementById(id);
+
+  try { const u = new URL(location.href); const s = (u.searchParams.get('sala') || '').toUpperCase(); if (s) { $('sala').value = s; entrar(); } } catch (e) {}
+
+  async function entrar(){
+    sala = ($('sala').value || '').trim().toUpperCase();
+    if (!sala) { $('sala').focus(); return; }
+    $('gate').classList.add('hide'); $('salaN').textContent = sala;
+    try {
+      room = await MXLK.connect({ room: sala, identity: myId, name: 'moderador', role: 'moderador' });
+    } catch (e) { alert('No se pudo conectar: ' + (e.message || e)); return; }
+
+    room.on(LK.RoomEvent.TrackSubscribed, onSub);
+    room.on(LK.RoomEvent.TrackUnsubscribed, (t, p, part) => { if (t.kind === LK.Track.Kind.Video) removeTile(part.identity); });
+    room.on(LK.RoomEvent.ParticipantDisconnected, p => removeTile(p.identity));
+    setInterval(broadcast, 3000); // heartbeat: muros que entran tarde se sincronizan
+
+    // Catch-up: cámaras que YA estaban publicando al conectar (sus eventos
+    // TrackSubscribed se dispararon antes de enganchar el handler → se perderían).
+    room.remoteParticipants.forEach(p => {
+      p.trackPublications.forEach(pub => { if (pub.kind === LK.Track.Kind.Video && pub.track) onSub(pub.track, pub, p); });
+    });
+  }
+
+  function onSub(track, pub, participant){
+    if (track.kind !== LK.Track.Kind.Video) return;
+    let t = tiles[participant.identity];
+    if (!t){
+      const el = document.createElement('div'); el.className = 'tile pending';
+      el.innerHTML = `<video autoplay playsinline muted></video>
+        <div class="info"><span class="nm"></span><span class="st p">cola</span></div>
+        <div class="act"><button class="b-ok">✓ Aprobar</button><button class="b-pgm">★ Programa</button><button class="b-no">✕ Quitar</button></div>`;
+      el.querySelector('.nm').textContent = participant.name || participant.identity;
+      const okBtn = el.querySelector('.b-ok'), noBtn = el.querySelector('.b-no'), pgmBtn = el.querySelector('.b-pgm'), stEl = el.querySelector('.st');
+      okBtn.onclick = () => approve(participant.identity, true);
+      noBtn.onclick = () => approve(participant.identity, false);
+      pgmBtn.onclick = () => setProgram(participant.identity);
+      $('grid').appendChild(el);
+      t = tiles[participant.identity] = { el, video: el.querySelector('video'), stEl, okBtn, pgmBtn, name: participant.name || participant.identity };
+    }
+    track.attach(t.video);
+    render(participant.identity); counts();
+  }
+
+  function approve(identity, on){
+    if (on) approved.add(identity); else { approved.delete(identity); if (program === identity) program = null; }
+    render(identity); broadcast(); counts();
+  }
+
+  // Destaca una cámara como PROGRAMA (salida limpia). La aprueba si no lo estaba.
+  function setProgram(identity){
+    const prev = program;
+    program = (program === identity) ? null : identity;
+    if (program) approved.add(program);
+    if (prev && prev !== identity) render(prev);
+    render(identity); broadcast(); counts();
+  }
+
+  function render(identity){
+    const t = tiles[identity]; if (!t) return;
+    const on = approved.has(identity), pgm = program === identity;
+    t.el.classList.toggle('ok', on && !pgm); t.el.classList.toggle('pending', !on); t.el.classList.toggle('pgm', pgm);
+    t.stEl.className = 'st ' + (pgm ? 'g' : (on ? 'o' : 'p')); t.stEl.textContent = pgm ? '★ programa' : (on ? 'en muro' : 'cola');
+    t.okBtn.textContent = on ? '✓ En muro' : '✓ Aprobar'; t.okBtn.classList.toggle('dim', on);
+    t.pgmBtn.classList.toggle('on', pgm);
+  }
+
+  function removeTile(identity){
+    const t = tiles[identity]; if (!t) return; t.el.remove(); delete tiles[identity];
+    approved.delete(identity); if (program === identity) program = null;
+    broadcast(); counts();
+  }
+
+  function broadcast(){
+    if (!room) return;
+    try { room.localParticipant.publishData(new TextEncoder().encode(JSON.stringify({ t: 'wall', approved: [...approved], program })), { reliable: true }); } catch (e) {}
+  }
+
+  function counts(){
+    const total = Object.keys(tiles).length;
+    $('okN').textContent = approved.size; $('pendN').textContent = total - approved.size;
+    $('empty').style.display = total ? 'none' : '';
+  }
+
+  // ── Stream a RTMP vía LiveKit Egress (compone el muro en el servidor) ──
+  let egressId = null, streaming = false;
+  async function toggleStream(){
+    const btn = $('streamBtn'), st = $('streamSt');
+    if (!streaming) {
+      const rtmp = ($('rtmp').value || '').trim();
+      if (!rtmp) { alert('Pega la URL RTMP (YouTube/Twitch/etc.)'); return; }
+      if (!sala) { alert('Entra a una sala primero'); return; }
+      btn.disabled = true; st.textContent = 'iniciando…';
+      try {
+        const r = await fetch('/api/egress', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'start', room: sala, rtmpUrl: rtmp }) });
+        const d = await r.json(); if (!r.ok) throw new Error(d.error || r.status);
+        egressId = d.egressId; streaming = true;
+        btn.textContent = '■ Detener'; btn.classList.add('live'); st.textContent = '🔴 EN VIVO a RTMP';
+      } catch (e) { st.textContent = 'error: ' + (e.message || e); }
+      btn.disabled = false;
+    } else {
+      btn.disabled = true; st.textContent = 'deteniendo…';
+      try { await fetch('/api/egress', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'stop', egressId }) }); } catch (e) {}
+      streaming = false; egressId = null;
+      btn.textContent = 'Transmitir'; btn.classList.remove('live'); st.textContent = ''; btn.disabled = false;
+    }
+  }
+
+  // ── Entrada RTMP vía LiveKit Ingress (gafas Meta / GoPro / cualquier RTMP) ──
+  let ingressId = null;
+  async function toggleIngress(){
+    const btn = $('ingBtn'), st = $('ingSt');
+    if (ingressId) {
+      btn.disabled = true; st.textContent = 'borrando…';
+      try { await fetch('/api/ingress', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'delete', ingressId }) }); } catch (e) {}
+      ingressId = null; $('ingUrl').style.display = 'none'; $('ingKey').style.display = 'none'; $('ingUrl').value = ''; $('ingKey').value = '';
+      btn.textContent = 'Crear entrada'; btn.classList.remove('live'); st.textContent = ''; btn.disabled = false; return;
+    }
+    if (!sala) { alert('Entra a una sala primero'); return; }
+    const name = ($('ingName').value || 'RTMP').trim();
+    btn.disabled = true; st.textContent = 'creando…';
+    try {
+      const r = await fetch('/api/ingress', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action: 'create', room: sala, name }) });
+      const d = await r.json(); if (!r.ok) throw new Error(d.error || r.status);
+      ingressId = d.ingressId;
+      $('ingUrl').value = d.url; $('ingUrl').style.display = '';
+      $('ingKey').value = d.streamKey; $('ingKey').style.display = '';
+      btn.textContent = '■ Borrar entrada'; btn.classList.add('live'); st.textContent = '↑ pega Servidor + Key en la app de las gafas/GoPro';
+    } catch (e) { st.textContent = 'error: ' + (e.message || e); }
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>

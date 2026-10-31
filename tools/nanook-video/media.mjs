@@ -54,6 +54,14 @@ export function audioEncoding(format, quality) {
   if (format === 'flac') return ['-c:a', 'flac', '-compression_level', '8'];
   return ['-c:a', format === 'mp3' ? 'libmp3lame' : 'aac', '-b:a', `${quality}k`];
 }
+export function compatibleMp4Encoding(meta) {
+  if (meta.type !== 'video') throw new Error('El archivo no contiene video.');
+  return ['-map','0:v:0','-map','0:a:0?',
+    '-vf','scale=trunc(iw/2)*2:trunc(ih/2)*2',
+    '-c:v','libx264','-preset','medium','-crf','17','-pix_fmt','yuv420p',
+    ...(meta.audioCodec === 'aac' ? ['-c:a','copy'] : ['-c:a','aac','-b:a','320k']),
+    '-movflags','+faststart'];
+}
 export function contentType(filename) {
   return ({'.mp4':'video/mp4','.mov':'video/quicktime','.m4v':'video/mp4','.mkv':'video/x-matroska','.webm':'video/webm','.mp3':'audio/mpeg','.m4a':'audio/mp4','.wav':'audio/wav','.flac':'audio/flac','.opus':'audio/ogg','.ogg':'audio/ogg','.aac':'audio/aac'})[extname(filename).toLowerCase()] || 'application/octet-stream';
 }

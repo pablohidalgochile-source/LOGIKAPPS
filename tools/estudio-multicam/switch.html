@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Switcher · Cámaras</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<script src="obs-ws.js"></script>
+<style>
+  :root{--bg:#08080a;--card:#141018;--borde:#2a2233;--gris:#9b8fa8;--air:#ff3040;--rosa:#ff3d8b;--morado:#8b5cf6;--verde:#22d37a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:#fff;font-family:'Inter',system-ui,sans-serif;overflow:hidden;-webkit-tap-highlight-color:transparent;}
+  .app{display:flex;flex-direction:column;height:100vh;}
+  .top{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--borde);flex-wrap:wrap;}
+  .logo{font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .air-lbl{font-size:.82rem;color:var(--gris);}
+  .air-lbl b{color:var(--air);}
+  .obschip{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:.72rem;font-weight:700;color:var(--gris);background:#12101a;border:1px solid var(--borde);padding:6px 11px;border-radius:9px;cursor:pointer;}
+  .obschip .d{width:9px;height:9px;border-radius:50%;background:#555;}
+  .obschip.on .d{background:var(--verde);}
+  .obspanel{display:none;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--borde);background:#0d0b12;}
+  .obspanel.show{display:flex;}
+  .obspanel input{background:#0a0510;border:1px solid var(--borde);color:#fff;padding:8px 10px;border-radius:8px;font-size:.82rem;font-family:ui-monospace,monospace;}
+  .obspanel input.port{width:90px;} .obspanel input.pass{width:170px;}
+  .obspanel label{font-size:.74rem;color:var(--gris);display:inline-flex;align-items:center;gap:6px;}
+  .obspanel button{background:var(--verde);border:0;color:#04120a;font-family:inherit;font-weight:800;font-size:.8rem;padding:8px 14px;border-radius:8px;cursor:pointer;}
+  .obspanel button.dis{background:#2a0f1c;color:#ffb3cf;border:1px solid #5a2036;}
+  .obspanel .st{font-size:.74rem;color:var(--gris);}
+  .obspanel .hint{flex-basis:100%;font-size:.7rem;color:#6b5b7d;}
+  .grid{flex:1;padding:14px;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-content:start;overflow-y:auto;}
+  .cam{position:relative;border-radius:16px;overflow:hidden;background:#000;border:3px solid var(--borde);cursor:pointer;aspect-ratio:16/9;transition:border-color .12s,transform .08s;}
+  .cam:active{transform:scale(.99);}
+  .cam.air{border-color:var(--air);box-shadow:0 0 0 2px var(--air),0 0 40px rgba(255,48,64,.45);}
+  .cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;}
+  .cam .nm{position:absolute;left:12px;bottom:12px;font-size:1.1rem;font-weight:800;padding:5px 13px;border-radius:9px;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);text-shadow:0 2px 8px rgba(0,0,0,.8);}
+  .cam .badge{position:absolute;top:12px;right:12px;display:none;align-items:center;gap:6px;font-size:.7rem;font-weight:900;letter-spacing:1px;padding:5px 11px;border-radius:8px;background:var(--air);}
+  .cam.air .badge{display:inline-flex;}
+  .cam .badge .d{width:8px;height:8px;border-radius:50%;background:#fff;animation:pl 1.3s infinite;}
+  @keyframes pl{0%{opacity:1;}50%{opacity:.3;}100%{opacity:1;}}
+  .cam .scene-sel{position:absolute;top:12px;left:12px;max-width:60%;background:rgba(0,0,0,.6);border:1px solid var(--borde);color:#fff;font-family:inherit;font-size:.72rem;padding:5px 7px;border-radius:7px;display:none;}
+  .empty{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gris);height:55vh;text-align:center;}
+  .dock{display:flex;gap:10px;padding:12px 16px;border-top:1px solid var(--borde);}
+  .dock button{flex:1;font-family:inherit;font-weight:800;font-size:.95rem;border:1px solid var(--borde);background:#12101a;color:#fff;padding:14px;border-radius:12px;cursor:pointer;}
+  .dock .neg.on{background:#1a1a1a;border-color:#444;}
+  .gate{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 30%,#1a0e2a,#08080a 70%);z-index:10;}
+  .gate.hide{display:none;}
+  .gate h1{font-size:1.5rem;font-weight:900;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gate input{background:#0d0715;border:1px solid var(--borde);color:#fff;padding:13px;border-radius:11px;font-size:1rem;text-align:center;letter-spacing:3px;text-transform:uppercase;font-family:ui-monospace,monospace;width:240px;}
+  .gate button{background:linear-gradient(90deg,var(--rosa),var(--morado));border:0;color:#fff;font-weight:800;font-size:1rem;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:inherit;}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="logo">🎚️ SWITCHER</div>
+    <div class="air-lbl">AL AIRE: <b id="airName">— negro —</b></div>
+    <div class="obschip" id="obschip" onclick="toggleObsPanel()"><span class="d"></span><span id="obsChipTxt">OBS: off</span></div>
+  </div>
+
+  <div class="obspanel" id="obspanel">
+    <label>Puerto <input class="port" id="obsPort" value="4455" /></label>
+    <label>Contraseña <input class="pass" id="obsPass" type="password" placeholder="(de OBS WebSocket)" /></label>
+    <label><input type="checkbox" id="obsTrans" /> usar transición (Modo Estudio)</label>
+    <button id="obsBtn" onclick="toggleObs()">Conectar OBS</button>
+    <span class="st" id="obsSt"></span>
+    <div class="hint">OBS → Herramientas → Configuración de WebSocket → Habilitar. Debe correr en la MISMA máquina que OBS (este switcher como Dock o en Chrome de ese PC). Al conectar, elige la escena de OBS para cada cámara.</div>
+  </div>
+
+  <div class="grid" id="grid">
+    <div class="empty" id="empty"><div style="font-size:2rem;">🎥</div><div>Esperando cámaras…<br><span style="font-size:.82rem;">Abre las cámaras con el mismo código</span></div></div>
+  </div>
+  <div class="dock">
+    <button class="neg" id="negBtn" onclick="setProgram(null)">⬛ Negro</button>
+  </div>
+</div>
+
+<div class="gate" id="gate">
+  <h1>🎚️ SWITCHER</h1>
+  <p style="color:#9b8fa8;font-size:.9rem;">Toca una cámara para ponerla AL AIRE. Controla la salida web y (opcional) las escenas de OBS.</p>
+  <input id="sala" placeholder="LOCAL1" maxlength="16" />
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<script>
+  const LK = window.LivekitClient;
+  const myId = 'switch-' + Math.random().toString(36).slice(2, 9);
+  const params = new URL(location.href).searchParams;
+  let room = null, sala = '', program = null;
+  const tiles = {}; // identity -> { el, video, name, sel }
+  const $ = id => document.getElementById(id);
+
+  // ── persistencia liviana ─────────────────────────────────────
+  const store = {
+    get: (k, d) => { try { const v = localStorage.getItem('mx_' + k); return v == null ? d : v; } catch (e) { return d; } },
+    set: (k, v) => { try { localStorage.setItem('mx_' + k, v); } catch (e) {} }
+  };
+  let sceneMap = {}; try { sceneMap = JSON.parse(store.get('obs_map', '{}')); } catch (e) { sceneMap = {}; }
+  function saveMap() { store.set('obs_map', JSON.stringify(sceneMap)); }
+
+  // ── OBS ──────────────────────────────────────────────────────
+  const obs = new OBSWS();
+  let obsScenes = [], studioMode = false;
+  obs.onstate = s => { if (s === 'closed' || s === 'error') setObsUI(false); };
+
+  $('obsPort').value = store.get('obs_port', '4455');
+  $('obsPass').value = store.get('obs_pass', '');
+  $('obsTrans').checked = store.get('obs_trans', '') === '1';
+
+  function toggleObsPanel() { $('obspanel').classList.toggle('show'); }
+
+  async function toggleObs() {
+    if (obs.connected) { obs.close(); setObsUI(false); return; }
+    const port = ($('obsPort').value || '4455').trim(), pass = $('obsPass').value || '';
+    store.set('obs_port', port); store.set('obs_pass', pass); store.set('obs_trans', $('obsTrans').checked ? '1' : '');
+    $('obsSt').textContent = 'conectando…'; $('obsBtn').disabled = true;
+    try {
+      await obs.connect('ws://127.0.0.1:' + port, pass);
+      const g = await obs.getScenes(); obsScenes = g.scenes; studioMode = await obs.getStudioMode();
+      setObsUI(true); $('obsSt').textContent = obsScenes.length + ' escenas' + (studioMode ? ' · modo estudio' : '');
+      refreshSceneSels();
+    } catch (e) { $('obsSt').textContent = 'error: ' + (e.message || e); setObsUI(false); }
+    $('obsBtn').disabled = false;
+  }
+
+  function setObsUI(on) {
+    $('obschip').classList.toggle('on', on);
+    $('obsChipTxt').textContent = 'OBS: ' + (on ? 'conectado' : 'off');
+    $('obsBtn').textContent = on ? 'Desconectar' : 'Conectar OBS';
+    $('obsBtn').classList.toggle('dis', on);
+    if (!on) { $('obsSt').textContent = $('obsSt').textContent || ''; Object.values(tiles).forEach(t => { if (t.sel) t.sel.style.display = 'none'; }); }
+  }
+
+  function autoMatch(name) {
+    const N = name.toUpperCase();
+    return obsScenes.find(s => s.toUpperCase().includes(N) || N.includes(s.toUpperCase())) || '';
+  }
+  function refreshSceneSels() {
+    Object.values(tiles).forEach(t => {
+      if (!t.sel) return;
+      if (!obs.connected || !obsScenes.length) { t.sel.style.display = 'none'; return; }
+      const chosen = sceneMap[t.name] || autoMatch(t.name);
+      t.sel.innerHTML = '<option value="">— escena OBS —</option>' + obsScenes.map(s => `<option ${s === chosen ? 'selected' : ''}>${s.replace(/</g, '&lt;')}</option>`).join('');
+      t.sel.style.display = '';
+    });
+  }
+  async function switchObsScene() {
+    if (!obs.connected || !program || !tiles[program]) return;
+    const scene = sceneMap[tiles[program].name] || autoMatch(tiles[program].name);
+    if (!scene) return;
+    try {
+      if ($('obsTrans').checked && studioMode) { await obs.setPreviewScene(scene); await obs.studioTransition(); }
+      else await obs.setProgramScene(scene);
+    } catch (e) { $('obsSt').textContent = 'OBS: ' + (e.message || e); }
+  }
+
+  // ── LiveKit / switcher web ───────────────────────────────────
+  try { const s = (params.get('sala') || '').toUpperCase(); if (s) { $('sala').value = s; entrar(); } } catch (e) {}
+
+  async function entrar(){
+    sala = ($('sala').value || '').trim().toUpperCase();
+    if (!sala) { $('sala').focus(); return; }
+    $('gate').classList.add('hide');
+    try {
+      room = await MXLK.connect({ room: sala, identity: myId, name: 'switcher', role: 'switch' });
+    } catch (e) { alert('No se pudo conectar: ' + (e.message || e)); return; }
+
+    room.on(LK.RoomEvent.TrackSubscribed, onSub);
+    room.on(LK.RoomEvent.TrackUnsubscribed, (t, p, part) => { if (t.kind === LK.Track.Kind.Video) removeTile(part.identity); });
+    room.on(LK.RoomEvent.ParticipantDisconnected, p => removeTile(p.identity));
+    setInterval(broadcast, 3000);
+
+    room.remoteParticipants.forEach(p => {
+      p.trackPublications.forEach(pub => { if (pub.kind === LK.Track.Kind.Video && pub.track) onSub(pub.track, pub, p); });
+    });
+
+    // Auto-conectar OBS si hay credenciales guardadas.
+    if (store.get('obs_pass', '') || store.get('obs_port', '')) { toggleObs(); }
+  }
+
+  function onSub(track, pub, participant){
+    if (track.kind !== LK.Track.Kind.Video) return;
+    let t = tiles[participant.identity];
+    if (!t){
+      const el = document.createElement('div'); el.className = 'cam';
+      el.innerHTML = `<video autoplay playsinline muted></video>
+        <select class="scene-sel"></select>
+        <span class="badge"><span class="d"></span>AL AIRE</span>
+        <span class="nm"></span>`;
+      const nm = participant.name || participant.identity;
+      el.querySelector('.nm').textContent = nm;
+      const sel = el.querySelector('.scene-sel');
+      sel.onclick = ev => ev.stopPropagation();
+      sel.onchange = () => { sceneMap[nm] = sel.value; saveMap(); };
+      el.onclick = () => setProgram(participant.identity);
+      $('grid').appendChild(el);
+      t = tiles[participant.identity] = { el, video: el.querySelector('video'), name: nm, sel };
+      refreshSceneSels();
+    }
+    track.attach(t.video);
+    if (!program) setProgram(participant.identity); else render();
+    counts();
+  }
+
+  function setProgram(id){
+    program = id; render(); broadcast();
+    if (id) switchObsScene();
+  }
+
+  function render(){
+    Object.entries(tiles).forEach(([k, t]) => t.el.classList.toggle('air', k === program));
+    $('negBtn').classList.toggle('on', !program);
+    $('airName').textContent = program && tiles[program] ? tiles[program].name : '— negro —';
+  }
+
+  function removeTile(identity){ const t = tiles[identity]; if (!t) return; t.el.remove(); delete tiles[identity]; if (program === identity) program = null; render(); broadcast(); counts(); }
+
+  function broadcast(){
+    if (!room) return;
+    try { room.localParticipant.publishData(new TextEncoder().encode(JSON.stringify({ t: 'wall', approved: Object.keys(tiles), program })), { reliable: true }); } catch (e) {}
+  }
+
+  function counts(){ $('empty').style.display = Object.keys(tiles).length ? 'none' : ''; }
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Estudio Multicam · Fiesta</title>
+<style>
+  :root{--bg:#0a0510;--card:#170d22;--borde:#2e1b3f;--gris:#a99bb8;--rosa:#ff3d8b;--morado:#8b5cf6;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:radial-gradient(circle at 50% 0%,#1a0e2a,#0a0510 70%);color:#fff;font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px;}
+  .wrap{max-width:440px;width:100%;text-align:center;}
+  .spark{font-size:2rem;}
+  h1{font-size:2rem;font-weight:900;letter-spacing:.5px;margin-top:4px;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{color:var(--gris);font-size:.95rem;margin:6px 0 22px;}
+  label{font-size:.72rem;color:var(--gris);text-transform:uppercase;letter-spacing:1.5px;display:block;margin-bottom:7px;text-align:left;}
+  input{width:100%;background:#0d0715;border:1px solid var(--borde);color:#fff;padding:15px;border-radius:13px;font-size:1.15rem;text-align:center;letter-spacing:4px;text-transform:uppercase;font-family:ui-monospace,monospace;font-weight:800;margin-bottom:18px;}
+  .roles{display:flex;flex-direction:column;gap:12px;}
+  a.role{display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff;background:var(--card);border:1px solid var(--borde);border-radius:15px;padding:16px 18px;text-align:left;transition:border-color .15s,transform .1s;}
+  a.role:active{transform:scale(.99);}
+  a.role:hover{border-color:var(--morado);}
+  a.role.go{background:linear-gradient(90deg,rgba(255,61,139,.16),rgba(139,92,246,.16));border-color:var(--rosa);}
+  .emoji{font-size:1.7rem;width:34px;text-align:center;}
+  .rt{font-weight:800;font-size:1.05rem;}
+  .rd{font-size:.8rem;color:var(--gris);margin-top:2px;}
+  .foot{color:#5a4a6b;font-size:.74rem;margin-top:22px;}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="spark">✦</div>
+    <h1>Estudio Multicam</h1>
+    <div class="sub">Feeds en vivo de la gente a las pantallas de la fiesta.</div>
+
+    <label>Código de la fiesta</label>
+    <input id="sala" value="FIESTA" maxlength="16" oninput="upd()" />
+
+    <div class="roles">
+      <a class="role go" id="l-cam"><span class="emoji">📱</span><span><div class="rt">Transmitir</div><div class="rd">Tu cámara sale en las pantallas</div></span></a>
+      <a class="role" id="l-muro"><span class="emoji">🖥️</span><span><div class="rt">Muro</div><div class="rd">La pantalla/proyector del evento</div></span></a>
+      <a class="role" id="l-mod"><span class="emoji">🎛️</span><span><div class="rt">Moderador</div><div class="rd">Aprueba qué feeds salen al muro</div></span></a>
+    </div>
+
+    <div class="foot">Cada quien por su 4G o la WiFi del evento · en vivo</div>
+  </div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  function sala(){ return ($('sala').value || 'FIESTA').trim().toUpperCase(); }
+  function upd(){
+    const s = encodeURIComponent(sala());
+    $('l-cam').href  = '/cam-fiesta?sala=' + s;
+    $('l-muro').href = '/muro?sala=' + s;
+    $('l-mod').href  = '/moderador?sala=' + s;
+  }
+  try { const q = new URL(location.href).searchParams.get('sala'); if (q) $('sala').value = q.toUpperCase(); } catch (e) {}
+  upd();
+</script>
+</body>
+</html>

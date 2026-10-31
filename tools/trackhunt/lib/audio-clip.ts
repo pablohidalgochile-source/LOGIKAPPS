@@ -1,5 +1,8 @@
+import { MAX_LOCAL_AUDIO_BYTES, MAX_LOCAL_AUDIO_SECONDS, mediaDuration } from "./audio-quality";
+
 export async function makeAudioClip(file: File, start: number): Promise<Blob> {
-  if (file.size > 25 * 1024 * 1024) throw new Error("Elige un archivo de hasta 25 MB o recorta un fragmento primero.");
+  if (file.size > MAX_LOCAL_AUDIO_BYTES) throw new Error("Elige un archivo de hasta 120 MB. La aplicación Mac admitirá bibliotecas y archivos mayores.");
+  if (await mediaDuration(file) > MAX_LOCAL_AUDIO_SECONDS) throw new Error("Para proteger la memoria del navegador, usa una canción o fragmento de hasta 20 minutos.");
   const context = new AudioContext();
   try {
     const decoded = await context.decodeAudioData(await file.arrayBuffer());

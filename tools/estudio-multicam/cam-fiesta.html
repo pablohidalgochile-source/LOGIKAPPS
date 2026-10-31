@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Transmitir · Fiesta</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<script src="mx-core.js"></script>
+<style>
+  :root{--bg:#0a0510;--card:#170d22;--borde:#2e1b3f;--gris:#a99bb8;--rosa:#ff3d8b;--morado:#8b5cf6;--verde:#22d37a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:radial-gradient(circle at 50% 0%,#1a0e2a,#0a0510 70%);color:#fff;font-family:'Inter',system-ui,sans-serif;min-height:100vh;padding:18px;display:flex;flex-direction:column;}
+  .wrap{max-width:480px;margin:0 auto;width:100%;flex:1;display:flex;flex-direction:column;}
+  h1{font-size:1.5rem;font-weight:900;letter-spacing:.5px;background:linear-gradient(90deg,var(--rosa),var(--morado));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .sub{color:var(--gris);font-size:.9rem;margin:4px 0 18px;}
+  .card{background:var(--card);border:1px solid var(--borde);border-radius:16px;padding:18px;margin-bottom:14px;}
+  #live{flex-direction:column;}
+  label{font-size:.72rem;color:var(--gris);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px;}
+  input{width:100%;background:#0d0715;border:1px solid var(--borde);color:#fff;padding:14px;border-radius:12px;font-family:inherit;font-size:1rem;margin-bottom:12px;}
+  #sala{text-transform:uppercase;letter-spacing:3px;font-weight:800;text-align:center;font-family:ui-monospace,monospace;}
+  button{font-family:inherit;font-weight:800;border:0;border-radius:14px;padding:16px;cursor:pointer;width:100%;font-size:1.05rem;}
+  .b-go{background:linear-gradient(90deg,var(--rosa),var(--morado));color:#fff;box-shadow:0 8px 30px rgba(255,61,139,.35);}
+  .b-go:disabled{opacity:.5;}
+  .b-flip{background:#0d0715;border:1px solid var(--borde);color:var(--gris);width:auto;padding:14px 16px;}
+  .row{display:flex;gap:10px;align-items:stretch;}
+  .vwrap{position:relative;border-radius:14px;overflow:hidden;flex:1;display:flex;flex-direction:column;}
+  #video{width:100%;background:#000;flex:1;min-height:320px;object-fit:cover;display:block;transform:scaleX(1);}
+  #tally{position:absolute;top:12px;left:12px;display:none;align-items:center;gap:7px;font-weight:900;font-size:.8rem;letter-spacing:1px;padding:7px 12px;border-radius:9px;}
+  #tally.live{display:inline-flex;background:var(--verde);color:#04120a;}
+  #tally .d{width:9px;height:9px;border-radius:50%;background:#04120a;animation:pl 1.4s infinite;}
+  @keyframes pl{0%{opacity:1;}50%{opacity:.3;}100%{opacity:1;}}
+  .status{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.92rem;margin:12px 0;justify-content:center;}
+  .dot{width:11px;height:11px;border-radius:50%;background:var(--gris);}
+  .dot.on{background:var(--verde);} .dot.wait{background:#f0c84a;} .dot.err{background:var(--rosa);}
+  .foot{color:var(--gris);font-size:.76rem;text-align:center;margin-top:auto;padding-top:14px;}
+  .warn{background:#2a0f1c;border:1px solid #5a2036;color:#ffb3cf;font-size:.8rem;padding:10px 12px;border-radius:11px;margin-bottom:12px;display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>✦ Transmite a la fiesta</h1>
+  <div class="sub">Tu cámara sale en las pantallas del evento. En vivo.</div>
+  <div class="warn" id="warn">⚠️ Falta configurar el servidor (LIVEKIT_TOKEN_URL).</div>
+
+  <div class="card" id="setup">
+    <label>Código de la fiesta</label>
+    <input id="sala" placeholder="FIESTA" maxlength="16" />
+    <label>Tu nombre (opcional)</label>
+    <input id="nombre" placeholder="Ej: Cami, la mesa 4, el DJ…" maxlength="24" />
+    <button class="b-go" id="go" onclick="transmitir()">● TRANSMITIR</button>
+  </div>
+
+  <div class="card" id="live" style="display:none;flex:1;">
+    <div class="vwrap">
+      <video id="video" autoplay playsinline muted></video>
+      <div id="tally"><span class="d"></span>EN VIVO</div>
+    </div>
+    <div class="status"><span class="dot" id="dot"></span><span id="st">Conectando…</span></div>
+    <div class="row">
+      <button class="b-flip" onclick="flip()">🔄 Girar cámara</button>
+      <button class="b-go" style="background:#2a0f1c;color:#ffb3cf;box-shadow:none;" onclick="cortar()">■ Salir</button>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">Apunta a la pista, al escenario, a tus amigos ✨</div>
+</div>
+
+<script>
+  const { wakeOn, wakeOff } = MX;
+  const LK = window.LivekitClient;
+  const camId = 'cam-' + Math.random().toString(36).slice(2, 9);
+  let room = null, vTrack = null, sala = '', nombre = '', facing = 'environment';
+  const $ = id => document.getElementById(id);
+
+  if (!window.MX_CONFIG || !MX_CONFIG.LIVEKIT_TOKEN_URL) $('warn').style.display = 'block';
+  try { const u = new URL(location.href); const s = u.searchParams.get('sala'); if (s) $('sala').value = s.toUpperCase(); } catch (e) {}
+
+  async function openCam(){
+    if (vTrack) { try { vTrack.stop(); } catch (e) {} vTrack = null; }
+    // Captura 720p + simulcast: el muro usa capas bajas (liviano) y el PROGRAMA
+    // pide la alta. Con dynacast, solo la cámara destacada sube 720p; el resto,
+    // al estar solo en el muro (capa baja), sube liviano.
+    const [t] = await LK.createLocalTracks({ video: { resolution: LK.VideoPresets.h720.resolution, facingMode: facing }, audio: false });
+    vTrack = t; vTrack.attach($('video'));
+    $('video').style.transform = facing === 'user' ? 'scaleX(-1)' : 'none';
+  }
+  const PUB_OPTS = { simulcast: true, videoCodec: 'vp8' };
+
+  async function transmitir(){
+    sala = ($('sala').value || '').trim().toUpperCase();
+    nombre = ($('nombre').value || '').trim() || 'Invitad@';
+    if (!sala) { alert('Pon el código de la fiesta'); return; }
+    if (!MX_CONFIG.LIVEKIT_TOKEN_URL) { alert('El servidor no está configurado.'); return; }
+    $('go').disabled = true;
+
+    try { await openCam(); }
+    catch (e) { alert('No se pudo abrir la cámara: ' + (e.message || e)); $('go').disabled = false; return; }
+
+    $('setup').style.display = 'none'; $('live').style.display = 'flex'; $('foot').style.display = 'none';
+    wakeOn();
+
+    try {
+      room = await MXLK.connect({ room: sala, identity: camId, name: nombre, role: 'cam' });
+    } catch (e) { alert('No se pudo conectar: ' + (e.message || e)); setEstado('err', 'Error de conexión'); $('go').disabled = false; return; }
+
+    room.on(LK.RoomEvent.Reconnecting, () => setEstado('wait', 'Reconectando…'));
+    room.on(LK.RoomEvent.Reconnected, () => setEstado('on', 'En vivo'));
+    room.on(LK.RoomEvent.Disconnected, () => setEstado('err', 'Desconectado'));
+
+    try {
+      await room.localParticipant.publishTrack(vTrack, PUB_OPTS);
+      setEstado('on', 'En vivo'); $('tally').classList.add('live');
+    } catch (e) { setEstado('err', 'No se pudo publicar: ' + (e.message || e)); }
+  }
+
+  async function flip(){
+    facing = facing === 'environment' ? 'user' : 'environment';
+    try {
+      await openCam();
+      if (room) { const pub = [...room.localParticipant.videoTrackPublications.values()][0]; if (pub) { try { await room.localParticipant.unpublishTrack(pub.track); } catch(e){} } await room.localParticipant.publishTrack(vTrack, PUB_OPTS); }
+    } catch (e) {}
+  }
+
+  function setEstado(cls, txt){ $('dot').className = 'dot ' + cls; $('st').textContent = txt; }
+
+  async function cortar(){
+    wakeOff();
+    try { if (room) await room.disconnect(); } catch (e) {}
+    try { vTrack && vTrack.stop(); } catch (e) {}
+    location.reload();
+  }
+</script>
+</body>
+</html>

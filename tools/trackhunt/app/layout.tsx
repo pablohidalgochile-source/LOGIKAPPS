@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Trackhunt — Encuentra la próxima versión",
-  description: "Identifica una canción por nombre, enlace o audio y explora sus remixes, edits, flips y extendeds en SoundCloud y Bandcamp.",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const requestHeaders = await headers();
+  const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
+  const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
+  const imageUrl = `${protocol}://${host}/og.png`;
+  const title = "Trackhunt — Versiones, sets y mejor calidad";
+  const description = "Identifica canciones, explora remixes, convierte tracklists y busca la misma grabación en fuentes oficiales de mejor calidad.";
+
+  return {
+    title,
+    description,
+    icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+    openGraph: { title, description, images: [imageUrl], type: "website" },
+    twitter: { card: "summary_large_image", title, description, images: [imageUrl] },
+  };
+}
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

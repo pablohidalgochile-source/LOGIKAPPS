@@ -506,7 +506,7 @@ test('packs reject unsafe or incomplete manifests and render supplied text safel
 });
 
 
-test('release catalogue exposes all four packs and native connection forms without personal imports', async () => {
+test('release catalogue exposes all six packs and native connection forms without personal imports', async () => {
   const sandbox = { window: {} };
   for (const name of ['packs', 'discover']) vm.runInNewContext(fs.readFileSync(path.join(root, 'web', name + '-catalog.js'), 'utf8'), sandbox);
   const packs = sandbox.window.LOGIKAPPS_PACKS;
@@ -520,4 +520,35 @@ test('release catalogue exposes all four packs and native connection forms witho
   h.api.connectDiscover('pack-design-teatina');
   assert.match(h.get('#dialog-content').innerHTML, /value="app" selected/);
   assert.equal(h.get('#app-target').value, '');
+});
+
+test('confirmed logos render locally and untrusted logo URLs fall back to icons', () => {
+  const h = harness();
+  vm.runInNewContext(fs.readFileSync(path.join(root, 'web/identities.js'), 'utf8'), { window: h.window });
+  for (const name of ['Elephant', 'Trueke']) {
+    assert.match(h.api.appCard(app({ name })), /class="app-icon confirmed-logo"/);
+    assert.match(h.api.appCard(app({ name })), /src="data:image\/png;base64,/);
+  }
+  h.window.LOGIKAPPS_LOGOS.elephant = 'https://untrusted.example/logo.png';
+  assert.doesNotMatch(h.api.appCard(app({ name: 'Elephant' })), /untrusted|confirmed-logo/);
+});
+
+test('prototype and setup requirements survive adding or connecting a public tool', async () => {
+  for (const stage of ['prototype', 'setup']) {
+    const h = harness({ discover: [sharedTool({ stage, version: '0.1 beta', logoPending: true })] });
+    assert.match(h.get('#main-content').innerHTML, /Logo pendiente de elección/);
+    assert.match(h.get('#main-content').innerHTML, /0.1 beta/);
+    await h.api.addDiscover('shared-web');
+    assert.equal(h.api.getState().apps[0].status, stage);
+    const local = harness({ discover: [sharedTool({ kind: 'download', stage, connectKind: 'command' })] });
+    local.api.connectDiscover('shared-web');
+    assert.ok(local.get('#dialog-content').innerHTML.includes(`value="${stage}" selected`));
+  }
+});
+
+test('legacy managed cleanup records retain their source and linked ideas', () => {
+  const previous = library([app({ kind: 'managed', target: 'limpieza-familiar', sourcePath: '/tmp/cleanup' })], [idea({ appId: 'one' })]);
+  const next = core.parseImport(core.serialize(core.validatedState(previous)));
+  assert.equal(next.apps[0].sourcePath, '/tmp/cleanup');
+  assert.equal(next.ideas[0].appId, 'one');
 });

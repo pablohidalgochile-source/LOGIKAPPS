@@ -10,7 +10,7 @@ OUTPUT = ROOT / 'dist' / 'FRATV-OBS-Pack-0.1.0-beta.zip'
 
 
 def package():
-    files = sorted(p for p in SOURCE.rglob('*') if p.is_file())
+    files = sorted(p for p in SOURCE.rglob('*') if p.is_file() and p.name != 'public-files.json')
     assert files, 'Missing FRATV resources'
     for path in files:
         assert not path.is_symlink(), 'Do not publish symlinks'

@@ -1,0 +1,12 @@
+[
+  "Elephant.swift",
+  "LEEME.md",
+  "VideoStudio.swift",
+  "assets/Elephant.icns",
+  "assets/elephant-icon.png",
+  "assets/elephant-logo.png",
+  "tests/test_pipeline.py",
+  "tests/test_video.py",
+  "video_worker.py",
+  "worker.py"
+]

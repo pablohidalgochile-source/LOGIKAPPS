@@ -1,16 +1,8 @@
-# Compilación y distribución de LOGIKAPPS
+# Compilación y distribución de LOGIKAPPS 0.6.0
 
-## Estado de la beta 0.5.1
+La release es `v0.6.0-beta.1`. El DMG universal funciona en macOS 13+, Apple Silicon e Intel. `release.json` enumera los seis packs y los archivos publicados. El catálogo personal incluido es vacío; Explorar y Packs son catálogos públicos estáticos. No hay actualización remota automática.
 
-El paquete se prepara como DMG universal para macOS 13 o posterior, con ejecutables arm64 y x86_64. La entrega se identifica por la etiqueta `v0.5.1-beta.1`; consulta la Release para descargar sus archivos.
-
-`catalog.json` sigue siendo `[]`: inicia una biblioteca personal vacía. `web/discover-catalog.js` contiene **Explorar** y `web/packs-catalog.js` contiene **Packs de apps**, con sus herramientas, guías resumidas y enlaces de descarga. Ambos son catálogos públicos estáticos separados de los accesos, rutas, ideas y favoritos personales. Con una biblioteca vacía se abre Packs de apps; las bibliotecas existentes se conservan. Cambiar los catálogos requiere compilar y distribuir una nueva versión; no hay actualización remota ni instalación de herramientas en segundo plano.
-
-Sin variables de firma, la app usa firma **ad-hoc** y el contenedor DMG queda sin firma propia, sin Developer ID y sin notarización. La verificación local de `codesign` no equivale a la aceptación de Gatekeeper. Los metadatos de la app y el archivo `.dmg.metadata.json` declaran el estado real: `signature` se refiere a la app, `diskImageSignature` al contenedor y `notarization` al envío a Apple.
-
-## Verificar una entrega
-
-Desde la raíz del proyecto, en macOS:
+## Verificación local
 
 ```bash
 node --test tests/*.test.cjs
@@ -22,46 +14,23 @@ python3 scripts/check-packs.py
 .build/LOGIKAPPS.app/Contents/MacOS/LOGIKAPPS --self-test
 /bin/bash scripts/check-package.sh
 /bin/bash scripts/create-dmg.sh
-cd dist
-shasum -a 256 -c LOGIKAPPS-0.5.1-macos-universal.dmg.sha256
-shasum -a 256 -c LOGIKAPPS-Pack-DJ-0.2.0-beta.zip.sha256
-shasum -a 256 -c LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip.sha256
 ```
 
-La compilación comprueba que existan los archivos necesarios, incluidos `web/discover-catalog.js` y `web/packs-catalog.js`, y que el icono corresponda al SVG. Compila ambas arquitecturas, las reúne con `lipo` y verifica la firma. `check-package.sh` comprueba versión, macOS mínimo, arquitecturas, biblioteca personal vacía, presencia de los catálogos Explorar y Packs de apps y coincidencia con sus fuentes, además de la ausencia de rutas personales de compilación en el ejecutable. Los metadatos del DMG distinguen la biblioteca personal inicial vacía de los catálogos públicos incluidos.
+Las listas public-files.json delimitan cada fuente. El empaquetador rechaza enlaces simbólicos, entornos privados, datos y patrones de secretos o rutas personales. Los ZIP nativos de entrada tienen hashes de cada miembro: Teatina y FrateIA conservan las entradas revisadas; Elephant se reconstruye con scripts/build-elephant.sh y su ZIP revisado queda en packs/design. Los modelos y motores opcionales de IA no están incluidos.
 
-El identificador `buildID` usa hashes de archivos con rutas relativas, la versión del compilador y SDK y el modo de firma. El mismo contenido y las mismas herramientas reutilizan la app y el DMG ya verificados. Esto no promete DMG idénticos byte por byte entre máquinas: el sistema de archivos del instalador y las firmas pueden incorporar metadatos. Las versiones anteriores se conservan en `.build/previous/` y `dist/previous/` cuando cambia el contenido.
+TRACKHUNT usa SQLite local, sin D1 ni credenciales Cloudflare. Su número portable es 0.2.0 beta; no se confunde con el contador de publicaciones del sitio web. Tras npm ci y npm run build en tools/trackhunt, ejecuta npm test. Orgalina, Mi Talla y Club Santa Cruz tienen pruebas propias. Subtitle Translator Pro se prepara con build --no-lint, conservando la comprobación TypeScript; su proyecto original no aporta configuración ESLint autónoma.
 
-## Comprobar la ventana real
+## Ventana real y recuperación
 
-Esta prueba requiere una sesión gráfica de macOS iniciada. No cuenta como superada si se omite en un servidor sin escritorio. Usa una carpeta temporal separada de los datos personales:
+En una sesión gráfica, usa LOGIKAPPS_DATA_DIR dentro de una carpeta temporal separada. Ejecuta --ui-smoke-test, --ui-smoke-test --embedded-startup, --ui-smoke-test --simulate-file-load-failure y --ui-startup-error-test. Comprueban los seis packs y 25 fichas, logos, puente nativo, edición, conservación de datos y recuperación. No se ejecutan contra la biblioteca personal.
 
-```bash
-LOGIKAPPS_TEST_DIR="$(mktemp -d "${TMPDIR:-/tmp}/logikapps-ui.XXXXXX")"
-LOGIKAPPS_DATA_DIR="$LOGIKAPPS_TEST_DIR" \
-  .build/LOGIKAPPS.app/Contents/MacOS/LOGIKAPPS --ui-smoke-test
-```
+La alternativa incorpora scripts, estilos e imágenes confirmadas desde el bundle, con CSP nonce sin red. Si no puede arrancar, aparece una pantalla nativa de recuperación y diagnóstico sin datos privados. La prueba local no sustituye una prueba física en el Mac que reportó la ventana negra.
 
-Comprueba el resultado JSON y el código de salida. Además, antes de publicar, abre el DMG, copia la app a una ubicación de prueba y comprueba que aparezcan los cuatro packs: DJ con seis fichas, Fraternidad con cinco, Diseño con dos e IA con tres y que Mis apps siga separada. Revisa también Explorar. Comprueba los enlaces de descarga después de subir sus archivos a la Release. Prueba también la actualización desde una biblioteca temporal vacía y otra con accesos, favoritos e ideas; deben conservarse. Recorre agregar/editar/eliminar un acceso y abrir una app instalada, una carpeta y una web conocida. No incluyas capturas ni respaldos con datos personales en el repositorio.
+## Publicación
 
-## CI de GitHub
+GitHub Actions compila y comprueba macOS Apple Silicon e Intel. Además valida los packs, las pruebas de interfaz y las herramientas DJ sin dependencias externas. Las pruebas gráficas se realizan localmente porque requieren sesión de escritorio. El workflow no publica releases automáticamente.
 
-`.github/workflows/check.yml` se ejecuta en push, pull request y a pedido. Usa runners macOS 15 Apple Silicon e Intel, ejecuta las pruebas JavaScript de `tests/*.test.cjs` y las nativas. En un paso separado comprueba NANOOK VIDEO, VJ/LAB y Hit Lab sin instalar dependencias. TRACKHUNT se comprueba localmente con sus dependencias preparadas. El workflow prepara los ZIP individuales de Surco y FRATV y los packs DJ, Fraternidad, Diseño e IA y Equipo mediante `scripts/package-packs.py`, compila el universal y valida el paquete. Adjunta el DMG, sus metadatos, los seis ZIP y sus sumas de comprobación como artefactos de la ejecución durante 14 días. Solo solicita `contents: read`, no conserva credenciales del checkout, no recibe secretos de firma y no publica Releases automáticamente.
-
-Los ZIP se publican por separado del DMG:
-
-- `LOGIKAPPS-Pack-DJ-0.2.0-beta.zip`: cinco herramientas, sus lanzadores y `EMPIEZA-AQUI.html`. Requiere preparar Python, Node.js o componentes de audio/video según el LEEME o LEER-PRIMERO de cada herramienta. No instala dependencias automáticamente.
-- `LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip`: `GUIA.html`, manifiesto y cinco accesos `.webloc` a los servicios oficiales. No incluye código privado, credenciales ni permisos de uso.
-- `Surco-0.1.0-beta.zip`: descarga individual de Surco y su LEEME.
-- `FRATV-OBS-Pack-0.1.0-beta.zip`: gráficas HTML para OBS y su guía.
-
-`package-packs.py` usa listas explícitas de archivos revisados. Rechaza rutas ajenas, enlaces simbólicos, archivos de entorno privados y patrones conocidos de secretos o rutas personales. Estos controles acompañan la revisión del contenido; no sustituyen la inspección antes de publicar. Las fuentes de los packs no se obtienen de carpetas personales durante la compilación.
-
-Las fichas deben enlazar nombres exactos de archivos publicados. Las descargas individuales existentes pueden conservar enlaces a la Release anterior; comprueba también que sigan disponibles. Para `v0.5.1-beta.1`, conserva los packs publicados en `v0.5.0-beta.1` y sube únicamente el DMG actualizado, sus metadatos y su SHA-256.
-
-La prueba gráfica anterior se realiza localmente y se informa por separado. Los artefactos de Actions sirven para revisión; para colegas utiliza una Release pública, cuyo enlace no exige acceso a una ejecución autenticada. La publicación prevista es una **prerelease** con etiqueta `v0.5.1-beta.1`. Una vez publicada, se enlaza por su etiqueta porque `/releases/latest` puede excluir las versiones preliminares. Verifica los archivos y sus enlaces antes de anunciar la descarga.
-
-Las acciones están fijadas por SHA a versiones verificadas en sus repositorios oficiales: [checkout 7.0.1](https://github.com/actions/checkout/releases/tag/v7.0.1), [setup-node 7.0.0](https://github.com/actions/setup-node/releases/tag/v7.0.0) y [upload-artifact 7.0.1](https://github.com/actions/upload-artifact/releases/tag/v7.0.1). La matriz usa las [etiquetas de runners documentadas por GitHub](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+Publica el DMG, sus metadatos y SHA-256; los seis packs de release.json y sus SHA-256; las descargas individuales de Surco y FRATV. Verifica cada enlace después de subir los archivos. Usa la etiqueta explícita de la prerelease; releases/latest puede omitir betas.
 
 ## Firma Developer ID y notarización opcionales
 
@@ -88,17 +57,3 @@ El icono ICNS incluido permite compilar en CI sin arrancar WebKit. Su hash de or
 ```
 
 Incluye en el mismo commit el SVG, `scripts/assets/LOGIKAPPS.icns` y `scripts/assets/icon-source.sha256`. El helper no forma parte de la app distribuida.
-
-## Aplicaciones nativas incluidas como entradas revisadas
-
-`packs/design` y `packs/ia` contienen únicamente ZIP de las apps, sus guías y un manifiesto `binary-review.json` con SHA-256 de cada miembro. El empaquetador valida hashes, rutas, permisos ejecutables y patrones conocidos de secretos también dentro de estos ZIP. No vuelve a compilar esas apps ni incluye sus proyectos personales. Taller Teatina conserva su ejecutable 0.4.0; de FrateIA 0.3.1 se retiraron símbolos de depuración con rutas de compilación y se renovaron sus firmas locales. Estos cambios de distribución no añaden funciones ni certificación Apple. Las firmas se validaron después de extraer las copias preparadas.
-
-La guía HTML del DMG forma parte del identificador de compilación. No se distribuyen datos de biblioteca, sesiones, modelos ni claves del titular.
-
-## Pruebas de apertura de 0.5.1
-
-Además de la prueba normal, ejecuta `--ui-smoke-test --embedded-startup` para comprobar la interfaz integrada y `--ui-smoke-test --simulate-file-load-failure` para inyectar una denegación de lectura y probar la recuperación automática real. `--ui-startup-error-test` utiliza una carpeta de interfaz inexistente y comprueba que aparece la recuperación nativa y que el diagnóstico no contiene rutas personales. Todos estos modos exigen LOGIKAPPS_DATA_DIR en una subcarpeta temporal; nunca se ejecutan contra una biblioteca real.
-
-El arranque tiene una espera máxima de 12 segundos por intento. La alternativa incorpora scripts, estilos y logo revisados desde el bundle y usa una CSP con nonce, sin unsafe-inline, sin red y sin lectura de archivos desde WebKit. No concede acceso nuevo al puente: solo se admiten la página propia normalizada y about:blank durante la carga integrada. Se eliminaron los ajustes privados de transparencia de WKWebView. Las fallas y la terminación de su proceso tienen una pantalla nativa; no se asume que esa sea la causa del equipo reportado.
-
-Los packs conservan las descargas verificadas de v0.5.0-beta.1. La corrección v0.5.1-beta.1 publica solo el DMG actualizado, metadatos y SHA-256; no cambia los binarios de las herramientas.

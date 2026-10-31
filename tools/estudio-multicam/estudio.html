@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ESTUDIO · Multicam</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="config.js"></script>
+<script src="mx-core.js"></script>
+<style>
+  :root{--bg:#08080a;--panel:#101014;--panel2:#16161c;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--ink:#f2f0f4;--dim:#8b8892;--faint:#5a5862;--air:#ff3040;--prev:#22d37a;--gold:#f0c84a;--blue:#4d8dff;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,-apple-system,sans-serif;overflow:hidden;-webkit-font-smoothing:antialiased;}
+  .app{display:flex;flex-direction:column;height:100vh;}
+  .top{display:flex;align-items:center;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#101015,#0b0b0e);}
+  .logo{font-weight:900;letter-spacing:3px;font-size:1.05rem;} .logo b{color:var(--air);}
+  .tag{font-size:.62rem;letter-spacing:2px;color:var(--faint);text-transform:uppercase;border:1px solid var(--line2);padding:3px 8px;border-radius:6px;}
+  .live{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:.8rem;color:var(--air);letter-spacing:1px;}
+  .live .dot{width:9px;height:9px;border-radius:50%;background:var(--air);animation:pulse 1.5s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,48,64,.6);}70%{box-shadow:0 0 0 9px rgba(255,48,64,0);}100%{box-shadow:0 0 0 0 rgba(255,48,64,0);}}
+  .room{margin-left:auto;display:flex;align-items:center;gap:8px;}
+  .room .k{font-size:.6rem;letter-spacing:2px;color:var(--faint);text-transform:uppercase;}
+  .room .code{font-family:ui-monospace,monospace;font-weight:800;letter-spacing:3px;font-size:1.15rem;color:var(--gold);background:#0d0d10;border:1px solid var(--line2);padding:5px 12px;border-radius:8px;}
+  .cnt{font-size:.8rem;color:var(--dim);}
+  .stage{flex:1;padding:16px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:14px;min-height:0;}
+  .stage.n1{grid-template-columns:1fr;grid-template-rows:1fr;} .stage.n2{grid-template-columns:1fr 1fr;grid-template-rows:1fr;}
+  .stage.n3,.stage.n4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+  .stage.n5,.stage.n6{grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;}
+  .stage.n7,.stage.n8,.stage.n9{grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;}
+  .cam{position:relative;border-radius:14px;overflow:hidden;background:#000;border:2px solid var(--line);box-shadow:0 10px 40px rgba(0,0,0,.5);cursor:pointer;transition:border-color .12s,box-shadow .12s;}
+  .cam.prev{border-color:var(--prev);box-shadow:0 0 0 1px var(--prev),0 0 26px rgba(34,211,122,.28);}
+  .cam.prog{border-color:var(--air);box-shadow:0 0 0 1px var(--air),0 0 34px rgba(255,48,64,.4);}
+  .cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;}
+  .ov{position:absolute;inset:0;padding:11px 13px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;}
+  .ov-top{display:flex;align-items:flex-start;justify-content:space-between;}
+  .badge{font-size:.62rem;font-weight:800;letter-spacing:1.5px;padding:4px 9px;border-radius:6px;backdrop-filter:blur(4px);}
+  .b-cam{background:rgba(0,0,0,.5);border:1px solid var(--line2);color:#fff;}
+  .num{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;margin-right:6px;border-radius:5px;background:rgba(255,255,255,.12);font-family:ui-monospace,monospace;}
+  .stat{font-size:.58rem;font-weight:700;letter-spacing:.5px;color:#cfcdd4;background:rgba(0,0,0,.5);border:1px solid var(--line);padding:3px 7px;border-radius:6px;font-family:ui-monospace,monospace;}
+  .stat.bad{color:var(--air);border-color:var(--air);}
+  .ov-bot{display:flex;align-items:flex-end;justify-content:space-between;}
+  .name{font-weight:800;font-size:.98rem;text-shadow:0 2px 10px rgba(0,0,0,.8);pointer-events:auto;cursor:text;}
+  .tally{display:none;align-items:center;gap:5px;font-size:.62rem;font-weight:900;letter-spacing:1px;color:#fff;padding:4px 9px;border-radius:6px;}
+  .tally .d{width:8px;height:8px;border-radius:50%;background:#fff;}
+  .cam.prog .tally.t-prog{display:inline-flex;background:var(--air);}
+  .cam.prev .tally.t-prev{display:inline-flex;background:var(--prev);color:#04120a;}
+  .cam.prog .tally.t-prog .d{animation:pulse 1.5s infinite;}
+  .aud{font-size:.66rem;color:var(--dim);}
+  .empty{grid-column:1/-1;grid-row:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:var(--dim);text-align:center;border:2px dashed var(--line2);border-radius:16px;}
+  .empty .big{font-size:2rem;font-weight:900;color:var(--gold);letter-spacing:3px;font-family:ui-monospace,monospace;}
+  .qr{background:#fff;padding:12px;border-radius:12px;line-height:0;}
+  .qr svg{width:180px;height:180px;display:block;}
+  .dock{display:flex;align-items:center;gap:10px;padding:12px 18px;border-top:1px solid var(--line);background:linear-gradient(0deg,#101015,#0b0b0e);flex-wrap:wrap;}
+  .seg{display:flex;background:#0d0d11;border:1px solid var(--line2);border-radius:10px;overflow:hidden;}
+  .seg button{background:none;border:0;color:var(--dim);font-family:inherit;font-weight:700;font-size:.78rem;padding:9px 13px;cursor:pointer;}
+  .seg button.on{background:var(--panel2);color:#fff;}
+  .btn{font-family:inherit;font-weight:800;font-size:.82rem;border:1px solid var(--line2);background:#0d0d11;color:var(--ink);padding:10px 15px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;}
+  .btn:disabled{opacity:.4;cursor:not-allowed;}
+  .btn.ghost{color:var(--dim);}
+  .btn.take{background:var(--air);border-color:var(--air);color:#fff;font-size:.92rem;padding:11px 22px;letter-spacing:.5px;}
+  .btn.take:disabled{background:#2a1418;border-color:#3a1c20;color:#8a5560;}
+  .btn.prog{border-color:var(--blue);color:#bcd4ff;}
+  .btn.join{background:#151519;}
+  .sep{width:1px;height:26px;background:var(--line2);margin:0 4px;}
+  .pill{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.72rem;color:var(--dim);}
+  .pill b{color:#fff;}
+  .btn.rec{border-color:var(--air);color:#ff8a95;}
+  .btn.rec.on{background:var(--air);border-color:var(--air);color:#fff;}
+  .btn.rec .rdot{width:10px;height:10px;border-radius:50%;background:var(--air);}
+  .btn.rec.on .rdot{background:#fff;animation:pulse 1.5s infinite;}
+  .rtime{font-family:ui-monospace,monospace;font-weight:800;font-size:.82rem;color:#fff;display:none;}
+  .rtime.on{display:inline;}
+  .txtin{background:#0d0d11;border:1px solid var(--line2);color:#fff;font-family:inherit;font-size:.78rem;padding:8px 10px;border-radius:9px;width:150px;}
+  .chk{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;color:var(--dim);cursor:pointer;user-select:none;}
+  .chk input{width:auto;margin:0;accent-color:var(--air);}
+  /* Monitor PROGRAM (lo que sale a OBS/grabación) */
+  .pgmmon{position:fixed;right:16px;top:62px;width:280px;background:#000;border:2px solid var(--line2);border-radius:12px;overflow:hidden;box-shadow:0 14px 50px rgba(0,0,0,.6);z-index:40;}
+  .pgmmon.hide{display:none;}
+  .pgmmon .hd{display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#0b0b0e;border-bottom:1px solid var(--line);font-size:.62rem;font-weight:800;letter-spacing:2px;color:var(--dim);}
+  .pgmmon .hd .x{cursor:pointer;color:var(--faint);}
+  .pgmmon .hd .rp{display:none;align-items:center;gap:5px;color:var(--air);}
+  .pgmmon.recording .hd .rp{display:inline-flex;}
+  .pgmmon .hd .rp .d{width:7px;height:7px;border-radius:50%;background:var(--air);animation:pulse 1.5s infinite;}
+  .pgmmon canvas{width:100%;display:block;background:#000;}
+  .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;}
+  .modal.show{display:flex;}
+  .mbox{background:var(--panel);border:1px solid var(--line2);border-radius:18px;padding:26px;max-width:420px;width:100%;text-align:center;}
+  .mbox .code2{font-family:ui-monospace,monospace;font-weight:800;letter-spacing:4px;font-size:1.7rem;color:var(--gold);margin:8px 0;}
+  .mbox .qr{display:inline-block;margin:6px auto 4px;}
+  @media(max-width:640px){.stage{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:minmax(160px,1fr);}.tag,.pill{display:none;}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="logo"><b>●</b> ESTUDIO</div>
+    <div class="tag">Multicam</div>
+    <div class="live"><span class="dot"></span>EN VIVO</div>
+    <div class="room">
+      <span class="cnt" id="cnt">0 cámaras</span>
+      <span class="k">Sala</span>
+      <span class="code" id="code">…</span>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="empty" id="empty">
+      <div>📱 Esperando cámaras…</div>
+      <div class="qr" id="qr-empty"></div>
+      <div class="big" id="empty-code">…</div>
+      <div style="font-size:.85rem;">Escanea el QR con el iPhone,<br>o abre <b style="color:#fff;" id="camhost">…/cam</b> y escribe el código.<br>Todos en la misma WiFi.</div>
+    </div>
+  </div>
+
+  <div class="dock">
+    <div class="seg" id="proglay" title="Composición de la salida PROGRAM">
+      <button class="on" onclick="setProgLayout(this,'full')">▣ Full</button>
+      <button onclick="setProgLayout(this,'pip')">◲ PIP</button>
+      <button onclick="setProgLayout(this,'quad')">▦ 2×2</button>
+      <button onclick="setProgLayout(this,'franja')">▤ Franja</button>
+      <button onclick="setProgLayout(this,'spot')">◱ Spotlight</button>
+    </div>
+    <input class="txtin" id="franjaTxt" placeholder="Texto de la franja…" style="display:none;" oninput="franjaText=this.value" />
+    <div class="sep"></div>
+    <button class="btn take" id="take" onclick="take()" disabled>⤵ TOMAR</button>
+    <button class="btn ghost" id="cut" onclick="cutBlack()" title="Cortar a negro">■ Negro</button>
+    <div class="sep"></div>
+    <button class="btn rec" id="rec" onclick="toggleRec()"><span class="rdot"></span> REC</button>
+    <span class="rtime" id="rtime">00:00</span>
+    <label class="chk"><input type="checkbox" id="percam" /> por cámara</label>
+    <div class="sep"></div>
+    <button class="btn prog" onclick="abrirProgram()">📺 PROGRAM</button>
+    <button class="btn ghost" id="mon" onclick="toggleMonitor()">🔇 Escuchar</button>
+    <button class="btn ghost" id="monTgl" onclick="toggleMon()" title="Mostrar/ocultar monitor">🖥️</button>
+    <button class="btn ghost" onclick="fs()">⛶</button>
+    <button class="btn join" onclick="document.getElementById('join').classList.add('show')">➕ Cámara</button>
+    <div class="pill"><span>PGM <b id="pgmName">—</b></span> · <span>PVW <b id="pvwName">—</b></span> · <span id="progOut">salida ○</span></div>
+  </div>
+</div>
+
+<div class="pgmmon" id="pgmmon">
+  <div class="hd"><span>PROGRAM · SALIDA</span><span class="rp"><span class="d"></span>REC</span><span class="x" onclick="toggleMon()">✕</span></div>
+  <canvas id="comp" width="1280" height="720"></canvas>
+</div>
+
+<div class="modal" id="join" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="mbox">
+    <div style="font-weight:900;font-size:1.15rem;">📱 Conectar una cámara</div>
+    <p style="color:var(--dim);font-size:.86rem;margin-top:6px;">Escanea este QR con el iPhone:</p>
+    <div class="qr" id="qr-modal"></div>
+    <div class="code2" id="code3">…</div>
+    <p style="color:var(--faint);font-size:.74rem;">O abre <b style="color:#fff;">…/cam</b> y escribe el código. Todos en la misma WiFi.</p>
+    <button class="btn" style="margin-top:14px;width:100%;justify-content:center;" onclick="document.getElementById('join').classList.remove('show')">Listo</button>
+  </div>
+</div>
+
+<script>
+  const { sb, ICE, canal, esc, bitrateProbe, badState } = MX;
+  let ch = null, sala = '';
+  let program = null, preview = null;   // camId en aire / en previa
+  const pcs = {};        // id -> RTCPeerConnection (entrada de cada cámara)
+  const tiles = {};      // id -> { el, video, setName, statEl, poll, vtrack, atrack }
+  const pending = {};    // id -> [iceCandidate]
+  const order = [];      // orden de cámaras (para atajos 1..9)
+  const $ = id => document.getElementById(id);
+
+  // ── Compositor (canvas → salida PROGRAM) ─────────────────────
+  let comp = null, cctx = null, canvasStream = null, canvasTrack = null;
+  let progLayout = 'full', franjaText = '';
+  // ── Bus de audio del programa (WebAudio) ─────────────────────
+  let actx = null, progDest = null, progOutTrack = null, monitorGain = null, monitor = false;
+  const audioNodes = {}; // id -> { src, gain }
+  // ── Salida PROGRAM (relay estudio → ventana/OBS) ─────────────
+  const progPeers = {};  // progId -> { pc, vSender, aSender }
+  // ── Grabación ────────────────────────────────────────────────
+  let rec = null, recChunks = [], recStartMs = 0, recTimer = null;
+  const camRecs = {};    // id -> { rec, chunks, name }
+
+  function nuevaSala(){ return 'FRATE-' + Math.floor(1000 + Math.random() * 9000); }
+
+  (function init(){
+    try { const u = new URL(location.href); sala = (u.searchParams.get('sala') || '').toUpperCase(); } catch (e) {}
+    if (!sala) sala = nuevaSala();
+    ['code','empty-code','code3'].forEach(id => { const e = $(id); if (e) e.textContent = sala; });
+    pintarQR();
+
+    ensureCompositor();
+    ensureAudioBus();
+
+    ch = canal(sala);
+    ch.on('broadcast', { event: 'sig' }, ({ payload }) => onSig(payload));
+    ch.subscribe(s => { if (s === 'SUBSCRIBED') send({ t: 'hello-estudio' }); });
+
+    document.addEventListener('keydown', onKey);
+    document.addEventListener('click', resumeAudio, { once: false });
+    setInterval(tick, 1000);
+  })();
+
+  function camURL(){ return location.origin + '/cam?sala=' + encodeURIComponent(sala); }
+  function pintarQR(){
+    const host = location.host + '/cam';
+    const he = $('camhost'); if (he) he.textContent = host;
+    try {
+      const qr = qrcode(0, 'M'); qr.addData(camURL()); qr.make();
+      const svg = qr.createSvgTag({ cellSize: 5, margin: 0, scalable: true });
+      ['qr-empty','qr-modal'].forEach(id => { const e = $(id); if (e) e.innerHTML = svg; });
+    } catch (e) { console.warn('QR', e); }
+  }
+
+  function send(p){ if (ch) ch.send({ type: 'broadcast', event: 'sig', payload: p }); }
+
+  async function onSig(p){
+    if (!p) return;
+    switch (p.t) {
+      case 'hello-cam':      send({ t: 'hello-estudio' }); sendTally(); break;
+      case 'offer':          await handleOffer(p); break;
+      case 'ice':            if (p.to === 'estudio') await addIce(p); break;
+      // ── canal de la salida PROGRAM ──
+      case 'hello-program':  await handleProgHello(p); break;
+      case 'prog-answer':    { const pr = progPeers[p.from]; if (pr) { try { await pr.pc.setRemoteDescription(p.sdp); } catch (e) {} } break; }
+      case 'prog-ice':       { const pr = progPeers[p.from]; if (pr && pr.pc.remoteDescription) { try { await pr.pc.addIceCandidate(p.cand); } catch (e) {} } break; }
+    }
+  }
+
+  async function addIce(p){
+    const pc = pcs[p.from];
+    if (pc && pc.remoteDescription) { try { await pc.addIceCandidate(p.cand); } catch (e) {} }
+    else (pending[p.from] = pending[p.from] || []).push(p.cand);
+  }
+
+  // ── Recepción de cámaras ─────────────────────────────────────
+  async function handleOffer(p){
+    if (!tiles[p.from]) crearTile(p.from, p.nombre);
+    else if (p.nombre) tiles[p.from].setName(p.nombre);
+
+    let pc = pcs[p.from];
+    if (pc && (badState(pc.connectionState) || pc.signalingState === 'closed')) { try { pc.close(); } catch (e) {} pc = null; }
+    if (!pc) pc = crearPC(p.from);
+
+    try {
+      await pc.setRemoteDescription(p.sdp);
+      const buf = pending[p.from]; if (buf) { for (const c of buf) { try { await pc.addIceCandidate(c); } catch (e) {} } pending[p.from] = []; }
+      const ans = await pc.createAnswer(); await pc.setLocalDescription(ans);
+      send({ t: 'answer', to: p.from, sdp: ans });
+    } catch (e) { console.warn('offer', e); }
+  }
+
+  function crearPC(id){
+    const pc = new RTCPeerConnection(ICE);
+    pc.onicecandidate = e => { if (e.candidate) send({ t: 'ice', from: 'estudio', to: id, cand: e.candidate }); };
+    pc.ontrack = e => {
+      const t = tiles[id]; if (!t) return;
+      t.video.srcObject = e.streams[0];
+      if (e.track.kind === 'video') t.vtrack = e.track;
+      if (e.track.kind === 'audio') { t.atrack = e.track; t.audEl.textContent = '🎙️'; attachCamAudio(id, e.track); }
+      if (id === program) refreshProgramOut();
+      e.track.onended = () => { if (e.track.kind === 'audio') { t.atrack = null; t.audEl.textContent=''; detachCamAudio(id); if (id===program) refreshProgramOut(); } };
+    };
+    pc.onconnectionstatechange = () => {
+      const st = pc.connectionState;
+      if (badState(st)) setTimeout(() => { if (pcs[id] === pc && badState(pc.connectionState)) removerTile(id); }, 8000);
+    };
+    pcs[id] = pc;
+    tiles[id].poll = bitrateProbe(pc, 'video');
+    return pc;
+  }
+
+  function crearTile(id, nombre){
+    const el = document.createElement('div'); el.className = 'cam'; el.dataset.id = id;
+    el.onclick = ev => { if (ev.target.classList.contains('name')) return; setPreview(id); };
+
+    const video = document.createElement('video'); video.autoplay = true; video.playsInline = true; video.muted = true;
+    el.appendChild(video);
+
+    order.push(id);
+    const numDisplay = order.length;
+
+    const ov = document.createElement('div'); ov.className = 'ov';
+    ov.innerHTML = `<div class="ov-top">
+        <span class="badge b-cam"><span class="num">${numDisplay}</span><span class="camtxt">CÁM</span></span>
+        <span class="stat" data-stat>—</span>
+      </div>
+      <div class="ov-bot">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="name" title="Doble-click para renombrar">${esc(nombre || 'Cámara')}</div>
+          <span class="aud" data-aud></span>
+        </div>
+        <span style="display:flex;gap:6px;">
+          <span class="tally t-prev"><span class="d"></span>PREVIA</span>
+          <span class="tally t-prog"><span class="d"></span>EN AIRE</span>
+        </span>
+      </div>`;
+    el.appendChild(ov);
+
+    const nameEl = ov.querySelector('.name');
+    nameEl.ondblclick = () => renombrar(id);
+
+    $('empty').style.display = 'none';
+    $('stage').appendChild(el);
+
+    tiles[id] = {
+      el, video,
+      statEl: ov.querySelector('[data-stat]'),
+      audEl: ov.querySelector('[data-aud]'),
+      poll: null, vtrack: null, atrack: null,
+      setName: n => { nameEl.textContent = n; refreshPills(); }
+    };
+    if (!preview) setPreview(id);   // primera cámara entra a previa
+    relayout();
+  }
+
+  function removerTile(id){
+    const pc = pcs[id]; if (pc) { try { pc.close(); } catch (e) {} delete pcs[id]; }
+    const t = tiles[id]; if (t) { t.el.remove(); delete tiles[id]; }
+    delete pending[id];
+    const oi = order.indexOf(id); if (oi >= 0) order.splice(oi, 1);
+    if (program === id) { program = null; refreshProgramOut(); }
+    if (preview === id) { preview = order[0] || null; }
+    if (!Object.keys(tiles).length) $('empty').style.display = '';
+    applyStates(); relayout();
+  }
+
+  function renombrar(id){
+    const t = tiles[id]; if (!t) return;
+    const n = prompt('Nombre de la cámara:', t.el.querySelector('.name').textContent);
+    if (n != null && n.trim()) { t.setName(n.trim()); send({ t: 'tally', program, preview, name: { id, n: n.trim() } }); }
+  }
+
+  // ── Mesa: PREVIA / PROGRAM / TOMAR ───────────────────────────
+  function setPreview(id){ if (!tiles[id]) return; preview = id; applyStates(); }
+  function take(){
+    if (!preview) return;
+    const old = program; program = preview; preview = old || preview;  // swap PGM ↔ PVW
+    refreshProgramOut(); applyStates();
+  }
+  function cutBlack(){ program = null; refreshProgramOut(); applyStates(); }
+
+  function applyStates(){
+    Object.entries(tiles).forEach(([k, t]) => {
+      t.el.classList.toggle('prog', k === program);
+      t.el.classList.toggle('prev', k === preview && k !== program);
+    });
+    $('take').disabled = !preview || preview === program;
+    refreshPills();
+    sendTally();
+  }
+  function nameOf(id){ return id && tiles[id] ? tiles[id].el.querySelector('.name').textContent : '—'; }
+  function refreshPills(){ $('pgmName').textContent = nameOf(program); $('pvwName').textContent = nameOf(preview); }
+  function sendTally(){ send({ t: 'tally', program, preview }); }
+
+  function onKey(e){
+    if (/input|select|textarea/i.test(e.target.tagName)) return;
+    if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); take(); return; }
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= 9 && order[n - 1]) setPreview(order[n - 1]);
+  }
+
+  // ── Compositor: dibuja el layout en un canvas → salida PROGRAM ─
+  const W = 1280, H = 720;
+  function ensureCompositor(){
+    if (comp) return;
+    comp = $('comp'); cctx = comp.getContext('2d');
+    canvasStream = comp.captureStream(30);
+    canvasTrack = canvasStream.getVideoTracks()[0];
+    // setInterval (no requestAnimationFrame): rAF se congela si la pestaña pierde
+    // foco → congelaría la salida PROGRAM y la grabación. setInterval sigue vivo.
+    setInterval(drawFrame, 1000 / 30);
+  }
+  function setProgLayout(b, mode){ document.querySelectorAll('#proglay button').forEach(x => x.classList.remove('on')); b.classList.add('on'); progLayout = mode; $('franjaTxt').style.display = mode === 'franja' ? '' : 'none'; }
+
+  function drawCover(v, dx, dy, dw, dh){
+    if (!v || !v.videoWidth) { cctx.fillStyle = '#0a0a0c'; cctx.fillRect(dx, dy, dw, dh); return; }
+    const sw = v.videoWidth, sh = v.videoHeight, sr = sw / sh, dr = dw / dh;
+    let cw = sw, cch = sh, sx = 0, sy = 0;
+    if (sr > dr) { cw = sh * dr; sx = (sw - cw) / 2; } else { cch = sw / dr; sy = (sh - cch) / 2; }
+    cctx.drawImage(v, sx, sy, cw, cch, dx, dy, dw, dh);
+  }
+  function vidOf(id){ return id && tiles[id] ? tiles[id].video : null; }
+  function roundRect(x, y, w, h, r){ cctx.beginPath(); cctx.moveTo(x+r,y); cctx.arcTo(x+w,y,x+w,y+h,r); cctx.arcTo(x+w,y+h,x,y+h,r); cctx.arcTo(x,y+h,x,y,r); cctx.arcTo(x,y,x+w,y,r); cctx.closePath(); }
+  function drawLabel(text, x, y, on){
+    cctx.font = '700 22px Inter, system-ui, sans-serif'; cctx.textAlign = 'left';
+    const w = cctx.measureText(text).width;
+    cctx.fillStyle = on ? 'rgba(255,48,64,.92)' : 'rgba(0,0,0,.55)'; roundRect(x, y - 30, w + 20, 30, 7); cctx.fill();
+    cctx.fillStyle = '#fff'; cctx.fillText(text, x + 10, y - 9);
+  }
+  function drawNoSignal(){ cctx.fillStyle = '#0a0a0c'; cctx.fillRect(0,0,W,H); cctx.fillStyle = '#333'; cctx.font = '700 44px Inter, sans-serif'; cctx.textAlign = 'center'; cctx.fillText('SIN SEÑAL', W/2, H/2); cctx.textAlign = 'left'; }
+
+  function drawFrame(){
+    if (!cctx) return;
+    cctx.fillStyle = '#000'; cctx.fillRect(0, 0, W, H);
+    const others = order.filter(k => k !== program && tiles[k]);
+
+    if (progLayout === 'quad'){
+      const cams = order.filter(k => tiles[k]).slice(0, 4), cw = W/2, cch = H/2;
+      for (let i = 0; i < 4; i++){
+        const x = (i % 2) * cw, y = Math.floor(i / 2) * cch, id = cams[i];
+        drawCover(vidOf(id), x, y, cw, cch);
+        if (id){ if (id === program){ cctx.strokeStyle = '#ff3040'; cctx.lineWidth = 6; cctx.strokeRect(x+3, y+3, cw-6, cch-6); } drawLabel(nameOf(id), x + 14, y + cch - 12, id === program); }
+      }
+      return;
+    }
+
+    if (!program) drawNoSignal(); else drawCover(vidOf(program), 0, 0, W, H);
+
+    if (progLayout === 'pip'){
+      const src = vidOf(preview && preview !== program ? preview : others[0]);
+      if (src){ const pw = W*0.28, ph = pw*9/16, m = 28, x = W-pw-m, y = H-ph-m;
+        cctx.fillStyle = '#000'; cctx.fillRect(x-3, y-3, pw+6, ph+6);
+        drawCover(src, x, y, pw, ph);
+        cctx.strokeStyle = 'rgba(255,255,255,.85)'; cctx.lineWidth = 3; cctx.strokeRect(x, y, pw, ph);
+      }
+    } else if (progLayout === 'spot'){
+      const strip = others.slice(0, 4); if (strip.length){ const sh2 = H*0.22, sy = H-sh2, sw2 = W/strip.length;
+        cctx.fillStyle = 'rgba(0,0,0,.35)'; cctx.fillRect(0, sy, W, sh2);
+        strip.forEach((id, i) => { drawCover(vidOf(id), i*sw2+6, sy+6, sw2-12, sh2-12); drawLabel(nameOf(id), i*sw2+16, H-14, false); });
+      }
+    } else if (progLayout === 'franja'){
+      const bh = 118, g = cctx.createLinearGradient(0, H-bh, 0, H); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(.45, 'rgba(0,0,0,.75)'); cctx.fillStyle = g; cctx.fillRect(0, H-bh, W, bh);
+      cctx.fillStyle = '#ff3040'; cctx.fillRect(48, H-70, 6, 42);
+      cctx.fillStyle = '#fff'; cctx.font = '800 40px Inter, sans-serif'; cctx.textAlign = 'left';
+      cctx.fillText(franjaText || nameOf(program), 70, H-38);
+    }
+  }
+
+  // ── Bus de audio del programa (WebAudio) ─────────────────────
+  function ensureAudioBus(){
+    if (actx) return;
+    actx = new (window.AudioContext || window.webkitAudioContext)();
+    progDest = actx.createMediaStreamDestination();
+    progOutTrack = progDest.stream.getAudioTracks()[0];
+    monitorGain = actx.createGain(); monitorGain.gain.value = 0; monitorGain.connect(actx.destination);
+    // Oscilador silencioso permanente: mantiene el destino produciendo muestras aunque
+    // ninguna cámara tenga audio. Sin esto, MediaRecorder no vuelca datos (bug real).
+    const osc = actx.createOscillator(), z = actx.createGain(); z.gain.value = 0; osc.connect(z); z.connect(progDest); osc.start();
+  }
+  function resumeAudio(){ try { if (actx && actx.state === 'suspended') actx.resume(); } catch (e) {} }
+  function attachCamAudio(id, atrack){
+    ensureAudioBus(); detachCamAudio(id);
+    const src = actx.createMediaStreamSource(new MediaStream([atrack]));
+    const gain = actx.createGain(); gain.gain.value = (id === program) ? 1 : 0;
+    src.connect(gain); gain.connect(progDest); gain.connect(monitorGain);
+    audioNodes[id] = { src, gain };
+  }
+  function detachCamAudio(id){ const n = audioNodes[id]; if (n){ try { n.src.disconnect(); n.gain.disconnect(); } catch (e) {} delete audioNodes[id]; } }
+  function updateAudioGains(){ Object.entries(audioNodes).forEach(([id, n]) => { n.gain.gain.value = (id === program) ? 1 : 0; }); }
+
+  // ── Salida PROGRAM: relay (video = canvas; audio = bus) ──────
+  async function handleProgHello(p){
+    ensureCompositor(); ensureAudioBus();
+    if (progPeers[p.from]) { try { progPeers[p.from].pc.close(); } catch (e) {} }
+    const pc = new RTCPeerConnection(ICE);
+    const out = new MediaStream([canvasTrack, progOutTrack]);   // pistas estables → receptor recibe e.streams[0]
+    const vSender = pc.addTrack(canvasTrack, out);
+    const aSender = pc.addTrack(progOutTrack, out);
+    pc.onicecandidate = e => { if (e.candidate) send({ t: 'prog-ice', to: p.from, cand: e.candidate }); };
+    pc.onconnectionstatechange = () => {
+      const st = pc.connectionState;
+      if (st === 'connected') $('progOut').textContent = 'salida ●';
+      if (badState(st)) { if (progPeers[p.from] && progPeers[p.from].pc === pc) delete progPeers[p.from]; if (!Object.keys(progPeers).length) $('progOut').textContent = 'salida ○'; }
+    };
+    progPeers[p.from] = { pc, vSender, aSender };
+    try { const o = await pc.createOffer(); await pc.setLocalDescription(o); send({ t: 'prog-offer', to: p.from, sdp: o }); }
+    catch (e) { console.warn('prog-offer', e); }
+  }
+  // El video sale por el canvas (siempre); el cambio de programa solo ajusta ganancias de audio.
+  function refreshProgramOut(){ updateAudioGains(); }
+  function abrirProgram(){ window.open('/program?sala=' + encodeURIComponent(sala), 'mx-program', 'width=1280,height=720'); }
+  function toggleMonitor(){ monitor = !monitor; resumeAudio(); if (monitorGain) monitorGain.gain.value = monitor ? 1 : 0; $('mon').innerHTML = monitor ? '🔊 Escuchar' : '🔇 Escuchar'; $('mon').classList.toggle('on', monitor); }
+  function toggleMon(){ $('pgmmon').classList.toggle('hide'); }
+
+  // ── Grabación (MediaRecorder) ────────────────────────────────
+  function pickMime(audio){
+    const c = audio
+      ? ['video/webm;codecs=vp9,opus', 'video/webm;codecs=vp8,opus', 'video/webm']
+      : ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+    return c.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || '';
+  }
+  function stamp(){ const d = new Date(), p = n => String(n).padStart(2,'0'); return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`; }
+  function download(blob, name){ const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); }
+  function toggleRec(){ rec ? stopRec() : startRec(); }
+  function startRec(){
+    if (!window.MediaRecorder) { alert('Este navegador no soporta grabación (MediaRecorder).'); return; }
+    ensureCompositor(); ensureAudioBus(); resumeAudio();   // resume en background (no bloqueante)
+    // Incluimos audio solo si el contexto está corriendo; una pista de audio "muerta"
+    // (contexto suspendido) cuelga a MediaRecorder. Video-only nunca se cuelga.
+    const hasAudio = actx.state === 'running';
+    const tracks = hasAudio ? [canvasTrack, progOutTrack] : [canvasTrack];
+    const mime = pickMime(hasAudio);
+    try {
+      rec = new MediaRecorder(new MediaStream(tracks), mime ? { mimeType: mime, videoBitsPerSecond: 6000000 } : undefined);
+    } catch (e) { alert('No se pudo iniciar la grabación: ' + (e.message || e)); rec = null; return; }
+    recChunks = [];
+    rec.ondataavailable = e => { if (e.data && e.data.size) recChunks.push(e.data); };
+    rec.onstop = () => { const blob = new Blob(recChunks, { type: rec.mimeType || 'video/webm' }); download(blob, `PROGRAM-${sala}-${stamp()}.webm`); };
+    rec.onerror = e => { console.warn('rec', e); stopRec(); alert('La grabación se detuvo por un error: ' + ((e && e.error && e.error.name) || e)); };
+    rec.start(1000);
+    // Grabación aislada por cámara (opcional)
+    if ($('percam').checked) {
+      order.forEach(id => {
+        const t = tiles[id]; if (!t || !t.vtrack) return;
+        const ctr = [t.vtrack]; if (t.atrack) ctr.push(t.atrack);
+        const cmime = pickMime(!!t.atrack);
+        try {
+          const cr = new MediaRecorder(new MediaStream(ctr), cmime ? { mimeType: cmime, videoBitsPerSecond: 5000000 } : undefined);
+          const chunks = []; cr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+          const nm = nameOf(id).replace(/[^\w-]/g, '_');
+          cr.onstop = () => { const b = new Blob(chunks, { type: cr.mimeType || 'video/webm' }); download(b, `${nm}-${sala}-${stamp()}.webm`); };
+          cr.start(1000); camRecs[id] = { rec: cr };
+        } catch (e) {}
+      });
+    }
+    recStartMs = Date.now();
+    $('rec').classList.add('on'); $('rtime').classList.add('on'); $('pgmmon').classList.add('recording');
+    recTimer = setInterval(() => { const s2 = Math.floor((Date.now() - recStartMs) / 1000); $('rtime').textContent = `${String(Math.floor(s2/60)).padStart(2,'0')}:${String(s2%60).padStart(2,'0')}`; }, 500);
+  }
+  function stopRec(){
+    try { if (rec && rec.state !== 'inactive') rec.stop(); } catch (e) {}
+    Object.values(camRecs).forEach(c => { try { if (c.rec.state !== 'inactive') c.rec.stop(); } catch (e) {} });
+    for (const k in camRecs) delete camRecs[k];
+    rec = null; clearInterval(recTimer); recTimer = null;
+    $('rec').classList.remove('on'); $('rtime').classList.remove('on'); $('rtime').textContent = '00:00'; $('pgmmon').classList.remove('recording');
+  }
+
+  // ── Multiview (grilla) / stats ───────────────────────────────
+  function relayout(){
+    const ids = order.filter(k => tiles[k]); const n = ids.length;
+    $('cnt').textContent = n + ' cámara' + (n === 1 ? '' : 's');
+    $('stage').className = 'stage n' + Math.min(n, 9);
+  }
+  async function tick(){
+    for (const id of order) {
+      const t = tiles[id]; if (!t || !t.poll) continue;
+      const r = await t.poll(); if (!r) continue;
+      const st = pcs[id] ? pcs[id].connectionState : '';
+      if (badState(st)) { t.statEl.textContent = 'RECONECTANDO'; t.statEl.classList.add('bad'); }
+      else if (st !== 'connected') { t.statEl.textContent = '···'; t.statEl.classList.remove('bad'); }
+      else { const res = r.h ? ` · ${r.h}p` : ''; t.statEl.textContent = `${r.kbps} kbps${res}`; t.statEl.classList.toggle('bad', r.kbps > 0 && r.kbps < 150); }
+    }
+  }
+  function fs(){ const el = document.documentElement; if (!document.fullscreenElement) (el.requestFullscreen || el.webkitRequestFullscreen || (() => {})).call(el); else (document.exitFullscreen || (() => {})).call(document); }
+</script>
+</body>
+</html>

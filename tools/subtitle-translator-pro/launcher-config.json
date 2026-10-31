@@ -1,0 +1,15 @@
+{
+  "name": "Subtitle Translator Pro",
+  "port": 4520,
+  "args": [
+    "node_modules/next/dist/bin/next",
+    "start",
+    "--hostname",
+    "127.0.0.1",
+    "--port",
+    "{port}"
+  ],
+  "required": ".next/BUILD_ID",
+  "marker": "Subtitle Translator Pro",
+  "portEnv": "PORT"
+}

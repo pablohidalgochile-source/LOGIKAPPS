@@ -1,0 +1,10 @@
+{
+  "name": "Orgalina",
+  "port": 4510,
+  "args": [
+    "server/index.mjs"
+  ],
+  "required": "node_modules/pdfjs-dist/package.json",
+  "marker": "Orgalina",
+  "portEnv": "ORGALINA_PORT"
+}

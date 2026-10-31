@@ -2,42 +2,70 @@
   "schemaVersion": 1,
   "id": "dj",
   "name": "Pack DJ",
-  "version": "0.2.0-beta",
-  "platform": "macOS",
+  "version": "0.3.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
   "guide": "EMPIEZA-AQUI.html",
   "tools": [
     {
-      "id": "surco",
+      "id": "pack-dj-surco",
       "name": "Surco",
-      "folder": "Surco",
-      "kind": "local"
+      "description": "Biblioteca musical, enlaces y captura de audio. Incluida en la carpeta Surco del pack.",
+      "category": "music",
+      "icon": "disc",
+      "kind": "download",
+      "connectKind": "command",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "requirements": "Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar."
     },
     {
-      "id": "trackhunt",
+      "id": "pack-dj-trackhunt",
       "name": "TRACKHUNT",
-      "folder": "TRACKHUNT",
-      "kind": "local"
+      "description": "Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026.",
+      "category": "music",
+      "icon": "waves",
+      "kind": "download",
+      "connectKind": "command",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "requirements": "Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.",
+      "version": "0.2.0 beta portable"
     },
     {
-      "id": "nanook-video",
-      "name": "NANOOK VIDEO",
-      "folder": "NANOOK-VIDEO",
-      "kind": "local"
+      "id": "pack-dj-nanook-video",
+      "name": "INGESTA",
+      "description": "Descarga, lotes y conversión MP4 desde enlaces públicos. El nombre anterior era NANOOK VIDEO.",
+      "category": "music",
+      "icon": "play",
+      "kind": "download",
+      "connectKind": "command",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "requirements": "Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.",
+      "version": "3.0.4",
+      "logoPending": true
     },
     {
-      "id": "vj-lab",
+      "id": "pack-dj-vj-lab",
       "name": "VJ/LAB",
-      "folder": "VJ-LAB",
-      "kind": "local"
+      "description": "Visuales de escenario y composición gráfica. Incluida en la carpeta VJ-LAB del pack.",
+      "category": "music",
+      "icon": "sparkles",
+      "kind": "download",
+      "connectKind": "command",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "requirements": "Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida."
     },
     {
-      "id": "hit-lab",
-      "name": "Hit Lab",
-      "folder": "Hit-Lab",
-      "kind": "local"
+      "id": "pack-dj-hit-lab",
+      "name": "DJ Nanook Hit Lab",
+      "description": "Crates, muestras sintetizadas y herramientas de preparación musical. Incluida en la carpeta Hit-Lab del pack.",
+      "category": "music",
+      "icon": "music",
+      "kind": "download",
+      "connectKind": "command",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "requirements": "Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo."
     },
     {
-      "id": "magic-music-prompt",
+      "id": "pack-dj-magic",
       "name": "MAGIC MUSIC PROMPT",
       "description": "Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente.",
       "category": "music",
@@ -45,6 +73,28 @@
       "kind": "web",
       "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
       "requirements": "Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno."
+    }
+  ],
+  "sources": [
+    {
+      "folder": "surco",
+      "target": "Surco"
+    },
+    {
+      "folder": "trackhunt",
+      "target": "TRACKHUNT"
+    },
+    {
+      "folder": "nanook-video",
+      "target": "INGESTA"
+    },
+    {
+      "folder": "vj-lab",
+      "target": "VJ-LAB"
+    },
+    {
+      "folder": "hit-lab",
+      "target": "Hit-Lab"
     }
   ]
 }

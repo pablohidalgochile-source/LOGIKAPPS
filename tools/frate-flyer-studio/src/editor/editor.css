@@ -1,0 +1,282 @@
+/* ============================================================
+   FRATE EDITOR — CHROME (UI del editor, no del flyer)
+   ============================================================ */
+/* [FRATE port] estilos de html/body escopados a .ed-shell — en la SPA
+   conviven con la galería de plantillas, que sí necesita scroll normal */
+.ed-shell { box-sizing: border-box; margin: 0; height: 100vh; background: #0a0a0d; color: #e8e6ec;
+  font-family: 'Chakra Petch', system-ui, sans-serif; overflow: hidden; }
+.ed-shell * { box-sizing: border-box; }
+
+.ed-app { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.ed-shell { height: 100vh; }
+
+/* ---- Topbar ---- */
+.ed-top { height: 52px; flex: none; display: flex; align-items: center; gap: 14px;
+  padding: 0 16px; background: #111116; border-bottom: 1px solid #23232b; }
+.ed-top .brand { font-family: 'Anton', sans-serif; letter-spacing: .04em; font-size: 20px; }
+.ed-top .brand span { color: #ff2d78; }
+.ed-top .tname { font-size: 12px; color: #8a8792; letter-spacing: .08em; }
+.ed-top .grow { flex: 1; }
+.ed-btn { border: 1px solid #2c2c36; background: #1a1a21; color: #e8e6ec; border-radius: 8px;
+  padding: 7px 14px; font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer; letter-spacing: .02em; }
+.ed-btn:hover { background: #23232d; }
+.ed-btn.primary { background: #ff2d78; border-color: #ff2d78; color: #fff; }
+.ed-btn.primary:hover { background: #ff4a8c; }
+.ed-btn.ghost { background: transparent; }
+.ed-btn:disabled { opacity: .4; cursor: default; }
+
+/* ---- Layout 3 columnas ---- */
+.ed-body { flex: 1; display: flex; min-height: 0; }
+.ed-tools { width: 60px; flex: none; background: #111116; border-right: 1px solid #23232b;
+  display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0; }
+.ed-tool { width: 42px; height: 42px; border-radius: 9px; border: 1px solid transparent; background: transparent;
+  color: #b7b4bf; display: grid; place-items: center; cursor: pointer; font-size: 17px; }
+.ed-tool:hover { background: #1e1e26; color: #fff; }
+.ed-tool.active { background: #ff2d78; color: #fff; }
+.ed-tool .lbl { position: absolute; }
+.ed-tool-sep { width: 34px; height: 1px; background: #26262f; margin: 5px 0; }
+
+/* ---- Canvas (viewport + mundo pan/zoom) ---- */
+.ed-canvas-wrap { flex: 1; min-width: 0; position: relative; overflow: hidden; touch-action: none;
+  background: #08080b radial-gradient(120% 90% at 50% 0%, #16121c 0%, #08080b 60%); }
+.ed-canvas-wrap.pan-ready { cursor: grab; }
+.ed-canvas-wrap.panning { cursor: grabbing; }
+/* el "mundo": se traslada y escala en bloque (pan + zoom) */
+.ed-world { position: absolute; top: 0; left: 0; will-change: transform; }
+/* neutraliza el posicionamiento absoluto del CSS del flyer dentro de las capas del editor */
+#ed-canvas .fr-title, #ed-canvas .fr-hud, #ed-canvas .fr-chat, #ed-canvas .fr-analysis {
+  position: static !important; left: auto !important; top: auto !important;
+  right: auto !important; bottom: auto !important; width: auto !important; }
+/* [FRATE port] #id para ganarle a .fr-canvas de base.css (orden de bundle variable) */
+#ed-canvas.ed-canvas { position: absolute; top: 0; left: 0; box-shadow: 0 30px 90px rgba(0,0,0,.7);
+  transform-origin: top left; }
+/* el fondo lo pone la clase de cada plantilla (fr=negro, ft/al=papel, rv=negro editorial) */
+.ed-canvas-hint { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 30;
+  font-size: 11px; color: #7d7a86; background: rgba(20,20,26,.82); border: 1px solid #2a2a33;
+  border-radius: 8px; padding: 5px 12px; backdrop-filter: blur(6px); pointer-events: none; white-space: nowrap; }
+
+/* capa */
+.ed-layer { position: absolute; transform-origin: center center; }
+.ed-layer.selectable { cursor: move; }
+.ed-layer.locked { pointer-events: none; }
+.ed-sel { position: absolute; inset: -2px; border: 1.5px solid #2ad4ff; pointer-events: none; z-index: 5; }
+.ed-sel .h { position: absolute; width: 13px; height: 13px; background: #fff; border: 1.5px solid #2ad4ff;
+  border-radius: 2px; pointer-events: all; }
+.ed-sel .h.br { right: -7px; bottom: -7px; cursor: nwse-resize; }
+.ed-sel .h.rot { left: 50%; top: -34px; transform: translateX(-50%); border-radius: 50%; cursor: grab; background: #2ad4ff; }
+.ed-sel .rotstem { position: absolute; left: 50%; top: -22px; width: 1px; height: 22px; background: #2ad4ff; }
+.ed-guide { position: absolute; background: #ff2d78; z-index: 40; pointer-events: none; }
+.ed-guide.v { width: 1px; top: 0; bottom: 0; }
+.ed-guide.h { height: 1px; left: 0; right: 0; }
+
+/* ---- Panel derecho ---- */
+.ed-right { width: 300px; flex: none; background: #111116; border-left: 1px solid #23232b;
+  display: flex; flex-direction: column; }
+.ed-tabs { display: flex; flex: none; border-bottom: 1px solid #23232b; }
+.ed-tab { flex: 1; padding: 11px 0; text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .06em;
+  color: #8a8792; cursor: pointer; text-transform: uppercase; border-bottom: 2px solid transparent; }
+.ed-tab.active { color: #fff; border-bottom-color: #ff2d78; }
+.ed-panel { flex: 1; overflow-y: auto; padding: 14px; }
+.ed-sec { font-size: 11px; font-weight: 700; letter-spacing: .12em; color: #7d7a86; text-transform: uppercase;
+  margin: 4px 0 10px; }
+.ed-sec:not(:first-child) { margin-top: 20px; }
+
+/* barra de acciones de la capa seleccionada */
+.ed-lyr-actions { display: flex; align-items: center; gap: 2px; padding: 6px; margin-bottom: 8px;
+  background: #0d0d11; border: 1px solid #23232b; border-radius: 9px; }
+.ed-lyr-actions button { flex: none; width: 30px; height: 30px; border: 0; background: transparent; color: #b7b4bf;
+  border-radius: 7px; cursor: pointer; font-size: 15px; display: grid; place-items: center; }
+.ed-lyr-actions button:hover { background: #23232d; color: #fff; }
+.ed-lyr-actions button.danger:hover { background: #3a1620; color: #ff5c7a; }
+.ed-lyr-actions .sep { flex: 1; }
+
+/* layers list */
+.ed-lyr-list { display: flex; flex-direction: column; gap: 2px; }
+.ed-lyr { display: flex; align-items: center; gap: 7px; padding: 8px 8px; border-radius: 8px; cursor: pointer;
+  border: 1px solid transparent; }
+.ed-lyr:hover { background: #1a1a21; }
+.ed-lyr.sel { background: #201826; border-color: #ff2d78; }
+.ed-lyr.dragging { opacity: .5; }
+.ed-lyr.over { border-color: #2ad4ff; background: #12202a; }
+.ed-lyr .grip { color: #4a4750; font-size: 13px; cursor: grab; width: 12px; text-align: center; touch-action: none; }
+.ed-lyr .grip:active { cursor: grabbing; }
+.ed-lyr .nm { flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-lyr .nm-edit { flex: 1; min-width: 0; background: #0d0d11; border: 1px solid #ff2d78; color: #fff;
+  border-radius: 5px; padding: 3px 6px; font-family: inherit; font-size: 13px; outline: none; }
+.ed-lyr .ic { color: #6f6c78; font-size: 13px; cursor: pointer; width: 20px; text-align: center; }
+.ed-lyr .ic:hover { color: #fff; }
+.ed-lyr .badge { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: #2a2a33; color: #a5a2ad; }
+
+/* zoom badge — botones ajustar/1:1 */
+.ed-zoombadge button.fit { width: auto; padding: 0 10px; font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  font-family: 'Chakra Petch', sans-serif; }
+
+/* Fase 3 — elemento activo (contorno) + panel de estilo */
+#ed-canvas .ed-el-active { outline: 2px solid #2ad4ff !important; outline-offset: 2px;
+  box-shadow: 0 0 0 2px rgba(42,212,255,.25) !important; }
+.ed-el-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px;
+  padding-bottom: 10px; border-bottom: 1px solid #23232b; }
+.ed-el-name { font-family: 'Share Tech Mono', monospace; font-size: 14px; color: #2ad4ff; margin-top: 2px; }
+.ed-color-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.ed-cp { width: 32px; height: 28px; border: 1px solid #2a2a33; border-radius: 6px; background: #0d0d11; cursor: pointer; padding: 2px; flex: none; }
+.ed-swatch { width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(255,255,255,.15); cursor: pointer; padding: 0; flex: none; }
+.ed-check { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #c7c4cf; margin: 8px 0; cursor: pointer; }
+.ed-check input { accent-color: #ff2d78; }
+
+/* Fase 4 — presets de imagen */
+.ed-preset-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.ed-preset { padding: 5px 9px; border: 1px solid #2a2a33; background: #0d0d11; color: #b7b4bf; border-radius: 7px;
+  font-family: 'Chakra Petch', sans-serif; font-size: 11px; cursor: pointer; }
+.ed-preset:hover { background: #1e1e26; color: #fff; border-color: #3a3a46; }
+
+/* fields */
+.ed-field { margin-bottom: 11px; }
+.ed-field label { display: block; font-size: 11px; color: #9b98a3; margin-bottom: 4px; letter-spacing: .04em; }
+.ed-input, .ed-select { width: 100%; background: #0d0d11; border: 1px solid #2a2a33; color: #e8e6ec;
+  border-radius: 7px; padding: 8px 10px; font-family: inherit; font-size: 13px; }
+.ed-input:focus, .ed-select:focus { outline: none; border-color: #ff2d78; }
+.ed-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ed-range { width: 100%; accent-color: #ff2d78; }
+.ed-mini { font-size: 11px; color: #7d7a86; }
+
+/* segmented + swatches + toggles */
+.ed-seg { display: flex; gap: 4px; background: #0d0d11; border: 1px solid #2a2a33; border-radius: 9px; padding: 3px; }
+.ed-seg button { flex: 1; border: 0; background: transparent; color: #b7b4bf; padding: 7px 4px; border-radius: 6px;
+  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.ed-seg button.sel { background: #ff2d78; color: #fff; }
+.ed-pals { display: flex; flex-wrap: wrap; gap: 8px; }
+.ed-pal { display: flex; width: 58px; height: 28px; border-radius: 7px; overflow: hidden; cursor: pointer;
+  border: 2px solid transparent; }
+.ed-pal.sel { border-color: #fff; box-shadow: 0 0 0 2px rgba(0,0,0,.6); }
+.ed-pal i { flex: 1; }
+.ed-colors { display: flex; gap: 8px; margin-top: 10px; }
+.ed-colors input[type=color] { width: 100%; height: 34px; border: 1px solid #2a2a33; border-radius: 7px;
+  background: #0d0d11; cursor: pointer; padding: 2px; }
+.ed-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; font-size: 13px; }
+.ed-toggle { width: 40px; height: 22px; border-radius: 20px; background: #2a2a33; position: relative; cursor: pointer; transition: .15s; }
+.ed-toggle::after { content: ""; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #7d7a86; transition: .15s; }
+.ed-toggle.on { background: #ff2d78; } .ed-toggle.on::after { left: 20px; background: #fff; }
+
+/* zoom badge (Photoshop-style) */
+.ed-zoombadge { position: absolute; left: 14px; bottom: 14px; z-index: 30; display: flex; align-items: center;
+  gap: 2px; background: #14141ae6; border: 1px solid #2a2a33; border-radius: 9px; padding: 3px; backdrop-filter: blur(6px); }
+.ed-zoombadge button { width: 26px; height: 26px; border: 0; background: transparent; color: #b7b4bf; font-size: 16px;
+  cursor: pointer; border-radius: 6px; line-height: 1; }
+.ed-zoombadge button:hover { background: #23232d; color: #fff; }
+.ed-zoombadge span { min-width: 48px; text-align: center; font-size: 12px; font-weight: 700; color: #e8e6ec;
+  cursor: pointer; font-family: 'Share Tech Mono', monospace; letter-spacing: .04em; }
+.ed-zoombadge span:hover { color: #ff2d78; }
+
+/* ============================================================
+   PANTALLA DE IMPORTACIÓN (Bandeja Flyer Express)
+   ============================================================ */
+.ed-imp { height: 100vh; display: grid; grid-template-columns: 340px 1fr; overflow: hidden; }
+.ed-imp-inbox { background: #0d0d11; border-right: 1px solid #23232b; display: flex; flex-direction: column; padding: 20px 0 0; }
+.ed-imp-brand { font-family: 'Anton', sans-serif; font-size: 20px; letter-spacing: .04em; padding: 0 20px 2px; }
+.ed-imp-brand span { color: #ff2d78; }
+.ed-imp-inbox-h { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #7d7a86; padding: 14px 20px 8px; }
+.ed-imp-inbox-h b { color: #ff2d78; margin-left: 4px; }
+.ed-imp-list { flex: 1; overflow-y: auto; padding: 0 12px; display: flex; flex-direction: column; gap: 6px; }
+.ed-imp-item { display: flex; align-items: center; gap: 11px; padding: 11px; border-radius: 11px; cursor: pointer;
+  border: 1px solid transparent; }
+.ed-imp-item:hover { background: #16161c; }
+.ed-imp-item.sel { background: #1b1420; border-color: #ff2d78; }
+.ed-imp-night { flex: none; width: 42px; height: 46px; border-radius: 9px; background: #17171e; border: 1px solid #2a2a33;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: #8a8792;
+  letter-spacing: .06em; font-weight: 700; }
+.ed-imp-night span { font-family: 'Anton', sans-serif; font-size: 20px; color: #fff; letter-spacing: 0; }
+.ed-imp-item-body { flex: 1; min-width: 0; }
+.ed-imp-item-title { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-imp-item-title b { color: #ff5c9d; }
+.ed-imp-item-meta { font-size: 10px; color: #6f6c78; margin-top: 2px; font-family: 'Share Tech Mono', monospace; }
+.ed-imp-chip { flex: none; font-size: 9px; padding: 3px 7px; border-radius: 20px; background: #26262f; color: #a5a2ad; letter-spacing: .04em; }
+.ed-imp-chip.ok { background: #14351f; color: #5fe08a; }
+.ed-imp-inbox-foot { font-size: 10px; color: #5f5c68; padding: 12px 20px; border-top: 1px solid #1c1c23; line-height: 1.5; }
+.ed-imp-inbox-foot code { color: #8a8792; font-family: 'Share Tech Mono', monospace; }
+
+.ed-imp-main { overflow-y: auto; padding: 40px 48px 60px; background: #0a0a0d radial-gradient(120% 70% at 100% 0%, #150f1b 0%, #0a0a0d 55%); }
+.ed-imp-step { font-size: 11px; letter-spacing: .16em; color: #ff2d78; font-weight: 700; }
+.ed-imp-h1 { font-family: 'Anton', sans-serif; font-size: 34px; margin: 8px 0 4px; letter-spacing: .01em; }
+.ed-imp-sub { color: #8a8792; font-size: 14px; margin-bottom: 26px; }
+.ed-imp-summary { background: #111116; border: 1px solid #23232b; border-radius: 16px; padding: 22px 24px; margin-bottom: 26px; }
+.ed-imp-sum-kicker { font-size: 11px; color: #7d7a86; font-family: 'Share Tech Mono', monospace; letter-spacing: .06em; }
+.ed-imp-sum-title { font-family: 'Anton', sans-serif; font-size: 30px; line-height: 1.02; margin: 8px 0 6px; }
+.ed-imp-sum-title em { color: #ff2d78; font-style: normal; }
+.ed-imp-sum-concept { color: #b7b4bf; font-size: 14px; font-style: italic; margin-bottom: 18px; }
+.ed-imp-sum-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 26px; }
+.ed-imp-sum-row { display: flex; flex-direction: column; gap: 3px; border-top: 1px solid #1f1f27; padding-top: 9px; }
+.ed-imp-sum-row span { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: #6f6c78; }
+.ed-imp-sum-row b { font-size: 13px; color: #e8e6ec; font-weight: 600; }
+/* Preview completo de datos del evento (Importación) */
+.ed-imp-datatoggle { margin-top: 16px; background: none; border: 0; color: #8f8c98; font-family: 'Chakra Petch', sans-serif;
+  font-size: 12px; font-weight: 600; letter-spacing: .04em; cursor: pointer; padding: 4px 0; transition: color .12s; }
+.ed-imp-datatoggle:hover { color: #ff2d78; }
+.ed-imp-data { margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
+.ed-imp-data-block { border: 1px solid #22222b; border-radius: 10px; background: #0c0c10; overflow: hidden; }
+.ed-imp-data-head { display: flex; align-items: center; justify-content: space-between;
+  padding: 9px 12px; background: #121218; border-bottom: 1px solid #1f1f27; }
+.ed-imp-data-head span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #8f8c98; font-weight: 700; }
+.ed-imp-copy { background: #1a1a22; border: 1px solid #2c2c36; color: #c7c4cf; border-radius: 7px;
+  font-size: 11px; font-weight: 600; padding: 4px 10px; cursor: pointer; transition: .12s; font-family: 'Chakra Petch', sans-serif; }
+.ed-imp-copy:hover { border-color: #ff2d78; color: #fff; }
+.ed-imp-copy.ok { background: #14351f; border-color: #1db954; color: #5fe08a; }
+.ed-imp-data-pre { margin: 0; padding: 12px; font-family: 'Chakra Petch', sans-serif; font-size: 12.5px; line-height: 1.55;
+  color: #d7d4de; white-space: pre-wrap; word-break: break-word; max-height: 220px; overflow-y: auto; }
+.ed-imp-data-txt { padding: 12px; font-size: 13px; color: #e8e6ec; }
+.ed-imp-data-lu { padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.ed-imp-data-lu > div { display: flex; gap: 10px; align-items: baseline; }
+.ed-imp-data-lu span { min-width: 58px; font-size: 10px; letter-spacing: .12em; color: #ff2d78; font-weight: 700; }
+.ed-imp-data-lu b { font-size: 13px; color: #e8e6ec; font-weight: 600; }
+.ed-imp-data-empty { padding: 14px; font-size: 13px; color: #8f8c98; text-align: center; border: 1px dashed #2a2a33; border-radius: 10px; }
+.ed-imp-data-empty b { color: #ff2d78; }
+.ed-imp-block-h { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #ff2d78; margin: 0 0 14px; font-weight: 700; }
+.ed-imp-tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 26px; }
+.ed-imp-tpl { position: relative; border: 1.5px solid #2a2a33; border-radius: 12px; padding: 16px 14px; cursor: pointer;
+  background: #0d0d11; transition: .12s; }
+.ed-imp-tpl:hover { border-color: #3a3a46; }
+.ed-imp-tpl.sel { border-color: #ff2d78; background: #18121c; }
+.ed-imp-tpl.off { opacity: .5; cursor: not-allowed; }
+.ed-imp-tpl.off:hover { border-color: #2a2a33; }
+.ed-imp-tpl b { display: block; font-size: 15px; font-family: 'Anton', sans-serif; letter-spacing: .02em; }
+.ed-imp-tpl small { display: block; color: #8a8792; font-size: 12px; margin-top: 2px; }
+.ed-imp-tag { display: inline-block; margin-top: 10px; font-size: 9px; letter-spacing: .06em; padding: 2px 7px; border-radius: 20px;
+  background: #26262f; color: #a5a2ad; text-transform: uppercase; }
+.ed-imp-tpl.sel .ed-imp-tag { background: #ff2d78; color: #fff; }
+.ed-imp-controls { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.ed-imp-controls .ed-fg { flex: 0 0 auto; }
+.ed-imp-go { margin-left: auto; font-size: 15px; padding: 12px 24px; }
+
+/* form screen */
+.ed-form-screen { height: 100vh; overflow-y: auto; display: flex; justify-content: center;
+  background: #0a0a0d radial-gradient(120% 80% at 50% -10%, #17121d 0%, #0a0a0d 55%); }
+.ed-form { width: 760px; max-width: 92vw; padding: 48px 0 80px; }
+.ed-form h1 { font-family: 'Anton', sans-serif; font-size: 40px; letter-spacing: .02em; margin: 0 0 4px; }
+.ed-form h1 span { color: #ff2d78; }
+.ed-form .sub { color: #8a8792; font-size: 14px; margin-bottom: 32px; }
+.ed-card { background: #111116; border: 1px solid #23232b; border-radius: 16px; padding: 22px 24px; margin-bottom: 18px; }
+.ed-card h3 { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #ff2d78; margin: 0 0 16px; }
+.ed-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+.ed-fg { flex: 1 1 220px; }
+.ed-tpl-pick { display: flex; gap: 14px; }
+.ed-tpl { flex: 1; border: 1.5px solid #2a2a33; border-radius: 12px; padding: 16px; cursor: pointer; background: #0d0d11; }
+.ed-tpl.sel { border-color: #ff2d78; background: #18121c; }
+.ed-tpl b { display: block; font-size: 15px; margin-bottom: 3px; }
+.ed-tpl small { color: #8a8792; font-size: 12px; }
+.ed-form-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px;
+  position: sticky; bottom: 0; background: linear-gradient(180deg, transparent, #0a0a0d 32%);
+  padding: 16px 0 20px; align-items: center; }
+
+/* export modal */
+.ed-modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: grid; place-items: center; z-index: 100; }
+.ed-modal { width: 620px; max-width: 92vw; max-height: 80vh; background: #14141a; border: 1px solid #2a2a33;
+  border-radius: 14px; padding: 22px; display: flex; flex-direction: column; }
+.ed-modal h3 { margin: 0 0 6px; font-size: 18px; }
+.ed-modal p { color: #8a8792; font-size: 13px; margin: 0 0 14px; }
+.ed-modal textarea { flex: 1; min-height: 260px; background: #0a0a0d; border: 1px solid #2a2a33; color: #7fe0a0;
+  border-radius: 8px; padding: 12px; font-family: 'Share Tech Mono', monospace; font-size: 12px; resize: none; }
+.ed-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+
+/* [FRATE port] wordmark del footer (el prototipo la usaba sin definir) */
+#ed-canvas .fr-wordmark { font-family: 'Anton', sans-serif; font-size: 64px; letter-spacing: .04em; color: #fff; line-height: 1; }
+#ed-canvas .fr-wordmark .eq { color: var(--accent); }
+#ed-canvas .fr-wordmark-sub { font-family: 'Chakra Petch', sans-serif; font-size: 13px; letter-spacing: .42em; color: #b9b0bd; margin-top: 4px; }

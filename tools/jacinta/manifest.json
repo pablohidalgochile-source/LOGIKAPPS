@@ -1,0 +1,17 @@
+{
+  "name": "Jacinta M. Pastelería",
+  "short_name": "Jacinta M.",
+  "description": "Caja y pedidos de tortas de Jacinta M. Pastelería",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0B1B4B",
+  "theme_color": "#0B1B4B",
+  "lang": "es-CL",
+  "icons": [
+    { "src": "./img/jacinta-icono-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "./img/jacinta-icono-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

@@ -2,6 +2,7 @@
 dist/
 .DS_Store
 node_modules/
+node_modules
 .env
 .env.*
 *.p12
@@ -13,3 +14,9 @@ __pycache__/
 .venv/
 tools/surco/biblioteca/
 *.log
+
+.next/
+.runtime/
+tools/*/build/
+tools/*/data/
+*.tsbuildinfo

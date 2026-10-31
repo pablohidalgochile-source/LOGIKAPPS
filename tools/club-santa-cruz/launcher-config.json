@@ -1,0 +1,6 @@
+{
+  "name": "Club Santa Cruz",
+  "port": 4460,
+  "directory": "site",
+  "page": "index.html"
+}

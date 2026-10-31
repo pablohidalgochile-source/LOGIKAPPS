@@ -30,7 +30,8 @@ def read_public(source: Path, relative: str):
     data = file.read_bytes()
     assert not SECRET.search(data), f'Privacy check failed in: {relative}'
     if relative.endswith('.zip'):
-        review = json.loads((source / 'binary-review.json').read_text())
+        reviews = source / 'binary-reviews.json'
+        review = json.loads(reviews.read_text())[relative] if reviews.exists() else json.loads((source / 'binary-review.json').read_text())
         assert review['file'] == relative and hashlib.sha256(data).hexdigest() == review['sha256'], 'Unreviewed native archive'
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
             assert archive.testzip() is None
@@ -83,29 +84,16 @@ def package(name, sources):
     print(f'{name}: {len(names)} files, {len(data)} bytes, SHA256 {digest}')
 
 def main():
-    dj = ROOT / 'packs/dj'
-    sources = [(dj, '', ['EMPIEZA-AQUI.html', 'pack.json', 'MAGIC-MUSIC-PROMPT.webloc'])]
-    # Surco already has a reviewed explicit source list used for its standalone ZIP.
-    import importlib.util
-    sys.dont_write_bytecode = True
-    spec = importlib.util.spec_from_file_location('surco', ROOT / 'scripts/package-surco.py')
-    surco = importlib.util.module_from_spec(spec); spec.loader.exec_module(surco)
-    sources.append((ROOT / 'tools/surco', 'Surco', list(surco.FILES)))
-    for folder, target in [('trackhunt','TRACKHUNT'), ('nanook-video','NANOOK-VIDEO'), ('vj-lab','VJ-LAB'), ('hit-lab','Hit-Lab')]:
-        source = ROOT / 'tools' / folder
-        sources.append((source, target, allowlist(source)))
-    package('LOGIKAPPS-Pack-DJ-0.2.0-beta.zip', sources)
-    frate = ROOT / 'packs/fraternidad'
-    package('LOGIKAPPS-Pack-Fraternidad-0.2.0-beta.zip', [(frate, '', allowlist(frate))])
-
-    design = ROOT / 'packs/design'
-    fratv = ROOT / 'tools/fratv-obs'
-    # Reuse the reviewed FRATV file types; no editor or personal state.
-    graphics = sorted(p.relative_to(fratv).as_posix() for p in fratv.rglob('*') if p.is_file())
-    assert graphics and all(Path(p).suffix in {'.txt', '.html', '.js', '.css', '.svg'} for p in graphics)
-    package('LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip', [(design, '', allowlist(design)), (fratv, 'FRATV', graphics)])
-    ia = ROOT / 'packs/ia'
-    package('LOGIKAPPS-Pack-IA-Equipo-0.1.0-beta.zip', [(ia, '', allowlist(ia))])
+    release = json.loads((ROOT / 'release.json').read_text())
+    for pack in release['packs']:
+        source = ROOT / 'packs' / pack['id']
+        manifest = json.loads((source / 'pack.json').read_text())
+        assert manifest['archiveName'] == pack['file']
+        sources = [(source, '', allowlist(source))]
+        for item in manifest['sources']:
+            tool = ROOT / 'tools' / item['folder']
+            sources.append((tool, item['target'], allowlist(tool)))
+        package(pack['file'], sources)
 
 if __name__ == '__main__':
     main()

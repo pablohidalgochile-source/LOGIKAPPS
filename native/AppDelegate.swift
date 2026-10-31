@@ -146,6 +146,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate, WKScriptMessageHandler
         let target = app["target"] as! String
         let name = app["name"] as! String
         if kind == "managed" {
+            if target == "limpieza-familiar" {
+                guard let path = app["sourcePath"] as? String, !path.isEmpty else {
+                    throw LogikError.message("Edita Limpieza Familiar y elige su aplicación instalada. Tu biblioteca se conserva.")
+                }
+                let root = try StateStore.localURL(path)
+                let url = root.appendingPathComponent("dist/Limpieza Familiar.app")
+                guard let bundle = Bundle(url: url), bundle.bundleIdentifier == "cl.logikapps.limpieza-familiar" else {
+                    throw LogikError.message("No encontramos Limpieza Familiar. Edita el acceso para seleccionar su aplicación .app; no necesitas borrar la ficha.")
+                }
+                NSWorkspace.shared.openApplication(at: url, configuration: NSWorkspace.OpenConfiguration()) { _, error in
+                    DispatchQueue.main.async {
+                        if let error = error { self.reply(request, error: error) }
+                        else { self.launched(id, request: request, message: "Limpieza Familiar abierta.") }
+                    }
+                }
+                return
+            }
             let root = try ManagedLauncher.projectRoot(for: app)
             approveExecution(name: name, detail: "Proyecto: \(root.path)\n\nSe ejecutará Node.js con node_modules/vinext/dist/cli.js para iniciar TRACKHUNT en este Mac.", request: request) {
                 self.launcher.launch(root: root) { [weak self] result in

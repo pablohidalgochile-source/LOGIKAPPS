@@ -1,0 +1,6 @@
+{
+  "name": "Estudio Multicam",
+  "port": 4490,
+  "directory": ".",
+  "page": "index.html"
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Cámara · Multicam (LiveKit)</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<script src="mx-core.js"></script>
+<style>
+  :root{--bg:#08080a;--card:#141416;--borde:#26262b;--gris:#8b8892;--verde:#22d37a;--air:#ff3040;--gold:#f0c84a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:#fff;font-family:'Inter',system-ui,sans-serif;min-height:100vh;padding:16px;}
+  .wrap{max-width:520px;margin:0 auto;}
+  h1{font-size:1.2rem;font-weight:900;letter-spacing:1px;}
+  h1 b{color:var(--air);}
+  .lk{font-size:.6rem;letter-spacing:2px;color:var(--gold);border:1px solid var(--borde);padding:2px 6px;border-radius:5px;vertical-align:middle;margin-left:6px;}
+  .sub{color:var(--gris);font-size:.84rem;margin:2px 0 14px;}
+  .card{background:var(--card);border:1px solid var(--borde);border-radius:14px;padding:16px;margin-bottom:12px;}
+  label{font-size:.74rem;color:var(--gris);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px;}
+  input,select{width:100%;background:#0d0d10;border:1px solid var(--borde);color:#fff;padding:12px;border-radius:10px;font-family:inherit;font-size:1rem;margin-bottom:10px;}
+  #sala{text-transform:uppercase;letter-spacing:3px;font-weight:800;text-align:center;font-family:ui-monospace,monospace;}
+  button{font-family:inherit;font-weight:800;border:0;border-radius:11px;padding:14px;cursor:pointer;width:100%;font-size:1rem;}
+  .b-v{background:var(--verde);color:#04120a;} .b-r{background:var(--air);color:#fff;} .b-g{background:transparent;border:1px solid var(--borde);color:var(--gris);}
+  .vwrap{position:relative;border-radius:12px;overflow:hidden;}
+  #video{width:100%;background:#000;aspect-ratio:16/9;object-fit:cover;display:block;}
+  #tally{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;font-weight:900;letter-spacing:2px;color:#fff;pointer-events:none;}
+  #tally.air{display:flex;background:rgba(255,48,64,.16);box-shadow:inset 0 0 0 6px var(--air);}
+  #tally.prev{display:flex;background:rgba(34,211,122,.12);box-shadow:inset 0 0 0 6px var(--verde);}
+  #tally .txt{font-size:1.6rem;text-shadow:0 2px 12px rgba(0,0,0,.7);}
+  #tally.prev .txt{color:var(--verde);}
+  .status{display:flex;align-items:center;gap:9px;font-weight:800;font-size:.9rem;margin-top:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;background:var(--gris);}
+  .dot.on{background:var(--verde);box-shadow:0 0 0 0 rgba(34,211,122,.6);animation:p 1.4s infinite;}
+  .dot.wait{background:var(--gold);} .dot.err{background:var(--air);}
+  @keyframes p{0%{box-shadow:0 0 0 0 rgba(34,211,122,.5);}70%{box-shadow:0 0 0 8px rgba(34,211,122,0);}100%{box-shadow:0 0 0 0 rgba(34,211,122,0);}}
+  .row{display:flex;gap:8px;align-items:center;margin-top:8px;}
+  .row span{font-size:.82rem;color:var(--gris);white-space:nowrap;}
+  .chk{display:flex;align-items:center;gap:9px;margin:2px 0 10px;}
+  .chk input{width:auto;margin:0;}
+  .chk label{margin:0;text-transform:none;letter-spacing:0;font-size:.9rem;color:#fff;}
+  .meta{font-size:.72rem;color:var(--gris);margin-top:8px;font-family:ui-monospace,monospace;}
+  .warn{background:#2a1418;border:1px solid #5a2530;color:#ffb3bd;font-size:.8rem;padding:10px 12px;border-radius:10px;margin-bottom:12px;display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><b>●</b> Cámara <span class="lk">LIVEKIT</span></h1>
+  <div class="sub">Transmite por LiveKit (SFU): cruza redes/4G y escala a muchas cámaras.</div>
+
+  <div class="warn" id="warn">⚠️ Falta <b>LIVEKIT_TOKEN_URL</b> en config.js. Despliega la función de tokens y pégala ahí.</div>
+
+  <div class="card" id="setup">
+    <label>Código de la sala (lo ves en la pantalla del estudio)</label>
+    <input id="sala" placeholder="FRATE-482" maxlength="14" />
+    <label>Nombre de esta cámara</label>
+    <input id="nombre" placeholder="Ej: Escenario, DJ, Público…" />
+    <label>Cámara</label>
+    <div class="row" style="margin-top:0;">
+      <select id="cam"><option value="">— por defecto (trasera) —</option></select>
+      <button class="b-g" style="width:auto;padding:12px 14px;white-space:nowrap;" onclick="detectar()">🎥</button>
+    </div>
+    <div class="chk"><input type="checkbox" id="audio" /><label for="audio">🎙️ Transmitir también el audio del micrófono</label></div>
+    <button class="b-v" id="go" onclick="transmitir()">▶ Transmitir</button>
+  </div>
+
+  <div class="card" id="live" style="display:none;">
+    <div class="vwrap">
+      <video id="video" autoplay playsinline muted></video>
+      <div id="tally"><span class="txt"></span></div>
+    </div>
+    <div class="status"><span class="dot" id="dot"></span><span id="st">Conectando…</span></div>
+    <div class="row"><span>🔍 Zoom</span><input type="range" id="zoom" min="1" max="5" step="0.1" value="1" style="flex:1;margin:0;accent-color:var(--verde);" oninput="setZoom(this.value)" /><span id="zval">1x</span></div>
+    <div class="meta" id="meta">—</div>
+    <button class="b-r" style="margin-top:12px;" onclick="cortar()">■ Detener transmisión</button>
+  </div>
+</div>
+
+<script>
+  const { wakeOn, wakeOff } = MX;
+  const LK = window.LivekitClient;
+  const camId = 'cam-' + Math.random().toString(36).slice(2, 9);
+  let room = null, vTrack = null, aTrack = null, sala = '', nombre = '';
+  const $ = id => document.getElementById(id);
+
+  if (!window.MX_CONFIG || !MX_CONFIG.LIVEKIT_TOKEN_URL) $('warn').style.display = 'block';
+  try { const u = new URL(location.href); const s = u.searchParams.get('sala'); if (s) $('sala').value = s.toUpperCase(); } catch (e) {}
+
+  async function detectar(){
+    try {
+      let list = (await navigator.mediaDevices.enumerateDevices()).filter(x => x.kind === 'videoinput');
+      if (!list.length || !list[0].label) {
+        await navigator.mediaDevices.getUserMedia({ video: true }).then(s => s.getTracks().forEach(t => t.stop()));
+        list = (await navigator.mediaDevices.enumerateDevices()).filter(x => x.kind === 'videoinput');
+      }
+      $('cam').innerHTML = '<option value="">— por defecto (trasera) —</option>' +
+        list.map((c, i) => `<option value="${c.deviceId}">${(c.label || ('Cámara ' + (i + 1))).replace(/</g, '&lt;')}</option>`).join('');
+    } catch (e) { alert('Permite el acceso a la cámara primero.'); }
+  }
+
+  async function transmitir(){
+    sala = ($('sala').value || '').trim().toUpperCase();
+    nombre = ($('nombre').value || '').trim() || 'Cámara';
+    if (!sala) { alert('Pon el código de la sala'); return; }
+    if (!MX_CONFIG.LIVEKIT_TOKEN_URL) { alert('Falta configurar LIVEKIT_TOKEN_URL en config.js'); return; }
+    $('go').disabled = true;
+
+    try {
+      const camDev = $('cam').value;
+      const tracks = await LK.createLocalTracks({
+        video: camDev ? { deviceId: camDev } : { facingMode: 'environment' },
+        audio: $('audio').checked
+      });
+      vTrack = tracks.find(t => t.kind === 'video');
+      aTrack = tracks.find(t => t.kind === 'audio');
+    } catch (e) { alert('No se pudo abrir la cámara: ' + (e.message || e)); $('go').disabled = false; return; }
+
+    if (vTrack) vTrack.attach($('video'));
+    $('setup').style.display = 'none'; $('live').style.display = '';
+    wakeOn();
+    setupZoom(); showMeta();
+
+    try {
+      room = await MXLK.connect({ room: sala, identity: camId, name: nombre, role: 'cam' });
+    } catch (e) { alert('No se pudo conectar a LiveKit: ' + (e.message || e)); setEstado('err', 'Error de conexión'); return; }
+
+    room.on(LK.RoomEvent.Connected, () => setEstado('on', '● EN VIVO — transmitiendo'));
+    room.on(LK.RoomEvent.Reconnecting, () => setEstado('wait', 'Reconectando…'));
+    room.on(LK.RoomEvent.Reconnected, () => setEstado('on', '● EN VIVO — transmitiendo'));
+    room.on(LK.RoomEvent.Disconnected, () => setEstado('err', 'Desconectado'));
+    room.on(LK.RoomEvent.DataReceived, (payload) => {
+      try { const m = JSON.parse(new TextDecoder().decode(payload)); if (m && m.t === 'tally') setTally(m.program, m.preview); } catch (e) {}
+    });
+
+    try {
+      if (vTrack) await room.localParticipant.publishTrack(vTrack);
+      if (aTrack) await room.localParticipant.publishTrack(aTrack);
+      setEstado('on', '● EN VIVO — transmitiendo');
+    } catch (e) { setEstado('err', 'No se pudo publicar: ' + (e.message || e)); }
+  }
+
+  function setEstado(cls, txt){ $('dot').className = 'dot ' + cls; $('st').textContent = txt; }
+
+  function setTally(program, preview){
+    const t = $('tally'); const txt = t.querySelector('.txt');
+    if (program === camId) { t.className = 'air'; txt.textContent = 'EN AIRE'; }
+    else if (preview === camId) { t.className = 'prev'; txt.textContent = 'PREVIA'; }
+    else { t.className = ''; txt.textContent = ''; }
+  }
+
+  function mst(){ return vTrack && vTrack.mediaStreamTrack; }
+  function setupZoom(){
+    try {
+      const track = mst(); const caps = track && track.getCapabilities ? track.getCapabilities() : {};
+      const z = $('zoom');
+      if (caps.zoom && caps.zoom.max > caps.zoom.min) {
+        z.min = caps.zoom.min; z.max = caps.zoom.max; z.step = caps.zoom.step || 0.1; z.value = caps.zoom.min;
+        $('zval').textContent = (+z.value).toFixed(1) + 'x'; z.parentElement.style.display = 'flex';
+      } else { z.parentElement.style.display = 'none'; } // iOS Safari no soporta zoom por constraint
+    } catch (e) {}
+  }
+  async function setZoom(v){ $('zval').textContent = (+v).toFixed(1) + 'x'; try { await mst().applyConstraints({ advanced: [{ zoom: parseFloat(v) }] }); } catch (e) {} }
+  function showMeta(){
+    try {
+      const s = mst() && mst().getSettings ? mst().getSettings() : {};
+      const a = aTrack ? ' · 🎙️ audio' : '';
+      $('meta').textContent = `${s.width || '?'}×${s.height || '?'} @ ${Math.round(s.frameRate || 0)}fps${a}`;
+    } catch (e) {}
+  }
+
+  async function cortar(){
+    wakeOff();
+    try { if (room) await room.disconnect(); } catch (e) {}
+    try { vTrack && vTrack.stop(); aTrack && aTrack.stop(); } catch (e) {}
+    location.reload();
+  }
+</script>
+</body>
+</html>

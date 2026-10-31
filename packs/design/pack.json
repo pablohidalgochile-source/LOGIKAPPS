@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "design",
   "name": "Pack Diseño y Joyería",
-  "version": "0.1.0-beta",
-  "archiveName": "LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
+  "version": "0.2.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
   "guide": "GUIA.html",
   "tools": [
     {
@@ -14,8 +14,11 @@
       "icon": "diamond",
       "kind": "download",
       "connectKind": "app",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
-      "requirements": "Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar."
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+      "requirements": "Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar.",
+      "version": "0.4.0",
+      "stage": "beta",
+      "logoPending": true
     },
     {
       "id": "pack-design-fratv",
@@ -25,8 +28,50 @@
       "icon": "film",
       "kind": "download",
       "connectKind": "folder",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.5.0-beta.1/LOGIKAPPS-Pack-Diseno-0.1.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
       "requirements": "Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio."
+    },
+    {
+      "id": "pack-design-elephant",
+      "name": "Elephant",
+      "category": "creative",
+      "icon": "elephant",
+      "version": "0.2.0",
+      "stage": "beta",
+      "description": "Ampliación local de fotos y video, modo Fiel e IA, muestras y cola de trabajo.",
+      "requirements": "Apple Silicon, macOS 14+, Python 3, ImageMagick y FFmpeg/ffprobe. IA opcional; modelos no incluidos.",
+      "kind": "download",
+      "connectKind": "app",
+      "logoPending": false,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+    },
+    {
+      "id": "pack-design-mi-talla",
+      "name": "Mi Talla",
+      "category": "creative",
+      "icon": "diamond",
+      "version": "0.1.0",
+      "stage": "beta",
+      "description": "Medidas de anillos, tablas y calibración visual.",
+      "requirements": "Python 3 y navegador actualizado. Validación física pendiente.",
+      "kind": "download",
+      "connectKind": "command",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+    }
+  ],
+  "sources": [
+    {
+      "folder": "fratv-obs",
+      "target": "FRATV"
+    },
+    {
+      "folder": "elephant",
+      "target": "Elephant"
+    },
+    {
+      "folder": "mi-talla",
+      "target": "Mi-Talla"
     }
   ]
 }

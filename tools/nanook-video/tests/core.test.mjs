@@ -10,9 +10,9 @@ test('rechaza URLs externas, puertos, credenciales e intentos de inyección', ()
   for (const url of ['http://127.0.0.1:8000', 'file:///etc/passwd', 'https://youtube.com.evil.test/watch?v=jNQXAC9IVRw', 'https://evil.test@youtube.com/watch?v=jNQXAC9IVRw', 'https://youtube.com:123/watch?v=jNQXAC9IVRw', 'https://youtube.com/playlist?list=123', '--exec=touch /tmp/file', null]) assert.throws(() => youtubeURL(url));
 });
 test('original conserva la mejor selección; MP4 exige H.264 y AAC', () => {
-  assert.deepEqual(selection('original', 'best'), { format: 'bv*+ba/b', container: 'mkv' });
-  assert.equal(selection('original', '2160').format, 'bv*[height<=2160]+ba/b[height<=2160]');
-  assert.equal(selection('mp4', '1080').format, 'bv[height<=1080][vcodec^=avc1]+ba[ext=m4a]/b[height<=1080][ext=mp4][vcodec^=avc1]');
+  assert.deepEqual(selection('original', 'best'), { format: 'bv*+ba/b/bv*', container: 'mkv' });
+  assert.equal(selection('original', '2160').format, 'bv*[height<=2160]+ba/b[height<=2160]/bv*[height<=2160]');
+  assert.equal(selection('mp4', '1080').format, 'bv[height<=1080][vcodec~="^(avc1|h264)"]+ba[ext=m4a]/b[height<=1080][ext=mp4][vcodec~="^(avc1|h264)"]/bv[height<=1080][ext=mp4][vcodec~="^(avc1|h264)"]');
   assert.throws(() => selection('original', '1080];whoami'));
   assert.throws(() => selection('mp3', 'best'));
 });
@@ -20,7 +20,7 @@ test('calidades reales y compatibilidad se distinguen sin inventar resoluciones'
   const info = summarize({ id: 'jNQXAC9IVRw', title: '<script>title</script>', formats: [
     { height: 2160, vcodec: 'vp9' }, { height: 1080, vcodec: 'avc1.640028' },
     { height: 1080, vcodec: 'vp9' }, { height: 4320, vcodec: 'vp9', has_drm: true }, { vcodec: 'none' },
-  ] }, 'url');
+  ] }, 'https://www.youtube.com/watch?v=jNQXAC9IVRw');
   assert.deepEqual(info.heights, [2160, 1080]); assert.deepEqual(info.mp4Heights, [1080]); assert.equal(info.maxHeight, 2160);
   assert.throws(() => summarize({ is_live: true }, 'url'), /transmisión/);
   assert.throws(() => summarize({ formats: [] }, 'url'), /formatos/);

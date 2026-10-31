@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Programa · Salida limpia</title>
+<script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="mx-livekit.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#000;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#fff;}
+  #video{width:100vw;height:100vh;object-fit:contain;background:#000;display:block;}
+  .nm{position:fixed;left:24px;bottom:22px;font-size:1.3rem;font-weight:800;padding:6px 16px;border-radius:9px;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);text-shadow:0 2px 10px rgba(0,0,0,.8);display:none;}
+  .nm.show{display:inline-block;}
+  .idle{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#333;font-size:2rem;font-weight:800;letter-spacing:3px;z-index:2;}
+  .idle.hide{display:none;}
+  .gate{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:radial-gradient(circle at 50% 30%,#1a0e2a,#000 70%);z-index:10;}
+  .gate.hide{display:none;}
+  .gate h1{font-size:1.5rem;font-weight:900;background:linear-gradient(90deg,#ff3d8b,#8b5cf6);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .gate input{background:#0d0715;border:1px solid #2e1b3f;color:#fff;padding:13px;border-radius:11px;font-size:1rem;text-align:center;letter-spacing:3px;text-transform:uppercase;font-family:ui-monospace,monospace;width:240px;}
+  .gate button{background:linear-gradient(90deg,#ff3d8b,#8b5cf6);border:0;color:#fff;font-weight:800;font-size:1rem;padding:13px 26px;border-radius:12px;cursor:pointer;font-family:inherit;}
+  .gate p{color:#a99bb8;font-size:.85rem;max-width:340px;text-align:center;}
+</style>
+</head>
+<body>
+  <video id="video" autoplay playsinline muted></video>
+  <div class="idle" id="idle">SIN SEÑAL</div>
+  <div class="nm" id="nm"></div>
+
+  <div class="gate" id="gate">
+    <h1>📺 PROGRAMA</h1>
+    <p>Salida limpia de la cámara destacada por el moderador. Úsala como Browser Source en OBS, o a pantalla completa por HDMI a una ATEM.</p>
+    <input id="sala" placeholder="FIESTA" maxlength="16" />
+    <button onclick="entrar()">Abrir salida</button>
+  </div>
+
+<script>
+  const LK = window.LivekitClient;
+  const myId = 'prog-' + Math.random().toString(36).slice(2, 9);
+  const params = new URL(location.href).searchParams;
+  const SHOW_LABEL = params.get('label') === '1';
+  const FIXED = params.get('cam');   // fija la salida a una cámara por nombre (para OBS)
+  let room = null, sala = '', current = null;
+  const $ = id => document.getElementById(id);
+  const vid = $('video');
+
+  try { const s = (params.get('sala') || '').toUpperCase(); if (s) { $('sala').value = s; entrar(); } } catch (e) {}
+
+  async function entrar(){
+    sala = ($('sala').value || '').trim().toUpperCase();
+    if (!sala) { $('sala').focus(); return; }
+    $('gate').classList.add('hide');
+    try {
+      room = await MXLK.connect({ room: sala, identity: myId, name: 'programa', role: 'programa', connectOptions: { autoSubscribe: false } });
+    } catch (e) { alert('No se pudo conectar: ' + (e.message || e)); return; }
+    room.on(LK.RoomEvent.TrackSubscribed, onSub);
+    room.on(LK.RoomEvent.ParticipantDisconnected, p => { if (p.identity === current) { setProgram(null); if (FIXED) lockFixed(); } });
+    if (FIXED) {
+      // Modo OBS: fija la salida a la cámara cuyo nombre contiene ?cam= (sin depender del moderador).
+      const relock = () => { if (!current) lockFixed(); };
+      room.on(LK.RoomEvent.ParticipantConnected, relock);
+      room.on(LK.RoomEvent.TrackPublished, relock);
+      lockFixed();
+    } else {
+      room.on(LK.RoomEvent.DataReceived, (payload) => {
+        try { const m = JSON.parse(new TextDecoder().decode(payload)); if (m && m.t === 'wall') setProgram(m.program || null); } catch (e) {}
+      });
+    }
+  }
+
+  function lockFixed(){
+    for (const p of room.remoteParticipants.values()) {
+      if ((p.name || '').toUpperCase().includes(FIXED.toUpperCase()) && videoPubs(p).length) { setProgram(p.identity); return; }
+    }
+  }
+
+  function videoPubs(p){ const out = []; p.trackPublications.forEach(pub => { if (pub.kind === LK.Track.Kind.Video) out.push(pub); }); return out; }
+
+  function setProgram(id){
+    if (id === current) return;
+    // Desuscribe la anterior
+    if (current) { const p = room.remoteParticipants.get(current); if (p) videoPubs(p).forEach(pub => { try { pub.setSubscribed(false); } catch (e) {} }); }
+    current = id;
+    vid.srcObject = null; $('idle').classList.toggle('hide', !!id); $('nm').classList.remove('show');
+    if (!id) return;
+    const p = room.remoteParticipants.get(id);
+    if (p) {
+      videoPubs(p).forEach(pub => { try { pub.setSubscribed(true); } catch (e) {} });
+      if (SHOW_LABEL) { $('nm').textContent = p.name || id; $('nm').classList.add('show'); }
+    }
+  }
+
+  function onSub(track, pub, participant){
+    if (track.kind !== LK.Track.Kind.Video) return;
+    if (participant.identity !== current) { try { pub.setSubscribed(false); } catch (e) {} return; }
+    track.attach(vid); $('idle').classList.add('hide');
+  }
+</script>
+</body>
+</html>

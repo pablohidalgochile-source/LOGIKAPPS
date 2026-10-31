@@ -22,6 +22,10 @@ test("identity cleanup and conservative version matching", () => {
   assert.equal(model.toVersion({ title: "SexyBack", url: "https://dj.bandcamp.com/track/song" }, song), null);
   assert.equal(model.toVersion({ title: "Justin Timberlake - SexyBack (DJ Remix)", url: "https://dj.bandcamp.com/track/song" }, song).match, "title-artist");
   assert.equal(model.toVersion({ title: "SexyBack (DJ Flip)", url: "https://soundcloud.com/dj/song" }, song).match, "title");
+  assert.equal(model.explorationTitle("LUV (Fingaz Re-Drum)"), "LUV");
+  assert.equal(model.explorationTitle("Temperature"), "Temperature");
+  for (const label of ["Re-Drum", "Intro", "Transition", "Blend", "Toneplay", "VIP", "Refix", "Dub"]) assert.equal(model.versionKind(`Song (${label})`), label);
+  assert.equal(model.toVersion({ title: "Tory Lanez - LUV (Club Re-Drum)", url: "https://soundcloud.com/dj/luv" }, { artist: "Tory Lanez", title: "LUV (Fingaz Re-Drum)" }).kind, "Re-Drum");
 });
 test("not configured is distinct from no results and exposes no secrets", async () => {
   const response = await handleMusicRequest(request("search", { artist: "DNGR.", title: "Power" }), {});
@@ -36,6 +40,73 @@ test("invalid requests and cross-origin submissions are rejected", async () => {
   assert.equal((await handleMusicRequest(request("identify", { mode: "link", value: "https://127.0.0.1/test" }), {})).status, 400);
   assert.equal((await handleMusicRequest(request("search", { title: "A", artist: "B" }, { origin: "https://evil.test" }), {})).status, 403);
   assert.equal((await handleMusicRequest(request("search", { title: "x".repeat(9000) }), {})).status, 413);
+});
+test("batch search preserves client identities and reports each track independently", async () => {
+  const response = await handleMusicRequest(request("batch-search", { tracks: [
+    { clientId: "set-row-8", title: "Power", artist: "DNGR." },
+    { clientId: "set-row-9", title: "", artist: "Unknown" },
+  ] }), {});
+  assert.equal(response.status, 200);
+  const data = await response.json();
+  assert.equal(data.limits.maxTracks, 10);
+  assert.deepEqual(data.tracks.map(track => [track.clientId, track.title, track.artist, track.status]), [
+    ["set-row-8", "Power", "DNGR.", "not-configured"],
+    ["set-row-9", "", "Unknown", "invalid"],
+  ]);
+  assert.deepEqual(data.tracks[0].versions, []);
+  assert.deepEqual(data.tracks[0].sources.map(source => source.status), ["not-configured", "not-configured"]);
+  assert.equal(data.summary.requested, 2);
+  assert.equal(data.summary["not-configured"], 1);
+  assert.equal(data.summary.invalid, 1);
+  assert.equal(data.summary.versions, 0);
+});
+test("batch search enforces a bounded non-empty list", async () => {
+  assert.equal((await handleMusicRequest(request("batch-search", { tracks: [] }), {})).status, 400);
+  const tooMany = Array.from({ length: 11 }, (_, index) => ({ clientId: `row-${index}`, title: `Song ${index}`, artist: "Artist" }));
+  const response = await handleMusicRequest(request("batch-search", { tracks: tooMany }), {});
+  assert.equal(response.status, 400);
+  assert.equal((await response.json()).maxTracks, 10);
+});
+test("batch search limits SoundCloud concurrency, shares its token and isolates provider failures", async () => {
+  const originalFetch = globalThis.fetch;
+  let tokenRequests = 0;
+  let activeSearches = 0;
+  let maxActiveSearches = 0;
+  let sequence = 0;
+  globalThis.fetch = async (url, init) => {
+    assert.equal(init.redirect, "manual");
+    if (String(url).includes("oauth/token")) {
+      tokenRequests += 1;
+      await new Promise(resolve => setTimeout(resolve, 5));
+      return Response.json({ access_token: "fixture-token", expires_in: 3600 });
+    }
+    const parsed = new URL(String(url));
+    const query = parsed.searchParams.get("q");
+    assert.equal(init.headers.authorization, "OAuth fixture-token");
+    activeSearches += 1;
+    maxActiveSearches = Math.max(maxActiveSearches, activeSearches);
+    const current = sequence++;
+    await new Promise(resolve => setTimeout(resolve, 10));
+    activeSearches -= 1;
+    if (query.includes("Batch Song 3")) return new Response("provider failure", { status: 503 });
+    return Response.json({ collection: [
+      { title: query, permalink_url: `https://soundcloud.com/fixture/remix-${current}`, description: query, user: { username: "Fixture DJ" } },
+      { title: "Unrelated Remix", permalink_url: `https://soundcloud.com/fixture/unrelated-${current}` },
+    ] });
+  };
+  try {
+    const tracks = Array.from({ length: 5 }, (_, index) => ({ clientId: `client-${index}`, title: `Batch Song ${index}`, artist: `Batch Artist ${index}` }));
+    const response = await handleMusicRequest(request("batch-search", { tracks }), { SOUNDCLOUD_CLIENT_ID: "batch-client", SOUNDCLOUD_CLIENT_SECRET: "batch-secret" });
+    const data = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(tokenRequests, 1);
+    assert.ok(maxActiveSearches <= 3);
+    assert.deepEqual(data.tracks.map(track => track.clientId), tracks.map(track => track.clientId));
+    assert.deepEqual(data.tracks.map(track => track.status), ["ok", "ok", "ok", "partial", "ok"]);
+    assert.deepEqual(data.tracks.map(track => track.versions.length), [1, 1, 1, 0, 1]);
+    assert.deepEqual(data.tracks[3].sources.map(source => source.status), ["unavailable", "not-configured"]);
+    assert.equal(data.summary.versions, 4);
+  } finally { globalThis.fetch = originalFetch; }
 });
 test("configured web search filters unrelated results, deduplicates URLs and reports provider errors", async () => {
   const originalFetch = globalThis.fetch;
@@ -62,4 +133,13 @@ test("recognition rejects malformed audio before sending it to provider", async 
   const form = new FormData(); form.append("file", new Blob([new Uint8Array(2000)], { type: "audio/wav" }), "bad.wav");
   const response = await handleMusicRequest(new Request("https://trackhunt.test/api/remix/recognize", { method: "POST", body: form }), {});
   assert.equal(response.status, 400);
+});
+
+test("remix POST route authenticates and checks same-origin before spending provider quota", async () => {
+  const source = await readFile(new URL("../app/api/remix/[action]/route.ts", import.meta.url), "utf8");
+  assert.match(source, /requireRequestUser\(request\)/);
+  assert.match(source, /user instanceof Response/);
+  assert.match(source, /mutationSecurityError\(request[,)]/);
+  assert.ok(source.indexOf("requireRequestUser(request)") < source.indexOf("return handle(request)"));
+  assert.ok(source.indexOf("mutationSecurityError(request") < source.indexOf("return handle(request)"));
 });

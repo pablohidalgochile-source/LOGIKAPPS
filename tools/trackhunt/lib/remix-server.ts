@@ -1,13 +1,25 @@
-import { mediaLink, normalize, originalTitle, tentativeSong, toVersion } from "./remix";
+import { explorationTitle, mediaLink, normalize, originalTitle, tentativeSong, toVersion } from "./remix";
 import type { Song, SourceStatus, Version } from "./remix";
 
 export type MusicEnv = { AUDD_API_TOKEN?: string; BRAVE_SEARCH_API_KEY?: string; SOUNDCLOUD_CLIENT_ID?: string; SOUNDCLOUD_CLIENT_SECRET?: string };
 type RawResult = { title: string; url: string; description?: string; creator?: string; artwork?: string };
+type BatchTrackInput = { clientId?: unknown; id?: unknown; title?: unknown; artist?: unknown };
+type BatchTrackStatus = "ok" | "empty" | "partial" | "unavailable" | "not-configured" | "invalid";
+type SearchResult = { versions: Version[]; sources: SourceStatus[]; searchedAt: string };
+type BatchTrackResult = { clientId: string; index: number; title: string; artist: string; status: BatchTrackStatus; versions: Version[]; sources: SourceStatus[]; searchedAt?: string; error?: string };
+type BatchSummary = Record<BatchTrackStatus, number> & { versions: number };
+export const MAX_REMIX_BATCH_TRACKS = 10;
+const MAX_REMIX_BATCH_CONCURRENCY = 3;
+const BRAVE_REQUEST_INTERVAL_MS = 1_050;
 const json = (data: unknown, status = 200) => Response.json(data, { status, headers: { "cache-control": "no-store", "x-content-type-options": "nosniff" } });
 const catalogCache = new Map<string, { expires: number; songs: Song[] }>();
-const searchCache = new Map<string, { expires: number; data: unknown }>();
+const searchCache = new Map<string, { expires: number; data: SearchResult }>();
 let scToken: { value: string; until: number; client: string } | null = null;
+let scTokenPending: { client: string; request: Promise<{ value: string; until: number; client: string }> } | null = null;
+let braveQueue = Promise.resolve();
+let braveNextRequestAt = 0;
 const bounded = (value: unknown, max: number) => typeof value === "string" ? value.trim().slice(0, max) : "";
+const delay = (milliseconds: number) => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 async function remoteJson(url: string, init: RequestInit = {}) {
   const response = await fetch(url, { ...init, redirect: "manual", signal: AbortSignal.timeout(15_000) });
@@ -35,30 +47,52 @@ async function catalog(term: string): Promise<Song[]> {
 }
 async function soundcloud(query: string, env: MusicEnv): Promise<RawResult[]> {
   if (!scToken || scToken.until < Date.now() || scToken.client !== env.SOUNDCLOUD_CLIENT_ID) {
-    const basic = btoa(`${env.SOUNDCLOUD_CLIENT_ID}:${env.SOUNDCLOUD_CLIENT_SECRET}`);
-    const token = await remoteJson("https://secure.soundcloud.com/oauth/token", { method: "POST", headers: { authorization: `Basic ${basic}`, "content-type": "application/x-www-form-urlencoded" }, body: "grant_type=client_credentials" });
-    if (!token.access_token) throw new Error("provider");
-    scToken = { value: token.access_token, client: env.SOUNDCLOUD_CLIENT_ID!, until: Date.now() + Math.max(0, Number(token.expires_in ?? 3600) - 60) * 1000 };
+    const client = env.SOUNDCLOUD_CLIENT_ID!;
+    if (!scTokenPending || scTokenPending.client !== client) {
+      const basic = btoa(`${client}:${env.SOUNDCLOUD_CLIENT_SECRET}`);
+      const request = remoteJson("https://secure.soundcloud.com/oauth/token", { method: "POST", headers: { authorization: `Basic ${basic}`, "content-type": "application/x-www-form-urlencoded" }, body: "grant_type=client_credentials" }).then(token => {
+        if (!token.access_token) throw new Error("provider");
+        return { value: token.access_token as string, client, until: Date.now() + Math.max(0, Number(token.expires_in ?? 3600) - 60) * 1000 };
+      });
+      scTokenPending = { client, request };
+    }
+    const pending = scTokenPending;
+    try { scToken = await pending.request; } finally { if (scTokenPending === pending) scTokenPending = null; }
   }
   const url = new URL("https://api.soundcloud.com/tracks");
   url.search = new URLSearchParams({ q: query, limit: "50", linked_partitioning: "true", access: "playable,preview,blocked" }).toString();
   const data = await remoteJson(url.toString(), { headers: { authorization: `OAuth ${scToken.value}`, accept: "application/json" } });
-  return (Array.isArray(data) ? data : data.collection ?? []).map((row: Record<string, any>) => ({ title: String(row.title ?? ""), url: String(row.permalink_url ?? ""), description: String(row.description ?? ""), creator: row.user?.username, artwork: row.artwork_url }));
+  return (Array.isArray(data) ? data : data.collection ?? []).map((row: Record<string, unknown>) => {
+    const user = row.user && typeof row.user === "object" ? row.user as Record<string, unknown> : {};
+    return { title: String(row.title ?? ""), url: String(row.permalink_url ?? ""), description: String(row.description ?? ""), creator: typeof user.username === "string" ? user.username : undefined, artwork: typeof row.artwork_url === "string" ? row.artwork_url : undefined };
+  });
 }
 async function webIndex(song: Song, domain: string, key: string): Promise<RawResult[]> {
-  const url = new URL("https://api.search.brave.com/res/v1/web/search");
-  const title = song.title.replace(/["()]/g, " ");
-  const artist = song.artist.replace(/["()]/g, " ");
-  url.search = new URLSearchParams({ q: `site:${domain} "${title}" ${artist} (remix OR edit OR bootleg OR mashup OR extended OR flip OR rework)`, count: "20", result_filter: "web", spellcheck: "false", text_decorations: "false" }).toString();
-  const data = await remoteJson(url.toString(), { headers: { accept: "application/json", "X-Subscription-Token": key } });
-  return (data.web?.results ?? []).map((row: Record<string, unknown>) => ({ title: String(row.title ?? ""), url: String(row.url ?? ""), description: String(row.description ?? "") }));
+  let release = () => {};
+  const previous = braveQueue;
+  braveQueue = new Promise<void>(resolve => { release = resolve; });
+  await previous;
+  try {
+    const wait = braveNextRequestAt - Date.now();
+    if (wait > 0) await delay(wait);
+    const url = new URL("https://api.search.brave.com/res/v1/web/search");
+    const title = explorationTitle(song.title).replace(/["()]/g, " ");
+    const artist = song.artist.replace(/["()]/g, " ");
+    url.search = new URLSearchParams({ q: `site:${domain} "${title}" ${artist} (remix OR edit OR bootleg OR mashup OR extended OR flip OR rework)`, count: "20", result_filter: "web", spellcheck: "false", text_decorations: "false" }).toString();
+    const data = await remoteJson(url.toString(), { headers: { accept: "application/json", "X-Subscription-Token": key } });
+    return (data.web?.results ?? []).map((row: Record<string, unknown>) => ({ title: String(row.title ?? ""), url: String(row.url ?? ""), description: String(row.description ?? "") }));
+  } finally {
+    braveNextRequestAt = Date.now() + BRAVE_REQUEST_INTERVAL_MS;
+    release();
+  }
 }
-async function findVersions(song: Song, env: MusicEnv) {
+async function findVersions(song: Song, env: MusicEnv): Promise<SearchResult> {
   const configKey = `${Boolean(env.BRAVE_SEARCH_API_KEY)}:${Boolean(env.SOUNDCLOUD_CLIENT_ID && env.SOUNDCLOUD_CLIENT_SECRET)}`;
   const cacheKey = `${configKey}:${normalize(`${song.artist}|${song.title}`)}`;
   const cached = searchCache.get(cacheKey);
   if (cached && cached.expires > Date.now()) return cached.data;
-  const searchText = `${song.artist} ${song.title} remix`;
+  const baseTitle = explorationTitle(song.title);
+  const searchText = `${song.artist} ${baseTitle} remix`;
   const versions: Version[] = [];
   const sources: SourceStatus[] = [];
   // Sequential index calls also respect entry-level search API rate limits.
@@ -70,14 +104,13 @@ async function findVersions(song: Song, env: MusicEnv) {
       continue;
     }
     try {
-      const raw = scConfigured ? await soundcloud(`${song.artist} ${song.title}`, env) : await webIndex(song, name === "SoundCloud" ? "soundcloud.com" : "bandcamp.com", env.BRAVE_SEARCH_API_KEY!);
+      const raw = scConfigured ? await soundcloud(`${song.artist} ${baseTitle} remix`, env) : await webIndex(song, name === "SoundCloud" ? "soundcloud.com" : "bandcamp.com", env.BRAVE_SEARCH_API_KEY!);
       const matches = raw.map(row => toVersion(row, song)).filter((row): row is Version => row !== null && row.platform === name);
       versions.push(...matches);
       sources.push({ name, status: matches.length ? "ok" : "empty", searchUrl, message: matches.length ? `${matches.length} coincidencias por título · ${scConfigured ? "API SoundCloud" : "índice web Brave"}` : "Sin versiones coincidentes en esta consulta. No significa que no existan." });
     } catch (error) {
       sources.push({ name, status: "unavailable", searchUrl, message: error instanceof Error && error.message === "quota" ? "El servicio alcanzó su límite. Prueba más tarde o abre la fuente." : "No se pudo consultar esta fuente. Revisa su conexión o abre la búsqueda." });
     }
-    if (env.BRAVE_SEARCH_API_KEY && !scConfigured && name === "SoundCloud") await new Promise(resolve => setTimeout(resolve, 1050));
   }
   const unique = [...new Map(versions.map(row => [row.url, row])).values()].sort((a, b) => Number(b.match === "title-artist") - Number(a.match === "title-artist"));
   const data = { versions: unique, sources, searchedAt: new Date().toISOString() };
@@ -86,6 +119,46 @@ async function findVersions(song: Song, env: MusicEnv) {
     searchCache.set(cacheKey, { expires: Date.now() + 300_000, data });
   }
   return data;
+}
+
+function batchStatus(result: SearchResult): BatchTrackStatus {
+  if (result.versions.length) return result.sources.some(source => source.status === "unavailable") ? "partial" : "ok";
+  if (result.sources.every(source => source.status === "not-configured")) return "not-configured";
+  if (result.sources.every(source => source.status === "unavailable")) return "unavailable";
+  if (result.sources.some(source => source.status === "unavailable")) return "partial";
+  return "empty";
+}
+
+export async function findVersionsBatch(tracks: BatchTrackInput[], env: MusicEnv) {
+  const output: BatchTrackResult[] = new Array(tracks.length);
+  let cursor = 0;
+  const worker = async () => {
+    while (true) {
+      const index = cursor++;
+      if (index >= tracks.length) return;
+      const raw = tracks[index];
+      const clientId = bounded(raw?.clientId, 80) || bounded(raw?.id, 80) || `track-${index + 1}`;
+      const title = originalTitle(bounded(raw?.title, 200));
+      const artist = bounded(raw?.artist, 160);
+      if (!title || !artist) {
+        output[index] = { clientId, index, title, artist, status: "invalid", versions: [], sources: [], error: "La pista necesita título y artista." };
+        continue;
+      }
+      try {
+        const result = await findVersions({ title, artist, source: "Búsqueda por lote" }, env);
+        output[index] = { clientId, index, title, artist, status: batchStatus(result), ...result };
+      } catch {
+        output[index] = { clientId, index, title, artist, status: "unavailable", versions: [], sources: [], error: "No se pudo completar la búsqueda de esta pista." };
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(MAX_REMIX_BATCH_CONCURRENCY, tracks.length) }, worker));
+  const summary = output.reduce<BatchSummary>((counts, row) => {
+    counts[row.status] += 1;
+    counts.versions += row.versions.length;
+    return counts;
+  }, { ok: 0, empty: 0, partial: 0, unavailable: 0, "not-configured": 0, invalid: 0, versions: 0 });
+  return { tracks: output, summary: { requested: tracks.length, ...summary }, limits: { maxTracks: MAX_REMIX_BATCH_TRACKS } };
 }
 
 export async function handleMusicRequest(request: Request, env: MusicEnv) {
@@ -119,12 +192,22 @@ export async function handleMusicRequest(request: Request, env: MusicEnv) {
       if (String.fromCharCode(...header.slice(0, 4)) !== "RIFF" || String.fromCharCode(...header.slice(8, 12)) !== "WAVE") return json({ error: "El fragmento debe estar en formato WAV." }, 400);
       const outgoing = new FormData();
       outgoing.set("api_token", env.AUDD_API_TOKEN || "test");
+      outgoing.set("return", "apple_music,spotify");
       outgoing.set("file", file, "fragment.wav");
       const data = await remoteJson("https://api.audd.io/", { method: "POST", body: outgoing });
       if (data.status !== "success") return json({ error: "El reconocimiento no está disponible o agotó su cuota. Puedes escribir la canción manualmente.", code: "recognition-unavailable" }, 503);
       if (!data.result) return json({ error: "No se reconoció este fragmento. Prueba otra parte de la canción o escribe el título.", code: "not-recognized" }, 422);
       const row = data.result;
-      return json({ song: { title: bounded(row.title, 200), artist: bounded(row.artist, 160), source: "Reconocimiento de audio · AudD" }, note: "Revisa el resultado: los edits y mashups pueden identificarse como su canción original." });
+      const apple = row.apple_music && typeof row.apple_music === "object" ? row.apple_music : {};
+      return json({ song: {
+        title: bounded(row.title, 200),
+        artist: bounded(row.artist, 160),
+        album: bounded(row.album, 200),
+        isrc: bounded(row.isrc, 32) || bounded(apple.isrc, 32),
+        releaseDate: bounded(row.release_date, 32),
+        artwork: bounded(apple.artwork?.url, 1200),
+        source: "Reconocimiento de audio · AudD",
+      }, note: "Revisa el resultado: los edits y mashups pueden identificarse como su canción original." });
     }
     let body: Record<string, unknown>;
     try { body = JSON.parse(new TextDecoder().decode(bytes)); if (!body || typeof body !== "object") throw new Error(); } catch { return json({ error: "Solicitud inválida." }, 400); }
@@ -148,6 +231,11 @@ export async function handleMusicRequest(request: Request, env: MusicEnv) {
       const song: Song = { title: originalTitle(bounded(body.title, 200)), artist: bounded(body.artist, 160), source: "Confirmada por ti" };
       if (!song.title || !song.artist) return json({ error: "Confirma título y artista para buscar versiones de la misma canción." }, 400);
       return json(await findVersions(song, env));
+    }
+    if (action === "batch-search") {
+      if (!Array.isArray(body.tracks) || body.tracks.length < 1) return json({ error: "Incluye al menos una pista para buscar." }, 400);
+      if (body.tracks.length > MAX_REMIX_BATCH_TRACKS) return json({ error: `Puedes buscar hasta ${MAX_REMIX_BATCH_TRACKS} pistas por lote.`, maxTracks: MAX_REMIX_BATCH_TRACKS }, 400);
+      return json(await findVersionsBatch(body.tracks as BatchTrackInput[], env));
     }
     return json({ error: "Ruta no encontrada." }, 404);
   } catch (error) {

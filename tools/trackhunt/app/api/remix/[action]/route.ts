@@ -1,4 +1,6 @@
 import { handleMusicRequest } from "../../../../lib/remix-server";
+import { mutationSecurityError, requireRequestUser } from "../../../../lib/request-security";
+
 function handle(request: Request) {
   return handleMusicRequest(request, {
     AUDD_API_TOKEN: process.env.AUDD_API_TOKEN,
@@ -8,4 +10,11 @@ function handle(request: Request) {
   });
 }
 export const GET = handle;
-export const POST = handle;
+
+export function POST(request: Request) {
+  const user = requireRequestUser(request);
+  if (user instanceof Response) return user;
+  const securityError = mutationSecurityError(request, undefined, new URL(request.url).pathname.endsWith("/recognize") ? 1_000_000 : 128_000);
+  if (securityError) return securityError;
+  return handle(request);
+}

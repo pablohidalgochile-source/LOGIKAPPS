@@ -1,0 +1,37 @@
+{
+  "Taller-Teatina-0.4.0-AppleSilicon.zip": {
+    "file": "Taller-Teatina-0.4.0-AppleSilicon.zip",
+    "sha256": "2b5e622be347c3ea2d93bb559d9f5ec573e6e1e97ed7c5f2e6f428b9d913edf4",
+    "members": {
+      "Taller Teatina.app/Contents/Info.plist": "79ee2f4aca25df60baf4a0177f2a2a5124093ba43c08025af1a662248eb8e7ae",
+      "Taller Teatina.app/Contents/MacOS/TallerTeatina": "87159238b1057802d0276c8d16b2ebaf854cd6e088f6b32298c0e15233d63b79",
+      "Taller Teatina.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b"
+    },
+    "version": "0.4.0",
+    "minimumMacOS": "13.0",
+    "architecture": "arm64",
+    "signature": "ad-hoc",
+    "notarized": false,
+    "checkedOn": "2026-10-21",
+    "testedOnAnotherMac": false,
+    "preparation": "Solo archivos del bundle; sin metadatos Finder. FrateIA: símbolos de depuración retirados y firma ad-hoc renovada."
+  },
+  "Elephant-0.2.0-AppleSilicon.zip": {
+    "file": "Elephant-0.2.0-AppleSilicon.zip",
+    "sha256": "84c1e4c570b49ade6d0e06b8c79977031855e15b774ea6812de8979596b4a42f",
+    "members": {
+      "Elephant.app/Contents/Info.plist": "61b17c9495969195076d3456939214fa869b47270729f574a0a153ece3c65f07",
+      "Elephant.app/Contents/MacOS/Elephant": "2423ea2cc1d992719cc002a201ad3750ea9bec41d0e66a12db29a389a5b8576b",
+      "Elephant.app/Contents/Resources/Elephant.icns": "1afc22d129d43667d0c7f1c3083949336acb11d71eadb7d2851af4653084db63",
+      "Elephant.app/Contents/Resources/mark.png": "3980974a5ad7b497dd2c2c69bcd1a840d1974d44dd177f5e1ce264760447317f",
+      "Elephant.app/Contents/Resources/video_worker.py": "84a6f0ce25dbf8d06718ef5d3d543b95a5e883485af9f934b0a3f7d96eb74f46",
+      "Elephant.app/Contents/Resources/worker.py": "47cc93ab34d0535557e9e42b1a6b23063ebeab9b7a5166eb87dcc77ebe25e28c",
+      "Elephant.app/Contents/_CodeSignature/CodeResources": "7d0df7b709bb36185a96dfc20e916ebbec89ef4142081b283419d3bd60945e35"
+    },
+    "version": "0.2.0",
+    "architecture": "arm64",
+    "minimumMacOS": "14.0",
+    "signature": "ad-hoc",
+    "notarized": false
+  }
+}

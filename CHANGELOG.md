@@ -1,5 +1,15 @@
 # Cambios
 
+## 0.6.0 beta — 31 de octubre de 2026
+
+- Seis packs y 25 fichas, con Elephant y ocho herramientas nuevas.
+- INGESTA 3.0.4, TRACKHUNT con Playlist Hunt y conexiones locales, FRATE FLYER EXPRESS con su nombre preciso.
+- Logos originales de Elephant y Trueke; identidades sin elección confirmada pendientes.
+- Guías por herramienta y estados beta, prototipo y configuración separados.
+- Portabilidad: servidores locales con puertos alternativos, datos vacíos y dependencias preparadas por cada persona.
+- Conserva la recuperación de arranque de 0.5.1 y la compatibilidad con bibliotecas personales antiguas.
+- Firma ad-hoc, sin notarización Apple.
+
 ## 0.4.0 beta — 30 de septiembre de 2026
 
 - Nueva sección Packs de apps, visible al iniciar con una biblioteca vacía; las bibliotecas existentes conservan sus accesos, ideas y favoritos.

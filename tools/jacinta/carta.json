@@ -1,0 +1,75 @@
+{
+  "negocio": "Jacinta M. Pastelería",
+  "nota": "Precios de ejemplo: cámbialos en carta.json o en la ficha de cada producto",
+  "secciones": [
+    {
+      "titulo": "Individual",
+      "emoji": "🧁",
+      "productos": [
+        { "nombre": "Galletón de vainilla con chips", "descripcion": "", "precio": 2500 },
+        { "nombre": "Chilenito", "descripcion": "", "precio": 1800 },
+        { "nombre": "Alfajor tradicional", "descripcion": "", "precio": 1500 },
+        { "nombre": "Alfajor de maicena", "descripcion": "", "precio": 1200 },
+        { "nombre": "Blondie", "descripcion": "", "precio": 2500 },
+        { "nombre": "Brownie 55%", "descripcion": "", "precio": 2500 },
+        { "nombre": "Barrita caluga frambuesa", "descripcion": "", "precio": 2200 },
+        { "nombre": "Barrita caluga chocolate", "descripcion": "", "precio": 2200 },
+        { "nombre": "Barrita manjar nuez", "descripcion": "", "precio": 2200 },
+        { "nombre": "Cinnamon roll", "descripcion": "Masa brioche rellena de canela y azúcar, con frosting de queso crema", "precio": 3200 },
+        { "nombre": "Profiterol", "descripcion": "Relleno con crema pastelera", "precio": 1500 }
+      ]
+    },
+    {
+      "titulo": "Para compartir · tortas",
+      "emoji": "🎂",
+      "productos": [
+        { "nombre": "Torta Lilo", "descripcion": "Hojarasca con manjar y mermelada de frambuesa casera, manjar y nuez, manjar y crema pastelera, o solo manjar", "precio": 28000,
+          "opciones": ["Manjar y mermelada de frambuesa", "Manjar y nuez", "Manjar y crema pastelera", "Solo manjar"] },
+        { "nombre": "Torta Tiana", "descripcion": "Hojarasca con lemon curd y fudge de chocolate blanco, cubierta de merengue suizo", "precio": 30000 },
+        { "nombre": "Torta Esmeralda", "descripcion": "Bizcocho de zanahoria con frosting de queso crema y mermelada de berries casera", "precio": 28000 },
+        { "nombre": "Torta Pumba", "descripcion": "Bizcocho húmedo de chocolate con manjar y fudge de chocolate 55%", "precio": 28000 },
+        { "nombre": "Torta tres leches", "descripcion": "Bizcochos de vainilla con remojo de tres leches, manjar y merengue suizo", "precio": 26000 },
+        { "nombre": "Torta caluga", "descripcion": "Capas crocantes de nuez intercaladas con caluga", "precio": 30000 },
+        { "nombre": "Torta caluga frambuesa", "descripcion": "Capas crocantes de nuez, caluga y frambuesas", "precio": 32000 }
+      ]
+    },
+    {
+      "titulo": "Para compartir · cheesecake, pies y kuchen",
+      "emoji": "🥧",
+      "productos": [
+        { "nombre": "Cheesecake", "descripcion": "Frambuesa, berries, maracuyá, oreo, toffee o moka", "precio": 24000,
+          "opciones": ["Frambuesa", "Berries", "Maracuyá", "Oreo", "Toffee", "Moka"] },
+        { "nombre": "Pie de limón", "descripcion": "", "precio": 16000 },
+        { "nombre": "Pie de limón y frambuesa", "descripcion": "", "precio": 18000 },
+        { "nombre": "Pie de maracuyá", "descripcion": "", "precio": 17000 },
+        { "nombre": "Kuchen de manzana", "descripcion": "", "precio": 15000 },
+        { "nombre": "Kuchen de nuez", "descripcion": "Nuez y toffee", "precio": 18000 }
+      ]
+    },
+    {
+      "titulo": "Para compartir · galletas y queques",
+      "emoji": "🍪",
+      "productos": [
+        { "nombre": "Bolsa de galletas 250 g", "descripcion": "Cookips, nutcrackers, shortbread o anzac", "precio": 6000,
+          "opciones": ["Cookips", "Nutcrackers", "Shortbread", "Anzac"] },
+        { "nombre": "Queque", "descripcion": "Zanahoria, plátano, vainilla, naranja o limón", "precio": 8000,
+          "opciones": ["Zanahoria", "Plátano", "Vainilla", "Naranja", "Limón"] },
+        { "nombre": "Mermelada 500 g", "descripcion": "100% casera, variedades", "precio": 6500 },
+        { "nombre": "Bolsa de merenguitos", "descripcion": "", "precio": 3500 }
+      ]
+    },
+    {
+      "titulo": "Sin azúcar",
+      "emoji": "🌿",
+      "productos": [
+        { "nombre": "Galletón sin azúcar", "descripcion": "Vainilla con chips de chocolate", "precio": 2800 },
+        { "nombre": "Queque sin azúcar", "descripcion": "Plátano, arándanos o vainilla", "precio": 9000,
+          "opciones": ["Plátano", "Arándanos", "Vainilla"] },
+        { "nombre": "Mermelada sin azúcar", "descripcion": "100% casera, variedades", "precio": 7000 },
+        { "nombre": "Torta chocolate frambuesa", "descripcion": "Bizcocho húmedo de chocolate, ganache y mermelada de frambuesa casera", "precio": 32000 },
+        { "nombre": "Torta manjar nuez", "descripcion": "Bizcocho de vainilla o chocolate con manjar y nueces, cubierta de ganache", "precio": 32000,
+          "opciones": ["Bizcocho de vainilla", "Bizcocho de chocolate"] }
+      ]
+    }
+  ]
+}

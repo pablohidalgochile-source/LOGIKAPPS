@@ -1,0 +1,36 @@
+{
+  "version": "0.6.0",
+  "tag": "v0.6.0-beta.1",
+  "packs": [
+    {
+      "id": "dj",
+      "file": "LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "count": 6
+    },
+    {
+      "id": "fraternidad",
+      "file": "LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip",
+      "count": 6
+    },
+    {
+      "id": "design",
+      "file": "LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+      "count": 4
+    },
+    {
+      "id": "ia",
+      "file": "LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
+      "count": 3
+    },
+    {
+      "id": "organization",
+      "file": "LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip",
+      "count": 2
+    },
+    {
+      "id": "lab",
+      "file": "LOGIKAPPS-Pack-Laboratorio-0.1.0-beta.zip",
+      "count": 4
+    }
+  ]
+}

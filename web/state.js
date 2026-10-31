@@ -36,7 +36,7 @@
     if (!CATEGORIES.includes(app.category) || !['ready', 'prototype', 'setup'].includes(app.status) || typeof app.favorite !== 'boolean') throw new Error('Hay una app con colección, estado o favorito incompatible.');
     if (!['app', 'url', 'command', 'folder', 'managed'].includes(app.kind)) throw new Error('El tipo de acceso no es válido.');
     if (app.kind === 'url' && !validURL(app.target)) throw new Error(`El enlace de ${app.name} no es válido.`);
-    if (app.kind === 'managed' && app.target !== 'trackhunt') throw new Error('La copia contiene un acceso integrado que no está disponible.');
+    if (app.kind === 'managed' && !['trackhunt', 'limpieza-familiar'].includes(app.target)) throw new Error('La copia contiene un acceso integrado que no está disponible.');
     if (['app', 'command', 'folder'].includes(app.kind) && !localPath(app.target)) throw new Error(`La ubicación de ${app.name} no es válida.`);
     if (app.kind === 'app' && !/\.app\/?$/i.test(app.target)) throw new Error(`El acceso de ${app.name} debe ser una aplicación .app.`);
     if (app.kind === 'command' && !/\.command\/?$/i.test(app.target)) throw new Error(`El acceso de ${app.name} debe ser un lanzador .command.`);

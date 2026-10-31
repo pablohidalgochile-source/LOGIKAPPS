@@ -49,7 +49,7 @@
   const iconStyles = {
     play: 'red', video: 'red', youtube: 'red', nanook: 'red', waves: 'blue', waveform: 'blue', audio: 'blue', trackhunt: 'blue',
     disc: 'gold', vinyl: 'gold', record: 'gold', surco: 'gold', diamond: 'sand', gem: 'sand', jewelry: 'sand', navarro: 'sand',
-    frate: 'coral', snow: 'cyan', snowflake: 'cyan', clima: 'cyan', link: 'gray', globe: 'purple', music: 'blue',
+    elephant: 'gray', trueke: 'purple', frate: 'coral', snow: 'cyan', snowflake: 'cyan', clima: 'cyan', link: 'gray', globe: 'purple', music: 'blue',
     film: 'purple', sparkles: 'purple', briefcase: 'sand', heart: 'green', house: 'sand', terminal: 'gray', folder: 'gold', grid: 'purple', event: 'coral', palette: 'purple', layout: 'purple', activity: 'green', home: 'sand'
   };
   const iconAliases = { video: 'play', youtube: 'play', nanook: 'play', waveform: 'waves', audio: 'waves', trackhunt: 'waves', vinyl: 'disc', record: 'disc', surco: 'disc', gem: 'diamond', jewelry: 'diamond', navarro: 'diamond', snowflake: 'snow', clima: 'snow', event: 'frate', palette: 'sparkles', layout: 'grid', activity: 'heart', home: 'house' };
@@ -142,6 +142,12 @@
   }
 
   function appIcon(app) {
+    const key = app.icon === 'elephant' || app.id === 'elephant' || normalize(app.name) === 'elephant' ? 'elephant'
+      : app.icon === 'trueke' || app.id === 'trueke' || normalize(app.name) === 'trueke' ? 'trueke' : '';
+    const logo = window.LOGIKAPPS_LOGOS?.[key];
+    if (logo && /^data:image\/(png|svg\+xml);base64,[A-Za-z0-9+/=]+$/.test(logo)) {
+      return `<span class="app-icon confirmed-logo"><img src="${logo}" alt="Logo de ${escapeHTML(app.name)}"></span>`;
+    }
     const name = typeof app.icon === 'string' && app.icon in iconStyles ? app.icon : ({ music: 'waves', business: 'briefcase', personal: 'heart', creative: 'sparkles' }[app.category] || 'grid');
     return `<span class="app-icon tone-${iconStyles[name] || 'purple'}">${icon(name)}</span>`;
   }
@@ -214,7 +220,10 @@
     }).map((entry) => ({
       id: entry.id, name: entry.name.trim(), description: entry.description.trim(), category: entry.category,
       icon: Object.prototype.hasOwnProperty.call(iconStyles, entry.icon) ? entry.icon : 'grid',
-      kind: entry.kind, url: validURL(entry.url), requirements: entry.requirements || '', connectKind: entry.connectKind || 'app'
+      kind: entry.kind, url: validURL(entry.url), requirements: entry.requirements || '', connectKind: entry.connectKind || 'app',
+      version: validText(entry.version, 80) ? entry.version : '',
+      stage: ['beta', 'prototype', 'setup'].includes(entry.stage) ? entry.stage : '',
+      logoPending: entry.logoPending === true
     }));
   }
 
@@ -264,7 +273,9 @@
     const busy = discoverAdding.has(entry.url);
     const download = entry.kind === 'download';
     const connectLabel = { app: 'Conectar app', command: 'Conectar lanzador', folder: 'Conectar carpeta' }[entry.connectKind];
-    return `<article class="app-card discover-card"><div class="card-top">${appIcon(entry)}<span class="badge">${download ? 'Descarga' : 'Web'}</span></div><h3>${escapeHTML(entry.name)}</h3><p class="app-description">${escapeHTML(entry.description)}</p>${entry.requirements ? `<p class="discover-requirements">${escapeHTML(entry.requirements)}</p>` : ''}<div class="discover-actions"><a class="button button-primary" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener noreferrer">${icon(download ? 'download' : 'external')}${download ? 'Ver descarga' : 'Abrir web'}</a><button class="button${added ? ' button-quiet' : ''}" data-action="${download ? 'connect-discover' : 'add-discover'}" data-id="${escapeHTML(entry.id)}"${added || busy ? ' disabled' : ''}>${icon(added ? 'grid' : 'plus')}${download ? connectLabel : added ? 'Ya está en Mis apps' : busy ? 'Agregando…' : 'Agregar a Mis apps'}</button></div></article>`;
+    const stageLabel = {beta:'Beta',prototype:'Prototipo',setup:'Por configurar'}[entry.stage];
+    const metadata = `<div class="tool-metadata">${entry.version ? `<span>Versión ${escapeHTML(entry.version)}</span>` : ''}${stageLabel ? `<span class="badge prototype">${stageLabel}</span>` : ''}${entry.logoPending ? '<span class="identity-pending">Logo pendiente de elección</span>' : ''}</div>`;
+    return `<article class="app-card discover-card"><div class="card-top">${appIcon(entry)}<span class="badge">${download ? 'Descarga' : 'Web'}</span></div><h3>${escapeHTML(entry.name)}</h3>${metadata}<p class="app-description">${escapeHTML(entry.description)}</p>${entry.requirements ? `<p class="discover-requirements">${escapeHTML(entry.requirements)}</p>` : ''}<div class="discover-actions"><a class="button button-primary" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener noreferrer">${icon(download ? 'download' : 'external')}${download ? 'Ver descarga' : 'Abrir web'}</a><button class="button${added ? ' button-quiet' : ''}" data-action="${download ? 'connect-discover' : 'add-discover'}" data-id="${escapeHTML(entry.id)}"${added || busy ? ' disabled' : ''}>${icon(added ? 'grid' : 'plus')}${download ? connectLabel : added ? 'Ya está en Mis apps' : busy ? 'Agregando…' : 'Agregar a Mis apps'}</button></div></article>`;
   }
 
   function renderDiscover() {
@@ -282,7 +293,7 @@
     if (discoverAdding.has(entry.url)) return;
     discoverAdding.add(entry.url);
     try {
-      await mutate('saveApp', { app: { id: uid(), name: entry.name, description: entry.description, category: entry.category, icon: entry.icon, kind: 'url', target: entry.url, status: 'ready', favorite: false } });
+      await mutate('saveApp', { app: { id: uid(), name: entry.name, description: entry.description, category: entry.category, icon: entry.icon, kind: 'url', target: entry.url, status: ['prototype', 'setup'].includes(entry.stage) ? entry.stage : 'ready', favorite: false, notes: entry.requirements } });
       toast('Herramienta agregada a Mis apps.');
     } finally { discoverAdding.delete(entry.url); render(); }
   }
@@ -290,7 +301,7 @@
   function connectDiscover(id) {
     const entry = sharedTools.find((item) => item.id === id && item.kind === 'download');
     if (!entry) throw new Error('Esta descarga ya no está disponible en el catálogo.');
-    openAppEditor('', { name: entry.name, description: entry.description, category: entry.category, icon: entry.icon, kind: entry.connectKind, target: '' });
+    openAppEditor('', { name: entry.name, description: entry.description, category: entry.category, icon: entry.icon, kind: entry.connectKind, target: '', status: ['prototype', 'setup'].includes(entry.stage) ? entry.stage : 'ready', notes: entry.requirements });
   }
 
   function renderIdeas() {
@@ -325,7 +336,7 @@
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.5.1'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.6.0'}`;
   }
 
   function changeView(next, nextCategory = 'all') {
@@ -366,7 +377,7 @@
     const app = existing || { name: '', description: '', category: category === 'all' ? 'personal' : category, kind: 'url', target: '', status: 'ready', icon: 'grid', favorite: false, notes: '', ...(prefill || {}) };
     const kinds = [['url', 'Enlace web'], ['app', 'App de Mac'], ['command', 'Acceso local (.command)'], ['folder', 'Carpeta']];
     if (app.kind === 'managed') kinds.push(['managed', 'Herramienta integrada']);
-    openDialog(`<form id="app-form" data-id="${escapeHTML(id)}">${dialogHeader(existing ? 'Editar acceso' : 'Agregar una app')}<div class="dialog-body"><p class="dialog-description">${existing ? 'Organiza cómo aparece y se abre esta herramienta en tu espacio.' : prefill ? 'Después de preparar la descarga en tu Mac, elige su app, lanzador o carpeta para conectarla a tu biblioteca.' : 'Conecta una herramienta que ya tienes: su app, una carpeta o su enlace.'}</p><div class="form-grid"><label class="form-field full">Nombre<input name="name" required maxlength="100" value="${escapeHTML(app.name)}" placeholder="Nombre de tu herramienta" autofocus></label><label class="form-field full">Descripción<textarea name="description" maxlength="2000" rows="2" placeholder="¿Para qué la usas?">${escapeHTML(app.description)}</textarea></label><label class="form-field">Colección<select name="category">${options(Object.entries(categories), app.category)}</select></label><label class="form-field">Tipo de acceso<select name="kind" id="app-kind">${options(kinds, app.kind)}</select></label><label class="form-field full"><span id="target-label">Enlace</span><span class="input-action"><input name="target" id="app-target" value="${escapeHTML(app.target)}" maxlength="4096"><button type="button" class="button" data-action="choose-path" id="choose-path">${icon('folder')}Elegir</button></span><small id="target-help"></small></label><label class="form-field">Estado<select name="status">${options([['ready', 'Lista para abrir'], ['prototype', 'Prototipo'], ['setup', 'Por conectar']], app.status)}</select></label><label class="form-field">Icono<select name="icon">${options([['grid', 'Apps'], ['play', 'Video'], ['waves', 'Audio'], ['disc', 'Vinilo'], ['diamond', 'Joyería'], ['frate', 'Evento'], ['snow', 'Climatización'], ['link', 'Enlace'], ['globe', 'Web'], ['music', 'Música'], ['film', 'Película'], ['sparkles', 'Creatividad'], ['briefcase', 'Negocios'], ['heart', 'Bienestar'], ['house', 'Casa'], ['terminal', 'Herramienta'], ['folder', 'Carpeta']], iconAliases[app.icon] || app.icon)}</select></label><label class="form-field full">Notas <small>(opcional)</small><textarea name="notes" rows="2" maxlength="4096" placeholder="Algo que quieras recordar sobre esta app…">${escapeHTML(app.notes || '')}</textarea></label><label class="check-field"><input name="favorite" type="checkbox"${app.favorite ? ' checked' : ''}>Guardar en favoritos</label></div><p class="form-error" id="form-error" role="alert" hidden></p></div><footer class="dialog-footer">${existing ? `<button type="button" class="button delete-item" data-action="ask-delete-app" data-id="${escapeHTML(id)}">Quitar acceso</button>` : ''}<button type="button" class="button button-quiet" data-action="close-dialog">Cancelar</button><button type="submit" class="button button-primary">${existing ? 'Guardar cambios' : 'Agregar app'}</button></footer></form>`);
+    openDialog(`<form id="app-form" data-id="${escapeHTML(id)}">${dialogHeader(existing ? 'Editar acceso' : 'Agregar una app')}<div class="dialog-body"><p class="dialog-description">${existing ? 'Organiza cómo aparece y se abre esta herramienta en tu espacio.' : prefill ? 'Después de preparar la descarga en tu Mac, elige su app, lanzador o carpeta para conectarla a tu biblioteca.' : 'Conecta una herramienta que ya tienes: su app, una carpeta o su enlace.'}</p><div class="form-grid"><label class="form-field full">Nombre<input name="name" required maxlength="100" value="${escapeHTML(app.name)}" placeholder="Nombre de tu herramienta" autofocus></label><label class="form-field full">Descripción<textarea name="description" maxlength="2000" rows="2" placeholder="¿Para qué la usas?">${escapeHTML(app.description)}</textarea></label><label class="form-field">Colección<select name="category">${options(Object.entries(categories), app.category)}</select></label><label class="form-field">Tipo de acceso<select name="kind" id="app-kind">${options(kinds, app.kind)}</select></label><label class="form-field full"><span id="target-label">Enlace</span><span class="input-action"><input name="target" id="app-target" value="${escapeHTML(app.target)}" maxlength="4096"><button type="button" class="button" data-action="choose-path" id="choose-path">${icon('folder')}Elegir</button></span><small id="target-help"></small></label><label class="form-field">Estado<select name="status">${options([['ready', 'Lista para abrir'], ['prototype', 'Prototipo'], ['setup', 'Por conectar']], app.status)}</select></label><label class="form-field">Icono<select name="icon">${options([['elephant', 'Elephant · logo confirmado'], ['trueke', 'Trueke · logo confirmado'], ['grid', 'Apps'], ['play', 'Video'], ['waves', 'Audio'], ['disc', 'Vinilo'], ['diamond', 'Joyería'], ['frate', 'Evento'], ['snow', 'Climatización'], ['link', 'Enlace'], ['globe', 'Web'], ['music', 'Música'], ['film', 'Película'], ['sparkles', 'Creatividad'], ['briefcase', 'Negocios'], ['heart', 'Bienestar'], ['house', 'Casa'], ['terminal', 'Herramienta'], ['folder', 'Carpeta']], iconAliases[app.icon] || app.icon)}</select></label><label class="form-field full">Notas <small>(opcional)</small><textarea name="notes" rows="2" maxlength="4096" placeholder="Algo que quieras recordar sobre esta app…">${escapeHTML(app.notes || '')}</textarea></label><label class="check-field"><input name="favorite" type="checkbox"${app.favorite ? ' checked' : ''}>Guardar en favoritos</label></div><p class="form-error" id="form-error" role="alert" hidden></p></div><footer class="dialog-footer">${existing ? `<button type="button" class="button delete-item" data-action="ask-delete-app" data-id="${escapeHTML(id)}">Quitar acceso</button>` : ''}<button type="button" class="button button-quiet" data-action="close-dialog">Cancelar</button><button type="submit" class="button button-primary">${existing ? 'Guardar cambios' : 'Agregar app'}</button></footer></form>`);
     updateTargetField();
   }
 

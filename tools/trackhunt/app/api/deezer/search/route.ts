@@ -1,3 +1,5 @@
+import { musicSearchQueries, scoreMusicCandidate, type MusicSearchQuery } from "../../../../lib/music-search";
+
 type DeezerTrack = {
   id: number;
   title: string;
@@ -10,75 +12,64 @@ type DeezerTrack = {
   album?: { title?: string; cover_medium?: string; cover_small?: string };
 };
 
-type SearchQuery = {
-  clientId: number;
-  artist: string;
-  title: string;
+type SearchQuery = { clientId: number; artist: string; title: string };
+type RankedTrack = {
+  track: DeezerTrack;
+  score: number;
+  titleScore: number;
+  artistScore: number;
+  versionConflict: boolean;
+  search: MusicSearchQuery;
 };
 
-function normalize(value: string) {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/\b(feat|featuring|ft|remix|mix|edit|extended|original|version)\b/g, " ")
-    .replace(/[^a-z0-9]+/g, " ")
-    .trim();
-}
-
-function wordScore(expected: string, candidate: string) {
-  const wanted = new Set(normalize(expected).split(" ").filter(Boolean));
-  const found = new Set(normalize(candidate).split(" ").filter(Boolean));
-  if (!wanted.size || !found.size) return 0;
-  let intersection = 0;
-  wanted.forEach((word) => {
-    if (found.has(word)) intersection += 1;
-  });
-  return intersection / Math.max(wanted.size, found.size);
-}
-
-function scoreTrack(query: SearchQuery, track: DeezerTrack) {
-  const title = `${track.title_short ?? track.title} ${track.title_version ?? ""}`;
-  const titleScore = wordScore(query.title, title);
-  const artistScore = query.artist === "Artista por identificar"
-    ? .5
-    : wordScore(query.artist, track.artist?.name ?? "");
-  return Math.min(1, titleScore * .72 + artistScore * .28);
-}
-
-async function searchOne(query: SearchQuery) {
-  const terms = query.artist === "Artista por identificar"
-    ? query.title
-    : `${query.artist} ${query.title}`;
-  const endpoint = new URL("https://api.deezer.com/search");
-  endpoint.searchParams.set("q", terms);
-  endpoint.searchParams.set("limit", "8");
-
-  const response = await fetch(endpoint, {
-    headers: { accept: "application/json", "user-agent": "SetlistToDeezer/1.0" },
-  });
-  if (!response.ok) return { clientId: query.clientId, match: null };
-  const payload = await response.json() as { data?: DeezerTrack[] };
-  const ranked = (payload.data ?? [])
-    .map((track) => ({ track, score: scoreTrack(query, track) }))
-    .sort((a, b) => b.score - a.score);
-  const best = ranked[0];
-  if (!best || best.score < .34) return { clientId: query.clientId, match: null };
-
+function publicMatch(row: RankedTrack) {
   return {
-    clientId: query.clientId,
-    match: {
-      id: best.track.id,
-      title: best.track.title,
-      artist: best.track.artist?.name ?? "Artista desconocido",
-      album: best.track.album?.title ?? "",
-      cover: best.track.album?.cover_medium ?? best.track.album?.cover_small ?? "",
-      link: best.track.link,
-      duration: best.track.duration,
-      preview: best.track.preview,
-      score: Number(best.score.toFixed(3)),
-    },
+    id: row.track.id,
+    title: row.track.title,
+    artist: row.track.artist?.name ?? "Artista desconocido",
+    album: row.track.album?.title ?? "",
+    cover: row.track.album?.cover_medium ?? row.track.album?.cover_small ?? "",
+    link: row.track.link,
+    duration: row.track.duration,
+    preview: row.track.preview,
+    score: Number(row.score.toFixed(3)),
+    titleScore: Number(row.titleScore.toFixed(3)),
+    artistScore: Number(row.artistScore.toFixed(3)),
+    versionConflict: row.versionConflict,
+    searchStrategy: row.search.strategy,
+    searchedQuery: row.search.query,
   };
+}
+
+async function searchOne(query: SearchQuery, fetchSearch: (search: MusicSearchQuery) => Promise<DeezerTrack[]>) {
+  const variants = musicSearchQueries(query);
+  const candidates = new Map<number, RankedTrack>();
+  const searchedQueries: string[] = [];
+
+  for (const search of variants) {
+    searchedQueries.push(search.query);
+    const tracks = await fetchSearch(search);
+    for (const track of tracks) {
+      if (!Number.isFinite(track.id) || !track.title || !track.link) continue;
+      const scored = scoreMusicCandidate(query, {
+        artist: track.artist?.name,
+        title: track.title_short ?? track.title,
+        version: track.title_version,
+      });
+      const ranked = { track, ...scored, search };
+      const previous = candidates.get(track.id);
+      if (!previous || ranked.score > previous.score) candidates.set(track.id, ranked);
+    }
+    const best = [...candidates.values()].sort((a, b) => b.score - a.score)[0];
+    if (best && best.score >= .9 && best.titleScore >= .94 && best.artistScore >= .72 && !best.versionConflict) break;
+  }
+
+  const ranked = [...candidates.values()]
+    .filter((row) => row.titleScore >= .42 && row.score >= .38)
+    .sort((a, b) => b.score - a.score || b.titleScore - a.titleScore)
+    .slice(0, 4);
+  const alternatives = ranked.map(publicMatch);
+  return { clientId: query.clientId, match: alternatives[0] ?? null, alternatives, searchedQueries };
 }
 
 export async function POST(request: Request) {
@@ -99,9 +90,33 @@ export async function POST(request: Request) {
     }));
   if (!queries.length) return Response.json({ error: "No hay pistas para buscar" }, { status: 400 });
 
+  const requestCache = new Map<string, Promise<DeezerTrack[]>>();
+  const fetchSearch = (search: MusicSearchQuery) => {
+    const key = search.query.toLocaleLowerCase("es");
+    const cached = requestCache.get(key);
+    if (cached) return cached;
+    const pending = (async () => {
+      const endpoint = new URL("https://api.deezer.com/search");
+      endpoint.searchParams.set("q", search.query);
+      endpoint.searchParams.set("limit", "12");
+      try {
+        const response = await fetch(endpoint, {
+          headers: { accept: "application/json", "user-agent": "TrackHunt/2.0" },
+        });
+        if (!response.ok) return [];
+        const payload = await response.json() as { data?: DeezerTrack[] };
+        return Array.isArray(payload.data) ? payload.data : [];
+      } catch {
+        return [];
+      }
+    })();
+    requestCache.set(key, pending);
+    return pending;
+  };
+
   const results = [];
-  for (let index = 0; index < queries.length; index += 6) {
-    results.push(...await Promise.all(queries.slice(index, index + 6).map(searchOne)));
+  for (let index = 0; index < queries.length; index += 3) {
+    results.push(...await Promise.all(queries.slice(index, index + 3).map((query) => searchOne(query, fetchSearch))));
   }
   return Response.json({ results }, { headers: { "cache-control": "private, max-age=60" } });
 }

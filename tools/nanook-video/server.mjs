@@ -1,14 +1,16 @@
 import http from 'node:http';
-import { spawn, execFile } from 'node:child_process';
-import { promisify } from 'node:util';
+import { startMediaProxy } from './network.mjs';
+import { spawn } from 'node:child_process';
+import { createDependencyCheck } from './dependencies.mjs';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve, basename, extname, sep } from 'node:path';
 import { mkdirSync, readFileSync, writeFileSync, renameSync, existsSync, statSync, statfsSync, readdirSync, rmSync, createReadStream, createWriteStream } from 'node:fs';
 import { Transform } from 'node:stream';
 import { pipeline } from 'node:stream/promises';
-import { youtubeURL, selection, audioSelection, downloadChoices, summarize, friendlyError } from './lib.mjs';
-import { mediaExtensions, safeInput, activeStates, metadata, mediaType, enhancementOptions, audioFilters, videoFilters, audioEncoding, contentType, byteRange } from './media.mjs';
+import { mediaURL, safeFormat, videoDownloadPlan, audioSelection, downloadChoices, summarize, friendlyError, isYouTubeSource, extractorArgs, canStartDownload } from './lib.mjs';
+import { mediaExtensions, safeInput, activeStates, metadata, mediaType, enhancementOptions, audioFilters, videoFilters, audioEncoding, compatibleMp4Encoding, contentType, byteRange } from './media.mjs';
+import { QUEUE_LIMIT, createBatchManager, discoveryInput, discoveryResults, downloadKey, queueConfig, titleMatch, words } from './bulk.mjs';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const DATA = join(ROOT, '.data');
@@ -16,28 +18,33 @@ const DOWNLOADS = join(ROOT, 'downloads');
 const PORT = Number(process.env.PORT || 4317);
 const TOKEN = randomBytes(32).toString('hex');
 const LOCAL_YTDLP = join(ROOT, '.runtime', 'venv', 'bin', 'yt-dlp');
-const YTDLP = process.env.YTDLP_PATH || (existsSync(LOCAL_YTDLP) ? LOCAL_YTDLP : 'yt-dlp');
+const VENV_YTDLP = join(ROOT, '.runtime/venv/bin/yt-dlp');
+const YTDLP = process.env.YTDLP_PATH || (existsSync(VENV_YTDLP) ? VENV_YTDLP : existsSync(LOCAL_YTDLP) ? LOCAL_YTDLP : 'yt-dlp');
 const FFMPEG = process.env.FFMPEG_PATH || (process.env.PATH || '').split(':').map(dir => join(dir, 'ffmpeg')).find(path => existsSync(path)) || 'ffmpeg';
 const FFPROBE = process.env.FFPROBE_PATH || (FFMPEG.includes('/') ? join(dirname(FFMPEG), 'ffprobe') : 'ffprobe');
 const ESRGAN = process.env.ESRGAN_PATH || join(ROOT, '.runtime/esrgan/realesrgan-ncnn-vulkan');
 const PYTHON = process.env.PYTHON_PATH || (existsSync(join(ROOT, '.runtime/venv/bin/python3')) ? join(ROOT, '.runtime/venv/bin/python3') : 'python3');
 const aiReady = existsSync(ESRGAN) && existsSync(join(dirname(ESRGAN), 'verified.json'));
 let uploading = false;
-const exec = promisify(execFile);
-const common = ['--ignore-config', '--no-playlist', '--no-cache-dir', '--no-colors', '--js-runtimes', `node:${process.execPath}`, '--socket-timeout', '20', '--retries', '3', '--fragment-retries', '3'];
+const mediaProxy = await startMediaProxy();
+const common = ['--proxy',mediaProxy.url,'--hls-prefer-native','--ignore-config', '--no-playlist', '--no-cache-dir', '--no-colors', '--js-runtimes', `node:${process.execPath}`, '--socket-timeout', '20', '--retries', '3', '--fragment-retries', '3'];
 const children = new Set();
 const analyses = new Map();
 let analysisCount = 0;
-let active = null;
+const running = new Map();
+let discoveryCount = 0;
 let stopping = false;
 mkdirSync(DATA, { recursive: true });
 mkdirSync(DOWNLOADS, { recursive: true });
+let queueSettings = { paused:false, concurrency:2 };
+try { queueSettings = queueConfig(JSON.parse(readFileSync(join(DATA,'queue.json'),'utf8')),queueSettings); } catch {}
+function saveQueue() { writeFileSync(join(DATA,'queue.tmp'),JSON.stringify(queueSettings));renameSync(join(DATA,'queue.tmp'),join(DATA,'queue.json')); }
 let jobs = [];
 try { jobs = JSON.parse(readFileSync(join(DATA, 'jobs.json'), 'utf8')); } catch {}
 jobs = Array.isArray(jobs) ? jobs.filter(j => /^[a-f0-9-]{36}$/.test(j.id)) : [];
 for (const job of jobs) {
-  if (['queued', 'downloading', 'processing'].includes(job.status)) {
-    job.status = 'error'; job.error = 'La app se cerró durante la descarga. Vuelve a descargar el video.';
+  if (['downloading', 'processing'].includes(job.status)) {
+    job.status = 'queued'; job.progress = 0; job.stage = 'Retomando trabajo interrumpido'; delete job.error;
   }
   if (job.status === 'done' && !existsSync(join(DOWNLOADS, job.id, basename(job.filename || 'missing')))) {
     job.status = 'error'; job.error = 'El archivo se movió o ya no existe. Puedes volver a descargarlo.';
@@ -48,9 +55,9 @@ function persist() {
   renameSync(join(DATA, 'jobs.tmp'), join(DATA, 'jobs.json'));
 }
 persist();
-const dependencies = Promise.allSettled([
-  exec(YTDLP, ['--version'], { timeout: 10000 }), exec(FFMPEG, ['-version'], { timeout: 10000 })
-]).then(([yt, ff]) => ({ ready: yt.status === 'fulfilled' && ff.status === 'fulfilled', ytDlp: yt.status === 'fulfilled' ? yt.value.stdout.trim() : null, ffmpeg: ff.status === 'fulfilled' }));
+const checkDependencies = createDependencyCheck({ ytdlp: YTDLP, ffmpeg: FFMPEG, onReady: () => {
+  if (!stopping) { pump(); batches.pump(); }
+} });
 
 function kill(child) {
   if (!child?.pid) return;
@@ -94,7 +101,14 @@ function publicJob(job) {
 function storedPath(job) { return join(DOWNLOADS, job.id, basename(job.filename || 'missing')); }
 async function probe(path) { const { done } = run(['-v', 'error', ...safeInput, '-show_format', '-show_streams', '-of', 'json', path], { binary: FFPROBE, timeout: 20000 }); return metadata(JSON.parse(await done)); }
 function spaceNeeded(bytes) { const disk = statfsSync(DOWNLOADS); if (disk.bavail * disk.bsize < bytes + 1024 ** 3) throw new Error('No queda espacio suficiente para esta operación. Libera espacio en el disco.'); }
-function room(count = 1) { if (jobs.filter(j => activeStates.includes(j.status)).length + count > 10) throw Object.assign(new Error('La cola está llena. Espera a que termine un trabajo.'), { status: 429 }); }
+function room(count = 1) { if (jobs.filter(j => activeStates.includes(j.status)).length + count > QUEUE_LIMIT) throw Object.assign(new Error(`La cola admite ${QUEUE_LIMIT} trabajos pendientes o activos. Espera a que se libere espacio.`), { status: 429 }); }
+function queueState() {
+  const count = status => jobs.filter(j=>j.status===status).length;
+  return { ...queueSettings, limit:QUEUE_LIMIT, waiting:count('queued'), running:running.size, downloading:[...running.values()].filter(r=>isDownload(r.job)).length, done:count('done'), failed:count('error'), cancelled:count('cancelled'), available:Math.max(0,QUEUE_LIMIT-jobs.filter(j=>activeStates.includes(j.status)).length) };
+}
+function resetJob(job) { for (const key of ['error','filename','bytes','media','completedAt','speed','eta','stage']) delete job[key];job.status='queued';job.progress=0;job.retriedAt=new Date().toISOString(); }
+const isDownload = job => !['enhance','preview','upload'].includes(job.kind);
+function setChild(job, child) { const task=running.get(job.id);if(task)task.child=child; }
 function addJob(job) { jobs.push(job); /* Keep references and source files available for comparisons. */ persist(); return publicJob(job); }
 function requireSource(id) { const source = jobs.find(j => j.id === id && j.status === 'done'); if (!source || !existsSync(storedPath(source))) throw new Error('Selecciona un archivo terminado que siga guardado en la app.'); return source; }
 async function enqueueEnhancement(input, kind = 'enhance') {
@@ -116,7 +130,7 @@ async function processFile(job, directory) {
   if (o.normalize && meta.audioCodec) {
     job.stage = 'Midiendo volumen del original'; job.progress = null;
     const measure = run(['-hide_banner', '-nostdin', ...safeInput, '-i', input, ...trim, '-vn', '-af', [...filters, 'loudnorm=I=-16:TP=-1.5:LRA=11:print_format=json'].join(','), '-f', 'null', '-'], { binary: FFMPEG, timeout: 3600000, returnStderr: true });
-    active.child = measure.child; const log = await measure.done;
+    setChild(job,measure.child); const log = await measure.done;
     if (job.status === 'cancelled') throw new Error('Cancelado');
     const match = log.match(/\{\s*"input_i"[\s\S]*?\}/);
     const measured = match ? JSON.parse(match[0]) : null;
@@ -139,28 +153,37 @@ async function processFile(job, directory) {
     if (filters.length && meta.audioCodec) args.push('-af', filters.join(','), '-ar', String(meta.sampleRate || 48000));
     args.push('-progress', 'pipe:1', '-nostats', output);
   }
-  const task = run(args, { binary, timeout: 24 * 3600000, onLine }); active.child = task.child;
+  const task = run(args, { binary, timeout: 24 * 3600000, onLine }); setChild(job,task.child);
   try { await task.done; } finally { rmSync(join(directory, 'ai-config.json'), { force: true }); rmSync(join(directory, '.frames'), { recursive: true, force: true }); }
   return output;
 }
 
-async function pump() {
-  if (active || stopping) return;
-  const job = jobs.find(j => j.status === 'queued');
-  if (!job) return;
+function pump() {
+  if (stopping || queueSettings.paused) return;
+  for (const job of jobs) {
+    if (job.status !== 'queued' || running.has(job.id)) continue;
+    const tasks = [...running.values()];
+    if (isDownload(job) ? !canStartDownload(job,tasks.filter(r=>isDownload(r.job)).map(r=>r.job),queueSettings.concurrency) : tasks.some(r=>!isDownload(r.job))) continue;
+    void performJob(job);
+  }
+}
+async function performJob(job) {
   const directory = join(DOWNLOADS, job.id);
-  active = { job, child: null };
+  running.set(job.id,{job,child:null});
   try {
+    spaceNeeded(100 * 1024 ** 2);
     mkdirSync(directory, { recursive: true });
     job.status = job.kind === 'enhance' || job.kind === 'preview' ? 'processing' : 'downloading'; job.progress = 0; persist();
-    let finalPath;
+    let finalPath, convertToMp4 = false;
     if (job.kind === 'enhance' || job.kind === 'preview') finalPath = await processFile(job, directory);
     else {
     const audio = job.mode === 'audio';
-    const { format, container, args: audioArgs } = audio ? audioSelection(job.audioFormat, job.audioQuality) : selection(job.mode, job.quality);
-    const args = [...common, '--ffmpeg-location', FFMPEG, '--newline', '--progress', '--no-simulate',
-      '--concurrent-fragments', '4', '--windows-filenames', '--trim-filenames', '180',
-      '-f', format, ...(audio ? audioArgs : ['--merge-output-format', container, '--remux-video', container]),
+    const plan = audio ? audioSelection(job.audioFormat, job.audioQuality) : videoDownloadPlan(job.mode, job.quality, job);
+    const { format, container, args: audioArgs } = plan;
+    convertToMp4 = !!plan.convertToMp4;
+    const args = [...common, ...extractorArgs(job.url), '--ffmpeg-location', FFMPEG, '--newline', '--progress', '--no-simulate',
+      '--concurrent-fragments', isYouTubeSource(job.url) ? '1' : '4', '--windows-filenames', '--trim-filenames', '180',
+      '-f', safeFormat(format), ...(audio ? audioArgs : ['--merge-output-format', container, '--remux-video', container]),
       '--embed-metadata', '--no-mtime', '--paths', directory, '-o', '%(title).140B [%(id)s].%(ext)s',
       '--progress-template', 'download:PROGRESS %(progress)j',
       '--progress-template', 'postprocess:PROCESSING',
@@ -182,37 +205,110 @@ async function pump() {
         try { finalPath = JSON.parse(line.slice(5)); } catch {}
       }
     }});
-    active.child = task.child;
+    setChild(job,task.child);
     await task.done;
     }
-    if (job.status !== 'cancelled') {
+    if (job.status !== 'cancelled' && !stopping) {
       const candidate = finalPath || readdirSync(directory).find(f => mediaExtensions.has(extname(f)));
       if (!candidate) throw new Error('No output file');
-      const path = resolve(directory, candidate);
+      let path = resolve(directory, candidate);
       if (!path.startsWith(directory + sep) || !statSync(path).isFile()) throw new Error('Invalid output file');
+      if (convertToMp4) {
+        const source = path, meta = await probe(source);
+        if (job.status === 'cancelled' || stopping) return;
+        spaceNeeded(Math.max(statSync(source).size * 3, meta.duration * 4000000));
+        const output = join(directory, `${basename(source, extname(source))} [compatible].mp4`);
+        job.status = 'processing'; job.stage = 'Creando MP4 compatible'; job.progress = 0; persist();
+        const conversion = run(['-hide_banner','-nostdin','-y',...safeInput,'-i',source,
+          '-map_metadata','0',...compatibleMp4Encoding(meta),'-progress','pipe:1','-nostats',output], {
+          binary: FFMPEG, timeout: 6 * 60 * 60 * 1000, onLine(line) {
+            const match = line.match(/^out_time_us=(\d+)/);
+            if (match && job.status !== 'cancelled') job.progress = Math.min(99, Math.round(Number(match[1]) / 1000000 / meta.duration * 100));
+          }
+        });
+        setChild(job, conversion.child); await conversion.done;
+        if (job.status === 'cancelled' || stopping) return;
+        const result = await probe(output);
+        if (result.videoCodec !== 'h264' || (meta.audioCodec && result.audioCodec !== 'aac')) throw new Error('No se pudo crear el MP4 compatible.');
+        // Only remove this job's intermediate file after verifying the MP4.
+        // Originals already present in the collection belong to other jobs.
+        rmSync(source); path = output; job.mp4Converted = true;
+      }
       job.filename = basename(path); job.bytes = statSync(path).size;
       job.media = await probe(path); job.mediaType = job.media.type;
       if (job.status === 'cancelled') return;
       job.status = 'done'; job.progress = 100; job.completedAt = new Date().toISOString();
     }
   } catch (err) {
-    if (job.status !== 'cancelled') { job.status = 'error'; job.error = job.kind === 'enhance' || job.kind === 'preview' ? (/espacio|Selecciona|hasta/.test(err.message) ? err.message : 'No se pudo procesar esta copia. El original se conserva. Prueba sin IA o con otros ajustes.') : friendlyError(err.message); console.error('Job failed', job.id, err.message.slice(-1500)); }
+    if (job.status !== 'cancelled' && !stopping) { job.status = 'error'; job.error = job.kind === 'enhance' || job.kind === 'preview' ? (/espacio|Selecciona|hasta/.test(err.message) ? err.message : 'No se pudo procesar esta copia. El original se conserva. Prueba sin IA o con otros ajustes.') : friendlyError(err.message); console.error('Job failed', job.id, err.message.replace(/https?:\/\/[^\s]+/g,'[enlace]').slice(-1500)); }
   } finally {
-    if (job.status !== 'done') rmSync(directory, { recursive: true, force: true });
-    persist(); active = null; void pump();
+    if (stopping && job.status !== 'done' && job.status !== 'cancelled') { job.status='queued';job.progress=0; }
+    if (job.status !== 'done' && !(stopping && isDownload(job) && job.status === 'queued')) rmSync(directory, { recursive: true, force: true });
+    persist(); running.delete(job.id); queueMicrotask(pump);
   }
+}
+
+async function discover(request) {
+  const {done}=run([...common.filter(a=>a!=='--no-playlist'),...extractorArgs(request.url),'--yes-playlist','--flat-playlist','--dump-single-json','--skip-download','--ignore-errors','--no-warnings',...request.args,'--',request.url]);
+  return discoveryResults(JSON.parse(await done),request);
+}
+async function analyzeURL(url,item={}) {
+  analysisCount++;
+  try {
+    let matchNote='';
+    if(!url&&item.query){
+      const result=await discover(discoveryInput({kind:'search',query:item.query,page:1}));
+      const ranked=result.entries.map(e=>({...e,match:titleMatch(item.requestedTitle||item.query,e.title,item.requestedYear)})).sort((a,b)=>b.match.ratio-a.match.ratio||Number(a.match.conflictingYear)-Number(b.match.conflictingYear));
+      if(!ranked.length||ranked[0].match.ratio<.35)throw new Error('No se encontró una coincidencia clara. Busca el título en Descubrir o añade su enlace.');
+      url=ranked[0].url;matchNote='Encontrado por coincidencia de título. Revisa la fuente antes de descargar.';
+    }
+    url=mediaURL(url);
+    const {done} = run([...common,...extractorArgs(url),'--skip-download','--dump-single-json','--',url]);
+    const info=summarize(JSON.parse(await done),url);
+    if(item.requestedTitle){const match=titleMatch(item.requestedTitle,info.title,item.requestedYear);info.needsReview=match.review||!!item.query;info.matchNote=match.review?'El título o año no coincide claramente con tu lista. Revisa este resultado.':matchNote||'Coincide por título; comprueba versión e idioma.';}
+    else if(item.query){info.needsReview=true;info.matchNote=matchNote;}
+    return info;
+  } catch(err) { throw new Error(/transmisión|formatos de descarga|enlace contiene|coincidencia|DRM/.test(err.message) ? err.message : friendlyError(err.message)); }
+  finally { analysisCount--; }
+}
+const batches=createBatchManager({data:DATA,slots:()=>2-analysisCount,analyze:analyzeURL,stopping:()=>stopping});
+function enqueueBatch(batch,input) {
+  if (!Array.isArray(input.itemIds) || !input.itemIds.length || input.itemIds.length>200 || input.itemIds.some(id=>typeof id!=='string')) throw new Error('Selecciona entre 1 y 200 videos listos.');
+  if (typeof input.requestId!=='string' || !/^[a-f0-9-]{36}$/.test(input.requestId)) throw new Error('Recarga el lote antes de añadirlo.');
+  if (input.skipDuplicates !== undefined && typeof input.skipDuplicates !== 'boolean') throw new Error('Opción de duplicados no válida.');
+  batch.receipts ||= {};
+  if (batch.receipts[input.requestId]) return batch.receipts[input.requestId];
+  const choices=downloadChoices(input), added=[],duplicates=[],errors=[], candidates=[];
+  const known=new Set(jobs.filter(j=>isDownload(j)&&(activeStates.includes(j.status)||(j.status==='done'&&existsSync(storedPath(j))))).map(downloadKey));
+  for (const id of new Set(input.itemIds)) {
+    const item=batch.items.find(i=>i.id===id);
+    if (!item || item.status!=='ready') throw new Error('Hay videos seleccionados cuyo análisis todavía no está listo.');
+    if (choices.some(c=>c.mode!=='audio')&&item.info.hasVideo===false) { errors.push({id,title:item.info.title,error:'Este enlace contiene solo audio. Elige Solo audio.'});continue; }
+    if (choices.some(c=>c.mode==='audio')&&item.info.hasAudio===false) { errors.push({id,title:item.info.title,error:'Esta publicación no incluye sonido. Elige solo video.'});continue; }
+    let count=0;
+    for (const choice of choices) {
+      const candidate={...item.info,...choice}; const key=downloadKey(candidate);
+      if (input.skipDuplicates !== false && known.has(key)) continue;
+      known.add(key);count++;
+      candidates.push({ id:randomUUID(),kind:'download',groupId:batch.id,batchName:batch.name,...candidate,status:'queued',progress:0,createdAt:new Date().toISOString() });
+    }
+    if(count) added.push({id,count});else duplicates.push({id,title:item.info.title});
+  }
+  room(candidates.length);spaceNeeded(100*1024**2);
+  const receipt={added,duplicates,errors,jobIds:candidates.map(j=>j.id),count:candidates.length};
+  jobs.push(...candidates);persist();batch.receipts[input.requestId]=receipt;batches.save();pump();return receipt;
 }
 
 function json(res, status, data) {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
   res.end(JSON.stringify(data));
 }
-async function readJSON(req) {
+async function readJSON(req, limit = 8192) {
   if (!req.headers['content-type']?.startsWith('application/json')) throw Object.assign(new Error('Formato de solicitud inválido.'), { status: 415 });
   let text = '';
   for await (const chunk of req) {
     text += chunk;
-    if (text.length > 8192) throw Object.assign(new Error('El enlace es demasiado largo.'), { status: 413 });
+    if (Buffer.byteLength(text) > limit) throw Object.assign(new Error('La solicitud es demasiado grande.'), { status: 413 });
   }
   try { return JSON.parse(text); } catch { throw Object.assign(new Error('Solicitud inválida.'), { status: 400 }); }
 }
@@ -231,8 +327,71 @@ const server = http.createServer(async (req, res) => {
       const origin = req.headers.origin;
       if (req.headers['x-nanook-token'] !== TOKEN || (origin && ![`http://127.0.0.1:${PORT}`, `http://localhost:${PORT}`].includes(origin))) return json(res, 403, { error: 'Recarga la app antes de continuar.' });
     }
-    if (req.method === 'GET' && pathname === '/api/health') return json(res, 200, { ...(await dependencies), token: TOKEN, app: 'nanook-video', version: '2.0.0', downloadFolder: DOWNLOADS, enhancement: { ready: (await dependencies).ffmpeg, aiReady, aiEngine: aiReady ? 'Real-ESRGAN x4plus · local' : null, maxUploadBytes: 2 * 1024 ** 3, aiMaxSeconds: 300 } });
+    if (req.method === 'GET' && pathname === '/api/health') {
+      const dependencies = await checkDependencies();
+      return json(res, 200, { ...dependencies, token: TOKEN, app: 'nanook-video', displayName:'INGESTA', version: '3.0.4', discovery:{aiReady:false,mode:'keyword',sources:'multisite'}, queue:queueState(), downloadFolder: DOWNLOADS, enhancement: { ready: dependencies.ffmpeg, aiReady, aiEngine: aiReady ? 'Real-ESRGAN x4plus · local' : null, maxUploadBytes: 2 * 1024 ** 3, aiMaxSeconds: 300 } });
+    }
     if (req.method === 'GET' && pathname === '/api/jobs') return json(res, 200, jobs.map(publicJob).reverse());
+    if (req.method === 'GET' && pathname === '/api/queue') return json(res,200,queueState());
+    if (req.method === 'POST' && pathname === '/api/queue/config') { queueSettings=queueConfig(await readJSON(req),queueSettings);saveQueue();pump();return json(res,200,queueState()); }
+    if (req.method === 'POST' && pathname === '/api/queue/cancel-waiting') {
+      await readJSON(req);let count=0;
+      for(const job of jobs)if(job.status==='queued'&&!running.has(job.id)){job.status='cancelled';rmSync(join(DOWNLOADS,job.id),{recursive:true,force:true});count++;}
+      persist();return json(res,200,{count,queue:queueState()});
+    }
+    if (req.method === 'POST' && pathname === '/api/queue/retry-errors') {
+      await readJSON(req);let count=0;const available=queueState().available;
+      for(const job of jobs)if(count<available&&job.status==='error'&&isDownload(job)&&!running.has(job.id)){
+        try{mediaURL(job.url);if(job.mode==='audio')audioSelection(job.audioFormat,job.audioQuality);else selection(job.mode,job.quality);}catch{continue;}
+        resetJob(job);count++;
+      }
+      persist();pump();return json(res,200,{count,queue:queueState()});
+    }
+    if (req.method === 'POST' && ['/api/discover','/api/related'].includes(pathname)) {
+      const input=await readJSON(req,64000);
+      const validatedRequest=pathname==='/api/discover'?discoveryInput(input):null;
+      if(discoveryCount>=2)return json(res,429,{error:'Ya hay dos búsquedas en curso. Espera un momento.'});
+      discoveryCount++;
+      try{
+        let request,exclusions=new Set(),explanation='';
+        if(pathname==='/api/related'){
+          let references=[];
+          if(input.batchId){const b=batches.find(input.batchId);references=b.items.filter(i=>i.info&&(!input.itemId||input.itemId===i.id)).map(i=>i.info).slice(0,8);exclusions=new Set(b.items.map(i=>i.url));}
+          else if(input.jobId){const job=jobs.find(j=>j.id===input.jobId);if(job)references=[job];}
+          else if(input.url){if(analysisCount>=2)throw new Error('Espera a que termine un análisis.');references=[await analyzeURL(mediaURL(input.url))];}
+          if(!references.length)throw new Error('Elige un material analizado como referencia.');
+          for(const ref of references)exclusions.add(ref.url);
+          const generic=new Set(['official','trailer','teaser','hd','4k','1080p','720p','el','la','de','the','and','of','in','en','a','movie','video','subtitulado','espanol','english','latino']);
+          const counts=new Map();for(const ref of references)for(const w of new Set(words(ref.title).filter(w=>w.length>2&&!generic.has(w)&&!/^\d+$/.test(w))))counts.set(w,(counts.get(w)||0)+1);
+          const terms=[...counts].sort((a,b)=>b[1]-a[1]).slice(0,references.length>1?5:7).map(([w])=>w).join(' ');
+          const query=(input.query||terms+(references.some(r=>/trailer|tráiler/i.test(r.title))?' trailer':'')).slice(0,300);
+          request=discoveryInput({kind:'search',query,page:input.page||1});explanation='Relacionados por palabras del título. La recomendación semántica con IA sigue pendiente.';
+        }else request=validatedRequest;
+        if(input.excludeDownloaded)for(const j of jobs)if(j.url&&(activeStates.includes(j.status)||j.status==='done'&&existsSync(storedPath(j))))exclusions.add(j.url);
+        const result=await discover(request);result.entries=result.entries.filter(e=>!exclusions.has(e.url));
+        if(explanation){result.explanation=explanation;result.query=request.url.replace(/^ytsearch\d+:/,'');for(const e of result.entries)e.reason='Coincidencia con las palabras de la referencia';}
+        return json(res,200,result);
+      }catch(e){return json(res,422,{error:/Elige|Espera|coincidencia/.test(e.message)?e.message:friendlyError(e.message)});}finally{discoveryCount--;batches.pump();}
+    }
+    if (req.method === 'GET' && pathname === '/api/batches') return json(res,200,batches.list());
+    if (req.method === 'POST' && pathname === '/api/batches') {
+      const dependencies = await checkDependencies();
+      if (!dependencies.ready) return json(res,503,{error:dependencies.dependencyMessage});
+      const input=await readJSON(req,256000);return json(res,201,batches.public(batches.create(input.text,input.name)));
+    }
+    const batchMatch=pathname.match(/^\/api\/batches\/([a-f0-9-]{36})(?:\/(enqueue|stop|resume|append|edit|replace))?$/);
+    if(batchMatch){
+      const batch=batches.find(batchMatch[1]);
+      if(req.method==='GET'&&!batchMatch[2])return json(res,200,batches.public(batch));
+      if(req.method==='POST'){
+        const input=await readJSON(req,256000);
+        if(batchMatch[2]==='replace')return json(res,200,batches.public(batches.replace(batch.id,input.itemId,input.text)));
+        if(batchMatch[2]==='append')return json(res,200,batches.public(batches.append(batch.id,input.text)));
+        if(batchMatch[2]==='edit')return json(res,200,batches.public(batches.edit(batch.id,input)));
+        if(batchMatch[2]==='enqueue')return json(res,201,enqueueBatch(batch,input));
+        if(['stop','resume'].includes(batchMatch[2]))return json(res,200,batches.public(batches.control(batch.id,batchMatch[2])));
+      }
+    }
     if (req.method === 'POST' && pathname === '/api/enhance') return json(res, 201, await enqueueEnhancement(await readJSON(req)));
     if (req.method === 'POST' && pathname === '/api/comparison') {
       const input = await readJSON(req), result = requireSource(input.jobId);
@@ -267,27 +426,27 @@ const server = http.createServer(async (req, res) => {
       finally { uploading = false; }
     }
     if (req.method === 'POST' && pathname === '/api/analyze') {
-      if (!(await dependencies).ready) return json(res, 503, { error: 'Falta yt-dlp o FFmpeg. Consulta el archivo LEEME.' });
+      const dependencies = await checkDependencies();
+      if (!dependencies.ready) return json(res, 503, { error: dependencies.dependencyMessage });
+      const url = mediaURL((await readJSON(req)).url);
       if (analysisCount >= 2) return json(res, 429, { error: 'Ya hay videos en análisis. Espera un momento.' });
-      const url = youtubeURL((await readJSON(req)).url);
-      analysisCount++;
       try {
-        const { done } = run([...common, '--skip-download', '--dump-single-json', '--no-warnings', '--', url]);
-        const info = summarize(JSON.parse(await done), url);
+        const info = await analyzeURL(url);
         const id = randomUUID();
         for (const [key, entry] of analyses) if (entry.expires < Date.now()) analyses.delete(key);
-        if (analyses.size >= 50) analyses.delete(analyses.keys().next().value);
+        if (analyses.size >= 500) analyses.delete(analyses.keys().next().value);
         analyses.set(id, { info, expires: Date.now() + 30 * 60 * 1000 });
         return json(res, 200, { ...info, analysisId: id });
-      } catch (err) { return json(res, 422, { error: /transmisión|formatos de descarga/.test(err.message) ? err.message : friendlyError(err.message) }); }
-      finally { analysisCount--; }
+      } catch (err) { return json(res, 422, { error: err.message }); }
+      finally { batches.pump(); }
     }
     if (req.method === 'POST' && pathname === '/api/jobs') {
       const input = await readJSON(req);
       const cached = analyses.get(input.analysisId);
       if (!cached || cached.expires < Date.now()) return json(res, 400, { error: 'Analiza nuevamente el enlace antes de descargar.' });
       const choices = downloadChoices(input);
-      if (choices.some(c => c.mode === 'mp4') && !cached.info.mp4Heights.length) return json(res, 400, { error: 'Este video solo está disponible en calidad original.' });
+      if(choices.some(c=>c.mode!=='audio')&&cached.info.hasVideo===false)throw new Error('Este enlace contiene solo audio. Elige Solo audio.');
+      if(choices.some(c=>c.mode==='audio')&&cached.info.hasAudio===false)throw new Error('Esta publicación no incluye sonido. Elige solo video.');
       room(choices.length); spaceNeeded(100 * 1024 ** 2);
       const groupId = randomUUID();
       const result = choices.map(choice => addJob({ id: randomUUID(), kind: 'download', groupId, ...cached.info, ...choice, status: 'queued', progress: 0, createdAt: new Date().toISOString() }));
@@ -299,7 +458,8 @@ const server = http.createServer(async (req, res) => {
       if (!job) return json(res, 404, { error: 'Descarga no encontrada.' });
       if (['queued', 'downloading', 'processing'].includes(job.status)) {
         job.status = 'cancelled';
-        if (active?.job.id === job.id) kill(active.child);
+        if (running.has(job.id)) kill(running.get(job.id).child);
+        else rmSync(join(DOWNLOADS,job.id),{recursive:true,force:true});
         persist();
       }
       return json(res, 200, publicJob(job));
@@ -309,13 +469,13 @@ const server = http.createServer(async (req, res) => {
       const job = jobs.find(j => j.id === retryId);
       if (!job) return json(res, 404, { error: 'Descarga no encontrada.' });
       if (!['error', 'cancelled'].includes(job.status)) return json(res, 409, { error: 'Esta descarga ya está en curso o terminó.' });
-      if (active?.job.id === job.id) return json(res, 409, { error: 'Espera un momento mientras termina la cancelación.' });
-      if (!(await dependencies).ready) return json(res, 503, { error: 'El motor de descarga no está disponible.' });
-      if (jobs.filter(j => ['queued', 'downloading', 'processing'].includes(j.status)).length >= 10) return json(res, 429, { error: 'La cola está llena. Espera a que termine una descarga.' });
+      if (running.has(job.id)) return json(res, 409, { error: 'Espera un momento mientras termina la cancelación.' });
+      const dependencies = await checkDependencies();
+      if (!dependencies.ready) return json(res, 503, { error: dependencies.dependencyMessage });
+      room();
       if (job.kind === 'enhance' || job.kind === 'preview') { const source = requireSource(job.sourceId); enhancementOptions(job.options, source.media || await probe(storedPath(source)), aiReady); }
-      else { job.url = youtubeURL(job.url); if (job.mode === 'audio') audioSelection(job.audioFormat, job.audioQuality); else selection(job.mode, job.quality); }
-      for (const key of ['error', 'filename', 'bytes', 'completedAt', 'speed', 'eta', 'stage']) delete job[key];
-      job.status = 'queued'; job.progress = 0; job.retriedAt = new Date().toISOString();
+      else { job.url = mediaURL(job.url); if (job.mode === 'audio') audioSelection(job.audioFormat, job.audioQuality); else selection(job.mode, job.quality); }
+      room();resetJob(job);
       persist(); json(res, 200, publicJob(job)); void pump(); return;
     }
     const fileId = pathname.match(/^\/api\/(?:files|media)\/([a-f0-9-]{36})$/)?.[1];
@@ -334,10 +494,10 @@ const server = http.createServer(async (req, res) => {
       });
       if (req.method === 'HEAD') res.end(); else await pipeline(createReadStream(path, range || {}), res); return;
     }
-    const staticFiles = { '/': 'index.html', '/app.js': 'app.js', '/studio.js': 'studio.js', '/style.css': 'style.css', '/favicon.svg': 'favicon.svg' };
+    const staticFiles = { '/': 'index.html', '/app.js': 'app.js', '/studio.js': 'studio.js', '/bulk.js':'bulk.js', '/style.css': 'style.css', '/favicon.svg': 'favicon.svg', '/identidad':'identity.html', '/identity.css':'identity.css', '/brand-a.svg':'brand-a.svg', '/brand-b.svg':'brand-b.svg', '/brand-c.svg':'brand-c.svg', '/trailer-example.json':'trailer-example.json' };
     if (['GET', 'HEAD'].includes(req.method) && staticFiles[pathname]) {
       const file = staticFiles[pathname];
-      const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml' };
+      const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.json':'application/json' };
       res.writeHead(200, { 'Content-Type': `${types[extname(file)]}; charset=utf-8`, 'Cache-Control': 'no-cache' });
       res.end(req.method === 'HEAD' ? undefined : readFileSync(join(ROOT, 'public', file))); return;
     }
@@ -347,8 +507,8 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, '127.0.0.1', () => console.log(`NANOOK VIDEO · http://localhost:${PORT}\nDescargas: ${DOWNLOADS}`));
+server.listen(PORT, '127.0.0.1', () => { console.log(`INGESTA · http://localhost:${PORT}\nDescargas: ${DOWNLOADS}`);void checkDependencies(); });
 server.on('error', err => { console.error(err.code === 'EADDRINUSE' ? `El puerto ${PORT} ya está en uso.` : err.message); process.exit(1); });
-function shutdown() { stopping = true; for (const child of children) kill(child); server.close(); setTimeout(() => process.exit(0), 2200).unref(); }
+function shutdown() { stopping = true;mediaProxy.close(); for (const child of children) kill(child); server.close(); setTimeout(() => process.exit(0), 2200).unref(); }
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);

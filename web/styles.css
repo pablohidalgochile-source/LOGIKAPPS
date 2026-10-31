@@ -20,3 +20,6 @@
 .interesting-details{font-size:12px;line-height:1.75;color:#b0a6bb;margin:0 0 24px}.interesting-card .button{width:100%;white-space:normal;text-align:center}
 .interesting-domain{font-size:11px;text-align:center;color:#939b88;margin-top:10px}.interesting-footnote{max-width:720px;color:#9ca88f;font-size:12px;line-height:1.8;margin-top:24px}.interesting-grid .empty-state{grid-column:1/-1}
 @media(max-width:820px){.interesting-grid{grid-template-columns:1fr}.interesting-card{padding:22px}}
+
+/* Confirmed artwork stays inside the app; proposals remain explicitly pending. */
+.app-icon.confirmed-logo{background:#fff;overflow:hidden;padding:5px}.app-icon.confirmed-logo img{width:100%;height:100%;object-fit:contain}.tool-metadata{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:8px 0;color:var(--muted,#69756c);font-size:12px}.identity-pending{color:#75518a}.tool-metadata .badge{font-size:11px}
