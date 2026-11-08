@@ -12,7 +12,7 @@ final class StateStore {
     let fileURL: URL
     private(set) var state: [String: Any]
     let allowedManaged = Set(["trackhunt", "limpieza-familiar"])
-    static let version = "0.6.1"
+    static let version = "0.7.0"
     static let maximumBytes = 8_000_000
 
     init(directory: URL, catalog: URL) throws {

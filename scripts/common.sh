@@ -22,6 +22,7 @@ require_macos() {
 
 check_sources() {
     cd "$PROJECT_ROOT"
+    /usr/bin/grep -Fq "static let version = \"$VERSION\"" native/StateStore.swift || fail "La versión del puente nativo no coincide con la entrega."
     for INPUT in native/main.swift native/Startup.swift native/StartupTests.swift native/BundledPage.swift native/AppDelegate.swift native/StateStore.swift native/SelfTests.swift native/WebKitSmokeTest.swift web/index.html web/app.js web/identities.js web/state.js web/catalog.js web/discover-catalog.js web/packs-catalog.js web/interests-catalog.js web/styles.css web/assets/logo-symbol.svg catalog.json scripts/assets/LOGIKAPPS.icns scripts/assets/icon-source.sha256 docs/PRIMEROS-PASOS-EQUIPO.html; do
         [[ -s "$INPUT" ]] || fail "Falta un archivo necesario o está vacío: $INPUT"
     done
