@@ -506,7 +506,7 @@ test('packs reject unsafe or incomplete manifests and render supplied text safel
 });
 
 
-test('release catalogue exposes all six packs and native connection forms without personal imports', async () => {
+test('release catalogue exposes all release packs and native connection forms without personal imports', async () => {
   const sandbox = { window: {} };
   for (const name of ['packs', 'discover']) vm.runInNewContext(fs.readFileSync(path.join(root, 'web', name + '-catalog.js'), 'utf8'), sandbox);
   const packs = sandbox.window.LOGIKAPPS_PACKS;
@@ -551,4 +551,16 @@ test('legacy managed cleanup records retain their source and linked ideas', () =
   const next = core.parseImport(core.serialize(core.validatedState(previous)));
   assert.equal(next.apps[0].sourcePath, '/tmp/cleanup');
   assert.equal(next.ideas[0].appId, 'one');
+});
+
+
+test('pending catalogue entries stay visible without a download or connection action', async () => {
+  const h = harness({ discover: [sharedTool({ id: 'pending-app', name: 'Pendiente de publicar', kind: 'pending', url: 'javascript:alert(1)' })] });
+  assert.equal(h.api.readDiscoverCatalog([{ ...sharedTool(), kind: 'pending', url: null }]).length, 1);
+  assert.match(h.get('#main-content').innerHTML, /Pendiente de publicar/);
+  assert.match(h.get('#main-content').innerHTML, /data-availability="pending"/);
+  assert.doesNotMatch(h.get('#main-content').innerHTML, /javascript:|data-id="pending-app"/);
+  await assert.rejects(h.api.addDiscover('pending-app'));
+  assert.throws(() => h.api.connectDiscover('pending-app'));
+  assert.equal(h.api.getState().apps.length, 0);
 });
