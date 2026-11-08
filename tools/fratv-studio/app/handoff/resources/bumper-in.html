@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · En breve comienza</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: var(--fr-surface); overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: 10%; border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .filete { position: absolute; left: 0; right: 0; top: 0; height:calc(12 * var(--fr-u)); background: var(--fr-accent); }
+  .bloque { position: absolute; left: 0; right: 0; text-align: center; }
+  .b-sim  { top: 29.8%; }
+  .b-tit  { top: 48.2%; }
+  .b-fila { top: 66%; }
+
+  .b-sim svg { width:calc(184 * var(--fr-u)); display: inline-block; }
+  .tit { font-family: var(--fr-font-display); font-weight: 700; font-size:calc(73 * var(--fr-u));
+         line-height: 1.1; color: var(--fr-text); }
+  .sub { font-family: var(--fr-font-mono); font-size:calc(27 * var(--fr-u)); letter-spacing: .28em;
+         color: var(--fr-text-dim); margin-top:calc(31 * var(--fr-u)); }
+  .fila { display: inline-flex; align-items: center; gap:calc(38 * var(--fr-u)); }
+  .reloj { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(54 * var(--fr-u));
+           letter-spacing: .08em; color: var(--fr-accent); font-variant-numeric: tabular-nums; }
+  .sep { width:1px; height:calc(47 * var(--fr-u)); background: var(--fr-hairline); }
+  .handle { font-family: var(--fr-font-mono); font-size:calc(27 * var(--fr-u)); letter-spacing: .2em; color: var(--fr-text-dim); }
+
+  /* Ciclo de 7 s: entra, sostiene y vuelve a entrar. Retardos 0 / 120 / 240 ms. */
+  .b-sim, .b-tit, .b-fila { animation: entra 7000ms ease infinite both; }
+  .b-tit  { animation-delay: 120ms; }
+  .b-fila { animation-delay: 240ms; }
+  @keyframes entra { 0% { opacity: 0; transform:translateY(calc(33 * var(--fr-u))) } 8%,92% { opacity: 1; transform: translateY(0) } 100% { opacity: 0; transform: translateY(0) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="filete"></div>
+
+  <div class="bloque b-sim"><svg class="" viewBox="56 162 430 276" aria-label="FRATV">
+        <g id="icon-f" transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="var(--fr-text)"
+                  stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </g>
+        <g id="icon-play" transform="translate(21 0)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z"
+                  fill="var(--fr-text)"></path>
+          </g>
+        </g>
+        <g id="icon-tv" transform="translate(21 0)" fill="none" stroke="var(--fr-accent)"
+           stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M301 112H347M324 112V170"></path>
+            <path d="M354 114L370 167L388 114"></path>
+          </g>
+        </g>
+      </svg></div>
+
+  <div class="bloque b-tit">
+    <div class="tit" data-field="title">EN BREVE COMIENZA</div>
+    <div class="sub" data-field="subtitle">GRACIAS POR ACOMPAÑARNOS</div>
+  </div>
+
+  <div class="bloque b-fila">
+    <span class="fila">
+      <span class="reloj" data-field="clock">00:04:58</span>
+      <span class="sep"></span>
+      <span class="handle" data-field="handle">@FRATV</span>
+    </span>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+window.FRATVRuntime.create({ id: 'bumper-in', durationMs: 7000, loop: true, alpha: false });
+
+/* Cuenta regresiva opcional: ?clockTarget=2026-09-25T21:00 */
+var q = new URLSearchParams(location.search);
+if (q.get('clockTarget')) {
+  var fin = new Date(q.get('clockTarget')).getTime();
+  var pad = function (n) { return String(n).padStart(2, '0'); };
+  var el = document.querySelector('[data-field="clock"]');
+  setInterval(function () {
+    var s = Math.max(0, Math.floor((fin - Date.now()) / 1000));
+    el.textContent = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+  }, 1000);
+}
+</script>
+</body>
+</html>

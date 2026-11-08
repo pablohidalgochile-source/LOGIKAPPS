@@ -1,0 +1,146 @@
+[
+  {
+    "id": "deep-house",
+    "name": "Deep house nocturno",
+    "family": "Electrónica",
+    "summary": "Un pulso firme con acordes cálidos y espacio para la voz."
+  },
+  {
+    "id": "nu-disco",
+    "name": "Nu-disco luminoso",
+    "family": "Electrónica",
+    "summary": "Bajo en movimiento, guitarra rítmica y un estribillo luminoso."
+  },
+  {
+    "id": "melodic-house",
+    "name": "Melodic house progresivo",
+    "family": "Electrónica",
+    "summary": "Un motivo que crece sin perder claridad ni pulso."
+  },
+  {
+    "id": "afro-house",
+    "name": "Afro house de percusión",
+    "family": "Electrónica",
+    "summary": "Percusión entrelazada y un bajo sencillo como soporte."
+  },
+  {
+    "id": "minimal-techno",
+    "name": "Techno mínimo",
+    "family": "Electrónica",
+    "summary": "Pocos elementos, variaciones pequeñas y tensión sostenida."
+  },
+  {
+    "id": "synthwave",
+    "name": "Synthwave de carretera",
+    "family": "Electrónica",
+    "summary": "Un paisaje retro con melodía reconocible y batería contenida."
+  },
+  {
+    "id": "reggaeton-duo",
+    "name": "Reggaetón de dúo",
+    "family": "Latina",
+    "summary": "Dos voces con funciones distintas sobre un dembow claro."
+  },
+  {
+    "id": "pop-latino",
+    "name": "Pop latino cercano",
+    "family": "Latina",
+    "summary": "Narración cotidiana y un estribillo que abre la emoción."
+  },
+  {
+    "id": "cumbia-chilena",
+    "name": "Cumbia chilena de banda",
+    "family": "Latina",
+    "summary": "Bajo y percusión bailable con respuestas de banda."
+  },
+  {
+    "id": "bachata",
+    "name": "Bachata íntima",
+    "family": "Latina",
+    "summary": "Guitarra de respuesta, percusión delicada y conversación cantada."
+  },
+  {
+    "id": "bolero",
+    "name": "Bolero de sala",
+    "family": "Latina",
+    "summary": "Una voz expuesta, silencios y armonía cálida."
+  },
+  {
+    "id": "bossa-nova",
+    "name": "Bossa nova de tarde",
+    "family": "Jazz y soul",
+    "summary": "Síncopas ligeras y armonía que acompaña sin saturar."
+  },
+  {
+    "id": "folk-chileno",
+    "name": "Folk chileno narrativo",
+    "family": "Acústica y raíces",
+    "summary": "Una historia situada, guitarra clara y detalles sin caricatura."
+  },
+  {
+    "id": "jazz-campestre",
+    "name": "Jazz campestre · Navarro",
+    "family": "Acústica y raíces",
+    "summary": "Guitarra de madera y respuestas de jazz para acompañar una jornada."
+  },
+  {
+    "id": "indie-folk",
+    "name": "Indie folk íntimo",
+    "family": "Acústica y raíces",
+    "summary": "Pocos instrumentos y una imagen que cambia de sentido."
+  },
+  {
+    "id": "country-folk",
+    "name": "Country folk de relato",
+    "family": "Acústica y raíces",
+    "summary": "Relato directo y pequeñas respuestas de cuerda."
+  },
+  {
+    "id": "jazz-lounge",
+    "name": "Jazz lounge discreto",
+    "family": "Jazz y soul",
+    "summary": "Un conjunto pequeño que deja respirar el espacio."
+  },
+  {
+    "id": "neo-soul",
+    "name": "Neo-soul cálido",
+    "family": "Jazz y soul",
+    "summary": "Voz cercana y conversación entre bajo y teclas."
+  },
+  {
+    "id": "funk-band",
+    "name": "Funk de banda",
+    "family": "Jazz y soul",
+    "summary": "El bajo lleva la conversación y cada golpe tiene espacio."
+  },
+  {
+    "id": "boom-bap",
+    "name": "Boom bap narrativo",
+    "family": "Urbana",
+    "summary": "Cadencia, detalle y un beat que deja contar."
+  },
+  {
+    "id": "trap-melodico",
+    "name": "Trap melódico",
+    "family": "Urbana",
+    "summary": "Estrofas rítmicas y un gancho melódico con espacio."
+  },
+  {
+    "id": "indie-pop",
+    "name": "Indie pop de habitación",
+    "family": "Pop y rock",
+    "summary": "Una pequeña escena cotidiana con un motivo distintivo."
+  },
+  {
+    "id": "rock-alternativo",
+    "name": "Rock alternativo dinámico",
+    "family": "Pop y rock",
+    "summary": "Contraste de intensidad con un riff que identifica la canción."
+  },
+  {
+    "id": "ambient-cinematico",
+    "name": "Ambient cinematográfico",
+    "family": "Ambiental",
+    "summary": "Evolución lenta de textura y un motivo mínimo."
+  }
+]

@@ -59,3 +59,69 @@ test('provider failures and missing credits do not return fabricated playlists',
   await assert.rejects(server.generateHunt(input, 'test', async () => Response.json({ status: 'incomplete' })), /incompleta/);
   await assert.rejects(server.generateHunt(input, 'test', async () => Response.json({ status: 'completed', output: [] })), /válida/);
 });
+
+test('catalog tolerates credit formatting and original mix but preserves alternate editions', () => {
+  const wanted = { artist:'Kapo feat. Guest', title:'Song (Original Mix)' };
+  assert.equal(server.catalogMatch(wanted,{title:'Song (feat. Guest)',artist:{name:'Kapo'}}),true);
+  assert.equal(server.catalogMatch(wanted,{title:'Song',title_version:'Extended Mix',artist:{name:'Kapo'}}),false);
+  assert.equal(server.catalogMatch(wanted,{title:'Song',title_version:'Original Mix',artist:{name:'Kapo'}}),true);
+  assert.equal(server.catalogMatch(wanted,{title:'Song (Guest Remix)',artist:{name:'Kapo'}}),false);
+});
+test('refills missing candidates, never repeats attempts, and reports actual progress', async () => {
+  let rounds=0; const sent=[], progress=[], ids={First:101,Second:102,Third:103,Fourth:104,Fifth:105};
+  const remote=async(raw,init)=>{
+    const url=new URL(raw);
+    if(url.hostname==='api.openai.com') {
+      sent.push(JSON.parse(JSON.parse(init.body).input));
+      const titles=++rounds===1?['First','Missing']:['First','Second','Third','Fourth','Fifth'];
+      return Response.json({status:'completed',output:[{content:[{type:'output_text',text:JSON.stringify({name:'Filled',summary:'',tracks:titles.map(suggestion)})}]}]});
+    }
+    if(url.pathname==='/search') { const q=url.searchParams.get('q');const title=Object.keys(ids).find(t=>q.includes(t));return Response.json({data:title?[{id:ids[title],title,artist:{name:'Artist'}}]:[]}); }
+    return Response.json({bpm:100});
+  };
+  const result=await server.generateHunt(input,'test',remote,p=>progress.push(p));
+  assert.equal(result.tracks.length,5);assert.equal(result.stats.rounds,2);assert.equal(new Set(result.tracks.map(t=>t.deezerId)).size,5);
+  assert.ok(sent[1].excluded.includes('Artist — Missing'));assert.ok(sent[1].excluded.includes('Artist — First'));
+  assert.equal(progress.at(-1).accepted,5);assert.equal(result.stats.checked,6);
+});
+test('secondary catalog queries recover a real match; provider failure during refill preserves it', async()=>{
+  let rounds=0, searches=0;
+  const remote=async(raw,init)=>{
+    const url=new URL(raw);
+    if(url.hostname==='api.openai.com') {
+      if(++rounds>1) return Response.json({error:{code:'rate_limit'}},{status:429});
+      return Response.json({status:'completed',output:[{content:[{type:'output_text',text:JSON.stringify({name:'Keep',summary:'',tracks:[suggestion('Rare')]})}]}]});
+    }
+    if(url.pathname==='/search') return Response.json({data:++searches===1?[]:[{id:777,title:'Rare',artist:{name:'Artist'}}]});
+    return Response.json({bpm:99});
+  };
+  const result=await server.generateHunt(input,'test',remote);
+  assert.equal(searches,2);assert.equal(result.tracks[0].deezerId,777);assert.ok(result.warnings.some(w=>w.includes('interrumpió')));
+});
+test('cancellation starts no new provider work and Afro House is not labeled Afrobeat',async()=>{
+  const abort=new AbortController();abort.abort();
+  await assert.rejects(server.generateHunt(input,'test',async()=>{throw new Error('must not request')},undefined,abort.signal),/cancelada/);
+  const parsed=server.parseSuggestions({name:'Stage',summary:'',tracks:[{...suggestion('House'),genre:'Afro House',stage:'Afrobeat',energy:80}]},input);
+  assert.equal(parsed.tracks[0].stage,'Peak');
+});
+
+test('last refill selects actual catalog alternatives and does not accept an invented replacement',async()=>{
+  let rounds=0;const sent=[];
+  const remote=async(raw,init)=>{
+    const url=new URL(raw);
+    if(url.hostname==='api.openai.com') {
+      const prompt=JSON.parse(JSON.parse(init.body).input);sent.push(prompt);rounds++;
+      const tracks=rounds<3?[suggestion('Missing '+rounds)]:[{...suggestion('Real Song'),artist:'Kapo'},suggestion('Invented')];
+      return Response.json({status:'completed',output:[{content:[{type:'output_text',text:JSON.stringify({name:'Catalog',summary:'',tracks})}]}]});
+    }
+    if(url.pathname==='/search') {
+      const q=url.searchParams.get('q');
+      return Response.json({data:q==='artist:"Kapo"'?[{id:501,title:'Real Song',artist:{name:'Kapo'},duration:200},{id:502,title:'DÓNDE',artist:{name:'Kapo'}}]:[]});
+    }
+    return Response.json({bpm:100});
+  };
+  const result=await server.generateHunt(input,'test',remote);
+  assert.equal(result.tracks.length,1);assert.equal(result.tracks[0].deezerId,501);
+  assert.deepEqual(sent[2].availableCatalog,[{artist:'Kapo',title:'Real Song'}]);
+  assert.equal(result.stats.checked,3);assert.equal(result.stats.rounds,3);
+});

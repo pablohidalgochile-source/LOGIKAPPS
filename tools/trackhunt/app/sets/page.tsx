@@ -3,6 +3,8 @@
 /* eslint-disable @next/next/no-html-link-for-pages -- Vinext's Link prefetch currently throws at runtime. */
 
 import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
+import ShazamScanner from "./ShazamScanner";
+import { shazamAnalysis, songKey, uniqueDeezerMatches, deezerNeedsReview, shazamTime } from "../../lib/shazam-assistant";
 import { DJ_COMPILATIONS_HOME, djCompilationsBatch, djCompilationsQueries, djCompilationsQuery } from "../../lib/dj-compilations";
 import {
   generateFileZillaQueueXml,
@@ -52,14 +54,21 @@ type Track = {
   deezer?: DeezerMatch;
   deezerAlternatives?: DeezerMatch[];
   deezerSearchQueries?: string[];
+  occurrences?: number[];
+  evidenceHits?: number;
+  recognitionReview?: string;
+  recognitionApproved?: boolean;
+  deezerApproved?: boolean;
+  selectionTouched?: boolean;
 };
 
 type VideoAnalysis = {
   title: string;
   channel: string;
   thumbnail: string;
-  source: "youtube-credits" | "youtube-description" | "youtube-data-api" | "youtube-playlist-api" | "manual" | "spotify" | "acrcloud-audio";
-  tracks: Array<Pick<Track, "time" | "seconds" | "artist" | "title">>;
+  source: "youtube-credits" | "youtube-description" | "youtube-data-api" | "youtube-playlist-api" | "manual" | "spotify" | "acrcloud-audio" | "shazam-audio";
+  recognitionJob?: string;
+  tracks: Array<Pick<Track, "time" | "seconds" | "artist" | "title" | "occurrences" | "evidenceHits" | "recognitionReview">>;
   coverage?: {
     status: "complete" | "partial";
     reason?: "youtube-public-credits";
@@ -401,6 +410,7 @@ export default function Home() {
   const [inputMode, setInputMode] = useState<"video" | "manual">("video");
   const [manualOrder, setManualOrder] = useState<"artist-title" | "title-artist">("artist-title");
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [resultFilter,setResultFilter]=useState<"final"|"review"|"all">("final");
   const [video, setVideo] = useState<VideoAnalysis | null>(null);
   const [playlistName, setPlaylistName] = useState("");
   const [busy, setBusy] = useState<"extract" | "match" | "remixes" | "spotify" | "spotify-import" | "acoustic" | null>(null);
@@ -430,12 +440,14 @@ export default function Home() {
   const manualInput = useRef<HTMLTextAreaElement>(null);
 
   const selected = useMemo(() => tracks.filter((track) => track.selected), [tracks]);
+  const needsReview=(track:Track)=>Boolean(track.recognitionReview&&!track.recognitionApproved)||track.status==="review";
+  const visibleTracks=tracks.filter(t=>resultFilter==="all" || (resultFilter==="review" ? needsReview(t) : !needsReview(t)));
   const matched = useMemo(
-    () => selected.filter((track): track is Track & { deezer: DeezerMatch } => track.status === "matched" && Boolean(track.deezer)),
+    () => uniqueDeezerMatches(selected),
     [selected],
   );
   const deemixPayload = useMemo(
-    () => matched.map((track) => track.deezer.link).join(";"),
+    () => matched.map((track) => `https://www.deezer.com/track/${track.deezer.id}`).join(";"),
     [matched],
   );
   const djCompilationsPayload = useMemo(
@@ -646,7 +658,7 @@ export default function Home() {
     if (!acousticJob || !acousticPolling) return;
 
     let stopped = false;
-    let timer: ReturnType<typeof window.setTimeout> | undefined;
+    let timer: number | undefined;
     let consecutiveFailures = 0;
     let pollCount = 0;
     const controller = new AbortController();
@@ -785,7 +797,8 @@ export default function Home() {
   async function matchOnDeezer(sourceTracks: Track[]) {
     if (!sourceTracks.length) return;
     setBusy("match");
-    setTracks(sourceTracks.map((track) => ({ ...track, deezer: undefined, deezerAlternatives: undefined, deezerSearchQueries: undefined, status: "searching" })));
+    const toSearch=sourceTracks.filter(t=>!t.deezerApproved || !t.deezer);
+    setTracks(sourceTracks.map((track) => track.deezerApproved && track.deezer ? track : ({ ...track, status: "searching" })));
 
     try {
       const resolvedResults: Array<{
@@ -794,12 +807,12 @@ export default function Home() {
         alternatives?: DeezerMatch[];
         searchedQueries?: string[];
       }> = [];
-      for (let index = 0; index < sourceTracks.length; index += 50) {
+      for (let index = 0; index < toSearch.length; index += 50) {
         const response = await fetch("/api/deezer/search", {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify({
-            queries: sourceTracks.slice(index, index + 50).map((track) => ({
+            queries: toSearch.slice(index, index + 50).map((track) => ({
               clientId: track.id,
               artist: track.artist,
               title: track.title,
@@ -812,6 +825,7 @@ export default function Home() {
       }
       const byId = new Map(resolvedResults.map((item) => [item.clientId, item]));
       const resolved = sourceTracks.map((track) => {
+        if(track.deezerApproved && track.deezer) return track;
         const result = byId.get(track.id);
         const deezer = result?.match || undefined;
         return {
@@ -819,14 +833,15 @@ export default function Home() {
           deezer,
           deezerAlternatives: (result?.alternatives ?? []).filter((candidate) => candidate.id !== deezer?.id),
           deezerSearchQueries: result?.searchedQueries ?? [],
-          status: deezer ? (deezer.score >= 0.78 && !deezer.versionConflict ? "matched" : "review") : "missing",
+          status: deezer ? (!deezerNeedsReview(deezer) ? "matched" : "review") : "missing",
         } as Track;
       });
       setTracks(resolved);
       const count = resolved.filter((track) => track.deezer).length;
-      notify(`${count} de ${resolved.length} pistas encontradas en Deezer. Para edits y bootlegs usa “Remixes · buscar en fuentes”.`, count ? "success" : "info");
+      const ready=uniqueDeezerMatches(resolved.filter(t=>t.selected)).length;
+      notify(`${count} de ${resolved.length} referencias encontradas en Deezer · ${ready} enlaces únicos listos. Las dudas del reconocimiento y las versiones por revisar quedan fuera del TXT.`, count ? "success" : "info");
     } catch (error) {
-      setTracks(sourceTracks.map((track) => ({ ...track, deezer: undefined, deezerAlternatives: undefined, status: "missing" })));
+      setTracks(sourceTracks.map((track) => track.deezer ? track : ({ ...track, status: "missing" })));
       notify(error instanceof Error ? error.message : "No se pudo consultar Deezer", "error");
     } finally {
       setBusy(null);
@@ -865,7 +880,7 @@ export default function Home() {
           const globalIndexByClientId = new Map(
             batch.map((track, batchIndex) => [String(track.id), index + batchIndex]),
           );
-          collected.push(...payload.tracks.filter(isStoredRemixResult).map((result) => ({
+          collected.push(...payload.tracks.filter(isStoredRemixResult).map((result: RemixBatchTrackResult) => ({
             ...result,
             index: globalIndexByClientId.get(result.clientId) ?? index + result.index,
           })));
@@ -890,7 +905,7 @@ export default function Home() {
       const automaticUnavailable = validCollected.length > 0 && validCollected.every((result) => result.status === "not-configured");
       notify(
         automaticUnavailable
-          ? "Las conexiones automáticas aún no están configuradas. Preparé búsquedas directas para todas las canciones."
+          ? "La búsqueda automática de remixes en SoundCloud y Bandcamp no está configurada. Preparé enlaces para buscar cada canción en esas fuentes. El reconocimiento del set y la búsqueda en Deezer funcionan por separado."
           : `${found} versiones automáticas encontradas para ${selected.length} canciones. Revisa siempre artista y versión.`,
         found ? "success" : "info",
       );
@@ -926,13 +941,20 @@ export default function Home() {
   }
 
   async function finishAnalysis(analysis: VideoAnalysis, sourceUrl: string, message: string) {
-    const nextTracks: Track[] = analysis.tracks.map((track, index) => ({
+    const previous=analysis.recognitionJob ? (video?.recognitionJob===analysis.recognitionJob ? tracks : recentSets.find(s=>s.video.recognitionJob===analysis.recognitionJob)?.tracks ?? []) : [];
+    const previousBySong=new Map(previous.map(t=>[songKey(t),t]));
+    const nextTracks: Track[] = analysis.tracks.map((track, index) => {
+      const prior=previousBySong.get(songKey(track));
+      return ({
       ...track,
       id: index + 1,
-      selected: true,
-      status: "idle",
-    }));
+      selected: prior?.selectionTouched ? prior.selected : !track.recognitionReview,
+      selectionTouched:prior?.selectionTouched,
+      recognitionApproved:prior?.recognitionApproved,
+      ...(prior?.deezerApproved && prior.deezer ? {deezer:prior.deezer,deezerApproved:true,status:"matched" as const} : {status:"idle" as const}),
+    });});
     setVideo(analysis);
+    setVideoUrl(sourceUrl);
     setTracks(nextTracks);
     const nextPlaylistName = analysis.title.slice(0, 72);
     setPlaylistName(nextPlaylistName);
@@ -1111,7 +1133,7 @@ export default function Home() {
 
   function toggleTrack(id: number) {
     if (busy === "remixes") return;
-    setTracks((current) => current.map((track) => track.id === id ? { ...track, selected: !track.selected } : track));
+    setTracks((current) => current.map((track) => track.id === id ? { ...track, selected: !track.selected, selectionTouched:true } : track));
   }
 
   function removeTrack(id: number) {
@@ -1144,8 +1166,8 @@ export default function Home() {
   }
 
   function acceptMatch(id: number) {
-    setTracks((current) => current.map((track) => track.id === id && track.deezer ? { ...track, status: "matched" } : track));
-    notify("Coincidencia aprobada y añadida a la exportación para Deemix.");
+    setTracks((current) => current.map((track) => track.id === id && track.deezer ? { ...track, status: "matched", deezerApproved:true } : track));
+    notify("Versión de Deezer guardada. Si el reconocimiento está pendiente, revísalo antes de incluir el enlace.");
   }
 
   function chooseDeezerAlternative(id: number, candidate: DeezerMatch) {
@@ -1153,9 +1175,9 @@ export default function Home() {
       if (track.id !== id) return track;
       const alternatives = [track.deezer, ...(track.deezerAlternatives ?? [])]
         .filter((match): match is DeezerMatch => Boolean(match) && match?.id !== candidate.id);
-      return { ...track, deezer: candidate, deezerAlternatives: alternatives, status: "matched" };
+      return { ...track, deezer: candidate, deezerAlternatives: alternatives, status: "matched", deezerApproved:true };
     }));
-    notify("Alternativa elegida y añadida a la exportación para Deemix.");
+    notify("Alternativa de Deezer guardada; se conservará al actualizar este set.");
   }
 
   async function copyText(value: string, message: string) {
@@ -1293,9 +1315,9 @@ export default function Home() {
   function exportList(format: "csv" | "m3u" | "json" | "txt" | "djcomp") {
     const safeName = safeFileName(playlistName || "playlist");
     if (format === "csv") {
-      const header = ["timestamp", "artista_original", "track_original", "artista_deezer", "track_deezer", "url_deezer"];
+      const header = ["timestamp", "artista_original", "track_original", "artista_deezer", "track_deezer", "url_deezer", "apariciones", "revision"];
       const rows = selected.map((track) => [
-        track.time, track.artist, track.title, track.deezer?.artist ?? "", track.deezer?.title ?? "", track.deezer?.link ?? "",
+        track.time, track.artist, track.title, track.deezer?.artist ?? "", track.deezer?.title ?? "", uniqueDeezerMatches([track]).length ? `https://www.deezer.com/track/${track.deezer!.id}` : "", (track.occurrences??[track.seconds]).map(shazamTime).join(" | "), needsReview(track)?"por revisar":"sin revisión pendiente",
       ]);
       saveFile(`${safeName}.csv`, [header, ...rows].map((row) => row.map(escapeCsv).join(",")).join("\n"), "text/csv;charset=utf-8");
     } else if (format === "m3u") {
@@ -1309,7 +1331,7 @@ export default function Home() {
     } else if (format === "djcomp") {
       saveFile(`${safeName}-DJ-COMPILATIONS-BUSQUEDAS.txt`, djCompilationsPayload, "text/plain;charset=utf-8");
     } else {
-      saveFile(`${safeName}-DEEMIX-PEGAR.txt`, deemixPayload, "text/plain;charset=utf-8");
+      saveFile(`${safeName}-DEEZER-ENLACES.txt`, deemixPayload, "text/plain;charset=utf-8");
     }
     setExportOpen(false);
     notify(`Lista exportada en ${format.toUpperCase()}`);
@@ -1334,23 +1356,7 @@ export default function Home() {
 
   return (
     <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="TrackHunt Sets, inicio">
-          <span className="brand-mark">TH</span>
-          <span>TRACKHUNT · SETS</span>
-        </a>
-        <nav className="nav-links" aria-label="Navegación principal">
-          <a href="/">Versiones</a>
-          <a href="/playlist-hunt">Playlist Hunt</a><a href="/quality">Mejor calidad</a>
-          <a href="/connections">Conexiones</a>
-          <a href="#workflow">Cómo funciona</a>
-          <a href="#results">Resultado</a>
-          <a href="#legal">Uso legal</a>
-        </nav>
-        <a className="deezer-status connected" href={video ? "#deemix-export" : "#top"}>
-          <span /> {video ? "Exportar para Deemix" : "Analizar un set"}
-        </a>
-      </header>
+
 
       <section className="hero" id="top">
         <div className="hero-copy-block">
@@ -1358,11 +1364,15 @@ export default function Home() {
           <h1>CONVIERTE UN SET<br />EN UNA <em>PLAYLIST.</em></h1>
           <p>
             Recupera una playlist o los créditos públicos de un video, encuentra las canciones en Deezer,
-            busca remixes por lote y genera una sola línea lista para pegar en Deemix.
+            agrupa las canciones repetidas y copia sus enlaces de Deezer sin duplicados.
           </p>
         </div>
 
         <div className="analyzer-card">
+          <ShazamScanner disabled={busy !== null || acousticPolling} onImport={async (snapshot) => {
+            setVideoUrl("");
+            await finishAnalysis(shazamAnalysis(snapshot), snapshot.sourceURL??"", `${shazamAnalysis(snapshot).tracks.length} canciones agrupadas con tus correcciones. Buscando enlaces de Deezer…`);
+          }} />
           <label htmlFor="video-url">ENLACE DEL VIDEO O PLAYLIST</label>
           <div className="url-line">
             <span>▶</span>
@@ -1571,7 +1581,7 @@ export default function Home() {
                   type="checkbox"
                   checked={tracks.length > 0 && tracks.every((track) => track.selected)}
                   disabled={busy === "match" || busy === "remixes"}
-                  onChange={(event) => setTracks((current) => current.map((track) => ({ ...track, selected: event.target.checked })))}
+                  onChange={(event) => setTracks((current) => current.map((track) => ({ ...track, selectionTouched:true, selected: event.target.checked && !(track.recognitionReview&&!track.recognitionApproved) })))}
                 />
                 SELECCIONAR TODO
               </label>
@@ -1584,18 +1594,26 @@ export default function Home() {
                 </button>
               </div>
             </div>
-            <p className="match-note">“NO EN DEEZER” solo describe ese catálogo. Los resultados “REVISAR” no se exportan hasta que los apruebes. Usa “Remixes · buscar en fuentes” para SoundCloud, Bandcamp, YouTube, Beatport, Traxsource y tu pool.</p>
+            <p className="match-note">Una fila por canción y versión. Las apariciones originales siguen guardadas en la línea de tiempo. Los candidatos con una sola muestra y las versiones dudosas quedan en «Por revisar», fuera de los enlaces listos. Encontrar una canción en Deezer no confirma su identidad acústica.</p>
+            <div className="track-source-actions" aria-label="Filtrar lista final">
+              <button type="button" aria-pressed={resultFilter==="final"} onClick={()=>setResultFilter("final")}>LISTA FINAL · {tracks.filter(t=>!needsReview(t)).length}</button>
+              <button type="button" aria-pressed={resultFilter==="review"} onClick={()=>setResultFilter("review")}>POR REVISAR · {tracks.filter(needsReview).length}</button>
+              <button type="button" aria-pressed={resultFilter==="all"} onClick={()=>setResultFilter("all")}>TODAS · {tracks.length}</button>
+            </div>
 
             <div className="track-head" aria-hidden="true">
               <span>TIEMPO / ORIGINAL</span><span>COINCIDENCIA DEEZER</span><span>ESTADO</span><span />
             </div>
             <div className="track-list">
-              {tracks.map((track) => (
+              {visibleTracks.map((track) => (
                 <article className={`track-row ${track.selected ? "selected" : ""}`} key={track.id}>
                   <div className="original-track">
                     <input type="checkbox" checked={track.selected} disabled={busy === "match" || busy === "remixes"} onChange={() => toggleTrack(track.id)} aria-label={`Seleccionar ${track.title}`} />
                     <span className="timestamp">{track.time}</span>
-                    <div><small>{track.artist}</small><strong>{track.title}</strong><div className="track-source-actions">
+                    <div><small>{track.artist}</small><strong>{track.title}</strong>
+                    {track.occurrences && <small>{track.evidenceHits} muestras · Apariciones: {track.occurrences.map(shazamTime).join(" · ")}</small>}
+                    {track.recognitionReview && !track.recognitionApproved && <div className="review-message"><p>RECONOCIMIENTO POR REVISAR · {track.recognitionReview}</p><button type="button" onClick={()=>setTracks(current=>current.map(t=>t.id===track.id?{...t,recognitionApproved:true,selected:true,selectionTouched:true}:t))}>INCLUIR ESTE CANDIDATO EN MI LISTA</button></div>}
+                    <div className="track-source-actions">
                       <a className="remix-track-search" href={remixSearchHref(track)} target="_blank" rel="noopener noreferrer">REMIXES · BUSCAR EN FUENTES ↗</a>
                       {remixByClientId.has(String(track.id)) && <a className="remix-track-found" href="#remix-radar">
                         RADAR · {remixByClientId.get(String(track.id))?.versions.length ?? 0} ENCONTRADAS ↓
@@ -1618,7 +1636,9 @@ export default function Home() {
                         <div>
                           <small>{track.deezer.artist}</small>
                           <strong>{track.deezer.title}</strong>
-                          <span>{track.deezer.album} · {Math.round(track.deezer.score * 100)}% · {track.deezer.searchStrategy ?? "catálogo"}</span>
+                          <span>{track.deezer.album} · similitud de catálogo {Math.round(track.deezer.score * 100)}%</span>
+                          <a href={`https://www.deezer.com/track/${track.deezer.id}`} target="_blank" rel="noreferrer">DEEZER ↗</a>
+                          <button type="button" onClick={()=>void copyText(`https://www.deezer.com/track/${track.deezer!.id}`,"Enlace de Deezer copiado; verifica la versión si está pendiente.")}>COPIAR ENLACE</button>
                           {track.status === "review" && <button className="accept-match" type="button" onClick={() => acceptMatch(track.id)}>✓ USAR ESTE MATCH</button>}
                           {Boolean(track.deezerAlternatives?.length) && <details className="deezer-alternatives">
                             <summary>{track.deezerAlternatives?.length} alternativas encontradas</summary>
@@ -1644,7 +1664,7 @@ export default function Home() {
                     )}
                   </div>
                   <span className={`status status-${track.status}`}>
-                    {track.status === "matched" ? "COINCIDE" : track.status === "review" ? "REVISAR" : track.status === "searching" ? "BUSCANDO" : track.status === "missing" ? "NO EN DEEZER" : "PENDIENTE"}
+                    {needsReview(track) ? "REVISAR" : track.status === "matched" ? "EN DEEZER" : track.status === "searching" ? "BUSCANDO" : track.status === "missing" ? "NO EN DEEZER" : "PENDIENTE"}
                   </span>
                   <button className="remove-track" type="button" onClick={() => removeTrack(track.id)} disabled={busy === "match" || busy === "remixes"} aria-label={`Quitar ${track.title}`}>×</button>
                 </article>
@@ -1717,8 +1737,8 @@ export default function Home() {
 
           <aside className="playlist-builder" id="deemix-export">
             <div className="deezer-bars" aria-hidden="true"><i /><i /><i /><i /><i /><i /><i /><i /></div>
-            <div className="section-kicker">/ DEEMIX · PEGAR TODO</div>
-            <p className="single-link-intro">El mismo formato que ya te funcionó: todos los enlaces de Deezer en una sola línea, separados por punto y coma.</p>
+            <div className="section-kicker">/ ENLACES DE DEEZER · SIN DUPLICADOS</div>
+            <p className="single-link-intro">Enlaces reales del catálogo, una vez por canción de Deezer. Copia todos o descarga el TXT; las coincidencias pendientes quedan aparte. Se conserva el formato separado por punto y coma.</p>
             <label htmlFor="playlist-name">NOMBRE DEL ARCHIVO</label>
             <input id="playlist-name" value={playlistName} onChange={(event) => setPlaylistName(event.target.value)} maxLength={80} />
             <div className="playlist-summary">
@@ -1726,7 +1746,7 @@ export default function Home() {
               <div><span>Listas para exportar</span><b>{matched.length}</b></div>
               <div><span>Duración</span><b>{durationLabel(totalDuration)}</b></div>
             </div>
-            <label htmlFor="deemix-payload">ENLACES PARA DEEMIX · UNA SOLA LÍNEA</label>
+            <label htmlFor="deemix-payload">ENLACES DE DEEZER · UNA SOLA LÍNEA</label>
             <textarea
               className="deemix-payload"
               id="deemix-payload"
@@ -1738,10 +1758,10 @@ export default function Home() {
             <button
               className="create-btn"
               type="button"
-              onClick={() => copyText(deemixPayload, `${matched.length} enlaces copiados para pegar en Deemix`)}
+              onClick={() => copyText(deemixPayload, `${matched.length} enlaces únicos de Deezer copiados`)}
               disabled={!deemixPayload}
             >
-              ⧉ COPIAR TODO PARA DEEMIX <span>↗</span>
+              ⧉ COPIAR ENLACES DE DEEZER <span>↗</span>
             </button>
             <button
               className="deemix-download"
@@ -1950,7 +1970,7 @@ export default function Home() {
                   <input id="ftp-remote-root" value={ftpRemoteRoot} onChange={(event) => setFtpRemoteRoot(event.target.value)} spellCheck={false} />
                 </label>
                 <label className="ftp-local-root-field" htmlFor="ftp-local-root">CARPETA DE DESTINO EN TU MAC
-                  <input id="ftp-local-root" value={ftpLocalRoot} onChange={(event) => setFtpLocalRoot(event.target.value)} spellCheck={false} placeholder="/Music/TrackHunt" />
+                  <input id="ftp-local-root" value={ftpLocalRoot} onChange={(event) => setFtpLocalRoot(event.target.value)} spellCheck={false} placeholder="/Volumes/MUSICA/TrackHunt" />
                 </label>
               </div>
               {ftpProtocol === "ftp-insecure" && (

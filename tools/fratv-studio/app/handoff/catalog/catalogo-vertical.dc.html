@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #08070C; }
+  a { color: #B72A3A; }
+  a:hover { color: #F5F1E8; }
+  @keyframes ob-dot { 0%,100% { opacity:1 } 50% { opacity:.25 } }
+  @keyframes ob-bar { 0%,100% { transform:scaleY(.22) } 50% { transform:scaleY(1) } }
+  @keyframes ob-lt { 0%,4% { clip-path:inset(0 100% 0 0) } 14%,84% { clip-path:inset(0 0 0 0) } 94%,100% { clip-path:inset(0 0 0 100%) } }
+  @keyframes ob-txt { 0%,12% { opacity:0; transform:translateY(8px) } 24%,82% { opacity:1; transform:translateY(0) } 90%,100% { opacity:0; transform:translateY(0) } }
+  @keyframes ob-in { 0%,8% { opacity:0; transform:translateY(14px) } 22%,84% { opacity:1; transform:translateY(0) } 95%,100% { opacity:0; transform:translateY(0) } }
+  @keyframes ob-tick { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+  @keyframes ob-poll { 0%,8% { width:50% } 55%,86% { width:66% } 98%,100% { width:50% } }
+  @keyframes ob-goal { 0%,8% { width:16% } 58%,84% { width:78% } 97%,100% { width:16% } }
+</style>
+</helmet>
+<div style="width:1720px;margin:0 auto;padding:64px 60px 110px;font-family:Poppins,system-ui,sans-serif;color:#F5F1E8;background:#08070C;box-sizing:border-box">
+
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;border-bottom:1px solid rgba(245,241,232,0.16);padding-bottom:24px">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#B72A3A;text-transform:uppercase">Banco vertical · 1080 × 1920 · Browser Source</div>
+      <div style="font-size:44px;font-weight:700;letter-spacing:-0.02em;margin-top:10px;line-height:1">Accesorios FRATV en 9:16</div>
+      <div style="font-size:15px;color:rgba(245,241,232,0.62);margin-top:8px;max-width:920px;text-wrap:pretty">Los mismos recursos, replanteados para vertical: todo entra en la banda central segura, lejos de la interfaz de TikTok, Reels y Shorts. Dos reglas de siempre: <b>placa negra al 94 % para datos</b> y <b>bloque rojo pleno para estado</b>. Marca en la proporción aprobada.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(245,241,232,0.5);text-align:right;flex-shrink:0">
+      <div>ZONA SEGURA · 12 % ARRIBA · 22 % ABAJO</div>
+      <div>TRANSPARENCIA REAL · 60 FPS</div>
+      <div style="color:#B72A3A">TEXTOS REEMPLAZABLES</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:38px">
+
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V01 · MOSCA Y ZONAS SEGURAS</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden">
+        <div style="position:absolute;left:0;right:0;top:0;height:12%;background:rgba(183,42,58,0.09);border-bottom:1px dashed rgba(183,42,58,0.5)"></div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:22%;background:rgba(183,42,58,0.09);border-top:1px dashed rgba(183,42,58,0.5)"></div>
+        <div style="position:absolute;left:5%;top:4.4%;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:rgba(183,42,58,0.9)">UI DE LA APP</div>
+        <div style="position:absolute;left:5%;bottom:10%;font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.14em;color:rgba(183,42,58,0.9)">UI DE LA APP</div>
+        <div style="position:absolute;right:6%;top:14%;width:26%">
+          <svg viewBox="56 162 430 276" style="width:100%;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+          </svg>
+        </div>
+        <div style="position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(245,241,232,0.22);text-align:center">CONTENIDO<br>VERTICAL</div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">La mosca baja al 14 % para librar la interfaz. Ancho 26 % del cuadro: en 1080 son 280 px.</div>
+    </div>
+
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V02 · EN VIVO VERTICAL</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden">
+        <div style="position:absolute;left:0;right:0;top:15%;display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:9px;background:#B72A3A;border-radius:11px;padding:9px 15px">
+          <div style="width:9px;height:9px;border-radius:50%;background:#F5F1E8;animation:ob-dot 1.5s ease-in-out infinite"></div>
+          <div style="font-size:13px;font-weight:700;letter-spacing:0.2em;color:#F5F1E8">EN VIVO</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;background:rgba(16,11,24,0.94);border-radius:11px;padding:8px 14px 8px 11px">
+          <div style="width:8px;height:8px;border-radius:50%;background:#B72A3A;animation:ob-dot 1.5s ease-in-out infinite"></div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.18em;color:#F5F1E8">EN VIVO</div>
+          <div style="width:1px;height:13px;background:rgba(245,241,232,0.22)"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.08em;color:rgba(245,241,232,0.72)">01:24</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;background:rgba(16,11,24,0.94);border-radius:11px;padding:9px 14px">
+          <div style="display:flex;align-items:flex-end;gap:3px;height:14px">
+            <div style="width:3px;height:100%;background:#B72A3A;transform-origin:bottom;animation:ob-bar .85s ease-in-out infinite"></div>
+            <div style="width:3px;height:100%;background:#B72A3A;transform-origin:bottom;animation:ob-bar .85s ease-in-out .12s infinite"></div>
+            <div style="width:3px;height:100%;background:rgba(245,241,232,0.5);transform-origin:bottom;animation:ob-bar .85s ease-in-out .24s infinite"></div>
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.7)">AUDIO</div>
+        </div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Tres variantes apiladas: pastilla roja, placa con reloj corto y medidor de audio. Reloj en mm:ss para vertical.</div>
+    </div>
+
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V03 · EN BREVE COMIENZA</div>
+      <div style="position:relative;aspect-ratio:9/16;background:#100B18;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:0 9%">
+        <div style="position:absolute;left:0;right:0;top:0;height:5px;background:#B72A3A"></div>
+        <svg viewBox="40 40 520 520" style="width:34%;display:block;animation:ob-in 7s ease infinite">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+        <div style="text-align:center;animation:ob-in 7s ease .12s infinite">
+          <div style="font-size:25px;font-weight:700;line-height:1.15;color:#F5F1E8">EN BREVE<br>COMIENZA</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#B72A3A;margin-top:12px">GRACIAS POR ACOMPAÑARNOS</div>
+        </div>
+        <div style="text-align:center;animation:ob-in 7s ease .24s infinite">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;letter-spacing:0.06em;color:#F5F1E8">04:58</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(245,241,232,0.55);margin-top:9px">@FRATV</div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Cortinilla de espera vertical. Título en dos líneas y contador grande al centro, todo dentro de la zona segura.</div>
+    </div>
+
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V04 · GRACIAS POR VER</div>
+      <div style="position:relative;aspect-ratio:9/16;background:#100B18;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:0 9%">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:5px;background:#B72A3A"></div>
+        <div style="text-align:center;animation:ob-in 7s ease infinite">
+          <div style="font-size:25px;font-weight:700;line-height:1.15;color:#F5F1E8">GRACIAS<br>POR VER</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:#B72A3A;margin-top:12px">NOS VEMOS EN EL PRÓXIMO</div>
+        </div>
+        <svg viewBox="56 162 430 276" style="width:64%;display:block;animation:ob-in 7s ease .16s infinite">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.2em;color:rgba(245,241,232,0.6);text-align:center;line-height:1.9;animation:ob-in 7s ease .3s infinite">@FRATV<br>YOUTUBE · TWITCH · TIKTOK</div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Cierre vertical con la marca sin contenedor al centro y las redes al pie, sobre el filete rojo inferior.</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:22px">
+
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V05 · LOWER THIRD VERTICAL</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden">
+        <div style="position:absolute;left:0;right:0;bottom:0;height:22%;border-top:1px dashed rgba(183,42,58,0.35)"></div>
+        <div style="position:absolute;left:6%;right:6%;bottom:25%;display:flex;align-items:stretch;border-radius:12px;overflow:hidden;animation:ob-lt 9s cubic-bezier(.3,0,.2,1) infinite">
+          <div style="background:#B72A3A;display:flex;align-items:center;padding:0 11px;flex-shrink:0">
+            <svg viewBox="56 162 430 276" style="width:30px;display:block">
+              <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+              <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path></g></g>
+            </svg>
+          </div>
+          <div style="background:rgba(16,11,24,0.94);padding:12px 16px 13px;flex:1">
+            <div style="font-size:17px;font-weight:600;letter-spacing:-0.01em;line-height:1.1;color:#F5F1E8;animation:ob-txt 9s ease infinite">PABLO HIDALGO</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.16em;color:rgba(245,241,232,0.72);margin-top:7px;animation:ob-txt 9s ease .12s infinite">CONDUCTOR · FRATV</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Ancho completo menos 6 % por lado, apoyado justo sobre la zona de interfaz. Nombre en dos líneas si excede.</div>
+    </div>
+
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V06 · TÍTULO DE CLIP</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden">
+        <div style="position:absolute;left:7%;right:7%;bottom:25%;animation:ob-in 8s ease infinite">
+          <div style="display:inline-block;background:#B72A3A;border-radius:7px;padding:5px 10px;font-family:'JetBrains Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:0.16em;color:#F5F1E8">NUEVO EPISODIO</div>
+          <div style="font-size:27px;font-weight:700;line-height:1.08;letter-spacing:-0.01em;margin-top:12px;color:#F5F1E8">HISTORIAS<br>DE BARRIO</div>
+          <div style="height:3px;background:#B72A3A;border-radius:2px;margin-top:14px;width:52%"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.18em;color:rgba(245,241,232,0.72);margin-top:12px">JUEVES · 21:00 · @FRATV</div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Titular de clip para Reels y Shorts: etiqueta roja, título en dos líneas, regla roja y datos en mono.</div>
+    </div>
+
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V07 · COMENTARIO Y VOTACIÓN</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 7%">
+        <div style="background:rgba(16,11,24,0.94);border-radius:12px;padding:13px 15px;animation:ob-in 8s ease infinite">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div style="width:20px;height:20px;border-radius:6px;background:#B72A3A;flex-shrink:0"></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.12em;color:#B72A3A">@ESPECTADOR</div>
+          </div>
+          <div style="font-size:12.5px;line-height:1.45;color:rgba(245,241,232,0.92);margin-top:9px">¿Cuándo sale el próximo episodio?</div>
+        </div>
+        <div style="background:rgba(16,11,24,0.94);border-radius:12px;padding:13px 15px;animation:ob-in 8s ease .2s infinite">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.14em;color:#B72A3A">VOTACIÓN DEL PÚBLICO</div>
+          <div style="display:flex;height:8px;border-radius:5px;overflow:hidden;margin-top:10px;background:rgba(245,241,232,0.16)">
+            <div style="background:#B72A3A;animation:ob-poll 9s cubic-bezier(.3,0,.15,1) infinite"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.1em;color:rgba(245,241,232,0.7);margin-top:8px"><span>SÍ 66 %</span><span>NO 34 %</span></div>
+        </div>
+        <div style="background:rgba(16,11,24,0.94);border-radius:12px;padding:13px 15px;animation:ob-in 8s ease .4s infinite">
+          <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.7)"><span>META DEL MES</span><span style="color:#B72A3A">78 %</span></div>
+          <div style="height:7px;border-radius:4px;background:rgba(245,241,232,0.16);margin-top:9px;overflow:hidden">
+            <div style="height:100%;background:#B72A3A;border-radius:4px;animation:ob-goal 8s cubic-bezier(.3,0,.15,1) infinite"></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Tres módulos apilables al centro: comentario destacado, votación y barra de meta. Mismo ancho, mismo radio.</div>
+    </div>
+
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:#B72A3A">V08 · SPONSOR Y TICKER</div>
+      <div style="position:relative;aspect-ratio:9/16;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);overflow:hidden">
+        <div style="position:absolute;left:6%;right:6%;top:15%;background:#F5F1E8;border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;animation:ob-in 8s ease infinite">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.2em;color:#B72A3A">PRESENTADO POR</div>
+          <div style="width:76%;height:30px;border-radius:6px;background:repeating-linear-gradient(115deg,rgba(16,11,24,0.1) 0 6px,rgba(16,11,24,0.17) 6px 12px);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:0.14em;color:rgba(16,11,24,0.55)">LOGO SPONSOR</div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:24%;height:9%;background:rgba(16,11,24,0.94);display:flex;align-items:center;overflow:hidden">
+          <div style="position:relative;z-index:1;flex-shrink:0;background:#B72A3A;height:100%;display:flex;align-items:center;padding:0 10px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:0.14em;color:#F5F1E8">AHORA</div>
+          <div style="flex:1;overflow:hidden;min-width:0"><div style="display:flex;white-space:nowrap;animation:ob-tick 18s linear infinite">
+            <div style="display:flex;gap:22px;padding-left:12px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.1em;color:rgba(245,241,232,0.82)"><span>PRÓXIMO PROGRAMA 21:00</span><span style="color:#B72A3A">◆</span><span>ESCRIBE CON #FRATV</span><span style="color:#B72A3A">◆</span></div>
+            <div style="display:flex;gap:22px;padding-left:22px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:0.1em;color:rgba(245,241,232,0.82)"><span>PRÓXIMO PROGRAMA 21:00</span><span style="color:#B72A3A">◆</span><span>ESCRIBE CON #FRATV</span><span style="color:#B72A3A">◆</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:13px 16px;font-size:11.5px;line-height:1.55;color:rgba(245,241,232,0.6);text-wrap:pretty">Sponsor sobre placa blanca en la zona alta y ticker apoyado sobre la interfaz. Nunca los dos a la vez con lower third.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:34px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px;padding-top:26px;border-top:1px solid rgba(245,241,232,0.16)">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">CÓMO CARGARLO EN OBS</div>
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.66);margin-top:12px;text-wrap:pretty">Cada recurso es una fuente de navegador independiente a 1080 × 1920, con fondo transparente y CSS personalizado vacío. Al quitar el fondo negro de las cortinillas quedan sobre alfa real. Ninguno usa blur ni filtros, así que no suben el consumo de GPU.</div>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">ZONAS SEGURAS EN VERTICAL</div>
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.66);margin-top:12px;text-wrap:pretty">12 % superior y 22 % inferior quedan libres: ahí viven el nombre de usuario, la descripción, los botones y el audio de cada plataforma. Todo lo nuestro entra en la banda central; la mosca baja al 14 % y los lower thirds se apoyan en el 25 %.</div>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">QUÉ SIGUE</div>
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.66);margin-top:12px;text-wrap:pretty">Con esto aprobado preparo los mismos ocho en 16:9 y 1:1, más el ident y el stinger en las tres relaciones, y armo el ZIP con SVG, PNG a 1000/500/200/80 px y un HTML por recurso listo para arrastrar a OBS.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

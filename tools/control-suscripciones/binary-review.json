@@ -1,0 +1,13 @@
+{
+  "file": "Control de Suscripciones.zip",
+  "sha256": "3c6ef73c4d1c9c982326c1cb7cbf9efb755d6a1866ba6793a9878a8d8408e3a8",
+  "members": {
+    "Control de Suscripciones.app/Contents/Info.plist": "7af3c37f6b31ae5c121f6721893b5512bce27ee77ac55e0e764399b61887c60f",
+    "Control de Suscripciones.app/Contents/MacOS/ControlSuscripciones": "00d891b9e21045f587973a5e52892ca807e424379a7b4e594a23c122aa1f001a",
+    "Control de Suscripciones.app/Contents/Resources/Suscripciones.icns": "83e8f0a0b5a6520c230f51e58b987c7de732a576bbbd377c3beb755ba26e7a8c",
+    "Control de Suscripciones.app/Contents/_CodeSignature/CodeResources": "ea4794667d59d9f4309f98db6bdac6013bea69e4dd9876b83c0ad79bfa62b972"
+  },
+  "architecture": "arm64",
+  "signature": "ad-hoc",
+  "data": "No personal data; compiled from distribution sources."
+}

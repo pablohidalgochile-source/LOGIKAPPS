@@ -1,12 +1,12 @@
-/* Reviewed public catalogue; no personal state. */
+/* Public catalogue: no personal library or credentials. */
 window.LOGIKAPPS_PACKS = [
   {
     "id": "dj",
     "name": "Pack DJ",
     "category": "music",
     "icon": "disc",
-    "version": "0.3.0-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+    "version": "0.4.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
     "description": "Cinco herramientas locales para música, video y visuales, más el acceso privado a MAGIC MUSIC PROMPT con sus instrucciones.",
     "requirements": "Para Mac · Incluye las herramientas y sus lanzadores. Requiere Python y Node.js; las funciones de descarga y conversión necesitan componentes adicionales indicados en la guía.",
     "steps": [
@@ -23,20 +23,20 @@ window.LOGIKAPPS_PACKS = [
         "icon": "disc",
         "kind": "download",
         "connectKind": "command",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
         "requirements": "Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar."
       },
       {
         "id": "pack-dj-trackhunt",
         "name": "TRACKHUNT",
-        "description": "Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026.",
+        "description": "Playlist Hunt, revisión de apariciones y enlaces Deezer; incluye fuentes del asistente Mac y extensión Chrome.",
         "category": "music",
         "icon": "waves",
         "kind": "download",
         "connectKind": "command",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
-        "requirements": "Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.",
-        "version": "0.2.0 beta portable"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
+        "requirements": "Node 22.13+, npm. Asistente acústico incluido como código fuente: Swift y Python para compilarlo; Chrome para la extensión. Servicios con configuración propia.",
+        "version": "0.3.0 beta portable"
       },
       {
         "id": "pack-dj-nanook-video",
@@ -46,7 +46,7 @@ window.LOGIKAPPS_PACKS = [
         "icon": "play",
         "kind": "download",
         "connectKind": "command",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
         "requirements": "Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.",
         "version": "3.0.4",
         "logoPending": true
@@ -59,7 +59,7 @@ window.LOGIKAPPS_PACKS = [
         "icon": "sparkles",
         "kind": "download",
         "connectKind": "command",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
         "requirements": "Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida."
       },
       {
@@ -70,18 +70,19 @@ window.LOGIKAPPS_PACKS = [
         "icon": "music",
         "kind": "download",
         "connectKind": "command",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
         "requirements": "Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo."
       },
       {
         "id": "pack-dj-magic",
         "name": "MAGIC MUSIC PROMPT",
-        "description": "Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente.",
+        "description": "Ideas, letra y arreglo instrumental para Songs y Albums; propuestas y biblioteca musical.",
         "category": "music",
         "icon": "music",
         "kind": "web",
         "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
-        "requirements": "Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno."
+        "requirements": "Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.",
+        "version": "web · revisión 10"
       }
     ]
   },
@@ -90,8 +91,8 @@ window.LOGIKAPPS_PACKS = [
     "name": "Pack Fraternidad",
     "category": "business",
     "icon": "frate",
-    "version": "0.3.0-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip",
+    "version": "0.4.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.4.0-beta.zip",
     "description": "Accesos del equipo y FRATE FLYER STUDIO local, con instrucciones para cada herramienta.",
     "requirements": "Mac y navegador; Python 3 para Studio. Las webs requieren cuentas autorizadas. Studio se entrega como prototipo sin cuentas configuradas.",
     "steps": [
@@ -162,7 +163,18 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.4.0-beta.zip"
+      },
+      {
+        "id": "pack-fraternidad-social",
+        "name": "FRATE SOCIAL COMMAND",
+        "kind": "web",
+        "url": "https://social.frate.cl",
+        "description": "Campañas y operación de redes sociales de Fraternidad.",
+        "requirements": "Cuenta autorizada. Las conexiones de redes y permisos se preparan en el servicio; no se comparten sesiones.",
+        "category": "business",
+        "icon": "frate",
+        "stage": "setup"
       }
     ]
   },
@@ -171,9 +183,9 @@ window.LOGIKAPPS_PACKS = [
     "name": "Pack Diseño y Joyería",
     "category": "creative",
     "icon": "diamond",
-    "version": "0.2.0-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
-    "description": "Elephant, Taller Teatina, Mi Talla y FRATV para OBS: imagen, video, joyería y recursos gráficos.",
+    "version": "0.3.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip",
+    "description": "Elephant, Taller Teatina, Mi Talla, NAVARRO ERP y recursos FRATV para OBS: herramientas de joyería, negocio y diseño.",
     "requirements": "Elephant: Apple Silicon/macOS 14+ y dependencias propias. Teatina: Apple Silicon/macOS 13+. Mi Talla: Python 3. FRATV: navegador y OBS por separado.",
     "steps": [
       "Descarga el pack y abre GUIA.html.",
@@ -189,7 +201,7 @@ window.LOGIKAPPS_PACKS = [
         "icon": "diamond",
         "kind": "download",
         "connectKind": "app",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip",
         "requirements": "Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar.",
         "version": "0.4.0",
         "stage": "beta",
@@ -203,7 +215,7 @@ window.LOGIKAPPS_PACKS = [
         "icon": "film",
         "kind": "download",
         "connectKind": "folder",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip",
         "requirements": "Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio."
       },
       {
@@ -218,7 +230,7 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "app",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip"
       },
       {
         "id": "pack-design-mi-talla",
@@ -232,7 +244,18 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": true,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip"
+      },
+      {
+        "id": "pack-design-navarro",
+        "name": "NAVARRO ERP",
+        "kind": "web",
+        "url": "https://erp.navarrojoyeria.cl",
+        "description": "Administración y operación de Navarro Joyería.",
+        "requirements": "Acceso privado: solicita tu cuenta y permisos al responsable. No incluye bases de datos ni credenciales.",
+        "category": "business",
+        "icon": "briefcase",
+        "stage": "setup"
       }
     ]
   },
@@ -242,7 +265,7 @@ window.LOGIKAPPS_PACKS = [
     "category": "personal",
     "icon": "sparkles",
     "version": "0.2.0-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
     "description": "FrateIA para preparar el Mac y una guía para colaborar con ChatGPT, GitHub y las herramientas del equipo.",
     "requirements": "FrateIA: Apple Silicon, macOS 14+, versión de prueba. ChatGPT y ArtCraft son accesos web. Las invitaciones y permisos se gestionan por separado.",
     "steps": [
@@ -259,7 +282,7 @@ window.LOGIKAPPS_PACKS = [
         "icon": "sparkles",
         "kind": "download",
         "connectKind": "app",
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip",
         "requirements": "Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.",
         "version": "0.3.1 de prueba",
         "stage": "beta"
@@ -288,10 +311,10 @@ window.LOGIKAPPS_PACKS = [
   },
   {
     "id": "organization",
-    "name": "Pack Organización",
+    "name": "Pack Organización y Familia",
     "category": "personal",
     "icon": "house",
-    "description": "Orgalina y Jacinta M. Pastelería: herramientas locales de organización, caja y pedidos.",
+    "description": "Presupuesto, pastelería, respaldo familiar y revisión de suscripciones, con datos propios en cada Mac.",
     "requirements": "Orgalina: Node.js 22.13+ y preparación. Jacinta: Python 3 y navegador. Cada persona empieza con sus propios datos.",
     "steps": [
       "Descarga y descomprime el pack en una carpeta permanente.",
@@ -311,7 +334,7 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
       },
       {
         "id": "pack-organization-jacinta",
@@ -325,18 +348,46 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
+      },
+      {
+        "id": "pack-organization-limpieza",
+        "name": "Limpieza Familiar",
+        "version": "0.4.8 · edición portable",
+        "description": "Archivo verificado, respaldo USB y galería familiar.",
+        "requirements": "Apple Silicon · macOS 13+. Sin datos personales; prueba experimental de borrado desactivada. Descomprime la app incluida.",
+        "category": "personal",
+        "icon": "shield",
+        "kind": "download",
+        "connectKind": "app",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
+      },
+      {
+        "id": "pack-organization-suscripciones",
+        "name": "Control de Suscripciones",
+        "version": "0.1.0",
+        "description": "Inventario de servicios y renovaciones desde revisiones de correo.",
+        "requirements": "Apple Silicon · macOS 13+. Importación JSON manual; sin sincronización Gmail ni cancelaciones automáticas.",
+        "category": "personal",
+        "icon": "grid",
+        "kind": "download",
+        "connectKind": "app",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
       }
     ],
-    "version": "0.1.0-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+    "version": "0.2.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
   },
   {
     "id": "lab",
     "name": "Pack Laboratorio",
     "category": "creative",
     "icon": "terminal",
-    "description": "Prototipos y proyectos en desarrollo, con su código, acceso local y pendientes visibles.",
+    "description": "Cinco herramientas en evolución, incluida la nueva aplicación independiente BINAURAL SYSTEM 0.1.0.",
     "requirements": "Python 3 o Node.js según herramienta. Los servicios externos se configuran por separado; no se presentan como productos terminados.",
     "steps": [
       "Descarga y abre GUIA.html.",
@@ -356,7 +407,7 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": true,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
       },
       {
         "id": "pack-lab-subtitles",
@@ -370,7 +421,7 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
       },
       {
         "id": "pack-lab-multicam",
@@ -384,7 +435,7 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
       },
       {
         "id": "pack-lab-nanookey",
@@ -398,10 +449,151 @@ window.LOGIKAPPS_PACKS = [
         "kind": "download",
         "connectKind": "command",
         "logoPending": false,
-        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
+      },
+      {
+        "id": "pack-lab-binaural",
+        "name": "BINAURAL SYSTEM",
+        "category": "music",
+        "icon": "waves",
+        "version": "0.1.0",
+        "stage": "beta",
+        "description": "Aplicación independiente con seis secciones, motor estéreo, programas, sesiones, meditaciones y rituales.",
+        "requirements": "Python 3 y navegador actualizado. Edición local compilada; Forja por plantillas y voz del sistema. IA y voces remotas pendientes. WAV de síntesis.",
+        "kind": "download",
+        "connectKind": "command",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
       }
     ],
-    "version": "0.1.1-beta",
-    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+    "version": "0.2.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
+  },
+  {
+    "id": "production",
+    "category": "music",
+    "icon": "music",
+    "description": "De la letra y la partitura al análisis de audio, la vitrina del artista y Ableton.",
+    "requirements": "Mac Apple Silicon recomendado. Consulta los requisitos por herramienta; modelos, cuentas y Ableton se preparan aparte.",
+    "name": "Pack Producción musical",
+    "version": "0.1.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip",
+    "tools": [
+      {
+        "id": "pack-production-letra",
+        "name": "Letra Local",
+        "version": "0.3.0",
+        "description": "Transcripción de canciones y separación vocal en el Mac.",
+        "requirements": "Apple Silicon, Python 3.11+, FFmpeg; descarga inicial de Whisper/Demucs. LM Studio para traducción.",
+        "category": "music",
+        "icon": "music",
+        "kind": "download",
+        "connectKind": "app",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+      },
+      {
+        "id": "pack-production-vitrina",
+        "name": "VITRINA",
+        "version": "0.1.0",
+        "description": "Panel de artista, carga MP3 y reproductor local.",
+        "requirements": "Node.js 22+. Un artista; sin publicación pública. Guarda sus archivos en .data.",
+        "category": "music",
+        "icon": "music",
+        "kind": "download",
+        "connectKind": "command",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+      },
+      {
+        "id": "pack-production-contrapista",
+        "name": "Contrapista",
+        "version": "0.3",
+        "description": "Análisis de mezcla, stems, MIDI y reconstrucción editable para Ableton.",
+        "requirements": "Python, NumPy y FFmpeg. IA opcional con modelos propios; Live 12 Suite para el Set. Reconstrucción aproximada.",
+        "category": "music",
+        "icon": "music",
+        "kind": "download",
+        "connectKind": "command",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+      },
+      {
+        "id": "pack-production-nanook",
+        "name": "NANOOK HIT MAKER",
+        "version": "0.7 · puente 0.7.1",
+        "description": "Proyecto musical integrado, historial y sincronización de notas y stems con Ableton.",
+        "requirements": "Python, FFmpeg y Node 22+. Preparar Contrapista para IA. Live detenido; audio sin Warp/bucles. MAGIC externo requiere configuración propia.",
+        "category": "music",
+        "icon": "music",
+        "kind": "download",
+        "connectKind": "command",
+        "stage": "prototype",
+        "logoPending": true,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+      },
+      {
+        "id": "site-appgprj_6ac0381682548191bc78e7f47f7e4661",
+        "name": "JAVITA",
+        "description": "Partituras, MIDI, hits, Aula hits y análisis de patrones musicales.",
+        "category": "creative",
+        "icon": "globe",
+        "kind": "web",
+        "url": "https://nanook-score-studio.nanook.chatgpt.site",
+        "requirements": "Web privada: cuenta y acceso autorizados. La precisión de transcripción requiere revisión. Modelos locales se preparan por separado.",
+        "version": "0.3.0",
+        "stage": "prototype"
+      },
+      {
+        "id": "pack-dj-magic",
+        "name": "MAGIC MUSIC PROMPT",
+        "description": "Ideas, letra y arreglo instrumental para Songs y Albums; propuestas y biblioteca musical.",
+        "category": "music",
+        "icon": "music",
+        "kind": "web",
+        "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
+        "requirements": "Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.",
+        "version": "web · revisión 10"
+      }
+    ],
+    "steps": [
+      "Descarga y descomprime el pack completo en una carpeta permanente.",
+      "Lee GUIA.html y el LEEME de cada herramienta antes de preparar sus requisitos.",
+      "Abre la app o su lanzador. Conéctalo a Mis apps; si ya existe, edita su acceso para evitar duplicados."
+    ]
+  },
+  {
+    "id": "streaming",
+    "category": "creative",
+    "icon": "film",
+    "description": "FRATV y Fraternidad para preparar programas y controlar cuatro relojes en OBS.",
+    "requirements": "No modifica tus escenas automáticamente. Instala dependencias, prepara una colección nueva y comprueba los canales antes de transmitir.",
+    "name": "Pack Fraternidad / Streaming",
+    "version": "0.1.0-beta",
+    "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Streaming-0.1.0-beta.zip",
+    "tools": [
+      {
+        "id": "pack-streaming-fratv",
+        "name": "FRATV Studio y relojes OBS",
+        "version": "0.2.0 · kit actualizado",
+        "description": "Editor de 35 recursos, cuatro temporizadores y dock de control para OBS.",
+        "requirements": "Apple Silicon · Node 22.18+, Chrome, FFmpeg y OBS por separado. Conserva las escenas existentes; consulta la guía.",
+        "category": "creative",
+        "icon": "film",
+        "kind": "download",
+        "connectKind": "command",
+        "stage": "prototype",
+        "logoPending": false,
+        "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Streaming-0.1.0-beta.zip"
+      }
+    ],
+    "steps": [
+      "Descarga y descomprime el pack completo en una carpeta permanente.",
+      "Lee GUIA.html y el LEEME de cada herramienta antes de preparar sus requisitos.",
+      "Abre la app o su lanzador. Conéctalo a Mis apps; si ya existe, edita su acceso para evitar duplicados."
+    ]
   }
 ];

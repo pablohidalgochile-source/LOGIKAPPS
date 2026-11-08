@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es-CL">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>FRATV · Control en vivo</title
+  ><style>
+    :root {
+      color-scheme: dark;
+      font-family: system-ui;
+      color: #f5f1e8;
+      background: #100b18;
+    }
+    body {
+      margin: 0;
+      padding: 18px;
+      max-width: 650px;
+    }
+    h1 {
+      font-size: 20px;
+      margin: 0 0 6px;
+    }
+    p {
+      font-size: 12px;
+      color: #b7a9c3;
+      line-height: 1.6;
+    }
+    label {
+      display: block;
+      font-size: 12px;
+      margin: 14px 0 6px;
+    }
+    input,
+    select,
+    button {
+      font: inherit;
+      color: inherit;
+      border: 1px solid #4a394e;
+      background: #221927;
+      padding: 10px;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+    input,
+    select {
+      width: 100%;
+    }
+    button {
+      cursor: pointer;
+    }
+    button:disabled {
+      cursor: wait;
+      opacity: 0.5;
+    }
+    button.primary {
+      background: #b72a3a;
+    }
+    .buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .clock {
+      font-size: 40px;
+      font-variant-numeric: tabular-nums;
+      padding: 18px 0;
+    }
+    #message {
+      min-height: 20px;
+      color: #e4b386;
+    }
+    small {
+      color: #b7a9c3;
+    }
+    a {
+      color: #efb8c0;
+    }
+    summary {
+      cursor: pointer;
+      font-size: 13px;
+      padding: 10px 0;
+    }
+    body.group {
+      padding: 12px;
+    }
+    body.group .clock {
+      padding: 12px 0;
+    }
+    body.group .buttons button {
+      font-size: 14px;
+    }
+  </style>
+  <h1 id="heading">Control en vivo</h1>
+  <p id="intro">
+    Usa esta página como dock de navegador de OBS. La gráfica se agrega por
+    separado como fuente de navegador.
+  </p>
+  <div id="group-control" hidden>
+    <label for="clock-choice">Reloj que quieres controlar</label>
+    <select id="clock-choice"></select>
+  </div>
+  <div id="single-control">
+    <label for="channel">Canal de control</label
+    ><input id="channel" /><button id="open" style="margin-top: 8px">
+      Abrir canal
+    </button>
+  </div>
+  <div class="clock" id="clock">00:00:00</div>
+  <small id="status">Conectando…</small>
+  <div class="buttons">
+    <button class="primary" data-action="start">Iniciar / continuar</button
+    ><button data-action="pause">Pausar</button
+    ><button data-action="reset">Reiniciar</button
+    ><button data-action="show">Mostrar</button
+    ><button data-action="hide">Ocultar</button>
+  </div>
+  <p id="message" role="status"></p>
+  <details id="clock-settings" open>
+    <summary>Configurar duración y tipo de reloj</summary>
+    <label for="mode">Tipo de reloj</label>
+    <select id="mode">
+      <option value="countdown">Cuenta regresiva</option>
+      <option value="elapsed">Tiempo transcurrido</option>
+    </select>
+    <label for="minutes">Duración inicial (minutos)</label>
+    <input id="minutes" type="number" min="0" max="1440" value="5" />
+    <label for="target">O iniciar hasta una hora objetivo</label>
+    <input id="target" type="datetime-local" />
+    <div class="buttons">
+      <button id="configure">Aplicar configuración</button>
+      <button id="target-start">Iniciar hasta la hora objetivo</button>
+    </div>
+  </details>
+  <p id="help">
+    El servidor local debe seguir encendido. Todos los recursos con el mismo
+    canal comparten el reloj. Recargar una fuente no reinicia la cuenta.
+  </p>
+  <script>
+    const $ = (id) => document.getElementById(id),
+      q = new URLSearchParams(location.search),
+      grouped = q.get("grupo") === "fraternidad",
+      clocks = [
+        { channel: "fraternidad-obs-inicio", label: "Inicio", mode: "countdown" },
+        { channel: "fraternidad-obs-cuenta", label: "Cuenta regresiva", mode: "countdown" },
+        { channel: "fraternidad-obs-envivo", label: "En vivo", mode: "elapsed" },
+        { channel: "fraternidad-obs-pausa", label: "Pausa", mode: "countdown" },
+      ];
+    let channel = q.get("channel") || "programa",
+      state = null,
+      receivedAt = 0,
+      initialized = false,
+      generation = 0,
+      busy = false,
+      connected = false,
+      pollController = null;
+    const controls = document.querySelectorAll(
+      "#mode, #minutes, #target, #configure, #target-start, [data-action]",
+    );
+    function setControls() {
+      controls.forEach((control) => {
+        control.disabled = busy || !state || !connected;
+      });
+    }
+    if (grouped) {
+      document.body.classList.add("group");
+      $("heading").textContent = "Fraternidad · Control en vivo";
+      $("intro").textContent = "Elige un reloj y controla su gráfica en OBS.";
+      $("help").textContent = "Mantén el servidor local encendido. Cambiar de reloj no pausa los otros.";
+      $("clock-settings").open = false;
+      $("group-control").hidden = false;
+      $("single-control").hidden = true;
+      clocks.forEach((clock) => {
+        const option = document.createElement("option");
+        option.value = clock.channel;
+        option.textContent = clock.label;
+        $("clock-choice").append(option);
+      });
+      if (!clocks.some((clock) => clock.channel === channel)) channel = clocks[0].channel;
+      $("clock-choice").value = channel;
+      $("clock-choice").onchange = () => selectChannel($("clock-choice").value);
+    }
+    $("open").onclick = () => {
+      location.search =
+        "?channel=" +
+        encodeURIComponent($("channel").value.trim() || "programa");
+    };
+    function selectChannel(next) {
+      generation += 1;
+      pollController?.abort();
+      pollController = null;
+      channel = next;
+      state = null;
+      initialized = false;
+      connected = false;
+      busy = false;
+      $("channel").value = channel;
+      $("clock").textContent = "—";
+      $("status").textContent = "Conectando…";
+      $("message").textContent = "";
+      $("target").value = "";
+      if (grouped) {
+        q.set("channel", channel);
+        history.replaceState(null, "", "?" + q);
+      }
+      setControls();
+      poll();
+    }
+    async function action(body) {
+      if (!state || busy || !connected) return;
+      const selectedGeneration = generation,
+        selectedChannel = channel;
+      busy = true;
+      pollController?.abort();
+      pollController = null;
+      setControls();
+      try {
+        const r = await fetch("/api/live/" + encodeURIComponent(selectedChannel), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await r.json();
+        if (selectedGeneration !== generation) return;
+        if (!r.ok) throw Error(data.error);
+        state = data;
+        receivedAt = performance.now();
+        if (body.action === "configure") initialized = false;
+        $("message").textContent = "Control actualizado.";
+        render();
+      } catch (e) {
+        if (selectedGeneration === generation) $("message").textContent = e.message;
+      } finally {
+        if (selectedGeneration === generation) {
+          busy = false;
+          setControls();
+        }
+      }
+    }
+    document
+      .querySelectorAll("[data-action]")
+      .forEach((b) => (b.onclick = () => action({ action: b.dataset.action })));
+    $("configure").onclick = () =>
+      action({
+        action: "configure",
+        mode: $("mode").value,
+        durationMs: Number($("minutes").value) * 60000,
+      });
+    $("target-start").onclick = () => {
+      const t = new Date($("target").value).getTime();
+      if (!Number.isFinite(t) || t <= Date.now()) {
+        $("message").textContent = "Elige una hora futura.";
+        return;
+      }
+      action({ action: "configure", mode: "countdown", targetTime: t });
+    };
+    function render() {
+      if (!state) return;
+      const ms = Math.max(
+        0,
+        state.valueMs +
+          (state.running
+            ? (performance.now() - receivedAt) *
+              (state.mode === "elapsed" ? 1 : -1)
+            : 0),
+      );
+      const s = state.mode === "countdown" ? Math.ceil(ms / 1000) : Math.floor(ms / 1000),
+        pad = (n) => String(n).padStart(2, "0");
+      $("clock").textContent =
+        pad(Math.floor(s / 3600)) +
+        ":" +
+        pad(Math.floor(s / 60) % 60) +
+        ":" +
+        pad(s % 60);
+      $("status").textContent = connected
+        ? (state.running ? "En marcha" : "En pausa") +
+          " · " + (state.visible ? "Visible" : "Oculto")
+        : "Sin conexión con el servidor";
+      if (!initialized) {
+        $("mode").value = state.mode;
+        $("minutes").value = state.durationMs / 60000;
+        initialized = true;
+      }
+    }
+    async function poll() {
+      if (busy || pollController) return;
+      const selectedGeneration = generation,
+        controller = new AbortController(),
+        clock = grouped && clocks.find((item) => item.channel === channel);
+      pollController = controller;
+      // La API usa estos valores solo si el canal todavía no existe.
+      const seed = clock ? "?" + new URLSearchParams({ mode: clock.mode, durationMs: "300000" }) : "";
+      try {
+        const r = await fetch("/api/live/" + encodeURIComponent(channel) + seed, {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!r.ok) throw Error("Sin conexión");
+        const data = await r.json();
+        if (selectedGeneration !== generation || controller.signal.aborted) return;
+        state = data;
+        receivedAt = performance.now();
+        connected = true;
+        render();
+        setControls();
+      } catch (e) {
+        if (selectedGeneration !== generation || controller.signal.aborted) return;
+        connected = false;
+        $("status").textContent = "Sin conexión con el servidor";
+        setControls();
+      } finally {
+        if (pollController === controller) pollController = null;
+      }
+    }
+    selectChannel(channel);
+    setInterval(poll, 500);
+    setInterval(render, 100);
+  </script>
+</html>

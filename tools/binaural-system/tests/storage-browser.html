@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="es-CL"><meta charset="utf-8"><title>Comprobación de almacenamiento</title>
+<body style="font:16px system-ui;padding:24px;max-width:900px;margin:auto"><h1>Archivos y respaldo independiente</h1><p>Usa un archivo temporal de prueba en la base propia de BINAURAL SYSTEM y lo elimina al terminar.</p><button id="run">Comprobar almacenamiento y respaldo</button><pre id="result" role="status">Sin ejecutar</pre>
+<script type="module">
+import { blobStore } from '../src/blob-store.js';
+import { createBackup } from '../src/backup.js';
+import { validateBackup } from '../src/backup-format.js';
+const result=document.getElementById('result');
+document.getElementById('run').onclick=async()=>{
+  const id='ext_qa_'+Date.now();result.textContent='Comprobando…';
+  try{
+    const response=await fetch('./fixtures/QA-silencio.wav');
+    if(!response.ok)throw new Error('No se encontró el archivo de prueba.');
+    const fixture=new Blob([await response.arrayBuffer()],{type:'audio/wav'});
+    await blobStore.put(id,fixture);
+    const restored=await blobStore.get(id);
+    const bytes=new Uint8Array(await restored.arrayBuffer());
+    const payload=await createBackup();validateBackup(payload);
+    const checks={indexedDB:restored.size===fixture.size,binaryHeader:String.fromCharCode(...bytes.slice(0,4))==='RIFF',backupApp:payload.app==='binaural-system',backupVersion:payload.version===1,backupValidated:true};
+    await blobStore.del(id);checks.cleanup=(await blobStore.get(id))===undefined;
+    result.textContent=JSON.stringify({passed:Object.values(checks).every(Boolean),checks,backupKeys:Object.keys(payload.state)},null,2);
+  }catch(error){result.textContent=JSON.stringify({passed:false,error:error.message});}
+  finally{await blobStore.del(id).catch(()=>{});}
+};
+</script></body></html>

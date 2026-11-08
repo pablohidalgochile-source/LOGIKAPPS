@@ -12,15 +12,15 @@ LOGIKAPPS reúne packs de herramientas, accesos personales e ideas en una ventan
 
 ## Descargar para Mac
 
-**[Descargar LOGIKAPPS 0.6.1 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-0.6.1-macos-universal.dmg)**
+**[Descargar LOGIKAPPS 0.7.0 beta para Mac](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-0.7.0-macos-universal.dmg)**
 
-[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.6.1-beta.1)
+[Notas de la versión y verificación de descarga](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.7.0-beta.1)
 
 - macOS 13 o posterior; ejecutable universal para Apple Silicon e Intel.
 - **Beta sin notarización de Apple.** Consulta [Instalación](docs/INSTALACION.md) si macOS impide abrirla. No se requiere desactivar las protecciones del sistema.
 - LOGIKAPPS funciona sin Node.js ni Python. Las herramientas de los packs tienen sus propios requisitos.
 
-## Novedades de 0.6.1
+## Novedades de 0.7.0
 
 Guía para el compañero con las ocho apps nuevas; NANOOKEY incluye el prototipo DJ Brain con datos ficticios y Estudio Multicam abre correctamente sus rutas locales.
 
@@ -34,12 +34,12 @@ Elephant y Trueke muestran sus logos confirmados. Las identidades por decidir se
 
 | Pack | Fichas | Contenido |
 |---|---:|---|
-| [Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip) | 6 | Surco, TRACKHUNT, INGESTA, VJ/LAB, DJ Nanook Hit Lab, MAGIC MUSIC PROMPT |
-| [Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip) | 6 | FRATE ERP, FRATE Web · Administración, FRATE FLYER EXPRESS, FRATE POS, FRATE Cast, FRATE FLYER STUDIO |
-| [Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip) | 4 | Taller Teatina, FRATV para OBS, Elephant, Mi Talla |
-| [Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip) | 3 | FrateIA · Prueba, ChatGPT y Codex Cloud, ArtCraft |
-| [Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip) | 2 | Orgalina, Jacinta M. Pastelería |
-| [Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip) | 4 | CLUB SANTA CRUZ, Subtitle Translator Pro, Estudio Multicam, NANOOKEY |
+| [Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip) | 6 | Surco, TRACKHUNT, INGESTA, VJ/LAB, DJ Nanook Hit Lab, MAGIC MUSIC PROMPT |
+| [Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip) | 6 | FRATE ERP, FRATE Web · Administración, FRATE FLYER EXPRESS, FRATE POS, FRATE Cast, FRATE FLYER STUDIO |
+| [Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip) | 4 | Taller Teatina, FRATV para OBS, Elephant, Mi Talla |
+| [Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip) | 3 | FrateIA · Prueba, ChatGPT y Codex Cloud, ArtCraft |
+| [Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip) | 2 | Orgalina, Jacinta M. Pastelería |
+| [Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip) | 4 | CLUB SANTA CRUZ, Subtitle Translator Pro, Estudio Multicam, NANOOKEY |
 
 Abre la guía incluida en cada ZIP. **Descargar un pack no instala sus dependencias ni concede permisos en sitios privados.** [Requisitos y límites de cada herramienta](docs/CONTENIDO.md) · [Guía de incorporación](docs/PRIMEROS-PASOS-EQUIPO.html).
 
@@ -120,7 +120,7 @@ Consulta [Distribución](docs/DISTRIBUCION.md) para compilar, verificar, firmar 
 
 ## Estado de esta beta
 
-La suite principal incluye pruebas de interfaz/FRATV y almacenamiento nativo. La prueba de interfaz recorre los seis packs y sus 25 fichas, además de la biblioteca personal. Consulta los resultados y límites en [Verificación](docs/VERIFICACION.md).
+La suite principal incluye pruebas de interfaz/FRATV y almacenamiento nativo. La prueba de interfaz recorre los ocho packs y sus 37 fichas, además de la biblioteca personal. Consulta los resultados y límites en [Verificación](docs/VERIFICACION.md).
 
 La validación local se realiza en Apple Silicon; el ejecutable universal contiene también Intel. No se afirma que todas las herramientas o versiones de macOS estén certificadas. En esta preparación no se descargó música de plataformas, no se capturó audio ni se realizaron operaciones dentro de los sistemas de Fraternidad. Hit Lab sí se comprobó exportando un sonido sintetizado por la propia herramienta.
 

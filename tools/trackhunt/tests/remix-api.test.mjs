@@ -35,6 +35,39 @@ test("not configured is distinct from no results and exposes no secrets", async 
   const status = await handleMusicRequest(new Request("https://trackhunt.test/api/remix/status"), { BRAVE_SEARCH_API_KEY: "secret-value" });
   assert.doesNotMatch(await status.text(), /secret-value/);
 });
+test("name lookup uses Deezer without Apple and cleans collaboration markers", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async raw => {
+    const url = new URL(raw);
+    assert.equal(url.hostname, "api.deezer.com");
+    assert.equal(url.searchParams.get("q"), "Kapo Ryan Castro DÓNDE");
+    return Response.json({ data: [
+      { id: 123, title: "DÓNDE", artist: { name: "Kapo" } },
+      { id: 124, title: "DÓNDE", artist: { name: "Kapo" } },
+      { id: "invalid", title: "Fake", artist: { name: "Kapo" } },
+    ] });
+  };
+  try {
+    const response = await handleMusicRequest(request("identify", { mode: "name", value: "Kapo ft. Ryan Castro — DÓNDE" }), {});
+    const data = await response.json();
+    assert.equal(response.status, 200);
+    assert.equal(data.songs.length, 1);
+    assert.equal(data.songs[0].source, "Catálogo Deezer");
+    assert.equal(data.songs[0].url, "https://www.deezer.com/track/123");
+  } finally { globalThis.fetch = originalFetch; }
+});
+test("name lookup falls back to Apple when Deezer fails", async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async raw => {
+    if (new URL(raw).hostname === "api.deezer.com") throw new Error("offline");
+    return Response.json({ results: [{ trackName: "Fallback Song", artistName: "Fallback Artist" }] });
+  };
+  try {
+    const response = await handleMusicRequest(request("identify", { mode: "name", value: "Fallback Artist Fallback Song" }), {});
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).songs[0].source, "Catálogo Apple Music");
+  } finally { globalThis.fetch = originalFetch; }
+});
 test("invalid requests and cross-origin submissions are rejected", async () => {
   assert.equal((await handleMusicRequest(request("search", {}), {})).status, 400);
   assert.equal((await handleMusicRequest(request("identify", { mode: "link", value: "https://127.0.0.1/test" }), {})).status, 400);

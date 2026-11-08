@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contrapista · Laboratorio de reconstrucción</title>
+<style>
+:root{color-scheme:dark;--bg:#111614;--panel:#19211d;--line:#334139;--sub:#a9b9ad;--text:#eff7ed;--green:#b4eac0;--yellow:#ffd593;--blue:#a8c9f4;--lavender:#e2b6f7}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}
+main{max-width:1150px;padding:26px clamp(15px,4vw,48px) 50px;margin:auto}
+header,.row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+header{padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{display:grid;place-items:center;width:38px;height:38px;border-radius:9px;background:var(--green);color:#173d28;font-size:27px}
+h1,h2,h3,p{margin:0}
+h1{font-size:22px;letter-spacing:-.035em}
+h2{font-size:clamp(22px,4vw,33px);line-height:1.15;letter-spacing:-.04em;overflow-wrap:anywhere}
+h3{font-size:17px}
+small,.muted{color:var(--sub);font-size:13px}
+.kicker{font:600 11px/1.5 ui-monospace,monospace;letter-spacing:.09em;color:var(--sub)}
+.pill{border:1px solid var(--line);padding:4px 8px;border-radius:5px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:16px;min-width:0}
+.source{margin:18px 0}
+.source form{display:grid;grid-template-columns:minmax(200px,1fr) minmax(150px,220px) minmax(90px,125px);gap:12px;align-items:end;margin:12px 0}
+label{display:grid;gap:5px;font-size:13px;color:var(--sub)}
+button,input,select,a.action{font:inherit;color:inherit}
+input,select,button,a.action{background:#17201a;border:1px solid #485a4e;border-radius:6px;min-height:38px;padding:6px 10px}
+input,select{width:100%}
+button,a.action{cursor:pointer}
+button.primary,a.primary,button[aria-pressed=true]{background:var(--green);border-color:var(--green);color:#142e20;font-weight:650}
+button:disabled{opacity:.52;cursor:wait}
+a.action{text-decoration:none;display:inline-flex;align-items:center}
+a{color:var(--green)}
+:focus-visible{outline:2px solid var(--yellow);outline-offset:3px}
+#status{font-size:13px;color:var(--green)}
+#status[data-error=true]{color:var(--yellow)}
+.result-heading{margin:24px 0 13px}
+.meta{display:flex;gap:7px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:12px}
+.arrangement .row{margin-bottom:8px}
+.timeline{position:relative;display:flex;justify-content:space-between;margin-left:112px;color:var(--sub);font:11px ui-monospace,monospace}
+.lane{display:grid;grid-template-columns:108px minmax(0,1fr);align-items:center;gap:5px;width:100%;background:none;text-align:left;border:1px solid transparent;padding:4px 3px;margin-top:4px;font-size:12px;min-height:40px}
+.lane[aria-pressed=true]{background:#263b2e;color:var(--text);border-color:#6ba57a}
+.wave{height:29px;display:flex;gap:1px;align-items:center;padding:2px 4px;background:color-mix(in srgb,var(--track) 14%,transparent);border-radius:4px;color:var(--track);overflow:hidden}
+.wave i{flex:1;min-width:0;border-radius:1px;background:currentColor}
+.sections{padding-top:11px;display:flex;flex-wrap:wrap;gap:5px}
+.sections span{border:1px solid var(--line);padding:3px 7px;border-radius:4px;font-size:11px;color:var(--sub)}
+dl{margin:10px 0 0}
+dt{color:var(--sub);font:600 11px/1.5 ui-monospace,monospace;letter-spacing:.055em;margin:9px 0 2px}
+dd{margin:0}
+.compare{margin-top:12px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
+.compare audio{width:100%;height:38px}
+.compare .switch{display:flex;gap:5px;flex-wrap:wrap}
+.compare small{grid-column:1/-1}
+.warning{margin-top:12px;padding-left:12px;border-left:2px solid var(--yellow);color:var(--sub);font-size:13px}
+.warning p+p{margin-top:4px}
+footer{border-top:1px solid var(--line);padding-top:13px;margin-top:22px}
+.library{margin-top:16px}.library .tools{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+.library select{flex:1;min-width:180px}.library input{flex:1;min-width:140px}
+details summary{cursor:pointer;min-height:32px}
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.analysis-grid section{min-width:0}.analysis-grid dl{font-size:13px}
+.sections button{min-height:32px;font-size:12px;padding:3px 7px}
+.loop-controls{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-top:10px}
+.loop-controls label{max-width:140px}
+.loop-controls label.check{display:flex;gap:7px;align-items:center;max-width:none;min-height:38px}
+.loop-controls input[type=checkbox]{width:18px;min-height:18px}
+.midi-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.midi-links a{font-size:13px}
+.piano{width:100%;height:125px;display:block;margin-top:9px;background:#121c16;border-radius:5px}
+.chord-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}.chord-list span{font-size:12px;padding:3px 6px;background:#263b2e;border-radius:4px}
+#variant{max-width:270px}
+@media(max-width:700px){.analysis-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.grid,.compare{grid-template-columns:1fr}.source form{grid-template-columns:1fr 1fr}.source form label:first-child{grid-column:1/-1}}
+@media(max-width:420px){.compare{grid-template-columns:1fr}.timeline{margin-left:88px}.lane{grid-template-columns:85px minmax(0,1fr)}.wave i:nth-child(even){display:none}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand"><span class="logo" aria-hidden="true">≋</span><div><h1>Contrapista</h1><div class="kicker">LABORATORIO DE RECONSTRUCCIÓN</div></div></div>
+  <span class="pill kicker">V0.3 · LOCAL + IA</span>
+</header>
+<section class="panel library" aria-label="Biblioteca de proyectos">
+  <details open>
+    <summary><strong>Mis proyectos</strong> <small id="library-count"></small></summary>
+    <div class="tools"><select id="project-select" aria-label="Proyecto guardado"><option value="">Cargando biblioteca…</option></select>
+      <button id="open-project" type="button">Abrir</button><button id="refresh-projects" type="button">Actualizar</button></div>
+    <div class="tools" id="project-tools" hidden>
+      <input id="project-name" aria-label="Nombre del proyecto" maxlength="160">
+      <button id="rename-project" type="button">Guardar nombre</button>
+      <button id="favorite-project" type="button">Marcar favorito</button>
+      <button id="reanalyze" type="button">Reanalizar audio guardado</button>
+    </div>
+  </details>
+</section>
+<section class="panel source" aria-labelledby="source-title">
+  <h3 id="source-title">Analiza tu audio</h3>
+  <p class="muted">Canciones completas · hasta 30 min y 1 GB · WAV, AIFF, FLAC, MP3, M4A o AAC</p>
+  <form id="source-form">
+    <label>Archivo<input id="audio-file" type="file" accept=".wav,.aif,.aiff,.flac,.mp3,.m4a,.aac,.ogg,audio/*" required></label>
+    <label>Tipo de entrada<select id="source"><option value="mix">Mezcla estéreo</option><option value="bass">Bajo aislado</option><option value="drums">Batería aislada</option><option value="melody">Instrumento melódico</option><option value="voice">Voz aislada</option><option value="stem">Otro stem</option></select></label>
+    <label>BPM manual<input id="bpm" type="number" min="40" max="260" step="0.01" placeholder="Auto"></label>
+    <div class="row" style="grid-column:1/-1;justify-content:flex-start">
+      <label>Modo<select id="quality"><option value="fast">Rápido · DSP local</option><option value="ai">IA · stems y transcripción</option></select></label>
+      <button class="primary" id="analyze" type="submit">Analizar audio</button>
+      <button id="demo" type="button" hidden style="display:none">Abrir ejemplo · Umbral</button>
+      <span id="status" role="status"></span>
+    </div>
+    <small id="engine-status" style="grid-column:1/-1">Comprobando motores locales…</small>
+  </form>
+</section>
+<section id="result" hidden aria-labelledby="track-title">
+  <div class="row result-heading">
+    <div><div class="kicker">RECONSTRUCCIÓN</div><h2 id="track-title"></h2></div>
+    <div class="meta" id="meta"></div>
+  </div>
+  <div class="grid">
+    <section class="panel arrangement" aria-label="Arreglo y pistas">
+      <div class="row"><h3>Arreglo</h3><span class="kicker">TIEMPO DE REFERENCIA</span></div>
+      <div id="timeline" class="timeline" aria-hidden="true"></div>
+      <div id="lanes"></div>
+      <div id="sections" class="sections" aria-label="Cambios de energía"></div>
+    </section>
+    <aside class="panel" aria-live="polite">
+      <div class="kicker">OBSERVACIÓN Y RECETA</div>
+      <h3 id="selected"></h3>
+      <dl id="evidence"></dl>
+    </aside>
+  </div>
+  <section class="panel compare" aria-label="Escucha y comparación">
+    <div class="switch">
+      <button data-listen="A" aria-pressed="true" type="button">A · Original</button>
+      <button data-listen="B" aria-pressed="false" type="button">B · Recreación</button>
+      <button data-listen="track" aria-pressed="false" type="button">Pista sola</button>
+    </div>
+    <audio id="player" controls preload="metadata"></audio>
+    <label>Variante del bajo<select id="variant"><option value="">Recreación principal</option></select></label>
+    <small id="listening"></small>
+  </section>
+  <div class="loop-controls">
+    <label>Inicio (s)<input id="loop-start" type="number" min="0" step="0.1" value="0"></label>
+    <label>Fin (s)<input id="loop-end" type="number" min="0" step="0.1" value="8"></label>
+    <button type="button" id="seek-section">Ir al tramo</button>
+    <label class="check"><input type="checkbox" id="loop-enabled">Repetir tramo</label>
+    <label class="check"><input type="checkbox" id="level-match" checked>Igualar RMS A/B</label>
+  </div>
+  <div class="analysis-grid">
+    <section class="panel"><h3>MIDI editable</h3><p class="muted" id="midi-summary"></p>
+      <svg id="piano-roll" class="piano" role="img" aria-label="Notas candidatas del tramo seleccionado"></svg>
+      <div class="midi-links" id="midi-links"></div></section>
+    <section class="panel"><h3>Armonía y tempo</h3><dl id="harmony"></dl><div class="chord-list" id="chords"></div></section>
+    <section class="panel"><h3>Receta de la pista</h3><dl id="track-recipe"></dl><a id="recipe-download">Descargar recetas</a></section>
+    <section class="panel"><h3>Búsqueda del sonido</h3><dl id="sound-search"></dl></section>
+  </div>
+  <div class="warning" id="warnings"></div>
+  <footer class="row">
+    <div><strong id="export-title"></strong><p class="muted" id="export-detail"></p></div>
+    <a class="action primary" id="download" download="Contrapista.zip">Descargar paquete</a>
+  </footer>
+</section>
+<section class="panel library"><details><summary>Plugins detectados en este Mac</summary><p class="muted">Inventario de archivos instalados. No se ejecutan plugins ni se afirma que fueran usados en la canción.</p><div id="plugin-list"></div></details></section>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const tabs=[...document.querySelectorAll('[data-listen]')];
+  const player=$('player');
+  const color={'Original':'var(--lavender)','Percusion':'var(--yellow)','Bajo estimado':'var(--green)','Resto':'var(--blue)','Stem':'var(--blue)','Voz':'var(--lavender)','Melodia':'var(--blue)'};
+  const labels={'Original':'Original','Percusion':'Percusión','Bajo estimado':'Bajo estimado','Resto':'Resto','Stem':'Stem','Voz':'Voz','Melodia':'Melodía','Acordes':'Acordes candidatos'};
+  let projects=[];
+  let id, report, selected, listening='A';
+  const num=(n,d=2)=>new Intl.NumberFormat('es-CL',{maximumFractionDigits:d}).format(n);
+  const text=(tag,value,cls)=>{
+    const e=document.createElement(tag); e.textContent=value;
+    if(cls) e.className=cls; return e;
+  };
+  const route=(key,path)=>'/result/'+key+'/'+path.split('/').map(encodeURIComponent).join('/');
+  const sound=(name)=>route(id,'Samples/'+report.audio_files[name]);
+  function status(message='',error=false){
+    $('status').textContent=message; $('status').dataset.error=error;
+  }
+  function busy(value){$('analyze').disabled=value;$('demo').disabled=value;$('reanalyze').disabled=value;}
+  function entry(term,value){
+    $('evidence').append(text('dt',term),text('dd',value));
+  }
+  function detail(){
+    const m=report.metrics[selected];
+    $('selected').textContent=labels[selected];
+    $('evidence').replaceChildren();
+    if(m){
+      entry('NIVEL MEDIDO',num(m.rms_dbfs,1)+' dBFS RMS · '+num(m.peak_dbfs,1)+' dBFS pico');
+      entry('BALANCE Y GRAVES',num(m.balance_lr_db,1)+' dB entre izq. y der. · '+num(m.energy_under_160hz_pct,1)+' % bajo 160 Hz (mono)');
+    }else{
+      entry('REFERENCIA','Mezcla de entrada. Selecciona una pista estimada para ver sus mediciones.');
+    }
+    if(selected==='Bajo estimado' && report.notes.length){
+      if(report.ducking){
+        const d=report.ducking;
+        entry('CAÍDA PERIÓDICA ESTIMADA',num(d.depth_db,1)+' dB · recupera en ~'+d.recovery_ms+' ms · '+d.observations+' ventanas.');
+        entry('HIPÓTESIS',d.hypothesis+' El Set la aproxima con automatización de volumen.');
+      }else entry('EFECTOS','No se encontró un patrón de ducking con suficiente evidencia.');
+      entry('RECETA EN LIVE',report.recipe.instrument+'. '+report.recipe.eq);
+    }
+    const recipe=report.track_recipes?.[selected];
+    $('track-recipe').replaceChildren();
+    if(recipe){
+      recipe.chain.forEach((c,i)=>{$('track-recipe').append(text('dt','PASO '+(i+1)),text('dd',c));});
+      $('track-recipe').append(text('dd',recipe.status));
+    }else $('track-recipe').append(text('dd','Selecciona una pista analizada para ver su receta.'));
+    drawNotes();
+  }
+  function select(name){
+    selected=name;
+    for(const b of $('lanes').children)b.setAttribute('aria-pressed',b.dataset.name===name);
+    detail();
+    if(listening==='track') listen('track',true);
+  }
+  function listen(mode,keep){
+    const oldTime=keep?player.currentTime:0, resume=keep&&!player.paused;
+    listening=mode;
+    for(const b of tabs)b.setAttribute('aria-pressed',b.dataset.listen===mode);
+    player.onloadedmetadata=()=>{
+      if(oldTime>0 && oldTime<player.duration)player.currentTime=oldTime;
+      if(resume)player.play().catch(()=>{});
+    };
+    player.src=mode==='A'?sound('Original'):mode==='B'?route(id,$('variant').value||'B - Reconstruccion.wav'):sound(selected);
+    matchLevel();
+    $('listening').textContent=mode==='A'?'Original de referencia.':mode==='B'?
+      'Variante de síntesis del bajo. El sonido editable de Operator se ajusta en Live.':
+      'Escuchando '+labels[selected]+'.';
+  }
+  function draw(key,value,name){
+    id=key; report=value;
+    $('result').hidden=false;
+    $('track-title').textContent=name;
+    $('meta').replaceChildren(...[
+      num(value.bpm)+' BPM · '+value.tempo_source,
+      num(value.duration_s,1)+' s',value.notes.length+' notas de bajo',value.separation_model||'DSP local',
+    ].map(v=>text('span',v,'pill kicker')));
+    $('timeline').replaceChildren(...[0,.25,.5,.75,1].map(p=>text('span',num(p*value.duration_s,1)+' s')));
+    $('lanes').replaceChildren();
+    for(const [key,bins] of Object.entries(value.waves)){
+      const button=text('button','','lane');button.type='button';button.dataset.name=key;
+      const wave=text('span','','wave');wave.style.setProperty('--track',color[key]);wave.setAttribute('aria-hidden','true');
+      const max=Math.max(.05,...bins);
+      for(const peak of bins){const i=document.createElement('i');i.style.height=(4+96*Math.sqrt(peak/max))+'%';wave.append(i);}
+      button.append(text('strong',labels[key]),wave);
+      button.addEventListener('click',()=>select(key));$('lanes').append(button);
+    }
+    $('sections').replaceChildren(...value.sections.map((s,i)=>{
+      const b=text('button','C. '+s.bar+' · '+s.name);b.type='button';
+      b.addEventListener('click',()=>{$('loop-start').value=s.time;$('loop-end').value=value.sections[i+1]?.time||value.duration_s;seekSection();});
+      return b;
+    }));
+    $('warnings').replaceChildren(...value.warnings.map(w=>text('p',w)),text('p',value.recipe.limits));
+    $('export-title').textContent=value.live_set?'Set editable · Ableton Live 12 Suite':'Paquete para importar en Ableton Live';
+    $('export-detail').textContent=(value.live_set?'.als · ':'')+'WAV alineados · '+Object.keys(value.midi_files||{}).length+' archivos MIDI · recetas';
+    $('download').href=route(key,'Contrapista.zip');
+    listening='A';
+    $('loop-start').value=0;$('loop-end').value=Math.min(8,value.duration_s);
+    $('loop-start').max=value.duration_s;$('loop-end').max=value.duration_s;
+    $('variant').replaceChildren(text('option','Recreación principal'));
+    $('variant').firstChild.value='';
+    for(const v of value.variants||[]){const o=text('option',v.name);o.value=v.file;$('variant').append(o);}
+    $('variant').disabled=!value.variants?.length;
+    $('midi-summary').textContent=(value.drum_notes?.length||0)+' golpes de batería · '+
+      Object.values(value.extra_midi||{}).reduce((n,notes)=>n+notes.length,0)+' notas melódicas / vocales';
+    $('midi-links').replaceChildren();
+    for(const [name,file] of Object.entries(value.midi_files||{})){
+      const a=text('a',labels[name]||name);a.href=route(key,file);a.download=file;$('midi-links').append(a);
+    }
+    $('recipe-download').href=route(key,'Recetas.txt');
+    $('recipe-download').hidden=!value.track_recipes;
+    $('harmony').replaceChildren(text('dt','TONALIDAD CANDIDATA'),text('dd',value.key?.name||'Sin evidencia suficiente'),
+      text('dt','ALTERNATIVA'),text('dd',value.key?.alternative||'—'),
+      text('dt','TEMPO POR TRAMOS'),text('dd',(value.tempo_windows||[]).filter(t=>t.bpm).map(t=>num(t.start,0)+' s: '+num(t.bpm)+' BPM').join(' · ')||'No se encontró pulso estable.'));
+    $('chords').replaceChildren(...(value.chords||[]).slice(0,48).map(c=>text('span',c.name+' · '+num(c.start,1)+' s')));
+    $('sound-search').replaceChildren();
+    if(value.sound_fit){
+      $('sound-search').append(text('dt','ARMÓNICOS MEDIDOS'),text('dd','H2: '+value.sound_fit.measured_h2+' · H3: '+value.sound_fit.measured_h3));
+      for(const c of value.sound_fit.candidates)$('sound-search').append(text('dt',c.name),text('dd','Distancia: '+c.distance));
+      $('sound-search').append(text('dd',value.sound_fit.evidence));
+    }else $('sound-search').append(text('dd','No hay bajo con suficiente información tonal para comparar osciladores.'));
+    select(value.audio_files['Bajo estimado']?'Bajo estimado':'Stem' in value.audio_files?'Stem':'Original');
+    tabs.find(b=>b.dataset.listen==='B').disabled=!value.notes.length;
+    listen('A',false);
+    localStorage.setItem('contrapista-last-project',key);
+    const saved=projects.find(p=>p.id===key);
+    $('project-tools').hidden=!saved;
+    if(saved){$('project-select').value=key;$('project-name').value=saved.name;$('favorite-project').textContent=saved.favorite?'Quitar favorito':'Marcar favorito';}
+  }
+  async function data(response){
+    const body=await response.json();
+    if(!response.ok)throw new Error(body.error||'No pude completar la solicitud.');
+    return body;
+  }
+  async function watchJob(jobId){
+    sessionStorage.setItem('contrapista-job',jobId);
+    busy(true);
+    try{
+      for(;;){
+        const job=await data(await fetch('/jobs/'+jobId));
+        if(job.state==='error')throw new Error(job.error);
+        if(job.state==='done'){
+          draw(job.id,job.report,job.report.input_name||'Mi canción');
+          await loadLibrary(job.id);
+          sessionStorage.removeItem('contrapista-job');
+          status('Reconstrucción completa · lista para descargar.');
+          return;
+        }
+        status(job.stage+' · '+job.percent+' %');
+        await new Promise(resolve=>setTimeout(resolve,1200));
+      }
+    }catch(error){
+      status(error.message,true);
+      if(!error.message.includes('fetch'))sessionStorage.removeItem('contrapista-job');
+    }finally{busy(false);}
+  }
+  $('source-form').addEventListener('submit',async e=>{
+    e.preventDefault();
+    const file=$('audio-file').files[0];
+    if(!file)return;
+    if(file.size>1024*1024*1024){status('El archivo supera 1 GB.',true);return;}
+    const params=new URLSearchParams({filename:file.name,source:$('source').value,quality:$('quality').value});
+    if($('bpm').value)params.set('bpm',$('bpm').value);
+    busy(true);status('Cargando la canción completa…');
+    try{
+      const result=await data(await fetch('/analyze?'+params,{method:'POST',headers:{'X-Contrapista':'1'},body:file}));
+      await watchJob(result.id);
+    }catch(error){status(error.message,true);}
+    finally{busy(false);}
+  });
+  $('demo').addEventListener('click',async()=>{
+    busy(true);status('Abriendo ejemplo…');
+    try{draw('demo',await data(await fetch(route('demo','Informe.json'))),'Umbral · ejemplo controlado');status('Ejemplo listo.');}
+    catch(error){status(error.message,true);}
+    finally{busy(false);}
+  });
+  tabs.forEach(b=>b.addEventListener('click',()=>listen(b.dataset.listen,true)));
+  function matchLevel(){
+    if(!report)return;
+    const levels=report.comparison_levels;
+    if(listening==='track'||!levels||!$('level-match').checked){player.volume=1;return;}
+    let level=listening==='A'?levels.A:levels.B;
+    const variant=(report.variants||[]).find(v=>v.file===$('variant').value);
+    if(listening==='B'&&variant)level+=variant.gain_db-report.common_gain_db;
+    player.volume=Math.min(1,10**((Math.min(levels.A,levels.B)-level)/20));
+  }
+  function seekSection(){
+    const a=Number($('loop-start').value),b=Number($('loop-end').value);
+    if(!report||!Number.isFinite(a)||!Number.isFinite(b)||a<0||b<=a||b>report.duration_s){status('El tramo debe estar dentro de la canción y terminar después de su inicio.',true);return;}
+    if(player.readyState)player.currentTime=a;
+    drawNotes();
+  }
+  function drawNotes(){
+    if(!report||!selected)return;
+    const svg=$('piano-roll'),ns='http://www.w3.org/2000/svg';
+    svg.replaceChildren();
+    const a=Number($('loop-start').value),b=Math.min(report.duration_s,Number($('loop-end').value));
+    const source=selected==='Bajo estimado'?report.notes:selected==='Percusion'?report.drum_notes:report.extra_midi?.[selected];
+    const notes=(source||[]).filter(n=>n.end>a&&n.start<b);
+    svg.setAttribute('viewBox','0 0 600 125');
+    if(!notes.length){const label=document.createElementNS(ns,'text');label.setAttribute('x','12');label.setAttribute('y','65');label.setAttribute('fill','#a9b9ad');label.textContent='Sin notas MIDI en este tramo';svg.append(label);return;}
+    const lo=Math.min(...notes.map(n=>n.pitch))-1,hi=Math.max(...notes.map(n=>n.pitch))+2;
+    for(const n of notes.slice(0,1200)){
+      const rect=document.createElementNS(ns,'rect');
+      const start=Math.max(a,n.start),end=Math.min(b,n.end);
+      rect.setAttribute('x',String((start-a)/Math.max(.1,b-a)*600));
+      rect.setAttribute('y',String(115-(n.pitch-lo)/(hi-lo)*105));
+      rect.setAttribute('width',String(Math.max(2,(end-start)/Math.max(.1,b-a)*600)));
+      rect.setAttribute('height',String(Math.max(3,90/(hi-lo))));
+      rect.setAttribute('fill',selected==='Percusion'?'#ffd593':'#b4eac0');
+      svg.append(rect);
+    }
+  }
+  player.addEventListener('timeupdate',()=>{if($('loop-enabled').checked&&report&&player.currentTime>=Number($('loop-end').value))player.currentTime=Number($('loop-start').value);});
+  $('seek-section').addEventListener('click',seekSection);
+  $('loop-start').addEventListener('change',drawNotes);$('loop-end').addEventListener('change',drawNotes);
+  $('level-match').addEventListener('change',matchLevel);
+  $('variant').addEventListener('change',()=>listen('B',true));
+  async function loadLibrary(selectedId){
+    const result=await data(await fetch('/projects'));projects=result.projects;
+    $('library-count').textContent='· '+projects.length+' guardados';
+    $('project-select').replaceChildren();
+    if(!projects.length){const o=text('option','Todavía no hay proyectos guardados');o.value='';$('project-select').append(o);}
+    for(const p of projects){const o=text('option',(p.favorite?'★ ':'')+p.name+' · '+(p.quality==='ai'?'IA':'Rápido')+' · '+num(p.duration_s,0)+' s');o.value=p.id;$('project-select').append(o);}
+    if(selectedId&&projects.some(p=>p.id===selectedId))$('project-select').value=selectedId;
+    if(id&&projects.some(p=>p.id===id)){
+      const current=projects.find(p=>p.id===id);
+      $('project-tools').hidden=false;$('project-name').value=current.name;
+      $('favorite-project').textContent=current.favorite?'Quitar favorito':'Marcar favorito';
+    }
+  }
+  async function openProject(key){
+    const report=await data(await fetch(route(key,'Informe.json')));
+    draw(key,report,projects.find(p=>p.id===key)?.name||report.input_name||'Mi canción');
+    status('Proyecto recuperado.');
+  }
+  $('open-project').addEventListener('click',async()=>{try{if($('project-select').value)await openProject($('project-select').value);}catch(e){status(e.message,true);}});
+  $('refresh-projects').addEventListener('click',()=>loadLibrary(id).catch(e=>status(e.message,true)));
+  async function editProject(changes){
+    if(!id||id==='demo')return;
+    await data(await fetch('/projects/'+id+'/edit',{method:'POST',headers:{'X-Contrapista':'1','Content-Type':'application/json'},body:JSON.stringify(changes)}));
+    await loadLibrary(id);
+    const p=projects.find(p=>p.id===id);$('track-title').textContent=p.name;$('favorite-project').textContent=p.favorite?'Quitar favorito':'Marcar favorito';
+    status('Proyecto guardado.');
+  }
+  $('rename-project').addEventListener('click',()=>editProject({name:$('project-name').value}).catch(e=>status(e.message,true)));
+  $('favorite-project').addEventListener('click',()=>editProject({favorite:!projects.find(p=>p.id===id)?.favorite}).catch(e=>status(e.message,true)));
+  $('reanalyze').addEventListener('click',async()=>{
+    if(!id||id==='demo')return;
+    busy(true);status('Reabriendo el audio guardado…');
+    try{const job=await data(await fetch('/projects/'+id+'/reanalyze',{method:'POST',headers:{'X-Contrapista':'1','Content-Type':'application/json'},body:JSON.stringify({quality:$('quality').value})}));await watchJob(job.id);}
+    catch(e){status(e.message,true);}finally{busy(false);}
+  });
+  (async()=>{
+    try{
+      const capabilities=await data(await fetch('/capabilities'));
+      $('engine-status').textContent=capabilities.demucs&&capabilities.basic_pitch?
+        'IA local lista · Demucs + Basic Pitch. Puede tardar varios minutos por canción.':
+        'Análisis rápido disponible. Los modelos de IA aún no están listos.';
+      if(capabilities.demucs&&capabilities.basic_pitch)$('quality').value='ai';
+      else $('quality').querySelector('option[value=ai]').disabled=true;
+      $('plugin-list').replaceChildren(...capabilities.plugins.map(p=>text('p',p.name+' · '+p.format+(p.version?' · '+p.version:''),'muted')));
+      await loadLibrary();
+      const query=new URLSearchParams(location.search);
+      const queryJob=query.get('job');
+      const queryProject=query.get('project');
+      const pending=queryJob&&/^[a-f0-9]{32}$/.test(queryJob)?queryJob:sessionStorage.getItem('contrapista-job');
+      const last=queryProject&&/^[a-f0-9]{32}$/.test(queryProject)?queryProject:localStorage.getItem('contrapista-last-project');
+      if(pending)await watchJob(pending);
+      else if(last==='demo'||projects.some(p=>p.id===last))await openProject(last);
+    }catch(e){status(e.message,true);}
+  })();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,454 @@
+{
+  "name": "FRATERNIDAD · cuatro relojes · plantilla",
+  "sources": [
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD FUENTE · 01 INICIO",
+      "uuid": "be82c42d-811c-4bc4-9978-0f1a3fa0fada",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "fps_custom": true,
+        "shutdown": false,
+        "restart_when_active": false,
+        "reroute_audio": false,
+        "url": "http://127.0.0.1:5178/live/fraternidad-start?channel=fraternidad-obs-inicio&aspecto=16%3A9&autoplay=1&tipo=aprobado&liveMode=countdown&liveDurationMs=300000"
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD FUENTE · 02 CUENTA REGRESIVA",
+      "uuid": "8a6a85a8-323b-46de-bb52-5624d2ff5fb0",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "fps_custom": true,
+        "shutdown": false,
+        "restart_when_active": false,
+        "reroute_audio": false,
+        "url": "http://127.0.0.1:5178/live/fraternidad-countdown?channel=fraternidad-obs-cuenta&aspecto=16%3A9&autoplay=1&tipo=aprobado&liveMode=countdown&liveDurationMs=300000"
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD FUENTE · 03 EN VIVO",
+      "uuid": "4025d366-cdc5-435f-ac63-b481139a037d",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "fps_custom": true,
+        "shutdown": false,
+        "restart_when_active": false,
+        "reroute_audio": false,
+        "url": "http://127.0.0.1:5178/live/fraternidad-live?channel=fraternidad-obs-envivo&aspecto=16%3A9&autoplay=1&tipo=aprobado&liveMode=elapsed&liveDurationMs=300000"
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD FUENTE · 04 PAUSA",
+      "uuid": "513fb750-a638-488f-b045-43ccdfb67c40",
+      "id": "browser_source",
+      "versioned_id": "browser_source",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "width": 1920,
+        "height": 1080,
+        "fps": 60,
+        "fps_custom": true,
+        "shutdown": false,
+        "restart_when_active": false,
+        "reroute_audio": false,
+        "url": "http://127.0.0.1:5178/live/fraternidad-break?channel=fraternidad-obs-pausa&aspecto=16%3A9&autoplay=1&tipo=aprobado&liveMode=countdown&liveDurationMs=300000"
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD · 01 INICIO",
+      "uuid": "1874a242-4371-4929-80cb-0f46422ff394",
+      "id": "scene",
+      "versioned_id": "scene",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "custom_size": false,
+        "id_counter": 2,
+        "items": [
+          {
+            "name": "FRATERNIDAD FUENTE · 01 INICIO",
+            "source_uuid": "be82c42d-811c-4bc4-9978-0f1a3fa0fada",
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "scale_ref": {
+              "x": 1920,
+              "y": 1080
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 1,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "scale_rel": {
+              "x": 1,
+              "y": 1
+            },
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "bounds_rel": {
+              "x": 0,
+              "y": 0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "private_settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD · 02 CUENTA REGRESIVA",
+      "uuid": "eb4178c0-6fc4-483f-9911-02e5af1bb8e7",
+      "id": "scene",
+      "versioned_id": "scene",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "custom_size": false,
+        "id_counter": 2,
+        "items": [
+          {
+            "name": "FRATERNIDAD FUENTE · 02 CUENTA REGRESIVA",
+            "source_uuid": "8a6a85a8-323b-46de-bb52-5624d2ff5fb0",
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "scale_ref": {
+              "x": 1920,
+              "y": 1080
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 1,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "scale_rel": {
+              "x": 1,
+              "y": 1
+            },
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "bounds_rel": {
+              "x": 0,
+              "y": 0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "private_settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD · 03 EN VIVO",
+      "uuid": "1138a504-526e-4c0f-a14c-fe482059b352",
+      "id": "scene",
+      "versioned_id": "scene",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "custom_size": false,
+        "id_counter": 2,
+        "items": [
+          {
+            "name": "FRATERNIDAD FUENTE · 03 EN VIVO",
+            "source_uuid": "4025d366-cdc5-435f-ac63-b481139a037d",
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "scale_ref": {
+              "x": 1920,
+              "y": 1080
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 1,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "scale_rel": {
+              "x": 1,
+              "y": 1
+            },
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "bounds_rel": {
+              "x": 0,
+              "y": 0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "private_settings": {}
+          }
+        ]
+      }
+    },
+    {
+      "prev_ver": 553648129,
+      "name": "FRATERNIDAD · 04 PAUSA",
+      "uuid": "27f8e1fa-b700-4eb1-91f1-824750255c3d",
+      "id": "scene",
+      "versioned_id": "scene",
+      "mixers": 0,
+      "sync": 0,
+      "flags": 0,
+      "volume": 1,
+      "balance": 0.5,
+      "enabled": true,
+      "muted": false,
+      "deinterlace_mode": 0,
+      "deinterlace_field_order": 0,
+      "monitoring_type": 0,
+      "monitoring_enabled": false,
+      "hotkeys": {},
+      "private_settings": {},
+      "settings": {
+        "custom_size": false,
+        "id_counter": 2,
+        "items": [
+          {
+            "name": "FRATERNIDAD FUENTE · 04 PAUSA",
+            "source_uuid": "513fb750-a638-488f-b045-43ccdfb67c40",
+            "visible": true,
+            "locked": true,
+            "rot": 0,
+            "scale_ref": {
+              "x": 1920,
+              "y": 1080
+            },
+            "align": 5,
+            "bounds_type": 0,
+            "bounds_align": 0,
+            "bounds_crop": false,
+            "crop_left": 0,
+            "crop_top": 0,
+            "crop_right": 0,
+            "crop_bottom": 0,
+            "id": 1,
+            "group_item_backup": false,
+            "pos": {
+              "x": 0,
+              "y": 0
+            },
+            "pos_rel": {
+              "x": -1.7777777910232544,
+              "y": -1
+            },
+            "scale": {
+              "x": 1,
+              "y": 1
+            },
+            "scale_rel": {
+              "x": 1,
+              "y": 1
+            },
+            "bounds": {
+              "x": 0,
+              "y": 0
+            },
+            "bounds_rel": {
+              "x": 0,
+              "y": 0
+            },
+            "scale_filter": "disable",
+            "blend_method": "default",
+            "blend_type": "normal",
+            "private_settings": {}
+          }
+        ]
+      }
+    }
+  ],
+  "groups": [],
+  "scene_order": [
+    {
+      "name": "FRATERNIDAD · 01 INICIO"
+    },
+    {
+      "name": "FRATERNIDAD · 02 CUENTA REGRESIVA"
+    },
+    {
+      "name": "FRATERNIDAD · 03 EN VIVO"
+    },
+    {
+      "name": "FRATERNIDAD · 04 PAUSA"
+    }
+  ],
+  "current_scene": "FRATERNIDAD · 01 INICIO",
+  "current_program_scene": "FRATERNIDAD · 01 INICIO",
+  "current_transition": "Fade",
+  "transition_duration": 300,
+  "transitions": [],
+  "resolution": {
+    "x": 1920,
+    "y": 1080
+  },
+  "migration_resolution": {
+    "x": 1920,
+    "y": 1080
+  },
+  "version": 2
+}

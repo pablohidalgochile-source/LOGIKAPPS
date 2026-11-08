@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>FRATV · hoja de contacto</title>
+<style>
+  body { margin:0; padding:28px; background:#08070C; color:#F5F1E8;
+         font-family:'JetBrains Mono',ui-monospace,monospace; }
+  h1 { font-size:17px; letter-spacing:.2em; color:#B72A3A; margin:0 0 4px; }
+  p.n { font-size:12px; color:rgba(245,241,232,.55); margin:0 0 24px; }
+  .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:22px; }
+  figure { margin:0; }
+  figcaption { font-size:11px; letter-spacing:.14em; margin-bottom:7px; text-transform:uppercase; }
+  figcaption span { color:rgba(245,241,232,.45); }
+  /* Damero: deja ver la transparencia real de cada recurso. */
+  .marco { position:relative; width:100%; aspect-ratio:16/9; overflow:hidden;
+           border:1px solid rgba(183,42,58,.5); border-radius:10px;
+           background-color:#15121c;
+           background-image:linear-gradient(45deg,#1d1926 25%,transparent 25%,transparent 75%,#1d1926 75%),
+                            linear-gradient(45deg,#1d1926 25%,transparent 25%,transparent 75%,#1d1926 75%);
+           background-size:24px 24px; background-position:0 0,12px 12px; }
+  iframe { position:absolute; top:0; left:0; width:1920px; height:1080px; border:0;
+           transform-origin:top left; }
+</style></head><body>
+<h1>FRATV · HOJA DE CONTACTO</h1>
+<p class="n">Los 15 recursos a escala. El damero revela el canal alfa: donde se ve el patrón, el recurso es transparente.</p>
+<div class="grid">
+    <figure>
+      <figcaption>ident-long <span>1900 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/ident-long.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>ident-short <span>900 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/ident-short.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>stinger <span>800 ms · opaco</span></figcaption>
+      <div class="marco"><iframe src="resources/stinger.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>flag <span>0 ms · loop · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/flag.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>live-badge <span>1500 ms · loop · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/live-badge.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>countdown <span>0 ms · loop · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/countdown.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>bumper-in <span>7000 ms · loop · opaco</span></figcaption>
+      <div class="marco"><iframe src="resources/bumper-in.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>bumper-out <span>7000 ms · loop · opaco</span></figcaption>
+      <div class="marco"><iframe src="resources/bumper-out.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>lower-third <span>9000 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/lower-third.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>program-title <span>8000 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/program-title.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>schedule <span>8000 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/schedule.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>engagement <span>8000 ms · loop · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/engagement.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>sponsor <span>8000 ms · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/sponsor.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>ticker <span>18000 ms · loop · alfa</span></figcaption>
+      <div class="marco"><iframe src="resources/ticker.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+    <figure>
+      <figcaption>end-credits <span>22000 ms · loop · opaco</span></figcaption>
+      <div class="marco"><iframe src="resources/end-credits.html?safe=0" scrolling="no"></iframe></div>
+    </figure>
+</div>
+<script>
+  function escalar() {
+    document.querySelectorAll('.marco').forEach(function (m) {
+      m.querySelector('iframe').style.transform = 'scale(' + (m.clientWidth / 1920) + ')';
+    });
+  }
+  escalar(); addEventListener('resize', escalar);
+
+  /* Los recursos sin loop terminan limpios a alfa: a los 8 s ya no hay nada que ver.
+     Para revisarlos, se los posiciona en su punto de sostenido (45 % de la duracion). */
+  var SOSTENIDO = 0.45;
+  addEventListener('message', function (e) {
+    var m = e.data || {};
+    if (m.type !== 'fratv:ready' || m.meta.loop) return;
+    var d = m.meta.durationMs || 0;
+    if (!d) return;
+    [...document.querySelectorAll('iframe')].forEach(function (f) {
+      if (f.contentWindow === e.source) {
+        f.contentWindow.postMessage({ type: 'fratv:pause' }, '*');
+        f.contentWindow.postMessage({ type: 'fratv:seek', t: d * SOSTENIDO }, '*');
+      }
+    });
+  });
+</script>
+</body></html>

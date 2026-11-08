@@ -1,0 +1,567 @@
+{
+  "version": "1.0.0",
+  "brand": "Fraternidad",
+  "approvedPilots": [
+    "fraternidad-flag",
+    "fraternidad-lower-third",
+    "fraternidad-start"
+  ],
+  "approvalDate": "2026-10-31",
+  "resources": [
+    {
+      "id": "fraternidad-flag",
+      "name": "Mosca Fraternidad",
+      "catalog": "fraternidad",
+      "family": "estado",
+      "file": "fraternidad/resources/fraternidad-flag.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 4000,
+      "loop": false,
+      "alpha": true,
+      "fields": []
+    },
+    {
+      "id": "fraternidad-ident-long",
+      "name": "Apertura Fraternidad",
+      "catalog": "fraternidad",
+      "family": "marca",
+      "file": "fraternidad/resources/fraternidad-ident-long.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 7000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Programa",
+          "type": "text",
+          "default": "ENCUENTRO FRATERNIDAD",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Campus Central",
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-ident-short",
+      "name": "Identidad breve Fraternidad",
+      "catalog": "fraternidad",
+      "family": "marca",
+      "file": "fraternidad/resources/fraternidad-ident-short.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 4000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Programa",
+          "type": "text",
+          "default": "FRATERNIDAD",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Campus Central",
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-lower-third",
+      "name": "Nombre y cargo · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "informacion",
+      "file": "fraternidad/resources/fraternidad-lower-third.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 9000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "name",
+          "label": "Nombre",
+          "type": "text",
+          "default": "ANA PÉREZ",
+          "max": 32
+        },
+        {
+          "key": "role",
+          "label": "Cargo",
+          "type": "text",
+          "default": "CONDUCTORA",
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-program-title",
+      "name": "Título de programa · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "informacion",
+      "file": "fraternidad/resources/fraternidad-program-title.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "kicker",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "NUEVO EPISODIO",
+          "max": 24
+        },
+        {
+          "key": "title",
+          "label": "Nombre del programa",
+          "type": "textarea",
+          "default": "ENCUENTRO\nFRATERNIDAD",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Campus Central",
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-start",
+      "name": "Inicio con cuenta regresiva · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "cortinilla",
+      "file": "fraternidad/resources/fraternidad-start.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 7000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Nombre del programa",
+          "type": "textarea",
+          "default": "ENCUENTRO\nFRATERNIDAD",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Campus Central",
+          "max": 60
+        }
+      ],
+      "liveMode": "countdown"
+    },
+    {
+      "id": "fraternidad-countdown",
+      "name": "Cuenta regresiva · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "estado",
+      "file": "fraternidad/resources/fraternidad-countdown.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 4000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "caption",
+          "label": "Rótulo",
+          "type": "text",
+          "default": "COMENZAMOS EN",
+          "max": 32
+        }
+      ],
+      "liveMode": "countdown"
+    },
+    {
+      "id": "fraternidad-live",
+      "name": "En vivo y tiempo transcurrido · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "estado",
+      "file": "fraternidad/resources/fraternidad-live.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 4000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "EN VIVO",
+          "max": 20
+        }
+      ],
+      "liveMode": "elapsed"
+    },
+    {
+      "id": "fraternidad-break",
+      "name": "Pausa y regreso · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "cortinilla",
+      "file": "fraternidad/resources/fraternidad-break.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 7000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Mensaje",
+          "type": "textarea",
+          "default": "VOLVEMOS\nEN UN MOMENTO",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Gracias por acompañarnos",
+          "max": 60
+        }
+      ],
+      "liveMode": "countdown"
+    },
+    {
+      "id": "fraternidad-schedule",
+      "name": "Agenda · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "informacion",
+      "file": "fraternidad/resources/fraternidad-schedule.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "A CONTINUACIÓN",
+          "max": 24
+        },
+        {
+          "key": "dayLabel",
+          "label": "Día",
+          "type": "text",
+          "default": "HOY",
+          "max": 16
+        },
+        {
+          "key": "rows",
+          "label": "Filas",
+          "type": "rows",
+          "default": [
+            [
+              "21:00",
+              "Encuentro de la comunidad",
+              "EN VIVO"
+            ],
+            [
+              "21:30",
+              "Conversación con invitados",
+              ""
+            ],
+            [
+              "22:00",
+              "Cierre y próximos encuentros",
+              ""
+            ]
+          ],
+          "max": 5,
+          "schema": [
+            {
+              "key": "time"
+            },
+            {
+              "key": "title"
+            },
+            {
+              "key": "tag"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-out",
+      "name": "Cierre · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "cierre",
+      "file": "fraternidad/resources/fraternidad-out.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 7000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Título",
+          "type": "textarea",
+          "default": "GRACIAS POR\nACOMPAÑARNOS",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Nos encontramos en el próximo programa",
+          "max": 60
+        },
+        {
+          "key": "socials",
+          "label": "Redes",
+          "type": "textlist",
+          "default": [
+            "FRATERNIDAD",
+            "CAMPUS CENTRAL"
+          ],
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-ticker",
+      "name": "Banda de avisos · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "informacion",
+      "file": "fraternidad/resources/fraternidad-ticker.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 18000,
+      "loop": true,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "COMUNIDAD",
+          "max": 20
+        },
+        {
+          "key": "items",
+          "label": "Mensajes",
+          "type": "textlist",
+          "default": [
+            "Bienvenidos a Fraternidad",
+            "Comparte tus preguntas con la comunidad",
+            "Nos encontramos en el próximo programa"
+          ],
+          "max": 60
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-sponsor",
+      "name": "Auspiciador · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "comercial",
+      "file": "fraternidad/resources/fraternidad-sponsor.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "label",
+          "label": "Rótulo",
+          "type": "text",
+          "default": "NOS ACOMPAÑA",
+          "max": 24
+        },
+        {
+          "key": "name",
+          "label": "Nombre del auspiciador",
+          "type": "text",
+          "default": "NOMBRE DEL AUSPICIADOR",
+          "max": 60
+        },
+        {
+          "key": "logo",
+          "label": "Logo del auspiciador",
+          "type": "image",
+          "default": "",
+          "max": 4000
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-comment",
+      "name": "Comentario o pregunta · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "interaccion",
+      "file": "fraternidad/resources/fraternidad-comment.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 9000,
+      "loop": false,
+      "alpha": true,
+      "fields": [
+        {
+          "key": "name",
+          "label": "Nombre",
+          "type": "text",
+          "default": "NOMBRE DEL PARTICIPANTE",
+          "max": 40
+        },
+        {
+          "key": "comment",
+          "label": "Comentario",
+          "type": "textarea",
+          "default": "Comparte tu pregunta con la comunidad.",
+          "max": 160
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-credits",
+      "name": "Créditos · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "cierre",
+      "file": "fraternidad/resources/fraternidad-credits.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 22000,
+      "loop": true,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "rows",
+          "label": "Filas",
+          "type": "rows",
+          "default": [
+            [
+              "CONDUCCIÓN",
+              "Nombre del conductor"
+            ],
+            [
+              "PRODUCCIÓN",
+              "Equipo Fraternidad"
+            ],
+            [
+              "CÁMARA",
+              "Equipo técnico"
+            ],
+            [
+              "AGRADECIMIENTOS",
+              "Comunidad Fraternidad"
+            ]
+          ],
+          "max": 30,
+          "schema": [
+            {
+              "key": "role"
+            },
+            {
+              "key": "name"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fraternidad-stinger",
+      "name": "Transición · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "marca",
+      "file": "fraternidad/resources/fraternidad-stinger.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 800,
+      "loop": false,
+      "alpha": true,
+      "fields": [],
+      "cutMs": 400,
+      "coverageMs": [
+        250,
+        550
+      ]
+    },
+    {
+      "id": "fraternidad-technical",
+      "name": "Espera técnica · Fraternidad",
+      "catalog": "fraternidad",
+      "family": "estado",
+      "file": "fraternidad/resources/fraternidad-technical.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 7000,
+      "loop": false,
+      "alpha": false,
+      "fields": [
+        {
+          "key": "title",
+          "label": "Mensaje",
+          "type": "textarea",
+          "default": "VOLVEMOS\nEN UN MOMENTO",
+          "max": 55
+        },
+        {
+          "key": "subtitle",
+          "label": "Bajada",
+          "type": "text",
+          "default": "Estamos resolviendo un problema técnico",
+          "max": 60
+        }
+      ]
+    }
+  ]
+}

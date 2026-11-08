@@ -1,0 +1,336 @@
+.project-heading {
+  min-width: 100px;
+  max-width: 260px;
+  margin-left: 12px;
+}
+.project-heading strong {
+  display: block;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.project-heading small {
+  display: block;
+  font-size: 10px;
+  color: #b8abae;
+  margin-top: 5px;
+}
+.workflow-nav {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+  align-items: center;
+}
+.primary-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: #b72a3a;
+  color: #fff4ef;
+  border: 1px solid #c94757;
+  border-radius: 6px;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-size: 12px;
+  cursor: pointer;
+}
+.primary-action:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.save-warning {
+  background: #462831;
+  padding: 10px 20px;
+  font-size: 12px;
+  color: #ffdadf;
+}
+.episode-strip {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  padding: 9px 24px;
+  background: #19141e;
+  border-bottom: 1px solid var(--line);
+}
+.episode-strip label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  color: #c7b9ce;
+}
+.episode-strip select {
+  width: 350px;
+  max-width: 55vw;
+  font-size: 11px;
+  padding: 5px 9px;
+}
+.episode-strip > span {
+  color: #ab9fb4;
+  font-size: 10px;
+}
+.dialog-shade {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: #050309c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.workflow-dialog {
+  width: min(700px, 100%);
+  max-height: 92dvh;
+  background: #16121c;
+  border: 1px solid #493a52;
+  border-radius: 12px;
+  box-shadow: 0 30px 100px #0009;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.workflow-dialog > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 25px;
+  border-bottom: 1px solid #3c2e46;
+  flex-shrink: 0;
+}
+.workflow-dialog h2 {
+  font-size: 23px;
+  letter-spacing: -0.5px;
+  margin-top: 7px;
+}
+.workflow-dialog header small {
+  font-size: 9px;
+  color: #c99dab;
+  letter-spacing: 1.5px;
+}
+.workflow-dialog header > button {
+  font-size: 28px;
+  padding: 4px 10px;
+}
+.dialog-content {
+  overflow: auto;
+  padding: 23px 25px;
+}
+.workflow-dialog > footer {
+  padding: 18px 25px;
+  border-top: 1px solid #3c2e46;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.workflow-dialog > footer > span {
+  font-size: 10px;
+  color: #b5a4c0;
+  max-width: 55%;
+  line-height: 1.6;
+}
+.workflow-intro {
+  color: #beb0c8;
+  font-size: 12px;
+  line-height: 1.8;
+  margin-bottom: 22px;
+}
+.dialog-content > label,
+.live-panel > label,
+.live-links label {
+  display: block;
+  margin: 16px 0 12px;
+  font-size: 11px;
+  color: #d6c9dd;
+}
+.dialog-content label select,
+.live-panel label select,
+.live-panel label input,
+.live-links label input {
+  margin-top: 7px;
+}
+.dialog-content fieldset {
+  border: 1px solid #3b2f43;
+  border-radius: 7px;
+  padding: 16px;
+  margin: 20px 0;
+}
+.dialog-content legend {
+  color: #cdbdd7;
+  font-size: 11px;
+  padding: 0 7px;
+}
+.option-grid {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.option-grid label,
+.export-option {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  font-size: 12px;
+}
+.export-option {
+  margin-bottom: 12px;
+}
+.export-option:last-child {
+  margin-bottom: 0;
+}
+.workflow-error {
+  padding: 12px;
+  border: 1px solid #9b4e53;
+  background: #3a2029;
+  color: #ffd4d7;
+  border-radius: 6px;
+  line-height: 1.7;
+  font-size: 12px;
+  margin: 15px 0;
+  overflow-wrap: anywhere;
+}
+.export-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #47334f;
+  padding: 20px;
+  border-radius: 7px;
+  margin-top: 20px;
+}
+.export-progress strong {
+  font-size: 12px;
+}
+.export-progress progress {
+  width: 100%;
+  accent-color: #b72a3a;
+}
+.export-progress > span {
+  font-size: 11px;
+  color: #bba5c6;
+}
+.live-readout {
+  font:
+    30px ui-monospace,
+    monospace;
+  background: #0f0b14;
+  border: 1px solid #48304d;
+  border-radius: 8px;
+  padding: 20px 10px;
+  text-align: center;
+  letter-spacing: 2px;
+}
+.live-readout small {
+  font: 10px system-ui;
+  display: block;
+  margin-top: 10px;
+  color: #b7a1c4;
+  letter-spacing: 0;
+}
+.live-actions {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  margin: 14px 0;
+}
+.live-actions > button:last-child {
+  grid-column: 1/-1;
+}
+.live-links {
+  border-top: 1px solid #3b2d46;
+  margin-top: 18px;
+  padding-top: 5px;
+}
+.live-links input {
+  font-size: 10px;
+}
+.live-panel .field-note {
+  margin-bottom: 13px;
+}
+.tabs button {
+  min-width: 0;
+}
+.workflow-dialog a:focus-visible {
+  outline: 2px solid #f5b7c5;
+  outline-offset: 3px;
+}
+@media (max-width: 1180px) {
+  .project-heading {
+    max-width: 180px;
+    margin-left: 0;
+  }
+  .topbar {
+    gap: 14px;
+  }
+  .workflow-nav {
+    gap: 6px;
+  }
+  .workflow-nav button {
+    font-size: 10px;
+    padding: 9px;
+  }
+  .topbar .brand {
+    gap: 10px;
+  }
+}
+@media (max-width: 900px) {
+  .topbar {
+    height: auto;
+    min-height: 85px;
+    flex-wrap: wrap;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    gap: 12px;
+  }
+  .project-heading {
+    margin-left: auto;
+    max-width: 140px;
+  }
+  .workflow-nav {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  .workflow-nav button {
+    flex: 1;
+    font-size: 12px;
+  }
+  .episode-strip {
+    padding: 10px 18px;
+  }
+  .episode-strip > span {
+    display: none;
+  }
+  .episode-strip label {
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .episode-strip select {
+    max-width: 100%;
+    width: 100%;
+  }
+  .dialog-shade {
+    padding: 10px;
+  }
+  .workflow-dialog {
+    max-height: 96dvh;
+  }
+  .dialog-content {
+    padding: 18px;
+  }
+  .workflow-dialog > header,
+  .workflow-dialog > footer {
+    padding: 16px 18px;
+  }
+  .workflow-dialog > footer > span {
+    display: none;
+  }
+  .workflow-dialog > footer > button {
+    width: 100%;
+  }
+  .option-grid {
+    gap: 15px;
+  }
+}

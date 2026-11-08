@@ -6,12 +6,8 @@ async function render(pathname = "/", headers = {}, baseUrl = "http://localhost/
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
   const { default: worker } = await import(workerUrl.href);
 
-  const handler = typeof worker === "function" ? worker : worker.fetch.bind(worker);
-  return handler(
-    new Request(new URL(pathname, baseUrl), { headers: { accept: "text/html", ...headers } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+  const request = new Request(new URL(pathname, baseUrl), { headers: { accept: "text/html", host: new URL(baseUrl).host, ...headers } });
+  return worker(request);
 }
 
 test("redirects anonymous Sets visitors through the ChatGPT sign-in flow", async () => {

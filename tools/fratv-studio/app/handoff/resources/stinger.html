@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Stinger de transición</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+    --fr-wipe-ancho: 150%;
+    --fr-wipe-alto: 124%;
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  /* Ajustes de formato propios de este recurso. Los genéricos
+     (--fr-u y las áreas seguras) viven en fratv-aspectos.css. */
+  :root[data-aspecto="9:16"] { --fr-wipe-ancho: 230%; --fr-wipe-alto: 115%; }
+  :root[data-aspecto="1:1"] { --fr-wipe-ancho: 185%; --fr-wipe-alto: 118%; }
+  :root[data-aspecto="4:5"] { --fr-wipe-ancho: 200%; --fr-wipe-alto: 116%; }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: var(--safe-top) var(--safe-x) var(--safe-bottom); border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .stage { overflow: hidden; }
+
+  /* ===== Geometría del barrido =====
+     La paleta se centra en el cuadro (translate -50%,-50%), así el logo queda
+     en el centro real en el instante del corte — antes aparecía 300 px corrido
+     a la derecha en 16:9, porque la paleta se anclaba a left:0.
+     El sesgo de 11° se come ancho útil en los bordes, y se lo come en
+     proporción a la altura: en 9:16 el cuadro es casi el doble de alto, así que
+     la paleta necesita ser mucho más ancha para tapar lo mismo.
+     Los fotogramas 40 % y 60 % son una retención: el cuadro queda cubierto por
+     completo durante 160 ms, de 320 a 480 ms. OBS corta a los 400 ms, al medio
+     de esa ventana, y es el mismo número en todos los formatos. */
+  .wipe {
+    position: absolute; top: 50%; left: 50%;
+    width: var(--fr-wipe-ancho); height: var(--fr-wipe-alto);
+    background: var(--fr-accent);
+    transform: translate(-50%, -50%) skewX(-11deg) translateX(-130%);
+    animation: sweep 800ms cubic-bezier(.7,0,.25,1) forwards;
+  }
+  .mark {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    transform: skewX(11deg);
+  }
+  .mark svg { width:calc(307 * var(--fr-u)); display: block; }
+  @keyframes sweep {
+    0%   { transform: translate(-50%,-50%) skewX(-11deg) translateX(-130%) }
+    40%  { transform: translate(-50%,-50%) skewX(-11deg) translateX(0) }
+    60%  { transform: translate(-50%,-50%) skewX(-11deg) translateX(0) }
+    100% { transform: translate(-50%,-50%) skewX(-11deg) translateX(130%) }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="wipe">
+    <div class="mark">
+      <svg class="" viewBox="56 162 430 276" aria-label="FRATV">
+        <g id="icon-f" transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="var(--fr-on-accent)"
+                  stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </g>
+        <g id="icon-play" transform="translate(21 0)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z"
+                  fill="var(--fr-on-accent)"></path>
+          </g>
+        </g>
+        <g id="icon-tv" transform="translate(21 0)" fill="none" stroke="var(--fr-accent)"
+           stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M301 112H347M324 112V170"></path>
+            <path d="M354 114L370 167L388 114"></path>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+window.FRATVRuntime.create({ id: 'stinger', durationMs: 800, loop: false, alpha: false });
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+/* FRATV — escala y áreas seguras por formato.
+   Único lugar donde se afina cómo se comporta el paquete en cada razón de
+   aspecto. Los recursos traen estos mismos tokens con sus valores de 16:9
+   dentro de su propio :root, así que un recurso abierto suelto sigue
+   funcionando; este archivo gana por especificidad cuando hay data-aspecto.
+
+   --fr-u  ── unidad de escala.
+     Todo el paquete fue dibujado contra un ancho de 1920. Cada medida en los
+     recursos se escribe como calc(n * var(--fr-u)), donde n es la medida de
+     diseño. El divisor es el "ancho de diseño" del formato: cuanto más chico,
+     más pesa la gráfica dentro del cuadro.
+       16:9 → 1920  (divisor = ancho real: el resultado es idéntico al diseño)
+       9:16 → 1000  (la gráfica pesa 1,92× más que si se escalara a prorrata,
+                     porque en un teléfono se ve chico y hay que compensar)
+       1:1  → 1150
+       4:5  → 1100
+
+   --safe-*  ── áreas seguras, en porcentaje del cuadro.
+     top/bottom/x  bordes generales.
+     lower         línea base del lower third, el título de programa y el ticker.
+     flag          esquina superior: mosca, badge en vivo, cuenta regresiva.
+     En 9:16 los valores dejan libre el encabezado de Instagram arriba y la
+     descripción con sus botones abajo. Son los dos lugares donde la app del
+     teléfono escribe encima y no se puede recuperar. */
+
+:root[data-aspecto="16:9"] {
+  --fr-u: calc(100vw / 1920);
+  --safe-top: 5%;  --safe-bottom: 5%;  --safe-x: 5%;  --safe-lower: 12%; --safe-flag: 5%;
+}
+:root[data-aspecto="9:16"] {
+  --fr-u: calc(100vw / 1000);
+  --safe-top: 12%; --safe-bottom: 22%; --safe-x: 6%;  --safe-lower: 25%; --safe-flag: 14%;
+}
+:root[data-aspecto="1:1"] {
+  --fr-u: calc(100vw / 1150);
+  --safe-top: 6%;  --safe-bottom: 6%;  --safe-x: 6%;  --safe-lower: 13%; --safe-flag: 7%;
+}
+:root[data-aspecto="4:5"] {
+  --fr-u: calc(100vw / 1100);
+  --safe-top: 7%;  --safe-bottom: 10%; --safe-x: 6%;  --safe-lower: 16%; --safe-flag: 8%;
+}

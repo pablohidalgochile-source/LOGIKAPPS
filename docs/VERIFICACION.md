@@ -1,32 +1,22 @@
-# Verificación de LOGIKAPPS 0.6.1 beta
+# Verificación de LOGIKAPPS 0.7.0 beta
 
-## Revisión de entrega al equipo
+Comprobaciones realizadas el 8 de noviembre de 2026 sobre la distribución preparada, con datos temporales.
 
-- 48 pruebas de interfaz/FRATV y 81 nativas aprobadas en 0.6.1.
-- Seis packs y 25 fichas; todos los enlaces de descarga, guías, permisos de lanzadores y hashes revisados.
-- Pack Laboratorio extraído en una carpeta nueva: NANOOKEY y Multicam arrancan con sus archivos distribuidos.
-- Las 13 pantallas del prototipo NANOOKEY cargan en el navegador con datos ficticios. Se corrigió la fase inicial para que no dependa de una quinta fase inexistente. No se ejecutó AudD ni se importó una biblioteca personal.
-- Siete rutas locales de Multicam responden; archivos privados y Host ajenos se rechazan.
-- Guía de equipo incluida en el DMG, con ubicación y preparación de las ocho nuevas apps y conexión sin duplicados.
+- 49 pruebas frontend y 81 de almacenamiento/arranque nativo aprobadas.
+- WKWebView: apertura normal, carga integrada, recuperación ante fallo de archivos y aviso nativo de error. Ocho packs, 37 fichas, 60 entradas en Explorar; 13 pendientes visibles sin prometer descarga. Creación, edición, favoritos e ideas sobre una biblioteca temporal; biblioteca personal sin cambios.
+- LOGIKAPPS compilada universal arm64/x86_64 para macOS 13+, firma ad-hoc verificada. DMG y hashes comprobados; sin notarización Apple.
+- Limpieza Familiar: 64 comprobaciones con archivos sintéticos, incluido QR fuera del aislamiento del sistema. Edición pública con prueba experimental de borrado deshabilitada. Control de Suscripciones: 24 comprobaciones. Ambas apps y Letra Local compiladas arm64 y firmadas ad-hoc.
+- TRACKHUNT portable 0.3.0: compilación y 142 pruebas. Asistente Mac 0.4.2 entregado como fuentes, con guía para compilarlo; extensión Chrome 0.3.1 descomprimida. No se afirma que su binario esté incluido.
+- BINAURAL SYSTEM 0.1.0: se copió la nueva app independiente del proyecto activo, no el ZIP inicial. Diez pruebas y compilación aprobadas. Desde el pack extraído se comprobaron HTML, JS/CSS y restricciones del servidor local. No se repitió escucha real.
+- NANOOK HIT MAKER: 69 pruebas Python y 15 Node. Contrapista: cinco pruebas de MIDI, persistencia, silencio y continuidad de audio; sin descargar o ejecutar modelos de IA.
+- VITRINA: arranque desde pack limpio, biblioteca vacía, guardado de perfil y rechazo de peticiones ajenas, con datos ficticios.
+- FRATV Studio: 23 pruebas del editor, siete de servidor y compilación; regresión visual contra las referencias aprobadas correcta. Verificador del pack extraído comprueba 222 archivos, siete medios y colecciones de 14/4 escenas. No modifica OBS del destinatario.
+- Ocho packs: integridad ZIP, permisos de lanzadores, guías, nombres de descarga, SHA-256 y revisión de aplicaciones anidadas. Pruebas de NANOOKEY sintético y siete rutas de Multicam aprobadas.
 
-## Comprobaciones de herramientas heredadas de 0.6.0
+## Límites
 
-Las siguientes pruebas se realizaron en 0.6.0 y sus herramientas se conservan salvo los cambios de Laboratorio indicados arriba.
+No se certifica el hardware de otro Mac ni todas las funciones de cada herramienta. Letra Local requiere preparar modelos; Contrapista y NANOOK HIT MAKER conservan integraciones opcionales y requisitos de Ableton. BINAURAL SYSTEM no incluye IA ni voces remotas; su WAV exporta síntesis, no todas las capas de audio. Las webs privadas requieren cuentas e invitaciones propias. Los logos pendientes continúan identificados como tales.
 
-Revisión local del 31 de octubre de 2026.
+Los proyectos sin distribución comprobada permanecen en preparación. No se publican datos de bibliotecas, sesiones, cuentas ni credenciales del creador. Cada herramienta conserva sus requisitos y su estado de beta/prototipo.
 
-- 48 pruebas de interfaz/FRATV y 81 pruebas nativas aprobadas.
-- TRACKHUNT: 110; INGESTA: 33; Orgalina: 25; Club Santa Cruz: 20; Mi Talla: 11, todas aprobadas.
-- Elephant: 10 pruebas seleccionadas con imágenes y videos sintéticos; tamaños, transparencia, protección de originales, MP4, ProRes y audio. No se ejercitó el motor opcional IA en esta entrega.
-- Compilación de TRACKHUNT, Orgalina, Mi Talla, Club Santa Cruz, FRATE FLYER STUDIO y Subtitle Translator Pro. Este último conserva chequeo TypeScript, sin lint autónomo configurado.
-- Diez lanzadores probados desde ZIPs extraídos en carpetas temporales: INGESTA, TRACKHUNT, Mi Talla, Club Santa Cruz, Jacinta, Studio, Estudio Multicam, NANOOKEY, Orgalina y Subtitle Translator Pro. Para los tres servidores que necesitan compilación se reutilizaron las dependencias y salidas preparadas localmente; no se distribuyen node_modules.
-- VJ/LAB y Hit Lab pasan sus pruebas de copia portable, recursos HTTP y restricción de acceso local.
-- Interfaz WKWebView: seis packs y 25 fichas; 37 entradas en Explorar; logo de Elephant cargado; creación, edición, favoritos, ideas y borrado de accesos sobre datos temporales.
-- Apertura normal, interfaz integrada, denegación de lectura provocada y recuperación nativa por recursos ausentes. El DMG se montó y su app extraída pasó la recuperación real sin utilizar la biblioteca personal.
-- Firma ad-hoc, arquitecturas arm64/x86_64, macOS 13+, biblioteca incluida vacía, manifiestos, hashes y listas de publicación comprobados.
-
-## Límites de la comprobación
-
-Esta beta no tiene notarización de Apple. Falta probarla físicamente en el otro Mac que reportó la pantalla negra. No se han comprobado permisos de cuentas ajenas, conexiones de negocio, proveedores de IA, captura multicámara, fabricación ni traducciones facturadas. Estudio Multicam y las otras fichas de Laboratorio mantienen sus requisitos y estado de desarrollo. Las webs privadas necesitan acceso propio. Los modelos y credenciales no están incluidos.
-
-El resultado de la compilación en Apple Silicon e Intel se consulta en [Actions](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml). La [release 0.6.1](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.6.1-beta.1) incluye los archivos y sus SHA-256. La descarga pública se vuelve a comprobar después de publicarlos.
+La compilación remota Apple Silicon/Intel se consulta en [Actions](https://github.com/pablohidalgochile-source/LOGIKAPPS/actions/workflows/check.yml). La entrega corresponde a [0.7.0 beta](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/tag/v0.7.0-beta.1); la descarga pública y sus hashes se comprueban después de publicar.

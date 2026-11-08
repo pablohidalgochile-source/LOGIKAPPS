@@ -1,0 +1,1186 @@
+{
+  "schema": "fratv-transferencia-obs/1",
+  "createdAt": "2026-10-31T21:48:30.446Z",
+  "sourceCommit": "7b5fd7a2d49c8bffc3d1c00abd3c61aabcd7a193",
+  "sourceHasTrackedChanges": false,
+  "target": {
+    "os": "macOS",
+    "architecture": "arm64",
+    "obsTested": "33.0.1",
+    "macOSMinimumForTestedOBS": "13.0",
+    "nodeMinimum": "22.18.0",
+    "nodeRecommended": "24 LTS",
+    "nodeUsedToGenerate": "24.15.0"
+  },
+  "base": "http://127.0.0.1:5178",
+  "legacyBase": "http://127.0.0.1:8790",
+  "dock": "http://127.0.0.1:5178/live-control?grupo=fraternidad",
+  "channels": [
+    {
+      "key": "inicio",
+      "label": "Inicio",
+      "resource": "fraternidad-start",
+      "channel": "fraternidad-obs-inicio",
+      "mode": "countdown"
+    },
+    {
+      "key": "cuenta",
+      "label": "Cuenta regresiva",
+      "resource": "fraternidad-countdown",
+      "channel": "fraternidad-obs-cuenta",
+      "mode": "countdown"
+    },
+    {
+      "key": "envivo",
+      "label": "En vivo",
+      "resource": "fraternidad-live",
+      "channel": "fraternidad-obs-envivo",
+      "mode": "elapsed"
+    },
+    {
+      "key": "pausa",
+      "label": "Pausa",
+      "resource": "fraternidad-break",
+      "channel": "fraternidad-obs-pausa",
+      "mode": "countdown"
+    }
+  ],
+  "media": [
+    "app/pack/png/flag.png",
+    "app/pack/video/ident-long_60fps_alfa.mov",
+    "app/pack/video/live-badge_60fps_alfa.mov",
+    "app/pack/video/bumper-in_60fps.mp4",
+    "app/pack/video/bumper-out_60fps.mp4",
+    "app/pack/video/end-credits_60fps.mp4",
+    "app/pack/video/stinger_60fps_alfa.mov"
+  ],
+  "collectionSceneCounts": {
+    "plantillas/maestra.json": 14,
+    "plantillas/cuatro-relojes.json": 4
+  },
+  "omitted": [
+    "Credenciales y perfiles de OBS",
+    "Configuración privada de plugins",
+    "Dispositivos del Mac de origen",
+    "Atajos locales",
+    "Proyectos del navegador no exportados",
+    "node_modules y cachés",
+    "Aplicaciones e instaladores",
+    "Historial .local y respaldos privados"
+  ],
+  "offline": false,
+  "offlineLimit": "Las fuentes de Google Fonts y logos externos aún necesitan internet; no se promete instalación sin red.",
+  "files": [
+    {
+      "path": "Abrir FRATV Studio.command",
+      "bytes": 150,
+      "sha256": "b0b5811433c396c28f168df2c97732ccab379a6051076bc2ba0feaa89a7277d8"
+    },
+    {
+      "path": "DIAGNOSTICO.command",
+      "bytes": 269,
+      "sha256": "7b7643a39bc953d4fd2a4b4f801a8a5b440c2d63a14caa6330e9e4c1cb658cea"
+    },
+    {
+      "path": "LEEME.md",
+      "bytes": 1386,
+      "sha256": "c13e5a656db891a7e53b2a50a234c6d48a50115f8b6601dbffaecba9cc1db0ee"
+    },
+    {
+      "path": "PREPARAR-COLECCIONES.command",
+      "bytes": 266,
+      "sha256": "0f09e720094abdab96857ff0846a2a73b28785c1745b20c7876a9393601911b9"
+    },
+    {
+      "path": "Preparar FRATV Studio.command",
+      "bytes": 301,
+      "sha256": "57b550ea8f63a0750c5128c1d4a080dcfdd047269001ea82f171f19f2e86d961"
+    },
+    {
+      "path": "VERIFICAR.command",
+      "bytes": 267,
+      "sha256": "30394bc74b09f033d5d096b82f9fcff7c7f8a60d53b4c70a18148c6a66542ef5"
+    },
+    {
+      "path": "app/ABRIR-EDITOR-Y-OBS.command",
+      "bytes": 9116,
+      "sha256": "37d71c70898eea3f8ec8912eaca5ec557a4353432fa95bf715fbebae9ad28a0f"
+    },
+    {
+      "path": "app/AGENTS.md",
+      "bytes": 5535,
+      "sha256": "f630167c9ef563c42af35abb8c9806996056f453cd68e4938cba62a8b7725d96"
+    },
+    {
+      "path": "app/HANDOFF-CODEX.md",
+      "bytes": 33180,
+      "sha256": "817fdbacf053c45ee18543cd22eafed925549221fa643a49b36f74ecb26f9169"
+    },
+    {
+      "path": "app/LEEME-OBS.md",
+      "bytes": 10257,
+      "sha256": "4d5528ec40d88a547eca865142552ac7eb1aeffde9e052ddbcc4b73c21b104fd"
+    },
+    {
+      "path": "app/NOTAS-FORMATOS-ALFA.md",
+      "bytes": 3609,
+      "sha256": "90467c5b60b5cbf304352f783cc5f7aefba62ee25f19a7f5fcf413259e3a09bc"
+    },
+    {
+      "path": "app/editor/README.md",
+      "bytes": 10267,
+      "sha256": "44a0079de8c81411e0264c42de9d25d2aea4ace3d4fdc7b19196394a9c47a3c3"
+    },
+    {
+      "path": "app/editor/index.html",
+      "bytes": 317,
+      "sha256": "5ebc600b6415751d4adca79a56b30e31edd2e94a23edc25836fc4408ce55d193"
+    },
+    {
+      "path": "app/editor/package-lock.json",
+      "bytes": 38828,
+      "sha256": "818e52a7266a3f3673f88147d50a384461ae007672a91a42191484c224c72e13"
+    },
+    {
+      "path": "app/editor/package.json",
+      "bytes": 1295,
+      "sha256": "d9942340f510dcac935f20c510f0eaa118b4e61eab8fa5ead9e9bcd94150affb"
+    },
+    {
+      "path": "app/editor/server/README.md",
+      "bytes": 2707,
+      "sha256": "fec8af2f59a836cd790ffe3813215392b2bcef06d1adffd85a3403782c5aa74c"
+    },
+    {
+      "path": "app/editor/server/clock-rounding-browser.mjs",
+      "bytes": 3903,
+      "sha256": "46079e4a4fd06316e22f671e38f33b173e6a552c60990925c2cf295109be3c3a"
+    },
+    {
+      "path": "app/editor/server/fraternidad-browser.mjs",
+      "bytes": 9934,
+      "sha256": "abdd23df292b52240829a94339294da42ade5259641d00d6238f74e01f55b286"
+    },
+    {
+      "path": "app/editor/server/group-control-browser.mjs",
+      "bytes": 12806,
+      "sha256": "b7d3a42985e46a4ce687ef155b74b41d0f7ab0e2561cf7d01bd51a4b0af445a1"
+    },
+    {
+      "path": "app/editor/server/live-client.js",
+      "bytes": 3088,
+      "sha256": "7ed2d24480349c23364cbbc9e7a12ec7ac209e5101f4fea5fdbd85ed8962b1c1"
+    },
+    {
+      "path": "app/editor/server/live-control.html",
+      "bytes": 10097,
+      "sha256": "7fb693e80db315339ff6f1cce4e61870dfd7a0837f3c1124b632ca2851a658ab"
+    },
+    {
+      "path": "app/editor/server/portable.mjs",
+      "bytes": 1997,
+      "sha256": "5827fbcaacd61732bb80f3dda8966ec04a59436b7cbcdc4d7bbdad772942b50f"
+    },
+    {
+      "path": "app/editor/server/server.mjs",
+      "bytes": 33485,
+      "sha256": "ef58d840729e5697b3af3a609720070c19ba8dd1467bb9d629f58060f5b62406"
+    },
+    {
+      "path": "app/editor/server/server.test.mjs",
+      "bytes": 15359,
+      "sha256": "8b0632f5e9ac76d90f60f5e3f2d91e84cfa7d01c27872b1bde8af00dd3971b82"
+    },
+    {
+      "path": "app/editor/src/App.tsx",
+      "bytes": 29443,
+      "sha256": "963ff962bcfc15ba29c4e5a29fbf7607aac91f9ac0a90feb9d913ec2fe1fbdb9"
+    },
+    {
+      "path": "app/editor/src/ExportPanel.tsx",
+      "bytes": 11822,
+      "sha256": "0edba717660d563bfc6628daaa88bf8ab929ed26cc3ad00e5e795fab1a2ea18f"
+    },
+    {
+      "path": "app/editor/src/Fields.tsx",
+      "bytes": 7467,
+      "sha256": "906cf59663407be09083b447084b7e29844b78ac216aee71a00fdb9e3dcb196c"
+    },
+    {
+      "path": "app/editor/src/LivePanel.tsx",
+      "bytes": 7991,
+      "sha256": "93f6f54b17b05ff40431a97a40d20f9fe5a69844e68443790b9a0e84ab2e3f40"
+    },
+    {
+      "path": "app/editor/src/Preview.tsx",
+      "bytes": 4918,
+      "sha256": "8f223b6a2d36548efacb953184d731c1b81005b51e10623585e8f1a38cf9f83d"
+    },
+    {
+      "path": "app/editor/src/ProjectPanel.tsx",
+      "bytes": 33623,
+      "sha256": "8677aea50a3a3deb53138c9bbdc14411def8ae947ad228f80ab25e1cccbbdab4"
+    },
+    {
+      "path": "app/editor/src/catalog.ts",
+      "bytes": 523,
+      "sha256": "0d5d037477963cdbe7e65e02c1df233c8e24727b59e3ace9ddfe899197968728"
+    },
+    {
+      "path": "app/editor/src/main.tsx",
+      "bytes": 231,
+      "sha256": "d7ac0a33935137c50aad29410bba15d9d72a984716c2a30dbace8cdce4b9f5dd"
+    },
+    {
+      "path": "app/editor/src/model.ts",
+      "bytes": 4641,
+      "sha256": "201cdabd92492e4c5a28b75c3adb03c0643a57bc28f64a9f86f273b829e8a520"
+    },
+    {
+      "path": "app/editor/src/projects.css",
+      "bytes": 9258,
+      "sha256": "02f88a2acf2b5d62d3f238674ac4859e3df908c376dfb55c348040f39df972b3"
+    },
+    {
+      "path": "app/editor/src/projects.ts",
+      "bytes": 26875,
+      "sha256": "e6c9669ce07e01cec6d87ad15de9b7670abe6c7cb8ff1e7e5acabcad19c3acb1"
+    },
+    {
+      "path": "app/editor/src/styles.css",
+      "bytes": 20107,
+      "sha256": "8d533e3134c7e828862f7f1d70e690b9cc3de57ed7430f8ab0300108d362a503"
+    },
+    {
+      "path": "app/editor/src/workflow.css",
+      "bytes": 5924,
+      "sha256": "030ecf1859626f4add7089ad8c1a03dfba78b9eeda21e4c9ff00316128250fd2"
+    },
+    {
+      "path": "app/editor/tests/browser.mjs",
+      "bytes": 17723,
+      "sha256": "bc60c4e36a0989827b65ff2878c10e45621b7b84d0808e42ea398aaa3842091e"
+    },
+    {
+      "path": "app/editor/tests/fraternidad-catalog.mjs",
+      "bytes": 10070,
+      "sha256": "c2012fecfdd60d4bbda2956e52815e1fdf892f6ae368196c6a90ae4f1ec251b5"
+    },
+    {
+      "path": "app/editor/tests/fraternidad-editor.mjs",
+      "bytes": 12331,
+      "sha256": "2e9631ff1517bbb6f5134f99376874405d664e6a260f316d67894b5fcb444e37"
+    },
+    {
+      "path": "app/editor/tests/model.test.ts",
+      "bytes": 4310,
+      "sha256": "bc069592c345d6778fc6fb18c1c0fc9723de3ac63527822d44129c7f19412a90"
+    },
+    {
+      "path": "app/editor/tests/pilots-browser.mjs",
+      "bytes": 19600,
+      "sha256": "92b92ef606a37b23f1b23dbf5345b588b516fffa1bf12aa4354f4b0180b24617"
+    },
+    {
+      "path": "app/editor/tests/production-browser.mjs",
+      "bytes": 7879,
+      "sha256": "60dac6ce498cb43aea13262350a262866026c4ff7511e475cdc4b24631a76c1a"
+    },
+    {
+      "path": "app/editor/tests/projects-browser.mjs",
+      "bytes": 13961,
+      "sha256": "c69828d7decc86f54f5c465b094a05e0fc24e2f78ee1e7d0b805437cf48cc2f9"
+    },
+    {
+      "path": "app/editor/tests/projects.test.ts",
+      "bytes": 12100,
+      "sha256": "f5619b0edf3fe9f5a5877e78ba79bf391d0dc94f57e4d36fca7cb71310a98fcb"
+    },
+    {
+      "path": "app/editor/tsconfig.json",
+      "bytes": 441,
+      "sha256": "ea8195c9bb75fc6b892e4430c86c783c2030f1ca071be263338dbdc3ed6608bb"
+    },
+    {
+      "path": "app/editor/vite.config.ts",
+      "bytes": 3061,
+      "sha256": "b69bcc7f1bc52da72e8589d37a59c9c8958c540f51f96345cbf623438ac8a1d5"
+    },
+    {
+      "path": "app/handoff/AGENTS.md",
+      "bytes": 3491,
+      "sha256": "9bef8ed93021c6211de55945c1516eeb0fa1347b4015f8364279ec7220812d73"
+    },
+    {
+      "path": "app/handoff/BRAND.md",
+      "bytes": 4193,
+      "sha256": "ee6b2f1c862cf90ead6f2fae683663d90648a77d77207aa70fb4110dc5ed9424"
+    },
+    {
+      "path": "app/handoff/CATALOGO-FRATERNIDAD-PROPUESTA.md",
+      "bytes": 11764,
+      "sha256": "c40027899d230773f6b4d006e3e48fb44c134e2182b82a8cc3e2c9735ecac643"
+    },
+    {
+      "path": "app/handoff/CLAUDE.md",
+      "bytes": 3449,
+      "sha256": "beef1bdd05057aebe890aceceac0decfec41b8b13ad4a1a144b825bb697e4e0e"
+    },
+    {
+      "path": "app/handoff/ESTADO-EDITOR.md",
+      "bytes": 8270,
+      "sha256": "18f7873e6dea85ec8d0a2a1d9c3f467e49407a6a39062a4d4c01dc6ebec79487"
+    },
+    {
+      "path": "app/handoff/OPEN_QUESTIONS.md",
+      "bytes": 7066,
+      "sha256": "dde39c4d58f729c2c0da6d54d767c2bc1324c5e66ccf49819b4a763be570e957"
+    },
+    {
+      "path": "app/handoff/PROMPTS.md",
+      "bytes": 4229,
+      "sha256": "176252d3094524027c3887b7d413dceea2befc0975c59fca1a3b91869747cb18"
+    },
+    {
+      "path": "app/handoff/README.md",
+      "bytes": 2448,
+      "sha256": "5aae189cbf9b768c63c0b69dd5353a193c860909c90f7756c3f6ccb7eb204833"
+    },
+    {
+      "path": "app/handoff/SPEC_APP.md",
+      "bytes": 9894,
+      "sha256": "9213cfebddc4c3b721b1274349022a61d85e39664c02e4a7751dc50b7ccd4ad4"
+    },
+    {
+      "path": "app/handoff/SPEC_GEOMETRIA.md",
+      "bytes": 6591,
+      "sha256": "61f5fafeafbccffa9a2b890d0074aeb8a4148ba3ec0509bad2b7437bb0bbd1ac"
+    },
+    {
+      "path": "app/handoff/THEMING.md",
+      "bytes": 4860,
+      "sha256": "b821520d3ecaa29e5731172f7a6c97e10dbce1d3f3d4729051a7a92bcb6a6f87"
+    },
+    {
+      "path": "app/handoff/_comparar-wordmark.html",
+      "bytes": 8331,
+      "sha256": "8ca544e47d4e30970f24a9060762b24262e2b931416d1cf0b0ece71c54a02a62"
+    },
+    {
+      "path": "app/handoff/_contacto.html",
+      "bytes": 5499,
+      "sha256": "92e66a1c60f6b5e7542517ae311ceac77b8c91024110faab961b66319a2567e2"
+    },
+    {
+      "path": "app/handoff/_obs.html",
+      "bytes": 18718,
+      "sha256": "3269ab764ca9894e13b18c0b3b00184471b84fa11c2a62895a28a402cbbdffd9"
+    },
+    {
+      "path": "app/handoff/assets/eventos/fraternidad-horizontal-blanco.png",
+      "bytes": 97012,
+      "sha256": "57b152e9e5b73ec6189ccf1102e8b267fd041ec45d4570b79216430315160b26"
+    },
+    {
+      "path": "app/handoff/assets/eventos/fraternidad-insignia.png",
+      "bytes": 462131,
+      "sha256": "27517e3e7a0d0892b27c236021175bc61df21973d8db740fd7082b4bfbc0073b"
+    },
+    {
+      "path": "app/handoff/assets/masters/FRATV_V8_01_EQUILIBRADO_FIRMA_CORREGIDA.svg",
+      "bytes": 1337,
+      "sha256": "22ef27704bc43f12f270cc04ec76cb029e363d5d2022964119849165a470dabf"
+    },
+    {
+      "path": "app/handoff/assets/masters/NOTAS_V8_historico.md",
+      "bytes": 372,
+      "sha256": "058135986b491dcf94d725f63bbade032eb63d5ac8713fb8709e1caaeda2e11e"
+    },
+    {
+      "path": "app/handoff/assets/masters/fratv-logo-horizontal-por-capas.svg",
+      "bytes": 1533,
+      "sha256": "f2be8d20192ea8b9bb56924123a459077fcfbd64751e79bcb926144dabdb0465"
+    },
+    {
+      "path": "app/handoff/assets/masters/fratv-logo-horizontal-vectorizado.svg",
+      "bytes": 5004,
+      "sha256": "a6c8ec36cbd601b742f37fecad4452c6b0a50e09d58ec1497e1c3ee986512c7e"
+    },
+    {
+      "path": "app/handoff/assets/reference/catalogo-horizontal.png",
+      "bytes": 792966,
+      "sha256": "0a5ff5f6be12bb18a6c13a32e40784c730674bbd04b561f38bafb8a815e56c86"
+    },
+    {
+      "path": "app/handoff/assets/reference/catalogo-vertical.png",
+      "bytes": 399904,
+      "sha256": "bc5ea1d4ba370506a3b4a7da2e46af8663ccf12ffc2ab30d03883865bd7ce7c7"
+    },
+    {
+      "path": "app/handoff/assets/reference/marca-y-logos.png",
+      "bytes": 783202,
+      "sha256": "a9a29cb9e0063a87fd46ebd12a751ad66c16d94f30dfecc71bd9363b952a0954"
+    },
+    {
+      "path": "app/handoff/catalog/catalogo-horizontal.dc.html",
+      "bytes": 40242,
+      "sha256": "b70c3f72ab77fa35408fbfeda56b7e3295cf4f6aae5628c6526e0226329ba37c"
+    },
+    {
+      "path": "app/handoff/catalog/catalogo-vertical.dc.html",
+      "bytes": 23630,
+      "sha256": "a304cc763689a16944c79491acb3f0aef22871e4440f25296d420cbbd380e9e1"
+    },
+    {
+      "path": "app/handoff/catalog/handoff-index.dc.html",
+      "bytes": 18201,
+      "sha256": "9966f806dde4ea30624934fed8c2566f557b20d568eb95aac4a7dfef835bda3b"
+    },
+    {
+      "path": "app/handoff/catalog/ident-opciones.dc.html",
+      "bytes": 18116,
+      "sha256": "01135e34ce885d246c98c477fc1606d503c0ab8bf93860db5facde33d9365638"
+    },
+    {
+      "path": "app/handoff/catalog/marca-y-logos.dc.html",
+      "bytes": 49844,
+      "sha256": "e96a1ee73ae84f8a9c75985aaa80e7d46b2aa61cc78eda4951cf379f8858cf31"
+    },
+    {
+      "path": "app/handoff/catalog/support.js",
+      "bytes": 69150,
+      "sha256": "8fe7df74405f3c55f49b7249c74ea1397e65d07dea2b1bd3b4a489bec2e28cbe"
+    },
+    {
+      "path": "app/handoff/fraternidad/README.md",
+      "bytes": 3957,
+      "sha256": "6d57ae0bf59612a3e37485c676930ba52db06342cb15d7c642b94df1557957c2"
+    },
+    {
+      "path": "app/handoff/fraternidad/manifest.json",
+      "bytes": 13215,
+      "sha256": "597993dd84ea5141fa62bd1835019a1897a976d0d1426407214b576bea25695b"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-break.html",
+      "bytes": 1011,
+      "sha256": "9ccbaaf9a36f3c6c076283b33a50858bd4f99cdaea2e5d99f2d3c74f6c4a7e62"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-comment.html",
+      "bytes": 1017,
+      "sha256": "f6a314d876b1373c9b69a82edf34bcf47fd80b398c65059b5a1c89e724a9d614"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-countdown.html",
+      "bytes": 897,
+      "sha256": "fefcb7b47d746d39c20ef2184dc66daf1c83bbf8b257b69e05ca31e3ecc970f5"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-credits.html",
+      "bytes": 1039,
+      "sha256": "9b30468590ceedc72eb7afd62ba4619c6b19cd2d88484778a0ad8ba9adec0402"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-flag.html",
+      "bytes": 741,
+      "sha256": "bc33e7efe007d451f90384f4c6773e549e04f36338483202eb18132c9a3a359d"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-ident-long.html",
+      "bytes": 955,
+      "sha256": "09746837d11caee0173992fc70aace4f0e99e1b8fa9e5a245469fbe53fe6985b"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-ident-short.html",
+      "bytes": 961,
+      "sha256": "a043f13fd036e3b4d3f6cf3a22202fb5e3c07ef774c06c19390cd9625798df59"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-live.html",
+      "bytes": 904,
+      "sha256": "efa438b451b460dc18ca145de261a5309e55869447ad978fd8e27c79c314c3a5"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-lower-third.html",
+      "bytes": 957,
+      "sha256": "ce613e9c9bbe13ff082c8e415df7c895e2af51c2aa3a08e201b5eb9c14adc7a9"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-out.html",
+      "bytes": 1092,
+      "sha256": "9707eec57d1fab9f2868cc02c204ffd022ee475b965c6a5fc6ca1b5e46fb013d"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-program-title.html",
+      "bytes": 1106,
+      "sha256": "b7c6370c8b393faa61ed5baed181471f2c77e254cef2285291364aafc9147228"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-schedule.html",
+      "bytes": 1221,
+      "sha256": "bbb811850c13756ec7d67517f496b8468d09613d8ce1e22b39d386f96e2ec760"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-sponsor.html",
+      "bytes": 1070,
+      "sha256": "05054076b5f6883482f60a5b8c9b50b0b85eb545b9873d4d9cf11bfe02696a11"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-start.html",
+      "bytes": 1035,
+      "sha256": "b151bb1847902e86b4876a34b3eca6825508161f5be622b9351a58e8e29493f9"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-stinger.html",
+      "bytes": 803,
+      "sha256": "2d2e6d2fe93d1ce50d7c45549673c0e0147b91e398335fe745dbc40a78b2d77a"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-technical.html",
+      "bytes": 1005,
+      "sha256": "33562f75f566b442e5172b5023b428dcfe0c0b03d160aa7c03104d12402be24a"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad-ticker.html",
+      "bytes": 1062,
+      "sha256": "a9768c23d5926107e253e28785b98817b7b8bc43cb4fbe4f5da71be5c69b9d14"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad.css",
+      "bytes": 21205,
+      "sha256": "2f6f5f64ef0b7ba2e7640da0e51dd4705cb29d7fa5dee33e62f600ea38a69716"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/fraternidad.js",
+      "bytes": 12786,
+      "sha256": "f32c5de14a587fd731d1e71bfd932bfede8cd11f7313560a2ed812b61c8b13a8"
+    },
+    {
+      "path": "app/handoff/fraternidad/resources/tokens.css",
+      "bytes": 923,
+      "sha256": "c6bafe591217bfa22bfca4c1611fa2728faf6d71ccacc50fdc3fa82d31258fb4"
+    },
+    {
+      "path": "app/handoff/historial/CATALOGO-FRATERNIDAD-PROPUESTA-01.md",
+      "bytes": 11106,
+      "sha256": "39ba274b8dfb86dd05b1b88745053b0538147c8f6c093092d3fad7088c1c6a51"
+    },
+    {
+      "path": "app/handoff/historial/ESTADO-EDITOR-0.1.0.md",
+      "bytes": 2735,
+      "sha256": "fd8cf1e037c2cc7bcbb95470b45628edde1f0a5d36751a9ba8e99b8b3679f7be"
+    },
+    {
+      "path": "app/handoff/historial/ESTADO-EDITOR-0.2.0.md",
+      "bytes": 5180,
+      "sha256": "4d0a34d7668d0d8883ccb6f73a72e85f3388025508ecbda233eb15831441522b"
+    },
+    {
+      "path": "app/handoff/manifest.json",
+      "bytes": 20097,
+      "sha256": "b0a817ff9b04288f30a061d7c35e0c61484021558cd07d644e8487a1fdf578b5"
+    },
+    {
+      "path": "app/handoff/resources/README.md",
+      "bytes": 4566,
+      "sha256": "b3d194e3a75f9f0a8d8fc1397587568f35a3b102988c27b5514eec57fa553aad"
+    },
+    {
+      "path": "app/handoff/resources/bumper-evento.html",
+      "bytes": 6066,
+      "sha256": "483067c6d18ed72ad3a775736f6dfc5e295659eda9b7bc9fc35630241bfbc97e"
+    },
+    {
+      "path": "app/handoff/resources/bumper-in.html",
+      "bytes": 6068,
+      "sha256": "596db2a62ee812d997e712e9d5fd15c0ec06d4d527ed3d1075e5ccbe54bdb8a1"
+    },
+    {
+      "path": "app/handoff/resources/bumper-out.html",
+      "bytes": 5213,
+      "sha256": "560220a455056a765128dbf6a4b8987ec3d4b8527c2e7b300278680579ebc730"
+    },
+    {
+      "path": "app/handoff/resources/countdown.html",
+      "bytes": 6372,
+      "sha256": "fad10a3893881af2891c539d31e86fac8bab6a7d37bd08b39500dd825ace0126"
+    },
+    {
+      "path": "app/handoff/resources/end-credits.html",
+      "bytes": 5559,
+      "sha256": "dcf2c9081bdd923cddfe7b6b69173b6e9b4052b2f8309ad876d15d2cd706cfcc"
+    },
+    {
+      "path": "app/handoff/resources/engagement.html",
+      "bytes": 6231,
+      "sha256": "449dae983f9dd9cf2d3ea4c2e64d1a7a91f96b491726d4b78763d9d2c114ef23"
+    },
+    {
+      "path": "app/handoff/resources/flag-evento.html",
+      "bytes": 4219,
+      "sha256": "ed55138af7ee8be62521afdd32092285f47d7190aeb192d6de0db6f40ad3de30"
+    },
+    {
+      "path": "app/handoff/resources/flag.html",
+      "bytes": 4407,
+      "sha256": "5c79acef29ec68601af0594e14ad5ebc3f78518d70bec4c23ac12fe8ed1139e1"
+    },
+    {
+      "path": "app/handoff/resources/fratv-aspectos.css",
+      "bytes": 2033,
+      "sha256": "a629e1f93f14caf98ff448912909dc807aedf6ef9197b31f96d27084accdb8a8"
+    },
+    {
+      "path": "app/handoff/resources/fratv-runtime.js",
+      "bytes": 6554,
+      "sha256": "3974a33705518f1a48e009acb182e76599734caa0a158b0910d389d659dfd984"
+    },
+    {
+      "path": "app/handoff/resources/ident-long.html",
+      "bytes": 12352,
+      "sha256": "1dea183c53abdc82785513b815451a986c9938859832d9a94516efa363af4169"
+    },
+    {
+      "path": "app/handoff/resources/ident-short.html",
+      "bytes": 9104,
+      "sha256": "c2a56d3ca42dbb4278dc1cbad489c226523315b5ce2753b09272f6074ab97f4e"
+    },
+    {
+      "path": "app/handoff/resources/live-badge.html",
+      "bytes": 5151,
+      "sha256": "34ea2395126f35be1b840bcbbbec0769942f3f7221fc89acbdef2222a2f38d9c"
+    },
+    {
+      "path": "app/handoff/resources/lower-third-evento.html",
+      "bytes": 6312,
+      "sha256": "47206ad414a494217b4ad4552f678d811d561f3d7cfb1f2593e4f81a0e30c7bb"
+    },
+    {
+      "path": "app/handoff/resources/lower-third.html",
+      "bytes": 6646,
+      "sha256": "f4326a53d95f25a7bdd89e6a3c4ba9b9a8824f99a1fb0da05a7677c8dfd6ad8c"
+    },
+    {
+      "path": "app/handoff/resources/program-title.html",
+      "bytes": 4339,
+      "sha256": "949f4fe911cc7a3b9070f68cbae764e09fc2dbaf437fdf4ba943469e2a9297d3"
+    },
+    {
+      "path": "app/handoff/resources/schedule.html",
+      "bytes": 5680,
+      "sha256": "7fbba41c20eb4d3a5c5a5af2004b2356cd9887024aaf20eaad9ee3afc8a19b2c"
+    },
+    {
+      "path": "app/handoff/resources/sponsor.html",
+      "bytes": 4120,
+      "sha256": "293434b78c4bd242ee4896a8805391337f072377d1d5291019dc2f597e53d3f7"
+    },
+    {
+      "path": "app/handoff/resources/stinger.html",
+      "bytes": 5572,
+      "sha256": "8d6611342a322f52331b5e30f015bf7b403e4625488daac43344f22fae867d2f"
+    },
+    {
+      "path": "app/handoff/resources/ticker.html",
+      "bytes": 5707,
+      "sha256": "9f6f8793aab6338b914ef93d09a48f768002a945012420d11492ae3e9a6cb3db"
+    },
+    {
+      "path": "app/handoff/tokens.json",
+      "bytes": 6533,
+      "sha256": "de5751eaaaa9aa534ec369fc4000f36d1a79a3771ac2ea7f3ee696b311fd9d39"
+    },
+    {
+      "path": "app/laminas/APROBACION-FRATERNIDAD.md",
+      "bytes": 673,
+      "sha256": "e69560b25a96b7c93d97624c0bad2cc8b9c81f15a765a2e331fbc64d883fd9c5"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/bumper-evento.png",
+      "bytes": 118134,
+      "sha256": "eddcf35da19a2789d62eaff0349d899f25b2237275699c93e33a7a380ff1074b"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/bumper-in.png",
+      "bytes": 37680,
+      "sha256": "90df0dbfc9508e9eed84c8fbbb8b95a890191acf30788141cf77060c677ff519"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/bumper-out.png",
+      "bytes": 42376,
+      "sha256": "391c71302be28a9bea5b3171e1cc912612057e1de919cd838f6c3429767684fe"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/countdown.png",
+      "bytes": 21413,
+      "sha256": "da8724f4e13a81cd153efb7b80603947a0bbcf4983eaff8b40e444bd5e191bc9"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/end-credits.png",
+      "bytes": 65723,
+      "sha256": "23e699e97065996bf20df3d8e52c43966e791da085a166633ccc3b2700f3484b"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/engagement.png",
+      "bytes": 41954,
+      "sha256": "d810741fab7ff98da71a0eda4c56d41b744eb4cc4f5507aa5111f8c8941c443e"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/flag-evento.png",
+      "bytes": 17823,
+      "sha256": "1dd5728de69689566cc644292069af9b73cf81e17790bd6c059b8861f04b9d4d"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/flag.png",
+      "bytes": 12453,
+      "sha256": "c759581d34e391517009d0b09beded271555523594d275bfd9b355496be73c82"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/ident-long.png",
+      "bytes": 28688,
+      "sha256": "b55b68671b482149897d420c0102e8cf2d04df86a8ca59d380529a07b9852f82"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/ident-short.png",
+      "bytes": 28967,
+      "sha256": "9b7f8f16058e5eee0d7ec78c2729e45920f5a6f8f376ce426b633df84f85e7b3"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/live-badge.png",
+      "bytes": 13972,
+      "sha256": "54c4dd30ad06f96bc2c27124a1e5b4932ea111b4e080d3dcd7dc75d605c4f293"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/lower-third-evento.png",
+      "bytes": 37333,
+      "sha256": "0723b1a0c30e9c8aa5924ced4d0a5923fcb5f5ed809172cb677905ae7d80cf6c"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/lower-third.png",
+      "bytes": 30779,
+      "sha256": "8e85ce5a282fbf92876f9dd71173ed199bccf2c9ee36fb408e22e35c3bbe735a"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/program-title.png",
+      "bytes": 38308,
+      "sha256": "7e0f77f478c8e4b650a12e80cd975a2d2a7602a4064ade7e34af7660560aac7e"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/schedule.png",
+      "bytes": 50994,
+      "sha256": "6aeeb982190bb9ceedb4f942afc37b3b755937fd652d849a60415f544a2335ea"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/sponsor.png",
+      "bytes": 14704,
+      "sha256": "5f4cd1c8e88e98fdbcdb1e24b9c2c6175217e8437d2800f28805201d42d191bf"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/stinger.png",
+      "bytes": 18997,
+      "sha256": "85e6a8dbeb237fdb41c2ec6fb840434068e79d25219cbea41b5b03347bc78334"
+    },
+    {
+      "path": "app/laminas/referencia-16x9/ticker.png",
+      "bytes": 33530,
+      "sha256": "2ab4270eea49363d337c2667bf5177bb302cc1c58a33eeedbd0c5908dc61c656"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/bumper-evento.png",
+      "bytes": 135783,
+      "sha256": "1368c46e90d92eae7924d30086c0ae0781cc21e92797f4a5b5950e8b3e6dcb5f"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/bumper-in.png",
+      "bytes": 39524,
+      "sha256": "802f772b5876738e494e2899d57b972ed0e6e1efd96d5ec0d50aa0f35f469d6d"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/bumper-out.png",
+      "bytes": 41047,
+      "sha256": "874ff8978df79cfbe429c12a1516d3f893af8a148d0d9c1ff8e3e68b67d573b7"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/countdown.png",
+      "bytes": 24105,
+      "sha256": "36f49c3681160abcc970c761fca9e9a7913284dcc8d7bb4ff8bee216b41df3a3"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/end-credits.png",
+      "bytes": 73846,
+      "sha256": "3295a87fe4ec78ada971e35f333ca4a07d221a3d37fb518bdec1b8c3a7b8406e"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/engagement.png",
+      "bytes": 47279,
+      "sha256": "907d50f6854adee8460f7ff4c239597bf7699d1776979d9f2bd8172f166b00b4"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/flag-evento.png",
+      "bytes": 20583,
+      "sha256": "758d0828a26c262477d85ec6052ec9c1f91b2d4b15e14c5b7f4e106f590a71cb"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/flag.png",
+      "bytes": 14350,
+      "sha256": "691f8038e53e393790e29f9d49b705e032e7446ec8d84f78a49750ce72c96228"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/ident-long.png",
+      "bytes": 29905,
+      "sha256": "40f7c258844864189a4263f26fdb9a3280d1f7eea29ad81b4533ae1ed0c755a9"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/ident-short.png",
+      "bytes": 30913,
+      "sha256": "ed3e5dbb97ab37fb0f5c1d27e1e95349d563883299dbff7aa72935306b7042d3"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/live-badge.png",
+      "bytes": 16211,
+      "sha256": "4271332713d4b9492b7147e66ac5095ff69bd787a85e23736909b8bd280bab5f"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/lower-third-evento.png",
+      "bytes": 38763,
+      "sha256": "39ffc7e30e59d07ca2fe437a1fd7e57aadacbcd0be1cfc362b8ab315f08dfac9"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/lower-third.png",
+      "bytes": 33116,
+      "sha256": "666208505661cfb8e018e0a3f80b016c2c82a5fd8a094b4db66ce4df78c29d96"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/program-title.png",
+      "bytes": 42204,
+      "sha256": "ffa44d81be81870edea0d81ee4ff5297d67751a12c5ca39c74fbcdf9a7be6f71"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/schedule.png",
+      "bytes": 59340,
+      "sha256": "1729a35d72db0cff8b6e69ca16c823823899ae4e54f208961afd227d80aa956a"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/sponsor.png",
+      "bytes": 17135,
+      "sha256": "d07eea41d8b2dfa4e7c261107830b1c424441466822214a26b08179b127a6ab6"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/stinger.png",
+      "bytes": 21254,
+      "sha256": "38f75e1d43456bfb118cff2605aa3da8f724237f7446f9ce6d8b7fcc31d7732e"
+    },
+    {
+      "path": "app/laminas/referencia-9x16/ticker.png",
+      "bytes": 25350,
+      "sha256": "b4a557ac24cc29587964b2d5b1094b998932bb6ca8801555cea5c382917069f6"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-16x9/fraternidad-flag.png",
+      "bytes": 31518,
+      "sha256": "75c650bbbe08da72f521da777c0f4672cd45d3cda80afa76a10db3794b23d19c"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-16x9/fraternidad-lower-third.png",
+      "bytes": 40365,
+      "sha256": "f65c75defe366b253bd18ff772fdcff12719d221cb4f3b0078fd50efb741735b"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-16x9/fraternidad-start.png",
+      "bytes": 698866,
+      "sha256": "39212e7bcb7e5bae9e50f28f604ef6fe970552792664857dcda2d99bfe3cd209"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-9x16/fraternidad-flag.png",
+      "bytes": 35539,
+      "sha256": "abcf9009f2e0c31a6f9e64b8e3ac78c583187cc0d73941f00445c6bec09fb452"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-9x16/fraternidad-lower-third.png",
+      "bytes": 53632,
+      "sha256": "d81914830b16b64b2b6398832ef0a9fb988ed9fddc135e5d390aca0a7097e180"
+    },
+    {
+      "path": "app/laminas/referencia-fraternidad-9x16/fraternidad-start.png",
+      "bytes": 647205,
+      "sha256": "fad5bcab7355e68db0e80f17ef8f347b244c92bced462bba92b575c7ec6cdce5"
+    },
+    {
+      "path": "app/pack/png/flag.png",
+      "bytes": 12453,
+      "sha256": "c759581d34e391517009d0b09beded271555523594d275bfd9b355496be73c82"
+    },
+    {
+      "path": "app/pack/video/bumper-in_60fps.mp4",
+      "bytes": 138673,
+      "sha256": "78dda8028eb2ea5e9dd2425ff0a40201fe8761f8e94d8f7f5d2e2bc6025b3ba2"
+    },
+    {
+      "path": "app/pack/video/bumper-out_60fps.mp4",
+      "bytes": 152725,
+      "sha256": "fee870da42e8999ea1230f3a575a177462fd335c9f84b192d953468f38896f11"
+    },
+    {
+      "path": "app/pack/video/end-credits_60fps.mp4",
+      "bytes": 1520632,
+      "sha256": "a8cf50a79850269d63bebb4f5838b733d301c3e3ddd8b57e1a7d4c80542fa41b"
+    },
+    {
+      "path": "app/pack/video/ident-long_60fps_alfa.mov",
+      "bytes": 2422454,
+      "sha256": "f1e3b9c0ebbc283da8c506c9607fc4197368c3fdd94d269244ef9c6be4fa76fa"
+    },
+    {
+      "path": "app/pack/video/live-badge_60fps_alfa.mov",
+      "bytes": 751890,
+      "sha256": "7c07dde2290aa3b58bd04ecd6d0d48e950aebe332b426d073430fccd69d98dcb"
+    },
+    {
+      "path": "app/pack/video/stinger_60fps_alfa.mov",
+      "bytes": 1038737,
+      "sha256": "8da1815cf610b8051390b268ad2e97ced0e74eaf14b122eea47579c25c1e3f06"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/README.md",
+      "bytes": 3467,
+      "sha256": "65d4095ba0e96a73cae92a810418327c5c8ed725ac4c5ae57607e7d0c3897a38"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/index.html",
+      "bytes": 10143,
+      "sha256": "53a8a2a359310313916a2ab38fd21a0d23f1d81b4ae7774dfd692aeb448c5c0d"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/resource.css",
+      "bytes": 9643,
+      "sha256": "97d0a044ec2cf323256e707021c56aa5248a1861122521b2bf41ccba1b8a66d3"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/resource.html",
+      "bytes": 924,
+      "sha256": "60a7bd67caaef73ff8c75759723fed4503aefdab7ae31e75a00ba0715c50f34e"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/resource.js",
+      "bytes": 4162,
+      "sha256": "718b5adb3be8975f9d9e0369b821cb24ff228e207cb1bff29eb91c959c052c9b"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/review.css",
+      "bytes": 10034,
+      "sha256": "9c7a50f4082f4c77642a797ed8ff534775200adf1cab8be9eed5440a8b75b29b"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/review.js",
+      "bytes": 6005,
+      "sha256": "3fcecaf9515bbfaf1608bae9a03f12168a4a411312bdebe073ead18c36c34ba3"
+    },
+    {
+      "path": "app/propuestas/fraternidad-v1/tokens.css",
+      "bytes": 744,
+      "sha256": "18977b813d69755963a881e87fcd3519a6720d30b5cbdb15c2d05a781f736128"
+    },
+    {
+      "path": "app/scripts/armar-pack-portatil.mjs",
+      "bytes": 11632,
+      "sha256": "13bd80e66d1633c3a4e54da6e671da76ddd06a32cffc61f173f3a6fc6c1f19b3"
+    },
+    {
+      "path": "app/scripts/chrome.mjs",
+      "bytes": 1536,
+      "sha256": "5181b5a52f523768326eba2eb7c79ac9f6e3f10bc1530f1acc4aba7361644037"
+    },
+    {
+      "path": "app/scripts/estudio-png.mjs",
+      "bytes": 12223,
+      "sha256": "34050d48daee67445d3fe81cfcfa0267aee1a2800762951d97c47b51914b2ebf"
+    },
+    {
+      "path": "app/scripts/exportar.mjs",
+      "bytes": 10688,
+      "sha256": "ed568adb5e74f00e481904b5f32d519bce737d189befbd9b2ecacd27fce49ad4"
+    },
+    {
+      "path": "app/scripts/lint-tokens.mjs",
+      "bytes": 6158,
+      "sha256": "83ef70f5541f06dbc375741c7ba39852ae33cb2b8af32690dd3ef43bc11a7ba2"
+    },
+    {
+      "path": "app/scripts/medir-cajas.mjs",
+      "bytes": 2475,
+      "sha256": "b78c0401839ffb5badaeab0ddfc5b699ce27a7dfeb8c0b3e21d0866efc716fad"
+    },
+    {
+      "path": "app/scripts/pack-maestra.mjs",
+      "bytes": 11936,
+      "sha256": "3f30d6d8d459f244d017b05ef6fa57be7e4de0591b0ff94bc02193ca09bb898e"
+    },
+    {
+      "path": "app/scripts/pack-obs.mjs",
+      "bytes": 11059,
+      "sha256": "e72388b9f2c2878178179fc4018268564fa158ad315f3d321d1b8558e8b5f051"
+    },
+    {
+      "path": "app/scripts/package-lock.json",
+      "bytes": 35811,
+      "sha256": "9d8fe107ec676b9cf2c3bc4d6c1e1bf7bdc28c9ff1f65046635d9b51db9a8ff2"
+    },
+    {
+      "path": "app/scripts/package.json",
+      "bytes": 963,
+      "sha256": "d88f5f0c8eed09461672bbbde48cbe44f1fcea34285ad0f0b7aa58d8f65df257"
+    },
+    {
+      "path": "app/scripts/renderizar-laminas.mjs",
+      "bytes": 3645,
+      "sha256": "02e39168d73c7a01749cdee043cfffba28e3247d56ba3f00c49ce46e8d8fe0b8"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/GUIA.md",
+      "bytes": 18210,
+      "sha256": "b8903cabadf84addede5b383072466bc019acc2117f05a8840988b697a0f3226"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/PROMPT-DESTINO.md",
+      "bytes": 3244,
+      "sha256": "c7b3f289ff4f4bc5ac2c91dfff580b4457340eab52398e6f83a52f2f7d688253"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/collection.mjs",
+      "bytes": 4809,
+      "sha256": "ea9633313c8196d4ac595b2887a4acda3987c4544105e6bb019eb259339d1c50"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/common.mjs",
+      "bytes": 2639,
+      "sha256": "fbc9b0c7f5cda18a76d5ad50b19dee64e3733332edbcf2813a465b932ec30d78"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/comprobar-obs.mjs",
+      "bytes": 17198,
+      "sha256": "4bf3b5cc537739b90ed3059b1a2ed66153c5a6dc13959a3366e638f99863bfc4"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/diagnostico.mjs",
+      "bytes": 3455,
+      "sha256": "cc5b5ba30caf8c56082e702701729a245cd8cd580b9ca28583d1174b2b1fe9c2"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/generar.mjs",
+      "bytes": 7935,
+      "sha256": "ca3d5aff56d2b05bc0c416a2c4366e3ac4f079c9d9de47f30f2c191ce8acadbd"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/preparar.mjs",
+      "bytes": 2254,
+      "sha256": "08cb98763b7ae34ad4f8643b9c3583d1c12a3be5ba4ff333232123dc26c91e53"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/probar.mjs",
+      "bytes": 2003,
+      "sha256": "c121e685c048ca879cb491e0340675d93c8321401a3cbf38638421dd7b055b64"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/respaldar.mjs",
+      "bytes": 1499,
+      "sha256": "48c77e5e5bb2608460a4f2bfcfb16940cc49855d715dddf2df34c417ad4f8a4a"
+    },
+    {
+      "path": "app/scripts/transferencia-obs/verificar.mjs",
+      "bytes": 4308,
+      "sha256": "34b2cf173a338c8ca4203d9b8753e01566987190ac278a5dbd8070beebc274b7"
+    },
+    {
+      "path": "app/scripts/vectorizar-wordmark.mjs",
+      "bytes": 4682,
+      "sha256": "8d3d39653df425edb88bf4a8f76bfaab8ca873206e701dc9ab0d08115a254d45"
+    },
+    {
+      "path": "app/scripts/verificar-aspectos.mjs",
+      "bytes": 2778,
+      "sha256": "96b751b88c38c1a7a48135a59fee616c4e12f7c32812dea887ea86422c4e4c95"
+    },
+    {
+      "path": "app/scripts/verificar-bucle.mjs",
+      "bytes": 1883,
+      "sha256": "c429d4f54b2ea89305ff48c4bcac0e4623de9b663bdf112fff3e50e1244415ca"
+    },
+    {
+      "path": "app/scripts/verificar-regresion.mjs",
+      "bytes": 4401,
+      "sha256": "8035ac6a65845312dc2c49a2d8a59d994dfa50cd182f8f0b94d6cdfcbddba05d"
+    },
+    {
+      "path": "app/scripts/wordmark-trazos.json",
+      "bytes": 7775,
+      "sha256": "44d3264591a61cba01511e887a0dbcfec1690ceaaa01dbfed91ef850f67a3ff8"
+    },
+    {
+      "path": "herramientas/GUIA.md",
+      "bytes": 18210,
+      "sha256": "b8903cabadf84addede5b383072466bc019acc2117f05a8840988b697a0f3226"
+    },
+    {
+      "path": "herramientas/PROMPT-DESTINO.md",
+      "bytes": 3244,
+      "sha256": "c7b3f289ff4f4bc5ac2c91dfff580b4457340eab52398e6f83a52f2f7d688253"
+    },
+    {
+      "path": "herramientas/collection.mjs",
+      "bytes": 4809,
+      "sha256": "ea9633313c8196d4ac595b2887a4acda3987c4544105e6bb019eb259339d1c50"
+    },
+    {
+      "path": "herramientas/common.mjs",
+      "bytes": 2639,
+      "sha256": "fbc9b0c7f5cda18a76d5ad50b19dee64e3733332edbcf2813a465b932ec30d78"
+    },
+    {
+      "path": "herramientas/comprobar-obs.mjs",
+      "bytes": 17198,
+      "sha256": "4bf3b5cc537739b90ed3059b1a2ed66153c5a6dc13959a3366e638f99863bfc4"
+    },
+    {
+      "path": "herramientas/diagnostico.mjs",
+      "bytes": 3455,
+      "sha256": "cc5b5ba30caf8c56082e702701729a245cd8cd580b9ca28583d1174b2b1fe9c2"
+    },
+    {
+      "path": "herramientas/generar.mjs",
+      "bytes": 7935,
+      "sha256": "ca3d5aff56d2b05bc0c416a2c4366e3ac4f079c9d9de47f30f2c191ce8acadbd"
+    },
+    {
+      "path": "herramientas/preparar.mjs",
+      "bytes": 2254,
+      "sha256": "08cb98763b7ae34ad4f8643b9c3583d1c12a3be5ba4ff333232123dc26c91e53"
+    },
+    {
+      "path": "herramientas/probar.mjs",
+      "bytes": 2003,
+      "sha256": "c121e685c048ca879cb491e0340675d93c8321401a3cbf38638421dd7b055b64"
+    },
+    {
+      "path": "herramientas/respaldar.mjs",
+      "bytes": 1499,
+      "sha256": "48c77e5e5bb2608460a4f2bfcfb16940cc49855d715dddf2df34c417ad4f8a4a"
+    },
+    {
+      "path": "herramientas/verificar.mjs",
+      "bytes": 4308,
+      "sha256": "34b2cf173a338c8ca4203d9b8753e01566987190ac278a5dbd8070beebc274b7"
+    },
+    {
+      "path": "plantillas/cuatro-relojes.json",
+      "bytes": 11976,
+      "sha256": "25600360211ce2f3827c5474dbc8209ae80d9ffb00250f2c01c2e13f60a3e5ef"
+    },
+    {
+      "path": "plantillas/maestra.json",
+      "bytes": 101703,
+      "sha256": "460a80fc91b6e4a7cf335dfa525f8c12f6f1342a34835a28ca822bf4eaf12775"
+    }
+  ],
+  "distribution": "LOGIKAPPS 0.7.0; sin datos del equipo de origen"
+}

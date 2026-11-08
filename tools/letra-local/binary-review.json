@@ -1,0 +1,12 @@
+{
+  "file": "Letra Local.zip",
+  "sha256": "a7230d87b7f0018a849cc64ccf4754255cdb953cfc74df269b2f25baca66aed1",
+  "members": {
+    "Letra Local.app/Contents/Info.plist": "43cc9f1e3ed86dbfd42eab4d5921b7a6cd3fe95e2e319beffe6e14c9d2e56706",
+    "Letra Local.app/Contents/MacOS/LetraLocal": "a5fc78ce4b09c0d28ded84de95281fe3205216e0f9ae24f4a5fbe3b104c9af57",
+    "Letra Local.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b"
+  },
+  "architecture": "arm64",
+  "signature": "ad-hoc",
+  "data": "No personal data; compiled from distribution sources."
+}

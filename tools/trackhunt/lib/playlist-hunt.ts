@@ -9,7 +9,7 @@ export type HuntTrack = {
   similarity: number; reason: string; stage: Stage; duration: number | null;
   deezerId: number | null; catalogStatus: "verified" | "unverified";
 };
-export type HuntResult = { name: string; summary: string; tracks: HuntTrack[]; warnings: string[] };
+export type HuntResult = { name: string; summary: string; tracks: HuntTrack[]; warnings: string[]; stats?: { requested: number; checked: number; verified: number; rounds: number; unverified: number; outOfRange: number } };
 export const DEFAULT_CONTROLS: Controls = { discovery: 35, commercial: 75, energy: 65, international: 60, bpmMin: 90, bpmMax: 105, count: 20, localRegion: "Chile" };
 export const PRESETS = [
   { name: "NANOOK Caribbean Summer", context: "Playero, dancehall, Caribe, afrocaribeño, sensual, comercial. Un atardecer de verano que termina en fiesta.", controls: DEFAULT_CONTROLS },

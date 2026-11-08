@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Logo Ident</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: 10%; border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .lockup { display: flex; align-items: center; gap:calc(30 * var(--fr-u)); }
+  .lockup .sim { width: var(--sim); height: var(--sim); display: block; flex-shrink: 0; }
+  /* Wordmark vectorizado: trazos, no texto. No depende de ninguna tipografía
+     instalada. Proporciones de Arial Rounded MT Bold al cuerpo 165. */
+  .wm-linea { display: block; width: calc(var(--wm) * 3.2103); height: calc(var(--wm) * 0.7885); }
+  #word-fra { fill: var(--fr-text); }
+  #word-tv  { fill: var(--fr-accent); }
+  .wm-bajada { font-family: var(--fr-font-display); font-weight: 700;
+               font-size: calc(var(--wm) * .193); letter-spacing: calc(var(--wm) * .115);
+               color: var(--fr-accent); margin-top: calc(var(--wm) * .098); }
+
+  .ident { position: absolute; inset: 0; display: grid; place-items: center; }
+  /* Simbolo al 14 % del ancho. El lockup escala como unidad: la proporcion
+     simbolo/wordmark/bajada es la del master y no se recalcula aqui. */
+  .lockup svg g, .lockup .wm > div { transform-box: fill-box; transform-origin: center; }
+
+  /* Salida comun: por opacidad, limpia a alfa. */
+  .ident { animation: identOut 1900ms linear forwards; }
+  @keyframes identOut { 0%,80% { opacity: 1 } 100% { opacity: 0 } }
+
+  /* ── 1a · Cortina lateral ──────────────────────────────────────────────
+     Un barrido descubre contenedor, F, play y wordmark en cuatro tiempos. */
+  .v1a #icon-tile  { animation: wipeL 1900ms cubic-bezier(.3,0,.2,1) both; }
+  .v1a #icon-f     { animation: wipeL 1900ms cubic-bezier(.3,0,.2,1) both; animation-delay: 90ms; }
+  .v1a #icon-play  { animation: wipeL 1900ms cubic-bezier(.3,0,.2,1) both; animation-delay: 180ms; }
+  .v1a .wm-linea   { animation: wipeL 1900ms cubic-bezier(.3,0,.2,1) both; animation-delay: 300ms; }
+  .v1a .wm-bajada    { animation: wipeL 1900ms cubic-bezier(.3,0,.2,1) both; animation-delay: 390ms; }
+  @keyframes wipeL { 0% { clip-path: inset(0 100% 0 0) } 22%,100% { clip-path: inset(0) } }
+
+  /* ── 1b · El contenedor primero (por defecto) ──────────────────────────
+     El contenedor crece un 6 % y se asienta; el interior emerge de abajo. */
+  .v1b #icon-tile { animation: tileSet 1900ms cubic-bezier(.22,.9,.24,1) both; }
+  .v1b #icon-f,
+  .v1b #icon-play,
+  .v1b #icon-tv   { animation: riseMask 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 120ms; }
+  .v1b .wm-linea  { animation: fadeIn 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 300ms; }
+  .v1b .wm-bajada   { animation: fadeIn 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 380ms; }
+  @keyframes tileSet  { 0% { opacity: 0; transform: scale(1.06) } 13%,100% { opacity: 1; transform: scale(1) } }
+  @keyframes riseMask { 0% { opacity: 0; clip-path: inset(100% 0 0 0) } 16%,100% { opacity: 1; clip-path: inset(0) } }
+  @keyframes fadeIn   { 0% { opacity: 0 } 13%,100% { opacity: 1 } }
+
+  /* ── 1c · Una sola inclinacion ─────────────────────────────────────────
+     La marca aparece por opacidad. El unico movimiento es el play
+     inclinandose 5 grados sobre su propio eje, que da paso al wordmark. */
+  .v1c #icon-tile,
+  .v1c #icon-f    { animation: fadeIn 1900ms ease both; }
+  .v1c #icon-play,
+  .v1c #icon-tv   { animation: tilt 1900ms cubic-bezier(.22,.9,.24,1) both; }
+  .v1c .wm-linea  { animation: fadeIn 1900ms ease both; animation-delay: 300ms; }
+  .v1c .wm-bajada   { animation: fadeIn 1900ms ease both; animation-delay: 380ms; }
+  @keyframes tilt { 0% { opacity: 0; transform: rotate(-5deg) } 13% { opacity: 1 } 26%,100% { opacity: 1; transform: rotate(0) } }
+
+  /* ── 1d · Asentado ─────────────────────────────────────────────────────
+     Cada pieza escala desde su propio centro. Sin recorrer un pixel. */
+  .v1d #icon-tile { animation: settle 1900ms cubic-bezier(.22,.9,.24,1) both; }
+  .v1d #icon-f    { animation: settleF 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 60ms; }
+  .v1d #icon-play,
+  .v1d #icon-tv   { animation: settleP 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 120ms; }
+  .v1d .wm-linea  { animation: settle 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 300ms; }
+  .v1d .wm-bajada   { animation: settle 1900ms cubic-bezier(.22,.9,.24,1) both; animation-delay: 380ms; }
+  @keyframes settle  { 0% { opacity: 0; transform: scale(.94) } 13%,100% { opacity: 1; transform: scale(1) } }
+  @keyframes settleF { 0% { opacity: 0; transform: scale(.84) } 13%,100% { opacity: 1; transform: scale(1) } }
+  @keyframes settleP { 0% { opacity: 0; transform: scale(.82) } 13%,100% { opacity: 1; transform: scale(1) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="ident v1b" id="ident">
+      <div class="lockup" style="--sim: 269px; --wm: 122px">
+      <svg class="sim" viewBox="40 40 520 520" aria-label="FRATV">
+        <g id="icon-tile">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="var(--fr-accent)"></rect>
+        </g>
+        <g transform="translate(90 195) scale(.75)">
+          <g id="icon-f">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="var(--fr-surface)"
+                  stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+          <g id="icon-play">
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z"
+                  fill="var(--fr-surface)"></path>
+          </g>
+          <g id="icon-tv" fill="none" stroke="var(--fr-accent)" stroke-width="14"
+             stroke-linecap="round" stroke-linejoin="round">
+            <path d="M301 112H347M324 112V170"></path>
+            <path d="M354 114L370 167L388 114"></path>
+          </g>
+        </g>
+      </svg>
+      <div class="wm">
+        <svg class="wm-linea" viewBox="8.4 208.9 529.7 130.1" aria-label="FRATV">
+          <path id="word-fra" d="M83.47 233.34L36.34 233.34L36.34 263.55L75.73 263.55Q81.21 263.55 83.91 266.01Q86.61 268.47 86.61 272.58Q86.61 276.68 83.87 279.10Q81.13 281.52 75.73 281.52L36.34 281.52L36.34 320.43Q36.34 327.84 32.99 331.43Q29.65 335.01 24.41 335.01Q19.09 335.01 15.75 331.39Q12.41 327.76 12.41 320.43L12.41 229.55Q12.41 224.40 13.94 221.13Q15.47 217.87 18.73 216.38Q21.99 214.89 27.07 214.89L83.47 214.89Q89.19 214.89 91.97 217.43Q94.75 219.97 94.75 224.07Q94.75 228.26 91.97 230.80Q89.19 233.34 83.47 233.34M144.70 282.48L136.32 282.48L136.32 320.43Q136.32 327.92 133.02 331.47Q129.71 335.01 124.39 335.01Q118.67 335.01 115.53 331.31Q112.39 327.60 112.39 320.43L112.39 229.55Q112.39 221.82 115.85 218.35Q119.32 214.89 127.05 214.89L165.97 214.89Q174.02 214.89 179.74 215.57Q185.46 216.26 190.06 218.35Q195.62 220.69 199.89 225.04Q204.16 229.39 206.37 235.15Q208.59 240.91 208.59 247.36Q208.59 260.57 201.13 268.47Q193.68 276.36 178.54 279.67Q184.90 283.05 190.70 289.66Q196.50 296.26 201.05 303.71Q205.61 311.17 208.14 317.17Q210.68 323.17 210.68 325.43Q210.68 327.76 209.19 330.06Q207.70 332.36 205.12 333.68Q202.54 335.01 199.16 335.01Q195.13 335.01 192.39 333.12Q189.65 331.23 187.68 328.33Q185.71 325.43 182.32 319.79L172.73 303.83Q167.58 295.05 163.51 290.46Q159.44 285.87 155.25 284.18Q151.06 282.48 144.70 282.48M158.39 232.86L136.32 232.86L136.32 265.32L157.75 265.32Q166.37 265.32 172.25 263.83Q178.13 262.34 181.23 258.76Q184.34 255.17 184.34 248.89Q184.34 243.97 181.84 240.23Q179.34 236.48 174.91 234.63Q170.72 232.86 158.39 232.86M306.80 319.63L301.16 304.80L253.14 304.80L247.50 319.95Q244.20 328.81 241.86 331.91Q239.52 335.01 234.21 335.01Q229.69 335.01 226.23 331.71Q222.77 328.41 222.77 324.22Q222.77 321.80 223.57 319.22Q224.38 316.65 226.23 312.05L256.44 235.35Q257.73 232.05 259.54 227.42Q261.36 222.79 263.41 219.72Q265.47 216.66 268.81 214.77Q272.15 212.88 277.07 212.88Q282.06 212.88 285.41 214.77Q288.75 216.66 290.80 219.64Q292.86 222.62 294.27 226.05Q295.68 229.47 297.85 235.19L328.71 311.41Q332.34 320.11 332.34 324.06Q332.34 328.17 328.91 331.59Q325.49 335.01 320.65 335.01Q317.83 335.01 315.82 334.01Q313.81 333 312.44 331.27Q311.07 329.54 309.50 325.95Q307.92 322.37 306.80 319.63M276.91 238.09L259.42 286.84L294.71 286.84"></path>
+          <path id="word-tv" d="M412.10 234.63L385.99 234.63L385.99 320.43Q385.99 327.84 382.69 331.43Q379.39 335.01 374.15 335.01Q368.83 335.01 365.49 331.39Q362.15 327.76 362.15 320.43L362.15 234.63L336.04 234.63Q329.92 234.63 326.94 231.93Q323.96 229.23 323.96 224.80Q323.96 220.21 327.06 217.55Q330.16 214.89 336.04 214.89L412.10 214.89Q418.30 214.89 421.32 217.63Q424.34 220.37 424.34 224.80Q424.34 229.23 421.28 231.93Q418.22 234.63 412.10 234.63M456.01 228.59L482.75 307.78L509.58 228.02Q511.68 221.74 512.72 219.28Q513.77 216.82 516.19 214.85Q518.61 212.88 522.80 212.88Q525.86 212.88 528.48 214.41Q531.09 215.94 532.58 218.47Q534.07 221.01 534.07 223.59Q534.07 225.36 533.59 227.42Q533.11 229.47 532.38 231.45Q531.66 233.42 530.93 235.51L502.33 312.70Q500.80 317.13 499.27 321.12Q497.74 325.10 495.73 328.13Q493.71 331.15 490.37 333.08Q487.02 335.01 482.19 335.01Q477.36 335.01 474.01 333.12Q470.67 331.23 468.61 328.13Q466.56 325.02 465.03 321.08Q463.50 317.13 461.97 312.70L433.85 236.16Q433.13 234.06 432.36 232.05Q431.59 230.04 431.07 227.70Q430.55 225.36 430.55 223.75Q430.55 219.64 433.85 216.26Q437.15 212.88 442.15 212.88Q448.27 212.88 450.81 216.62Q453.35 220.37 456.01 228.59"></path>
+        </svg>
+        <div class="wm-bajada" data-field="tagline">CONTENIDO DIGITAL HUMANO</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+var q = new URLSearchParams(location.search);
+var VARIANTES = { '1a-cortina': 'v1a', '1b-contenedor': 'v1b', '1c-inclinacion': 'v1c', '1d-asentado': 'v1d' };
+var v = VARIANTES[q.get('variant')] || 'v1b';
+document.getElementById('ident').className = 'ident ' + v;
+
+window.FRATVRuntime.create({ id: 'ident-long', durationMs: 1900, loop: false, alpha: true });
+</script>
+</body>
+</html>

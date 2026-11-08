@@ -1,0 +1,13 @@
+{
+  "file": "Limpieza Familiar.zip",
+  "sha256": "30a125242bfc0a21dd145311f2c31e440fad0bf451f974b2c18875afd94b3335",
+  "members": {
+    "Limpieza Familiar.app/Contents/Info.plist": "a424515e5d3d1ce583dde533f64d4a9e8d6210c52b10f3ea8729c19759e8674c",
+    "Limpieza Familiar.app/Contents/MacOS/LimpiezaFamiliar": "2870cb03613a21551969a702cf95334edb4665e1094317e7920076519c9e9f69",
+    "Limpieza Familiar.app/Contents/Resources/Limpieza.icns": "4f92ef0d2e26d02fdc82b0a4613a345e6a49c70e84536690e1321e1cf96ab1c3",
+    "Limpieza Familiar.app/Contents/_CodeSignature/CodeResources": "377c47f37df09d690cb3917c8d2ac0ce805b41a7a333fdeba66272284616b2a4"
+  },
+  "architecture": "arm64",
+  "signature": "ad-hoc",
+  "data": "No personal data; compiled from distribution sources."
+}

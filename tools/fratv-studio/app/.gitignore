@@ -1,0 +1,32 @@
+# ── Generado: se reconstruye con los scripts, no se versiona ──────────────
+# Videos y PNG exportados          → node scripts/exportar.mjs
+pack/video/
+pack/png/
+pack/*.json
+pack/exportacion.json
+# Paquete portátil                 → node scripts/armar-pack-portatil.mjs --zip
+FRATV_OBS_PACK/
+FRATV_OBS_PACK.zip
+# Salidas del estudio
+png-exportados/
+videos-generados/
+videos-generados-prores/
+# Láminas de trabajo (la referencia aprobada SÍ se versiona, ver abajo)
+laminas/*
+!laminas/referencia-16x9/
+!laminas/referencia-9x16/
+!laminas/referencia-fraternidad-16x9/
+!laminas/referencia-fraternidad-9x16/
+!laminas/APROBACION-FRATERNIDAD.md
+!laminas/COMPARACION-ESCALAS-VERTICAL.png
+
+# ── Temporales ────────────────────────────────────────────────────────────
+.tmp-estudio/
+.tmp-cuadros/
+*.log
+
+# ── Dependencias ──────────────────────────────────────────────────────────
+node_modules/
+
+# ── Sistema ───────────────────────────────────────────────────────────────
+.DS_Store

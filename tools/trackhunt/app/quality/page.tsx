@@ -172,10 +172,7 @@ export default function QualityFinder() {
   const showIdentity = mode === "name" || Boolean(identity.title || identity.artist);
 
   return <div className="rh-app qh-app">
-    <header className="rh-header">
-      <a href="/" className="rh-brand" aria-label="Trackhunt, inicio"><span>TH</span> TRACKHUNT<span className="rh-brand-sub">DJ DIGGING TOOL</span></a>
-      <nav aria-label="Principal"><a href="/">Versiones</a><a href="/sets">Sets</a><a href="/playlist-hunt">Playlist Hunt</a><a className="qh-active" href="/quality">Mejor calidad</a><a href="/connections">Conexiones</a></nav>
-    </header>
+
 
     <main className="qh-main">
       <section className="qh-heading">

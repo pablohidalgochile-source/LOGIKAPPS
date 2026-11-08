@@ -39,7 +39,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     };
     await wait(() => document.querySelector('#add-app-button')?.disabled === false && document.querySelector('.pack-card'), 'No se mostraron los packs al iniciar.');
     const packCards = [...document.querySelectorAll('.pack-card')];
-    assert(packCards.length === 6, 'Se esperan seis packs.');
+    assert(packCards.length === 8, 'Se esperan ocho packs.');
     for (const card of packCards) {
       const url = new URL(card.querySelector('a[href]').href);
       assert(url.protocol === 'https:' && !url.username && !url.password, 'Descarga de pack incompatible.');
@@ -48,11 +48,11 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     await wait(() => document.querySelector('.pack-start'), 'No abrió la guía del pack DJ.');
     assert(document.querySelectorAll('.discover-card').length === 6, 'DJ debe mostrar cinco herramientas locales y Magic Music Prompt.');
     document.querySelector('[data-view="packs"]').click();
-    await wait(() => document.querySelectorAll('.pack-card').length === 6, 'No volvió a la lista de packs.');
+    await wait(() => document.querySelectorAll('.pack-card').length === 8, 'No volvió a la lista de packs.');
     document.querySelector('[data-action="view-pack"][data-id="fraternidad"]').click();
     await wait(() => document.querySelector('.pack-start'), 'No abrió la guía de Fraternidad.');
-    assert(document.querySelectorAll('.discover-card').length === 6, 'Fraternidad debe mostrar cinco accesos y Studio.');
-    for (const [id, count] of [['design', 4], ['ia', 3], ['organization', 2], ['lab', 4]]) {
+    assert(document.querySelectorAll('.discover-card').length === 7, 'Fraternidad debe mostrar siete herramientas.');
+    for (const [id, count] of [['design', 5], ['ia', 3], ['organization', 4], ['lab', 5], ['production', 6], ['streaming', 1]]) {
       document.querySelector('[data-view="packs"]').click();
       document.querySelector(`[data-action="view-pack"][data-id="${id}"]`).click();
       await wait(() => document.querySelector('.pack-start'), 'No abrió el pack ' + id);
@@ -67,7 +67,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     }
     document.querySelector('[data-view="interesting"]').click();
     assert(document.querySelector('a[href="https://getartcraft.com/apps"]'), 'Falta ArtCraft');
-    checks.push('Seis packs, 25 fichas, logos confirmados, identidad pendiente, acceso privado y ArtCraft');
+    checks.push('Ocho packs, 37 fichas, logos confirmados, identidad pendiente, acceso privado y ArtCraft');
     document.querySelector('[data-view="discover"]').click();
     await wait(() => document.querySelector('.discover-card'), 'No se mostró Explorar.');
     assert(typeof window.logikappsReply === 'function', 'Falta el receptor del puente nativo.');
@@ -76,6 +76,7 @@ func runWebKitSmokeTest(_ delegate: AppDelegate) {
     assert(sharedCards.length > 0, 'Explorar no contiene herramientas compartidas.');
     for (const card of sharedCards) {
       const links = [...card.querySelectorAll('a[href]')];
+      if (card.dataset.availability === 'pending') { assert(links.length === 0 && !card.querySelector('button'), 'Una app pendiente promete acceso.'); continue; }
       assert(links.length > 0, 'Una herramienta compartida no tiene enlace.');
       for (const link of links) {
         const url = new URL(link.href);

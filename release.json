@@ -1,21 +1,21 @@
 {
-  "version": "0.6.1",
-  "tag": "v0.6.1-beta.1",
+  "version": "0.7.0",
+  "tag": "v0.7.0-beta.1",
   "packs": [
     {
       "id": "dj",
-      "file": "LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "file": "LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
       "count": 6
     },
     {
       "id": "fraternidad",
-      "file": "LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip",
-      "count": 6
+      "file": "LOGIKAPPS-Pack-Fraternidad-0.4.0-beta.zip",
+      "count": 7
     },
     {
       "id": "design",
-      "file": "LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip",
-      "count": 4
+      "file": "LOGIKAPPS-Pack-Diseno-0.3.0-beta.zip",
+      "count": 5
     },
     {
       "id": "ia",
@@ -24,13 +24,23 @@
     },
     {
       "id": "organization",
-      "file": "LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip",
-      "count": 2
+      "file": "LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip",
+      "count": 4
     },
     {
       "id": "lab",
-      "file": "LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip",
-      "count": 4
+      "file": "LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip",
+      "count": 5
+    },
+    {
+      "id": "production",
+      "file": "LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip",
+      "count": 6
+    },
+    {
+      "id": "streaming",
+      "file": "LOGIKAPPS-Pack-Streaming-0.1.0-beta.zip",
+      "count": 1
     }
   ]
 }

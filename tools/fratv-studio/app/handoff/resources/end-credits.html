@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · End Credits</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: var(--fr-surface); overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: 10%; border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .vel-arriba, .vel-abajo { position: absolute; left: 0; right: 0; height: 26%; z-index: 2; pointer-events: none; }
+  .vel-arriba { top: 0; background: linear-gradient(var(--fr-surface), transparent); }
+  .vel-abajo  { bottom: 0; background: linear-gradient(transparent, var(--fr-surface)); }
+
+  .rollo { position: absolute; left: 0; right: 0; top: 0; padding: 0 12%;
+           animation: sube 22000ms linear infinite; }
+  .credito { display: flex; align-items: baseline; gap:calc(42 * var(--fr-u)); padding:calc(16 * var(--fr-u)) 0; }
+  .rol { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(20 * var(--fr-u)); letter-spacing: .2em;
+         color: var(--fr-accent); width: 30%; flex-shrink: 0; text-align: right; }
+  .quien { font-family: var(--fr-font-display); font-weight: 600; font-size:calc(35 * var(--fr-u)); color: var(--fr-text); }
+
+  .marca { position: absolute; right: var(--safe-x); bottom: calc(var(--safe-bottom) + 1%); z-index: 3; width:calc(173 * var(--fr-u)); }
+  .marca svg { width: 100%; display: block; }
+
+  @keyframes sube { 0% { transform: translateY(0) } 100% { transform: translateY(-50%) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="vel-arriba"></div>
+  <div class="vel-abajo"></div>
+
+  <div class="rollo" id="rollo"></div>
+
+  <div class="marca"><svg class="" viewBox="56 162 430 276" aria-label="FRATV">
+        <g id="icon-f" transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="var(--fr-text)"
+                  stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        </g>
+        <g id="icon-play" transform="translate(21 0)">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z"
+                  fill="var(--fr-text)"></path>
+          </g>
+        </g>
+        <g id="icon-tv" transform="translate(21 0)" fill="none" stroke="var(--fr-accent)"
+           stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M301 112H347M324 112V170"></path>
+            <path d="M354 114L370 167L388 114"></path>
+          </g>
+        </g>
+      </svg></div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+window.FRATVRuntime.create({ id: 'end-credits', durationMs: 22000, loop: true, alpha: false });
+
+var POR_DEFECTO = [
+  ['DIRECCI\u00d3N', 'PABLO HIDALGO'],
+  ['PRODUCCI\u00d3N', 'EQUIPO FRATV'],
+  ['C\u00c1MARA', 'NOMBRE APELLIDO'],
+  ['MONTAJE', 'NOMBRE APELLIDO']
+];
+var q = new URLSearchParams(location.search);
+var datos = q.get('rows')
+  ? q.get('rows').split(';').map(function (r) { return r.split('|'); })
+  : POR_DEFECTO;
+
+/* Lista duplicada: el desplazamiento del 50 % cierra el ciclo sin salto. */
+var rollo = document.getElementById('rollo');
+function pintar() {
+  datos.forEach(function (r) {
+    var d = document.createElement('div');
+    d.className = 'credito';
+    d.innerHTML = '<span class="rol"></span><span class="quien"></span>';
+    d.children[0].textContent = r[0] || '';
+    d.children[1].textContent = r[1] || '';
+    rollo.appendChild(d);
+  });
+}
+pintar(); pintar();
+</script>
+</body>
+</html>

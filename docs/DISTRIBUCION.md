@@ -1,6 +1,6 @@
-# Compilación y distribución de LOGIKAPPS 0.6.1
+# Compilación y distribución de LOGIKAPPS 0.7.0
 
-La release es `v0.6.1-beta.1`. El DMG universal funciona en macOS 13+, Apple Silicon e Intel. `release.json` enumera los seis packs y los archivos publicados. El catálogo personal incluido es vacío; Explorar y Packs son catálogos públicos estáticos. No hay actualización remota automática.
+La release es `v0.7.0-beta.1`. El DMG universal funciona en macOS 13+, Apple Silicon e Intel. `release.json` enumera los ocho packs y los archivos publicados. El catálogo personal incluido es vacío; Explorar y Packs son catálogos públicos estáticos. No hay actualización remota automática.
 
 ## Verificación local
 
@@ -22,7 +22,7 @@ TRACKHUNT usa SQLite local, sin D1 ni credenciales Cloudflare. Su número portab
 
 ## Ventana real y recuperación
 
-En una sesión gráfica, usa LOGIKAPPS_DATA_DIR dentro de una carpeta temporal separada. Ejecuta --ui-smoke-test, --ui-smoke-test --embedded-startup, --ui-smoke-test --simulate-file-load-failure y --ui-startup-error-test. Comprueban los seis packs y 25 fichas, logos, puente nativo, edición, conservación de datos y recuperación. No se ejecutan contra la biblioteca personal.
+En una sesión gráfica, usa LOGIKAPPS_DATA_DIR dentro de una carpeta temporal separada. Ejecuta --ui-smoke-test, --ui-smoke-test --embedded-startup, --ui-smoke-test --simulate-file-load-failure y --ui-startup-error-test. Comprueban los ocho packs y 37 fichas, logos, puente nativo, edición, conservación de datos y recuperación. No se ejecutan contra la biblioteca personal.
 
 La alternativa incorpora scripts, estilos e imágenes confirmadas desde el bundle, con CSP nonce sin red. Si no puede arrancar, aparece una pantalla nativa de recuperación y diagnóstico sin datos privados. La prueba local no sustituye una prueba física en el Mac que reportó la ventana negra.
 
@@ -30,7 +30,7 @@ La alternativa incorpora scripts, estilos e imágenes confirmadas desde el bundl
 
 GitHub Actions compila y comprueba macOS Apple Silicon e Intel. Además valida los packs, las pruebas de interfaz y las herramientas DJ sin dependencias externas. Las pruebas gráficas se realizan localmente porque requieren sesión de escritorio. El workflow no publica releases automáticamente.
 
-Publica el DMG, sus metadatos y SHA-256; los seis packs de release.json y sus SHA-256; las descargas individuales de Surco y FRATV. Verifica cada enlace después de subir los archivos. Usa la etiqueta explícita de la prerelease; releases/latest puede omitir betas.
+Publica el DMG, sus metadatos y SHA-256; los ocho packs de release.json y sus SHA-256; las descargas individuales de Surco y FRATV. Verifica cada enlace después de subir los archivos. Usa la etiqueta explícita de la prerelease; releases/latest puede omitir betas.
 
 ## Firma Developer ID y notarización opcionales
 

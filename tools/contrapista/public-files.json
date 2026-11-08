@@ -1,0 +1,19 @@
+[
+  "Abrir Contrapista.command",
+  "LEEME.md",
+  "Preparar Contrapista.command",
+  "Preparar IA.command",
+  "ableton.py",
+  "ai.py",
+  "ai_worker.py",
+  "app.py",
+  "engine.py",
+  "index.html",
+  "music.py",
+  "preparar-modelos.py",
+  "projects.py",
+  "requirements-ai.txt",
+  "requirements.txt",
+  "test_features.py",
+  "test_full_song.py"
+]

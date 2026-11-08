@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf6f0">
+  <title>VITRINA</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/artista"><span class="brand-mark" aria-hidden="true">◒</span> VITRINA</a>
+      <nav aria-label="Navegación principal">
+        <a href="/artista" id="artist-link">Vista del artista</a>
+        <a href="/panel" id="panel-link">Panel</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="artist" hidden aria-labelledby="artist-name">
+      <div class="artist-header">
+        <div class="cover" aria-hidden="true"><span>V / 01</span></div>
+        <div>
+          <p class="eyebrow" id="artist-genre">Perfil de artista</p>
+          <h1 id="artist-name">Mi proyecto musical</h1>
+        </div>
+      </div>
+      <section aria-labelledby="songs-heading" class="songs">
+        <div class="section-heading"><h2 id="songs-heading">Canciones</h2><span class="subtle" id="track-count"></span></div>
+        <p id="artist-message" class="empty" role="status">Cargando canciones…</p>
+        <ol id="artist-tracks" class="track-list"></ol>
+      </section>
+      <section class="player" id="player" aria-label="Reproductor" hidden>
+        <div class="player-info">
+          <span class="record" aria-hidden="true">◉</span>
+          <div><p class="eyebrow">Reproductor</p><strong id="player-title"></strong></div>
+        </div>
+        <audio id="audio" controls preload="metadata" aria-label="Reproductor de VITRINA"></audio>
+        <p id="player-message" class="status" role="status" hidden></p>
+      </section>
+      <details class="about" id="artist-about" hidden>
+        <summary>Sobre el artista</summary>
+        <p id="artist-bio"></p>
+      </details>
+    </section>
+
+    <section id="panel" hidden aria-labelledby="panel-title">
+      <div class="panel-header">
+        <div><p class="eyebrow">Panel del artista</p><h1 id="panel-title">Mi música</h1></div>
+        <a class="button secondary" href="/artista">Ver mi vitrina <span aria-hidden="true">↗</span></a>
+      </div>
+
+      <p id="panel-message" class="status" role="status">Cargando el panel…</p>
+      <div class="panel-grid">
+        <section class="form-surface" aria-labelledby="upload-title">
+          <h2 id="upload-title">Subir una canción</h2>
+          <form id="upload-form">
+            <label class="file-field">Archivo MP3 <input type="file" name="audio" accept=".mp3,audio/mpeg" required aria-describedby="upload-limit">
+              <span class="subtle" id="upload-limit">Hasta 80 MB por canción.</span>
+            </label>
+            <label>Título <input name="title" type="text" required maxlength="100" placeholder="Nombre de la canción"></label>
+            <label>Créditos <span class="subtle">(opcional)</span><input name="credits" type="text" maxlength="150" placeholder="Artista o colaboradores"></label>
+            <button type="submit" class="button primary">Subir MP3</button>
+            <p id="upload-message" class="status" role="status" hidden></p>
+          </form>
+        </section>
+
+        <div class="catalogue-column">
+          <section aria-labelledby="catalogue-title">
+            <div class="section-heading"><h2 id="catalogue-title">Catálogo</h2><span class="subtle" id="panel-count"></span></div>
+            <p id="catalogue-empty" class="empty" hidden>Las canciones que subas aparecerán aquí.</p>
+            <ul id="panel-tracks" class="track-list"></ul>
+            <p id="catalogue-message" class="status" role="status" hidden></p>
+          </section>
+          <details class="profile-settings" id="profile-settings">
+            <summary>Editar perfil del artista</summary>
+            <form id="profile-form">
+              <label>Nombre <input name="name" type="text" required maxlength="70"></label>
+              <label>Género <span class="subtle">(opcional)</span><input name="genre" type="text" maxlength="65"></label>
+              <label>Biografía <span class="subtle">(opcional)</span><textarea name="bio" rows="3" maxlength="300"></textarea></label>
+              <button type="submit" class="button secondary">Guardar perfil</button>
+              <p id="profile-message" class="status" role="status" hidden></p>
+            </form>
+          </details>
+        </div>
+      </div>
+    </section>
+    <footer class="footer"><span>VITRINA</span><span>Prototipo local</span></footer>
+  </main>
+</body>
+</html>

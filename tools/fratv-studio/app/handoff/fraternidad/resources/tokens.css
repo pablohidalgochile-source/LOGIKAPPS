@@ -1,0 +1,27 @@
+/* Dirección de los tres pilotos aprobada por el usuario el 31 de octubre de 2026. */
+:root {
+  --fr-navy: #011b52;
+  --fr-night: #07132e;
+  --fr-blue: #123465;
+  --fr-gold: #ad8641;
+  --fr-gold-light: #d8bd88;
+  --fr-ivory: #f7f4ea;
+  --fr-white: #fff;
+  --fr-dim: #cbd3e5;
+  --fr-plate: rgba(1,27,82,.96);
+  --fr-shadow: rgba(0,8,27,.28);
+  --fr-soft-line: rgba(173,134,65,.26);
+  --fr-font-display: 'Manrope', system-ui, sans-serif;
+  --fr-font-clock: 'IBM Plex Mono', ui-monospace, monospace;
+  --fr-scene-top: #525c68;
+  --fr-scene-bottom: #1b232d;
+  --fr-scene-light: rgba(236,225,208,.24);
+  --fr-scene-dark: rgba(8,14,22,.6);
+  --fr-checker-a: #262b36;
+  --fr-checker-b: #333a47;
+  --fr-black: #07090e;
+  --fr-transparent: transparent;
+}
+
+:root[data-font="editorial"] { --fr-font-display: 'Instrument Sans', system-ui, sans-serif; }
+:root[data-font="neutro"] { --fr-font-display: 'Inter', system-ui, sans-serif; }

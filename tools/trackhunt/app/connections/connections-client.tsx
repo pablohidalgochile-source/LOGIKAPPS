@@ -139,10 +139,7 @@ export default function ConnectionsClient({ initialName }: { initialName: string
   const userName = status?.user.displayName || initialName;
 
   return <div className="cx-app">
-    <header className="rh-header">
-      <Link href="/" className="rh-brand" aria-label="Trackhunt, inicio"><span>TH</span> TRACKHUNT<span className="rh-brand-sub">DJ DIGGING TOOL</span></Link>
-      <nav aria-label="Principal"><Link href="/">Versiones</Link><Link href="/sets">Sets</Link><Link href="/playlist-hunt">Playlist Hunt</Link><Link href="/quality">Mejor calidad</Link><Link className="cx-active" href="/connections">Conexiones</Link></nav>
-    </header>
+
 
     <main className="cx-main">
       <section className="cx-hero">
@@ -158,7 +155,7 @@ export default function ConnectionsClient({ initialName }: { initialName: string
           <div><span>DEEZER</span><strong className="ready">CATÁLOGO LISTO</strong><small>Búsqueda y enlaces para exportar.</small></div>
           <div><span>SPOTIFY</span><strong className={status?.spotify.connected ? "ready" : status?.spotify.configured ? "available" : "pending"}>{status?.spotify.connected ? "CONECTADA" : status?.spotify.configured ? "LISTA PARA CONECTAR" : "FALTA CONFIGURAR"}</strong><small>Playlists y metadatos, nunca audio.</small></div>
           <div><span>PLAYLISTS YOUTUBE</span><strong className={status?.services.youtubePlaylists ? "ready" : "pending"}>{status?.services.youtubePlaylists ? "AUTOMÁTICO" : "ASISTIDO"}</strong><small>Requiere la clave oficial para enumerarlas.</small></div>
-          <div><span>REMIXES PÚBLICOS</span><strong className={status?.services.automaticRemixSearch || status?.services.soundcloudCatalog ? "ready" : "pending"}>{status?.services.automaticRemixSearch ? "BÚSQUEDA WEB" : status?.services.soundcloudCatalog ? "SOUNDCLOUD" : "ASISTIDO"}</strong><small>SoundCloud y Bandcamp cuando hay conexión.</small></div>
+          <div><span>REMIXES · SOUNDCLOUD / BANDCAMP</span><strong className={status?.services.automaticRemixSearch || status?.services.soundcloudCatalog ? "ready" : "pending"}>{status?.services.automaticRemixSearch ? "BÚSQUEDA WEB CONFIGURADA" : status?.services.soundcloudCatalog ? "SOLO SOUNDCLOUD AUTOMÁTICO" : "ENLACES DE BÚSQUEDA"}</strong><small>{status?.services.automaticRemixSearch ? "Consulta páginas públicas de ambas fuentes mediante Brave Search; disponibilidad sujeta a su cuota." : status?.services.soundcloudCatalog ? "SoundCloud usa su API. Bandcamp ofrece enlaces hasta configurar Brave Search." : "Falta activar Brave Search para traer resultados de ambas fuentes. Mientras tanto puedes abrir sus búsquedas."} Shazam y Deezer se configuran por separado.</small></div>
           <div><span>AUDIO CORTO</span><strong className={status?.services.audioRecognition === "configured" ? "ready" : "available"}>{status?.services.audioRecognition === "configured" ? "CONFIGURADO" : "EVALUACIÓN"}</strong><small>Identifica un fragmento autorizado de 12 segundos; el estado no comprueba cuota en vivo.</small></div>
           <div><span>MIX COMPLETO</span><strong className={status?.services.mixRecognition === "configured" ? "ready" : "pending"}>{status?.services.mixRecognition === "configured" ? "CONFIGURADO" : "LISTO PARA CONECTAR"}</strong><small>Valida proveedor, región y modo gratuito; la cuota se comprueba al usarlo.</small></div>
         </div>

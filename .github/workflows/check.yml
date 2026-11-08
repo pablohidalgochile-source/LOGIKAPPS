@@ -64,7 +64,7 @@ jobs:
         with:
           name: LOGIKAPPS-beta-${{ matrix.runner }}
           path: |
-            dist/LOGIKAPPS-0.6.1-macos-universal.dmg*
+            dist/LOGIKAPPS-0.7.0-macos-universal.dmg*
             dist/LOGIKAPPS-Guia-Equipo-*.html*
             dist/LOGIKAPPS-Pack-*.zip*
             dist/Surco-0.1.0-beta.zip*

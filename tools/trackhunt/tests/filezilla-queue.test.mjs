@@ -18,12 +18,12 @@ const fixture = () => ({
     username: "dj&user",
     remoteRoot: "/Releases",
   },
-  localRoot: "/Music/TrackHunt",
+  localRoot: "/tmp/dj/Music/TrackHunt",
   files: [{
     id: "track-001",
     remoteDirectory: "/Releases/2026 & Más/10 Octubre",
     remoteName: 'A&B <Club> "Mix".mp3',
-    localFile: '/Music/TrackHunt/A&B <Club> "Mix".mp3',
+    localFile: '/tmp/dj/Music/TrackHunt/A&B <Club> "Mix".mp3',
     sizeBytes: 12_345_678,
   }],
 });
@@ -79,11 +79,11 @@ test("strictly rejects malformed hosts, traversal, out-of-root files and duplica
   assert.throws(() => queue.generateFileZillaQueueXml(outsideRemote), /fuera de connection\.remoteRoot/);
 
   const outsideLocal = fixture();
-  outsideLocal.files[0].localFile = "/Music2/stolen.mp3";
+  outsideLocal.files[0].localFile = "/tmp/dj/Music2/stolen.mp3";
   assert.throws(() => queue.generateFileZillaQueueXml(outsideLocal), /fuera de localRoot/);
 
   const duplicate = fixture();
-  duplicate.files.push({ ...duplicate.files[0], id: "track-002", localFile: "/Music/TrackHunt/copy.mp3" });
+  duplicate.files.push({ ...duplicate.files[0], id: "track-002", localFile: "/tmp/dj/Music/TrackHunt/copy.mp3" });
   assert.throws(() => queue.generateFileZillaQueueXml(duplicate), /ruta remota está repetida/);
 });
 
@@ -110,12 +110,12 @@ test("rejects identical local destinations before generating a queue", () => {
 
 test("rejects case-insensitive local destination collisions on macOS and Windows", () => {
   const input = fixture();
-  input.files[0].localFile = "/Music/TrackHunt/Straße Remix.MP3";
+  input.files[0].localFile = "/tmp/dj/Music/TrackHunt/Straße Remix.MP3";
   input.files.push({
     ...input.files[0],
     id: "track-002",
     remoteName: "Another Remix.mp3",
-    localFile: "/Music/TrackHunt/STRASSE remix.mp3",
+    localFile: "/tmp/dj/Music/TrackHunt/STRASSE remix.mp3",
   });
   assert.throws(
     () => queue.generateTrackHuntJob({ ...input, jobId: "case-collision" }),
@@ -125,12 +125,12 @@ test("rejects case-insensitive local destination collisions on macOS and Windows
 
 test("rejects NFC and NFD spellings that resolve to the same macOS destination", () => {
   const input = fixture();
-  input.files[0].localFile = "/Music/TrackHunt/Café Remix.mp3";
+  input.files[0].localFile = "/tmp/dj/Music/TrackHunt/Café Remix.mp3";
   input.files.push({
     ...input.files[0],
     id: "track-002",
     remoteName: "Another Remix.mp3",
-    localFile: "/Music/TrackHunt/Cafe\u0301 Remix.mp3",
+    localFile: "/tmp/dj/Music/TrackHunt/Cafe\u0301 Remix.mp3",
   });
   assert.throws(
     () => queue.generateFileZillaQueueXml(input),

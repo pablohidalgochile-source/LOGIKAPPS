@@ -28,7 +28,7 @@ cd "$PROJECT_ROOT"
 # The checked main.swift ensures this Bash 3.2 array is never empty.
 SWIFT_SOURCES=(native/*.swift)
 for ARCH in arm64 x86_64; do
-    "$SWIFTC" -O -sdk "$SDK_PATH" -target "$ARCH-apple-macosx$MIN_MACOS" \
+    "$SWIFTC" -O -sdk "$SDK_PATH" -target "$ARCH-apple-macosx$MIN_MACOS" -module-cache-path "$BUILD_DIR/module-cache" \
         -file-prefix-map "$PROJECT_ROOT=." -debug-prefix-map "$PROJECT_ROOT=." \
         -file-compilation-dir . -framework Cocoa -framework WebKit \
         "${SWIFT_SOURCES[@]}" -o "$STAGING_DIR/LOGIKAPPS-$ARCH"
@@ -50,7 +50,7 @@ cat > "$CONTENTS/Info.plist" <<PLIST
     <key>CFBundleDisplayName</key><string>LOGIKAPPS</string>
     <key>CFBundlePackageType</key><string>APPL</string>
     <key>CFBundleShortVersionString</key><string>$VERSION</string>
-    <key>CFBundleVersion</key><string>9</string>
+    <key>CFBundleVersion</key><string>10</string>
     <key>CFBundleIconFile</key><string>LOGIKAPPS</string>
     <key>LSMinimumSystemVersion</key><string>$MIN_MACOS</string>
     <key>NSHighResolutionCapable</key><true/>

@@ -214,13 +214,13 @@
     const ids = new Set();
     const validText = (value, max, required = false) => typeof value === 'string' && value.length <= max && !value.includes('\0') && (!required || Boolean(value.trim()));
     return source.filter((entry) => {
-      if (!entry || typeof entry !== 'object' || Array.isArray(entry) || !validText(entry.id, 100, true) || ids.has(entry.id) || !validText(entry.name, 100, true) || !validText(entry.description, 2000) || !Object.prototype.hasOwnProperty.call(categories, entry.category) || !['web', 'download'].includes(entry.kind) || !validText(entry.url, 4096, true) || !validURL(entry.url) || (entry.connectKind !== undefined && !['app', 'command', 'folder'].includes(entry.connectKind)) || (entry.requirements !== undefined && !validText(entry.requirements, 2000))) return false;
+      if (!entry || typeof entry !== 'object' || Array.isArray(entry) || !validText(entry.id, 100, true) || ids.has(entry.id) || !validText(entry.name, 100, true) || !validText(entry.description, 2000) || !Object.prototype.hasOwnProperty.call(categories, entry.category) || !['web', 'download', 'pending'].includes(entry.kind) || (entry.kind !== 'pending' && (!validText(entry.url, 4096, true) || !validURL(entry.url))) || (entry.connectKind !== undefined && !['app', 'command', 'folder'].includes(entry.connectKind)) || (entry.requirements !== undefined && !validText(entry.requirements, 2000))) return false;
       ids.add(entry.id);
       return true;
     }).map((entry) => ({
       id: entry.id, name: entry.name.trim(), description: entry.description.trim(), category: entry.category,
       icon: Object.prototype.hasOwnProperty.call(iconStyles, entry.icon) ? entry.icon : 'grid',
-      kind: entry.kind, url: validURL(entry.url), requirements: entry.requirements || '', connectKind: entry.connectKind || 'app',
+      kind: entry.kind, url: entry.kind === 'pending' ? '' : validURL(entry.url), requirements: entry.requirements || '', connectKind: entry.connectKind || 'app',
       version: validText(entry.version, 80) ? entry.version : '',
       stage: ['beta', 'prototype', 'setup'].includes(entry.stage) ? entry.stage : '',
       logoPending: entry.logoPending === true
@@ -275,6 +275,7 @@
     const connectLabel = { app: 'Conectar app', command: 'Conectar lanzador', folder: 'Conectar carpeta' }[entry.connectKind];
     const stageLabel = {beta:'Beta',prototype:'Prototipo',setup:'Por configurar'}[entry.stage];
     const metadata = `<div class="tool-metadata">${entry.version ? `<span>Versión ${escapeHTML(entry.version)}</span>` : ''}${stageLabel ? `<span class="badge prototype">${stageLabel}</span>` : ''}${entry.logoPending ? '<span class="identity-pending">Logo pendiente de elección</span>' : ''}</div>`;
+    if (entry.kind === 'pending') return `<article class="app-card discover-card" data-availability="pending"><div class="card-top">${appIcon(entry)}<span class="badge prototype">En preparación</span></div><h3>${escapeHTML(entry.name)}</h3>${metadata}<p class="app-description">${escapeHTML(entry.description)}</p><p class="discover-requirements">${escapeHTML(entry.requirements || 'Acceso y distribución pendientes de comprobar.')}</p></article>`;
     return `<article class="app-card discover-card"><div class="card-top">${appIcon(entry)}<span class="badge">${download ? 'Descarga' : 'Web'}</span></div><h3>${escapeHTML(entry.name)}</h3>${metadata}<p class="app-description">${escapeHTML(entry.description)}</p>${entry.requirements ? `<p class="discover-requirements">${escapeHTML(entry.requirements)}</p>` : ''}<div class="discover-actions"><a class="button button-primary" href="${escapeHTML(entry.url)}" target="_blank" rel="noopener noreferrer">${icon(download ? 'download' : 'external')}${download ? 'Ver descarga' : 'Abrir web'}</a><button class="button${added ? ' button-quiet' : ''}" data-action="${download ? 'connect-discover' : 'add-discover'}" data-id="${escapeHTML(entry.id)}"${added || busy ? ' disabled' : ''}>${icon(added ? 'grid' : 'plus')}${download ? connectLabel : added ? 'Ya está en Mis apps' : busy ? 'Agregando…' : 'Agregar a Mis apps'}</button></div></article>`;
   }
 
@@ -336,7 +337,7 @@
     else if (view === 'settings') renderSettings();
     else renderApps();
     renderRail();
-    $('#version-label').textContent = `· ${state.environment.version || '0.6.1'}`;
+    $('#version-label').textContent = `· ${state.environment.version || '0.7.0'}`;
   }
 
   function changeView(next, nextCategory = 'all') {

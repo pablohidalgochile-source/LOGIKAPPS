@@ -29,6 +29,29 @@ async function remoteJson(url: string, init: RequestInit = {}) {
 async function catalog(term: string): Promise<Song[]> {
   const cached = catalogCache.get(term);
   if (cached && cached.expires > Date.now()) return cached.songs;
+  // Deezer is available without credentials and avoids making identification
+  // depend on Apple's regional availability from the hosted worker.
+  try {
+    const query = term.replace(/\b(?:ft|feat|featuring)\b\.?/gi, " ").replace(/[—–]/g, " ").replace(/\s+/g, " ").trim();
+    const endpoint = new URL("https://api.deezer.com/search");
+    endpoint.search = new URLSearchParams({ q: query, limit: "12" }).toString();
+    const data = await remoteJson(endpoint.toString());
+    if (data.error || !Array.isArray(data.data)) throw new Error("provider");
+    const seen = new Set<string>();
+    const songs: Song[] = [];
+    for (const row of data.data) {
+      if (typeof row.title !== "string" || typeof row.artist?.name !== "string" || !Number.isSafeInteger(row.id) || row.id <= 0) continue;
+      const key = normalize(`${row.artist.name} ${row.title}`);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      songs.push({ title: row.title, artist: row.artist.name, artwork: row.album?.cover_medium, url: `https://www.deezer.com/track/${row.id}`, source: "Catálogo Deezer" });
+    }
+    if (songs.length) {
+      if (catalogCache.size > 150) catalogCache.clear();
+      catalogCache.set(term, { expires: Date.now() + 600_000, songs });
+      return songs;
+    }
+  } catch { /* Apple remains a second independent catalog. */ }
   const url = new URL("https://itunes.apple.com/search");
   url.search = new URLSearchParams({ term, entity: "song", limit: "12", country: "US" }).toString();
   const data = await remoteJson(url.toString());
@@ -100,7 +123,7 @@ async function findVersions(song: Song, env: MusicEnv): Promise<SearchResult> {
     const searchUrl = name === "SoundCloud" ? `https://soundcloud.com/search/sounds?q=${encodeURIComponent(searchText)}` : `https://bandcamp.com/search?q=${encodeURIComponent(searchText)}&item_type=t`;
     const scConfigured = name === "SoundCloud" && env.SOUNDCLOUD_CLIENT_ID && env.SOUNDCLOUD_CLIENT_SECRET;
     if (!scConfigured && !env.BRAVE_SEARCH_API_KEY) {
-      sources.push({ name, status: "not-configured", searchUrl, message: "Conexión automática pendiente. Puedes abrir la búsqueda en la fuente." });
+      sources.push({ name, status: "not-configured", searchUrl, message: `Búsqueda automática en ${name} pendiente de configuración. Abre el enlace para buscar en ${name}.` });
       continue;
     }
     try {

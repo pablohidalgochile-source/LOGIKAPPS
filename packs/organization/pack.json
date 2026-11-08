@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
   "id": "organization",
-  "name": "Pack Organización",
-  "version": "0.1.0-beta",
-  "archiveName": "LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip",
+  "name": "Pack Organización y Familia",
+  "version": "0.2.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip",
   "guide": "GUIA.html",
   "tools": [
     {
@@ -18,7 +18,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
     },
     {
       "id": "pack-organization-jacinta",
@@ -32,7 +32,35 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
+    },
+    {
+      "id": "pack-organization-limpieza",
+      "name": "Limpieza Familiar",
+      "version": "0.4.8 · edición portable",
+      "description": "Archivo verificado, respaldo USB y galería familiar.",
+      "requirements": "Apple Silicon · macOS 13+. Sin datos personales; prueba experimental de borrado desactivada. Descomprime la app incluida.",
+      "category": "personal",
+      "icon": "shield",
+      "kind": "download",
+      "connectKind": "app",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
+    },
+    {
+      "id": "pack-organization-suscripciones",
+      "name": "Control de Suscripciones",
+      "version": "0.1.0",
+      "description": "Inventario de servicios y renovaciones desde revisiones de correo.",
+      "requirements": "Apple Silicon · macOS 13+. Importación JSON manual; sin sincronización Gmail ni cancelaciones automáticas.",
+      "category": "personal",
+      "icon": "grid",
+      "kind": "download",
+      "connectKind": "app",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Organizacion-Familia-0.2.0-beta.zip"
     }
   ],
   "sources": [
@@ -43,6 +71,14 @@
     {
       "folder": "jacinta",
       "target": "Jacinta"
+    },
+    {
+      "folder": "limpieza-familiar",
+      "target": "Limpieza-Familiar"
+    },
+    {
+      "folder": "control-suscripciones",
+      "target": "Control-Suscripciones"
     }
   ]
 }

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Comentario, votación y meta</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: var(--safe-top) var(--safe-x) var(--safe-bottom); border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .columna { position: absolute; right: var(--safe-x); top: var(--safe-flag); width: 38%;
+             display: flex; flex-direction: column; gap:calc(28 * var(--fr-u)); }
+  .mod { background: var(--fr-plate); border-radius: var(--fr-radius-plate); padding:calc(31 * var(--fr-u)) calc(38 * var(--fr-u));
+         animation: entra 8000ms cubic-bezier(.3,0,.15,1) infinite both; }
+  .mod:nth-child(2) { animation-delay: 180ms; }
+  .mod:nth-child(3) { animation-delay: 360ms; }
+
+  .quien { display: flex; align-items: center; gap:calc(19 * var(--fr-u)); }
+  .avatar { width:calc(47 * var(--fr-u)); height:calc(47 * var(--fr-u)); border-radius: var(--fr-radius-plate);
+            background: var(--fr-accent); flex-shrink: 0; }
+  .usuario { font-family: var(--fr-font-mono); font-size:calc(21 * var(--fr-u)); letter-spacing: .14em;
+             color: var(--fr-text-dim); }
+  .comentario { font-family: var(--fr-font-display); font-weight: 500; font-size:calc(32 * var(--fr-u));
+                line-height: 1.45; color: var(--fr-text); margin-top:calc(19 * var(--fr-u)); }
+
+  .rotulo { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(21 * var(--fr-u));
+            letter-spacing: .16em; color: var(--fr-text-dim); }
+  .opciones { display: flex; justify-content: space-between; margin-top:calc(19 * var(--fr-u));
+              font-family: var(--fr-font-display); font-weight: 600; font-size:calc(28 * var(--fr-u)); color: var(--fr-text); }
+  .riel { margin-top:calc(16 * var(--fr-u)); height:calc(19 * var(--fr-u)); border-radius:calc(12 * var(--fr-u)); background: var(--fr-hairline); overflow: hidden; }
+  .riel i { display: block; height: 100%; background: var(--fr-accent); border-radius:calc(12 * var(--fr-u)); }
+  .riel.meta { height:calc(16 * var(--fr-u)); border-radius:calc(9 * var(--fr-u)); }
+  .riel.meta i { border-radius:calc(9 * var(--fr-u)); }
+  .cifra { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(28 * var(--fr-u)); color: var(--fr-accent); }
+  .fila { display: flex; justify-content: space-between; align-items: baseline; }
+
+  @keyframes entra { 0% { opacity: 0; transform:translateY(calc(26 * var(--fr-u))) } 8%,92% { opacity: 1; transform: translateY(0) } 100% { opacity: 0; transform: translateY(0) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="columna" id="columna">
+    <div class="mod" data-mod="comentario">
+      <div class="quien">
+        <span class="avatar"></span>
+        <span class="usuario" data-field="handle">@ESPECTADOR</span>
+      </div>
+      <div class="comentario" data-field="comment">¿Cuándo sale el próximo episodio?</div>
+    </div>
+
+    <div class="mod" data-mod="votacion">
+      <div class="rotulo" data-field="pollLabel">VOTACIÓN DEL PÚBLICO</div>
+      <div class="opciones">
+        <span data-field="pollA">SÍ</span>
+        <span data-field="pollB">NO</span>
+      </div>
+      <div class="riel"><i id="poll"></i></div>
+    </div>
+
+    <div class="mod" data-mod="meta">
+      <div class="fila">
+        <span class="rotulo" data-field="goalLabel">META DEL MES</span>
+        <span class="cifra" id="cifra">78 %</span>
+      </div>
+      <div class="riel meta"><i id="goal"></i></div>
+    </div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+window.FRATVRuntime.create({ id: 'engagement', durationMs: 8000, loop: true, alpha: true });
+
+var q = new URLSearchParams(location.search);
+var activos = (q.get('modules') || 'comentario,votacion,meta').split(',');
+document.querySelectorAll('[data-mod]').forEach(function (el) {
+  el.hidden = activos.indexOf(el.dataset.mod) === -1;
+});
+
+var poll = parseInt(q.get('pollValue'), 10); if (isNaN(poll)) poll = 66;
+var goal = parseInt(q.get('goalValue'), 10); if (isNaN(goal)) goal = 78;
+document.getElementById('poll').style.width = poll + '%';
+document.getElementById('goal').style.width = goal + '%';
+document.getElementById('cifra').textContent = goal + ' %';
+</script>
+</body>
+</html>

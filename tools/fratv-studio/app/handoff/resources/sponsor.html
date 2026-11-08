@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Sponsor</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: var(--safe-top) var(--safe-x) var(--safe-bottom); border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .sponsor { position: absolute; right: var(--safe-x); bottom: var(--safe-bottom);
+             background: var(--fr-text); color: var(--fr-surface);
+             border-radius: var(--fr-radius-plate); padding:calc(31 * var(--fr-u)) calc(42 * var(--fr-u));
+             display: flex; align-items: center; gap:calc(38 * var(--fr-u));
+             animation: entra 8000ms cubic-bezier(.22,.9,.24,1) both; }
+  .rotulo { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(20 * var(--fr-u));
+            letter-spacing: .2em; color: var(--fr-surface); opacity: .72; }
+  .sep { width:1px; height:calc(56 * var(--fr-u)); background: var(--fr-surface); opacity: .18; }
+  .hueco { width:calc(226 * var(--fr-u)); height:calc(75 * var(--fr-u)); display: flex; align-items: center; justify-content: center; }
+  .hueco img { max-width: 100%; max-height: 100%; display: block; object-fit: contain; }
+  .hueco .vacio { width: 100%; height: 100%; border:1px dashed var(--fr-surface); opacity: .25;
+                  border-radius: var(--fr-radius-chip); }
+  @keyframes entra { 0% { opacity: 0; transform:translateY(calc(26 * var(--fr-u))) } 6%,90% { opacity: 1; transform: translateY(0) } 100% { opacity: 0 } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="sponsor">
+    <span class="rotulo" data-field="label">PRESENTADO POR</span>
+    <span class="sep"></span>
+    <span class="hueco"><span class="vacio" id="vacio"></span><img id="logo" alt="" hidden></span>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+window.FRATVRuntime.create({ id: 'sponsor', durationMs: 8000, loop: false, alpha: true });
+
+var q = new URLSearchParams(location.search);
+var src = q.get('logo');
+if (src) {
+  var img = document.getElementById('logo');
+  img.src = src; img.hidden = false;
+  document.getElementById('vacio').hidden = true;
+}
+</script>
+</body>
+</html>

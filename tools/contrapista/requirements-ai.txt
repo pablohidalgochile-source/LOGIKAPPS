@@ -1,0 +1,14 @@
+# Install in the isolated Python 3.11 environment. Basic Pitch is installed
+# separately with --no-deps so its ONNX runtime does not pull TensorFlow/CoreML.
+numpy<2
+torch==2.5.1
+torchaudio==2.5.1
+demucs==4.0.1
+onnxruntime>=1.17
+librosa>=0.10
+pretty_midi>=0.2.10
+mir_eval>=0.7
+resampy>=0.4,<0.4.3
+scipy>=1.11
+soundfile>=0.12
+setuptools<81

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleExecutable</key><string>LimpiezaFamiliar</string>
+<key>CFBundleIdentifier</key><string>cl.logikapps.limpieza-familiar</string>
+<key>CFBundleName</key><string>Limpieza Familiar</string>
+<key>CFBundleDisplayName</key><string>Limpieza Familiar</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleShortVersionString</key><string>0.4.8</string>
+<key>CFBundleVersion</key><string>16</string>
+<key>CFBundleIconFile</key><string>Limpieza</string>
+<key>LSMinimumSystemVersion</key><string>13.0</string>
+<key>NSHighResolutionCapable</key><true/>
+<key>NSPrincipalClass</key><string>NSApplication</string>
+<key>NSCameraUsageDescription</key><string>Leer e importar las fotos y videos del iPhone que tú conectes y autorices.</string>
+<key>NSPhotoLibraryUsageDescription</key><string>Importar los archivos multimedia que elijas conservar en tu Mac.</string>
+<key>NSRemovableVolumesUsageDescription</key><string>Guardar y verificar tu archivo familiar en el disco externo que selecciones.</string>
+</dict></plist>

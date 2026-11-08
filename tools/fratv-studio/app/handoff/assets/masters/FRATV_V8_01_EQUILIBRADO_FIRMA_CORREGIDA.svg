@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600">
+  <defs>
+    <mask id="tv-small-1" maskUnits="userSpaceOnUse" x="0" y="0" width="540" height="300">
+      <rect width="540" height="300" fill="black"></rect>
+      <path d="M268 17 Q252 7 252 30 L252 250 Q252 273 270 263 L484 153 Q504 140 484 127 Z" fill="white"></path>
+      <path d="M301 112 H347 M324 112 V170 M354 114 L370 167 L388 114" fill="none" stroke="black" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"></path>
+    </mask>
+  </defs>
+  <rect width="1600" height="600" rx="36" fill="#08080d"></rect>
+  <rect x="55" y="55" width="490" height="490" rx="134" fill="#ff6b3d"></rect>
+  <g transform="translate(90 195) scale(.75)">
+    <path d="M42 250 V30 H204 M42 138 H174" fill="none" stroke="#100b18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+    <rect width="540" height="300" fill="#100b18" mask="url(#tv-small-1)"></rect>
+  </g>
+  <text x="650" y="333" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165" letter-spacing="0"><tspan fill="#f5f1e8">FRA</tspan><tspan fill="#ff6b3d">TV</tspan></text>
+  <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#ff6b3d">CONTENIDO DIGITAL HUMANO</text>
+</svg>

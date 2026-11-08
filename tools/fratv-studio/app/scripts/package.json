@@ -1,0 +1,28 @@
+{
+  "name": "fratv-pack",
+  "private": true,
+  "type": "module",
+  "description": "Exportador de recursos FRATV a video y generador de coleccion de escenas para OBS",
+  "scripts": {
+    "exportar": "node exportar.mjs",
+    "pack": "node pack-obs.mjs",
+    "maestra": "node pack-maestra.mjs",
+    "portatil": "node armar-pack-portatil.mjs --zip",
+    "estudio": "node estudio-png.mjs",
+    "laminas": "node renderizar-laminas.mjs",
+    "cajas": "node medir-cajas.mjs",
+    "lint:tokens": "node lint-tokens.mjs",
+    "lint:aspectos": "node verificar-aspectos.mjs",
+    "test:lint": "node lint-tokens.mjs --probar",
+    "test": "node lint-tokens.mjs --probar && node lint-tokens.mjs && node verificar-aspectos.mjs",
+    "test:regresion": "node verificar-regresion.mjs",
+    "regresion:guardar": "node verificar-regresion.mjs --guardar"
+  },
+  "dependencies": {
+    "opentype.js": "^2.0.0",
+    "puppeteer-core": "^23.0.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

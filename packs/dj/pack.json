@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "dj",
   "name": "Pack DJ",
-  "version": "0.3.0-beta",
-  "archiveName": "LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+  "version": "0.4.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
   "guide": "EMPIEZA-AQUI.html",
   "tools": [
     {
@@ -14,20 +14,20 @@
       "icon": "disc",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
       "requirements": "Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar."
     },
     {
       "id": "pack-dj-trackhunt",
       "name": "TRACKHUNT",
-      "description": "Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026.",
+      "description": "Playlist Hunt, revisión de apariciones y enlaces Deezer; incluye fuentes del asistente Mac y extensión Chrome.",
       "category": "music",
       "icon": "waves",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
-      "requirements": "Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.",
-      "version": "0.2.0 beta portable"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
+      "requirements": "Node 22.13+, npm. Asistente acústico incluido como código fuente: Swift y Python para compilarlo; Chrome para la extensión. Servicios con configuración propia.",
+      "version": "0.3.0 beta portable"
     },
     {
       "id": "pack-dj-nanook-video",
@@ -37,7 +37,7 @@
       "icon": "play",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
       "requirements": "Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.",
       "version": "3.0.4",
       "logoPending": true
@@ -50,7 +50,7 @@
       "icon": "sparkles",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
       "requirements": "Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida."
     },
     {
@@ -61,18 +61,19 @@
       "icon": "music",
       "kind": "download",
       "connectKind": "command",
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip",
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-DJ-0.4.0-beta.zip",
       "requirements": "Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo."
     },
     {
       "id": "pack-dj-magic",
       "name": "MAGIC MUSIC PROMPT",
-      "description": "Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente.",
+      "description": "Ideas, letra y arreglo instrumental para Songs y Albums; propuestas y biblioteca musical.",
       "category": "music",
       "icon": "music",
       "kind": "web",
       "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
-      "requirements": "Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno."
+      "requirements": "Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.",
+      "version": "web · revisión 10"
     }
   ],
   "sources": [

@@ -41,7 +41,7 @@ LOGIKAPPS $VERSION — beta para macOS 13 o posterior (Apple Silicon e Intel)
 3. En el Dock: menú del icono > Opciones > Mantener en el Dock.
 
 También puedes copiarla a ~/Applications para instalarla solo para tu usuario.
-Packs de apps muestra DJ, Fraternidad, Diseño y Joyería, IA y Equipo, Organización y Laboratorio.
+Packs de apps muestra DJ, Fraternidad, Diseño y Joyería, IA y Equipo, Organización y Familia, Laboratorio, Producción musical y Streaming.
 Descarga el pack elegido y abre su guía: incluye requisitos y acceso de cada app.
 Consulta PRIMEROS-PASOS-EQUIPO.html para preparar el Mac y colaborar.
 Los packs se descargan por separado; no incluyen credenciales ni permisos.
@@ -83,7 +83,7 @@ if [[ -n "$NOTARY_PROFILE" ]]; then
     NOTARIZATION='accepted-and-stapled'
 fi
 /usr/bin/hdiutil verify "$TEMP_DMG"
-printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty-personal-library","discoverCatalog":"bundled-static","packsCatalog":"bundled-static","packCount":6}\n' \
+printf '{"version":"%s","buildID":"%s","file":"%s","architecture":"universal","architectures":["arm64","x86_64"],"minimumMacOS":"%s","signature":"%s","signatureScope":"application","diskImageSignature":"%s","notarization":"%s","bundledCatalog":"empty-personal-library","discoverCatalog":"bundled-static","packsCatalog":"bundled-static","packCount":8}\n' \
     "$VERSION" "$BUILD_ID" "$FILENAME" "$MIN_MACOS" "$SIGNATURE" "$DMG_SIGNATURE" "$NOTARIZATION" > "$STAGING_DIR/$FILENAME.metadata.json"
 /usr/bin/plutil -convert xml1 -o /dev/null "$STAGING_DIR/$FILENAME.metadata.json"
 if [[ -e "$DMG_PATH" ]]; then

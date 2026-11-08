@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleExecutable</key>
+	<string>LetraLocal</string>
+	<key>CFBundleIdentifier</key>
+	<string>local.logikapps.letralocal</string>
+	<key>CFBundleName</key>
+	<string>Letra Local</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.3.0</string>
+	<key>CFBundleVersion</key>
+	<string>5</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Letra Local necesita el micrófono para escribir lo que dictas.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Letra Local transcribe audio mediante reconocimiento en el dispositivo.</string>
+</dict>
+</plist>

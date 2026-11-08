@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "lab",
   "name": "Pack Laboratorio",
-  "version": "0.1.1-beta",
-  "archiveName": "LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip",
+  "version": "0.2.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip",
   "guide": "GUIA.html",
   "tools": [
     {
@@ -18,7 +18,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": true,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
     },
     {
       "id": "pack-lab-subtitles",
@@ -32,7 +32,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
     },
     {
       "id": "pack-lab-multicam",
@@ -46,7 +46,7 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
     },
     {
       "id": "pack-lab-nanookey",
@@ -60,7 +60,21 @@
       "kind": "download",
       "connectKind": "command",
       "logoPending": false,
-      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip"
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
+    },
+    {
+      "id": "pack-lab-binaural",
+      "name": "BINAURAL SYSTEM",
+      "category": "music",
+      "icon": "waves",
+      "version": "0.1.0",
+      "stage": "beta",
+      "description": "Aplicación independiente con seis secciones, motor estéreo, programas, sesiones, meditaciones y rituales.",
+      "requirements": "Python 3 y navegador actualizado. Edición local compilada; Forja por plantillas y voz del sistema. IA y voces remotas pendientes. WAV de síntesis.",
+      "kind": "download",
+      "connectKind": "command",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Laboratorio-0.2.0-beta.zip"
     }
   ],
   "sources": [
@@ -79,6 +93,10 @@
     {
       "folder": "nanookey",
       "target": "NANOOKEY"
+    },
+    {
+      "folder": "binaural-system",
+      "target": "BINAURAL-SYSTEM"
     }
   ]
 }

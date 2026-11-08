@@ -1,66 +1,80 @@
-# Herramientas de LOGIKAPPS 0.6.1 beta
+# Contenido de LOGIKAPPS 0.7.0
 
-Seis packs, 25 fichas; Explorar añade enlaces individuales. El DMG instala LOGIKAPPS y los packs se descargan por separado. Cada guía distingue apps locales, webs privadas y prototipos. Mis apps conserva los accesos elegidos por cada persona.
+Ocho packs y 37 fichas en packs. Algunas herramientas aparecen en más de un pack. Explorar también muestra los proyectos cuya distribución aún está pendiente.
 
-## Pack DJ
+## Pack DJ · 0.4.0-beta
 
-[Descargar Pack DJ](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-DJ-0.3.0-beta.zip)
+- Surco · versión no indicada: Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar.
+- TRACKHUNT · 0.3.0 beta portable: Node 22.13+, npm. Asistente acústico incluido como código fuente: Swift y Python para compilarlo; Chrome para la extensión. Servicios con configuración propia.
+- INGESTA · 3.0.4: Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen.
+- VJ/LAB · versión no indicada: Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida.
+- DJ Nanook Hit Lab · versión no indicada: Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo.
+- MAGIC MUSIC PROMPT · web · revisión 10: Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.
 
-- **Surco**: Biblioteca musical, enlaces y captura de audio. Incluida en la carpeta Surco del pack. Python 3.10+; yt-dlp para enlaces; FFmpeg y Chrome para algunas funciones. Sigue LEEME antes de lanzar.
-- **TRACKHUNT** · 0.2.0 beta portable: Búsquedas, Playlist Hunt, preparación de playlists, calidad y conexiones. Actualizado desde el desarrollo revisado el 31-10-2026. Node.js 22.13+ y preparación inicial. Playlist Hunt y otras integraciones necesitan credenciales propias. Sin claves ni conexiones de otra persona.
-- **INGESTA** · 3.0.4: Descarga, lotes y conversión MP4 desde enlaces públicos. El nombre anterior era NANOOK VIDEO. Node.js 22.13+, Python 3, FFmpeg/ffprobe. Sigue LEEME; el motor IA y sus modelos son opcionales y no se incluyen. Logo pendiente de elección.
-- **VJ/LAB**: Visuales de escenario y composición gráfica. Incluida en la carpeta VJ-LAB del pack. Python 3.10+ para el lanzador local y navegador actualizado. La generación de logos con IA no está incluida.
-- **DJ Nanook Hit Lab**: Crates, muestras sintetizadas y herramientas de preparación musical. Incluida en la carpeta Hit-Lab del pack. Python 3.10+ y navegador actualizado. El radar y la similitud usan un catálogo de demostración; no son datos musicales en vivo.
-- **MAGIC MUSIC PROMPT**: Songs, Speech, Sounds y Albums: prepara textos, prompts y organiza audio importado. Acceso privado; integración automática de Suno pendiente. Internet y acceso autorizado por el responsable del sitio. Si aparece 401 o acceso denegado, solicita habilitación. Descargar LOGIKAPPS no abre el sitio privado ni activa Suno.
+## Pack Fraternidad · 0.4.0-beta
 
-## Pack Fraternidad
+- FRATE ERP · versión no indicada: Internet y cuenta autorizada. Utiliza información del sistema en línea; no es una copia sin conexión.
+- FRATE Web · Administración · versión no indicada: Cuenta con permisos de administración. El sitio público está en www.frate.cl.
+- FRATE FLYER EXPRESS · versión no indicada: Internet y acceso autorizado. Las funciones de generación dependen de la configuración del servicio.
+- FRATE POS · versión no indicada: Cuenta y permisos de caja asignados. No incluye credenciales ni habilita transacciones por sí solo.
+- FRATE Cast · versión no indicada: Internet. Las funciones de gestión requieren una cuenta y el rol correspondiente.
+- FRATE FLYER STUDIO · 0.1.0: Python 3; editor local sin bandeja Express configurada. Exportación automatizada y servicios necesitan preparación propia.
+- FRATE SOCIAL COMMAND · versión no indicada: Cuenta autorizada. Las conexiones de redes y permisos se preparan en el servicio; no se comparten sesiones.
 
-[Descargar Pack Fraternidad](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Fraternidad-0.3.0-beta.zip)
+## Pack Diseño y Joyería · 0.3.0-beta
 
-- **FRATE ERP**: Administración y operación de Fraternidad. Internet y cuenta autorizada. Utiliza información del sistema en línea; no es una copia sin conexión.
-- **FRATE Web · Administración**: Administración de la web y ticketera. La guía también incluye el sitio público. Cuenta con permisos de administración. El sitio público está en www.frate.cl.
-- **FRATE FLYER EXPRESS**: Acceso a Flyer Express para preparar las piezas del equipo. Internet y acceso autorizado. Las funciones de generación dependen de la configuración del servicio.
-- **FRATE POS**: Acceso al punto de venta de Fraternidad. Cuenta y permisos de caja asignados. No incluye credenciales ni habilita transacciones por sí solo.
-- **FRATE Cast**: Acceso a la plataforma de casting. Internet. Las funciones de gestión requieren una cuenta y el rol correspondiente.
-- **FRATE FLYER STUDIO** · 0.1.0: Editor y plantillas de flyers; proyecto distinto de Flyer Express. Python 3; editor local sin bandeja Express configurada. Exportación automatizada y servicios necesitan preparación propia.
+- Taller Teatina · 0.4.0: Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar.
+- FRATV para OBS · versión no indicada: Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio.
+- Elephant · 0.2.0: Apple Silicon, macOS 14+, Python 3, ImageMagick y FFmpeg/ffprobe. IA opcional; modelos no incluidos.
+- Mi Talla · 0.1.0: Python 3 y navegador actualizado. Validación física pendiente.
+- NAVARRO ERP · versión no indicada: Acceso privado: solicita tu cuenta y permisos al responsable. No incluye bases de datos ni credenciales.
 
-## Pack Diseño y Joyería
+## Pack IA y Equipo · 0.2.0-beta
 
-[Descargar Pack Diseño y Joyería](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Diseno-0.2.0-beta.zip)
+- FrateIA · Prueba · 0.3.1 de prueba: Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.
+- ChatGPT y Codex Cloud · versión no indicada: Cuenta propia de ChatGPT y acceso a cada proyecto. Para código, GitHub propio con permisos. La disponibilidad de Cloud depende de tu cuenta y entorno.
+- ArtCraft · versión no indicada: Herramientas externas en alfa o desarrollo; consulta la disponibilidad y requisitos de cada descarga.
 
-- **Taller Teatina** · 0.4.0: Estudio de joyería: contornos 2D, medidas, componentes 3D y exportaciones SVG, OBJ, STL y 3MF. Apple Silicon · macOS 13+ · Versión 0.4.0 sin notarización. Edición local; analizar fotos requiere configuración propia de OpenAI. Validar medidas antes de fabricar. Logo pendiente de elección.
-- **FRATV para OBS**: 15 gráficas HTML: rótulos, identidad de canal, cuenta regresiva, programación y créditos. Descarga el pack y previsualízalo en tu navegador. Mac, Windows o Linux · Navegador actualizado · OBS Studio por separado para transmitir. Pack horizontal 1920 × 1080; no incluye el editor Studio.
-- **Elephant** · 0.2.0: Ampliación local de fotos y video, modo Fiel e IA, muestras y cola de trabajo. Apple Silicon, macOS 14+, Python 3, ImageMagick y FFmpeg/ffprobe. IA opcional; modelos no incluidos.
-- **Mi Talla** · 0.1.0: Medidas de anillos, tablas y calibración visual. Python 3 y navegador actualizado. Validación física pendiente. Logo pendiente de elección.
+## Pack Organización y Familia · 0.2.0-beta
 
-## Pack IA y Equipo
+- Orgalina · 0.2.0: Node.js 22.13 o posterior y npm.
+- Jacinta M. Pastelería · local · sin número: Python 3 y navegador actualizado.
+- Limpieza Familiar · 0.4.8 · edición portable: Apple Silicon · macOS 13+. Sin datos personales; prueba experimental de borrado desactivada. Descomprime la app incluida.
+- Control de Suscripciones · 0.1.0: Apple Silicon · macOS 13+. Importación JSON manual; sin sincronización Gmail ni cancelaciones automáticas.
 
-[Descargar Pack IA y Equipo](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-IA-Equipo-0.2.0-beta.zip)
+## Pack Laboratorio · 0.2.0-beta
 
-- **FrateIA · Prueba** · 0.3.1 de prueba: Prepara tu estación de IA, reúne herramientas y trabaja con proyectos locales. Versión 0.3.1 de prueba. Apple Silicon · macOS 14+ · Sin notarización. Modelos y herramientas se descargan aparte. Equipo necesita invitación; todavía no se verificó colaboración entre dos Mac.
-- **ChatGPT y Codex Cloud**: Acceso a ChatGPT y al trabajo en la nube. La guía explica cómo recibir acceso a proyectos y repositorios. Cuenta propia de ChatGPT y acceso a cada proyecto. Para código, GitHub propio con permisos. La disponibilidad de Cloud depende de tu cuenta y entorno.
-- **ArtCraft**: Página oficial de apps creativas y descargas de otros desarrolladores. Herramientas externas en alfa o desarrollo; consulta la disponibilidad y requisitos de cada descarga.
+- CLUB SANTA CRUZ · 0.2.0: Python 3 y navegador actualizado. Nombre/logo Pasaporte Colchagua pendientes.
+- Subtitle Translator Pro · 0.1.0: Node.js 22.13 o posterior y npm. Traducción requiere proveedor y cuenta propios.
+- Estudio Multicam · 1.0.0 en código: Python 3, navegador con permisos de cámara/micrófono y servicios propios de señalización.
+- NANOOKEY · prototipo: Python 3 y navegador con internet para el prototipo. mutagen opcional para el escáner; servicios externos con cuenta propia.
+- BINAURAL SYSTEM · 0.1.0: Python 3 y navegador actualizado. Edición local compilada; Forja por plantillas y voz del sistema. IA y voces remotas pendientes. WAV de síntesis.
 
-## Pack Organización
+## Pack Producción musical · 0.1.0-beta
 
-[Descargar Pack Organización](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Organizacion-0.1.0-beta.zip)
+- Letra Local · 0.3.0: Apple Silicon, Python 3.11+, FFmpeg; descarga inicial de Whisper/Demucs. LM Studio para traducción.
+- VITRINA · 0.1.0: Node.js 22+. Un artista; sin publicación pública. Guarda sus archivos en .data.
+- Contrapista · 0.3: Python, NumPy y FFmpeg. IA opcional con modelos propios; Live 12 Suite para el Set. Reconstrucción aproximada.
+- NANOOK HIT MAKER · 0.7 · puente 0.7.1: Python, FFmpeg y Node 22+. Preparar Contrapista para IA. Live detenido; audio sin Warp/bucles. MAGIC externo requiere configuración propia.
+- JAVITA · 0.3.0: Web privada: cuenta y acceso autorizados. La precisión de transcripción requiere revisión. Modelos locales se preparan por separado.
+- MAGIC MUSIC PROMPT · web · revisión 10: Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.
 
-- **Orgalina** · 0.2.0: Presupuesto doméstico, servicios y lectura de texto de boletas PDF. Node.js 22.13 o posterior y npm.
-- **Jacinta M. Pastelería** · local · sin número: Caja del día, pedidos de tortas y carta. Python 3 y navegador actualizado.
+## Pack Fraternidad / Streaming · 0.1.0-beta
 
-## Pack Laboratorio
+- FRATV Studio y relojes OBS · 0.2.0 · kit actualizado: Apple Silicon · Node 22.18+, Chrome, FFmpeg y OBS por separado. Conserva las escenas existentes; consulta la guía.
 
-[Descargar Pack Laboratorio](https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.6.1-beta.1/LOGIKAPPS-Pack-Laboratorio-0.1.1-beta.zip)
+## Pendientes de distribución
 
-- **CLUB SANTA CRUZ** · 0.2.0: Demostración de comercios, beneficios y roles. Python 3 y navegador actualizado. Nombre/logo Pasaporte Colchagua pendientes. Logo pendiente de elección.
-- **Subtitle Translator Pro** · 0.1.0: Edición y traducción de SRT/VTT conservando tiempos y formato. Node.js 22.13 o posterior y npm. Traducción requiere proveedor y cuenta propios.
-- **Estudio Multicam** · 1.0.0 en código: Mesa de realización, cámaras y salida de programa. Bullet Cam y retratos 3D son conceptos separados. Python 3, navegador con permisos de cámara/micrófono y servicios propios de señalización.
-- **NANOOKEY** · prototipo: DJ Brain: prototipo visual y escáner de biblioteca, con datos de demostración. Python 3 y navegador con internet para el prototipo. mutagen opcional para el escáner; servicios externos con cuenta propia.
-
-## Acceso y límites
-
-Descomprime la carpeta completa y abre GUIA.html (EMPIEZA-AQUI.html para DJ). Usa Preparar cuando la herramienta lo indique y después conecta Abrir en LOGIKAPPS. Las apps nativas se copian a Aplicaciones. Las webs privadas requieren invitación o cuenta autorizada; el enlace no concede acceso.
-
-Elephant y Trueke usan sus logos originales confirmados. Los demás iconos funcionales no se presentan como identidades aprobadas. INGESTA y Club Santa Cruz conservan la elección pendiente. No se incluyen bibliotecas, pedidos, cuentas, claves ni modelos personales.
-
-ADN MUSIC continúa como inicio de proyecto sin producto funcional. Las ideas sin desarrollo y Colchagua Tiny Lodge no se publican. FRATV para OBS es distinto del editor privado FRATV Overlay Studio. FRATE FLYER EXPRESS es distinto del prototipo Studio y de las variantes Original y Reel.
+- CLIMAOCA: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- Fraternidad Propuestas: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- NANOOK RESET DETOX: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- FRATE Visuals: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- FRATE Show Design: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- GETRAM Command Center: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- CLIMA SGI Hub: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- FRATE FLYER LAB · Original: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- FRATE FLYER REEL · Render local: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- FRATE OS · Prototipo: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- Colchagua Tiny Lodge · Alpha: Proyecto registrado en la biblioteca. Su entrega portable todavía está pendiente de preparación y validación.
+- HypeLingo — DJ Crowd Coach: Prototipo con preview privado. Falta un acceso estable verificado para compartir.
+- ADN MUSIC: Proyecto inicial: la carpeta conserva la plantilla de desarrollo; no es una app funcional.

@@ -1,0 +1,13 @@
+[
+  "Control de Suscripciones.zip",
+  "Info.plist",
+  "LEEME.md",
+  "Package.swift",
+  "Sources/ControlSuscripciones/main.swift",
+  "Sources/SubscriptionCore/Core.swift",
+  "Suscripciones.icns",
+  "Tests/SubscriptionChecks/main.swift",
+  "binary-review.json",
+  "scripts/check.sh",
+  "scripts/icon.swift"
+]

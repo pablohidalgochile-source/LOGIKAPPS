@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es-CL"><meta charset="utf-8"><title>Comprobación silenciosa del motor</title>
+<body style="font:16px system-ui;padding:24px;max-width:900px;margin:auto"><h1>Comprobación del audio sin altavoces</h1><p>La prueba WAV renderiza sin salida. La prueba de transporte abre el motor con volumen maestro exactamente cero.</p><button id="run">Ejecutar comprobaciones sin sonido</button><pre id="result" role="status">Sin ejecutar</pre><button id="live">Comprobar transporte con volumen cero</button><pre id="live-result" role="status">Sin ejecutar</pre>
+<script type="module">
+import { renderPatchToWav, NanookAudioEngine } from '../src/audio-engine.js';
+const result=document.getElementById('result');
+function samples(view,channel){const out=[];for(let at=44+channel*2;at<view.byteLength;at+=4)out.push(view.getInt16(at,true)/32768);return out;}
+const rms=data=>Math.sqrt(data.reduce((s,n)=>s+n*n,0)/data.length);
+function power(data,hz){let re=0,im=0;const part=data.slice(44100,88200);part.forEach((v,i)=>{re+=v*Math.cos(2*Math.PI*hz*i/44100);im+=v*Math.sin(2*Math.PI*hz*i/44100);});return (re*re+im*im)/(part.length*part.length);}
+document.getElementById('run').onclick=async()=>{
+  result.textContent='Comprobando…';
+  try{
+    const base={leftHz:173,rightHz:251,carrierHz:900,beatHz:8,volume:.2,binauralGain:.5,solfeggioGain:0,noiseAmount:0,modulation:0,beatDrift:0,fadeSeconds:.05};
+    const wav=await renderPatchToWav(base,3),view=new DataView(await wav.arrayBuffer());
+    const left=samples(view,0),right=samples(view,1);
+    const muted=new DataView(await (await renderPatchToWav({...base,rightGain:0},3)).arrayBuffer());
+    const silent=new DataView(await (await renderPatchToWav({...base,volume:0},1)).arrayBuffer());
+    const checks={channels:view.getUint16(22,true)===2,sampleRate:view.getUint32(24,true)===44100,duration:Math.abs((view.byteLength-44)/(44100*4)-3)<.0001,leftFrequency:power(left,173)>power(left,251)*10000,rightFrequency:power(right,251)>power(right,173)*10000,rightMute:rms(samples(muted,1))===0,leftSurvivesMute:rms(samples(muted,0))>.03,masterMute:rms(samples(silent,0))===0&&rms(samples(silent,1))===0,fadeOut:rms(left.slice(-882))<rms(left.slice(44100,44982))*.5};
+    result.textContent=JSON.stringify({passed:Object.values(checks).every(Boolean),checks,leftRms:rms(left),rightRms:rms(right),wavBytes:waveBytes(view)},null,2);
+  }catch(error){result.textContent=JSON.stringify({passed:false,error:error.message});}
+};
+function waveBytes(view){return view.byteLength;}
+document.getElementById('live').onclick=async()=>{
+  const output=document.getElementById('live-result'),engine=new NanookAudioEngine();
+  output.textContent='Comprobando con volumen cero…';
+  try{
+    const started=await engine.start({volume:0,sessionMinutes:0,noiseAmount:0,solfeggioGain:0,fadeSeconds:.05});
+    await new Promise(resolve=>setTimeout(resolve,100));
+    const running=started&&engine.state==='playing'&&engine.currentPatch.volume===0;
+    engine.setLive({volume:0,leftHz:190,rightHz:210,sessionMinutes:0});
+    const liveParameters=engine.currentPatch.leftHz===190&&engine.currentPatch.rightHz===210&&engine.currentPatch.volume===0;
+    await new Promise(resolve=>{engine.onEnd=resolve;engine.stop(false);});
+    const checks={running,liveParameters,stopped:engine.state==='idle'&&engine.ctx===null};
+    output.textContent=JSON.stringify({passed:Object.values(checks).every(Boolean),checks},null,2);
+  }catch(error){output.textContent=JSON.stringify({passed:false,error:error.message});}
+  finally{engine.dispose();}
+};
+</script></body></html>

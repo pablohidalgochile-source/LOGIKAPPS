@@ -1,0 +1,26 @@
+{
+  "appVersion": "0.7",
+  "bridgeVersion": "0.7.1",
+  "date": "2026-11-05",
+  "runtimeVerified": "12.4.3",
+  "transport": "Local queue, Native Control Surface observation and server worker; no external sockets, accounts or credentials",
+  "files": [
+    {
+      "path": "ableton_bridge/NanookHitMaker/__init__.py",
+      "sha256": "90f16c613c983832d58d702c9eece9da510c6e3289914e91cc4e610d2b2b1f77"
+    },
+    {
+      "path": "ableton_bridge/NanookHitMaker/engine.py",
+      "sha256": "c2e2cd95c11a1a34052a019ea9b8f3f03da76dc704c72ed03fa634fdbb9d2b12"
+    }
+  ],
+  "references": [
+    "https://help.ableton.com/hc/en-us/articles/209072009-Installing-third-party-remote-scripts",
+    "https://docs.cycling74.com/apiref/lom/track/",
+    "https://docs.cycling74.com/apiref/lom/song/",
+    "https://docs.cycling74.com/apiref/lom/clip/",
+    "https://docs.cycling74.com/apiref/lom/mixerdevice/",
+    "https://docs.cycling74.com/apiref/lom/deviceparameter/"
+  ],
+  "distribution": "Instalar en cada Mac con Conectar Ableton.command; este manifiesto no acredita instalación en destino."
+}

@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "id": "production",
+  "name": "Pack Producción musical",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip",
+  "guide": "GUIA.html",
+  "tools": [
+    {
+      "id": "pack-production-letra",
+      "name": "Letra Local",
+      "version": "0.3.0",
+      "description": "Transcripción de canciones y separación vocal en el Mac.",
+      "requirements": "Apple Silicon, Python 3.11+, FFmpeg; descarga inicial de Whisper/Demucs. LM Studio para traducción.",
+      "category": "music",
+      "icon": "music",
+      "kind": "download",
+      "connectKind": "app",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-production-vitrina",
+      "name": "VITRINA",
+      "version": "0.1.0",
+      "description": "Panel de artista, carga MP3 y reproductor local.",
+      "requirements": "Node.js 22+. Un artista; sin publicación pública. Guarda sus archivos en .data.",
+      "category": "music",
+      "icon": "music",
+      "kind": "download",
+      "connectKind": "command",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-production-contrapista",
+      "name": "Contrapista",
+      "version": "0.3",
+      "description": "Análisis de mezcla, stems, MIDI y reconstrucción editable para Ableton.",
+      "requirements": "Python, NumPy y FFmpeg. IA opcional con modelos propios; Live 12 Suite para el Set. Reconstrucción aproximada.",
+      "category": "music",
+      "icon": "music",
+      "kind": "download",
+      "connectKind": "command",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+    },
+    {
+      "id": "pack-production-nanook",
+      "name": "NANOOK HIT MAKER",
+      "version": "0.7 · puente 0.7.1",
+      "description": "Proyecto musical integrado, historial y sincronización de notas y stems con Ableton.",
+      "requirements": "Python, FFmpeg y Node 22+. Preparar Contrapista para IA. Live detenido; audio sin Warp/bucles. MAGIC externo requiere configuración propia.",
+      "category": "music",
+      "icon": "music",
+      "kind": "download",
+      "connectKind": "command",
+      "stage": "prototype",
+      "logoPending": true,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Produccion-Musical-0.1.0-beta.zip"
+    },
+    {
+      "id": "site-appgprj_6ac0381682548191bc78e7f47f7e4661",
+      "name": "JAVITA",
+      "description": "Partituras, MIDI, hits, Aula hits y análisis de patrones musicales.",
+      "category": "creative",
+      "icon": "globe",
+      "kind": "web",
+      "url": "https://nanook-score-studio.nanook.chatgpt.site",
+      "requirements": "Web privada: cuenta y acceso autorizados. La precisión de transcripción requiere revisión. Modelos locales se preparan por separado.",
+      "version": "0.3.0",
+      "stage": "prototype"
+    },
+    {
+      "id": "pack-dj-magic",
+      "name": "MAGIC MUSIC PROMPT",
+      "description": "Ideas, letra y arreglo instrumental para Songs y Albums; propuestas y biblioteca musical.",
+      "category": "music",
+      "icon": "music",
+      "kind": "web",
+      "url": "https://nanook-suno-bridge.nanook.chatgpt.site/",
+      "requirements": "Web privada con acceso autorizado. API oficial de Suno pendiente; generar un prompt no genera automáticamente una canción.",
+      "version": "web · revisión 10"
+    }
+  ],
+  "sources": [
+    {
+      "folder": "letra-local",
+      "target": "Letra-Local"
+    },
+    {
+      "folder": "vitrina",
+      "target": "VITRINA"
+    },
+    {
+      "folder": "contrapista",
+      "target": "Contrapista"
+    },
+    {
+      "folder": "nanook-hit-maker",
+      "target": "NANOOK-HIT-MAKER"
+    }
+  ]
+}

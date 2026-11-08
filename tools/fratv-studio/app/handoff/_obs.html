@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8"><title>FRATV · panel para OBS</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root { --rojo:#B72A3A; --tinta:#100B18; --marfil:#F5F1E8; --noche:#08070C; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:32px; background:var(--noche); color:var(--marfil);
+         font-family:'Poppins',system-ui,sans-serif; }
+  h1 { font-family:'JetBrains Mono',monospace; font-size:15px; letter-spacing:.22em;
+       color:var(--rojo); margin:0 0 6px; }
+  .intro { font-size:14px; color:rgba(245,241,232,.6); max-width:70ch; margin:0 0 10px; line-height:1.6; }
+  .pasos { max-width:70ch; margin:0 0 30px; padding:16px 20px; border:1px solid rgba(183,42,58,.4);
+           border-radius:12px; font-size:13px; line-height:1.8; color:rgba(245,241,232,.75); }
+  .pasos b { color:var(--marfil); }
+  .rec { border:1px solid rgba(245,241,232,.14); border-radius:12px; margin-bottom:14px; overflow:hidden; }
+  .rec header { display:flex; align-items:baseline; gap:14px; padding:13px 18px;
+                background:rgba(245,241,232,.04); border-bottom:1px solid rgba(245,241,232,.1); }
+  h2 { font-size:16px; font-weight:600; margin:0; }
+  .meta { font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em;
+          color:rgba(245,241,232,.45); }
+  .cuerpo { display:grid; grid-template-columns:1fr 1fr; gap:18px; padding:16px 18px; }
+  @media (max-width:900px) { .cuerpo { grid-template-columns:1fr; } }
+  .campos { display:flex; flex-direction:column; gap:9px; }
+  label { display:flex; flex-direction:column; gap:4px; font-size:11px;
+          font-family:'JetBrains Mono',monospace; letter-spacing:.1em;
+          color:rgba(245,241,232,.5); text-transform:uppercase; }
+  input, select { background:var(--tinta); border:1px solid rgba(245,241,232,.18); color:var(--marfil);
+                  border-radius:7px; padding:8px 11px; font-size:14px; font-family:'Poppins',sans-serif; }
+  input:focus, select:focus { outline:none; border-color:var(--rojo); }
+  .sin { font-size:13px; color:rgba(245,241,232,.4); margin:0; }
+  .nota { font-size:12px; color:rgba(245,241,232,.5); line-height:1.5; margin:6px 0 0;
+          border-left:2px solid var(--rojo); padding-left:10px; }
+  .salida { display:flex; flex-direction:column; gap:10px; }
+  code.url { display:block; background:var(--tinta); border:1px solid rgba(245,241,232,.14);
+             border-radius:7px; padding:11px 13px; font-family:'JetBrains Mono',monospace;
+             font-size:11.5px; line-height:1.6; color:rgba(245,241,232,.8); word-break:break-all; min-height:62px; }
+  .acciones { display:flex; gap:8px; }
+  button { border:0; border-radius:7px; padding:9px 16px; font-size:13px; font-weight:600;
+           font-family:'Poppins',sans-serif; cursor:pointer; }
+  .copiar { background:var(--rojo); color:var(--marfil); flex:1; }
+  .copiar.ok { background:#2e7d4f; }
+  .abrir { background:rgba(245,241,232,.12); color:var(--marfil); }
+  .tam { font-size:12px; color:rgba(245,241,232,.45); margin:0; }
+  .tam b { color:var(--marfil); font-family:'JetBrains Mono',monospace; }
+  .temas { display:flex; gap:10px; align-items:center; margin-bottom:22px; flex-wrap:wrap; }
+  .temas label { flex-direction:row; align-items:center; gap:7px; }
+</style></head>
+<body>
+<h1>FRATV · PANEL PARA OBS</h1>
+<p class="intro">Rellena los campos, copia la URL y pégala en una fuente <b>Navegador</b> de OBS.</p>
+
+<div class="pasos">
+  <b>En OBS, una vez por recurso:</b><br>
+  1. Fuentes → <b>+</b> → <b>Navegador</b>.<br>
+  2. Pega la URL en <b>URL</b>. No marques "Archivo local".<br>
+  3. Ancho <b>1920</b>, alto <b>1080</b>.<br>
+  4. Marca <b>Apagar la fuente cuando no esté visible</b> y <b>Refrescar al activarse</b>: así la animación arranca desde cero cada vez que entras a la escena.<br>
+  5. Para relanzar a mano: clic derecho en la fuente → <b>Actualizar</b>.
+</div>
+
+<div class="temas">
+  <label>Tema
+    <select id="tema">
+      <option value="fratv-oficial">fratv-oficial</option>
+      <option value="fratv-invertido">fratv-invertido</option>
+      <option value="fratv-mono-marfil">fratv-mono-marfil</option>
+      <option value="fratv-mono-negro">fratv-mono-negro</option>
+    </select>
+  </label>
+  <label>Tipografía
+    <select id="tipo">
+      <option value="aprobado">aprobado</option>
+      <option value="editorial">editorial</option>
+      <option value="neutro">neutro</option>
+    </select>
+  </label>
+  <label>Guías de área segura
+    <select id="safe"><option value="0">no</option><option value="1">sí</option></select>
+  </label>
+</div>
+
+<section class="rec" data-file="resources/ident-long.html">
+  <header>
+    <h2>Logo Ident</h2>
+    <span class="meta">ident-long · 1900 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Entrada<select data-k="variant"><option value="1a-cortina">1a-cortina</option><option value="1b-contenedor" selected>1b-contenedor</option><option value="1c-inclinacion">1c-inclinacion</option><option value="1d-asentado">1d-asentado</option></select></label><label>Bajada<input data-k="tagline" value="CONTENIDO DIGITAL HUMANO"></label><p class="nota">El play no entra, no sale y no se desplaza. Pose final = SVG maestro. Cuatro entradas aprobadas al mismo lockup: 1a ident de programa, 1b uso diario (por defecto), 1c con personaje, 1d base del Short. Una transmision usa una sola de principio a fin.</p></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/ident-short.html">
+  <header>
+    <h2>Logo Ident Short</h2>
+    <span class="meta">ident-short · 900 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><p class="sin">Sin campos editables.</p><p class="nota">Recorte de la entrada 1d (Asentado). Misma pose final.</p></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/stinger.html">
+  <header>
+    <h2>Stinger de transición</h2>
+    <span class="meta">stinger · 800 ms · opaco</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><p class="sin">Sin campos editables.</p><p class="nota">Cubre por completo el cuadro al 50 % del recorrido. Ahí corta OBS.</p></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo opaco, va detrás de todo</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/flag.html">
+  <header>
+    <h2>Mosca de canal</h2>
+    <span class="meta">flag · permanente (loop) · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Variante<select data-k="variant"><option value="marfil" selected>marfil</option><option value="rojo">rojo</option><option value="negro">negro</option></select></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/live-badge.html">
+  <header>
+    <h2>EN VIVO</h2>
+    <span class="meta">live-badge · 1500 ms · loop · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Etiqueta<input data-k="label" value="EN VIVO"></label><label>Variante<select data-k="variant"><option value="pastilla" selected>pastilla</option><option value="reloj">reloj</option><option value="audio">audio</option></select></label><label>Reloj<input data-k="clock" value="auto" placeholder="clock"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/countdown.html">
+  <header>
+    <h2>Cuenta regresiva</h2>
+    <span class="meta">countdown · permanente (loop) · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Hora objetivo<input data-k="target" value="" placeholder="datetime"></label><label>Rótulo<input data-k="caption" value="PARA EMPEZAR"></label><label>Variante<select data-k="variant"><option value="largo" selected>largo</option><option value="corto">corto</option><option value="barra">barra</option></select></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/bumper-in.html">
+  <header>
+    <h2>EN BREVE COMIENZA</h2>
+    <span class="meta">bumper-in · 7000 ms · loop · opaco</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Título<input data-k="title" value="EN BREVE COMIENZA"></label><label>Subtítulo<input data-k="subtitle" value="GRACIAS POR ACOMPAÑARNOS"></label><label>Cuenta regresiva<input data-k="clock" value="" placeholder="clock"></label><label>Usuario<input data-k="handle" value="@FRATV"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo opaco, va detrás de todo</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/bumper-out.html">
+  <header>
+    <h2>GRACIAS POR VER</h2>
+    <span class="meta">bumper-out · 7000 ms · loop · opaco</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Título<input data-k="title" value="GRACIAS POR VER"></label><label>Subtítulo<input data-k="subtitle" value="NOS VEMOS EN EL PRÓXIMO PROGRAMA"></label><label>Redes<input data-k="socials" value="@FRATV;YOUTUBE · TWITCH · TIKTOK" placeholder="textlist"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo opaco, va detrás de todo</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/lower-third.html">
+  <header>
+    <h2>Lower Third</h2>
+    <span class="meta">lower-third · 9000 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Nombre<input data-k="name" value="PABLO HIDALGO"></label><label>Cargo<input data-k="role" value="CONDUCTOR · FRATV"></label><label>Tema<input data-k="topic" value=""></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/program-title.html">
+  <header>
+    <h2>Título de programa</h2>
+    <span class="meta">program-title · 8000 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Etiqueta<input data-k="kicker" value="NUEVO EPISODIO"></label><label>Título<input data-k="title" value="HISTORIAS DE BARRIO"></label><label>Datos<input data-k="meta" value="JUEVES · 21:00 · @FRATV"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/schedule.html">
+  <header>
+    <h2>A continuación y programación</h2>
+    <span class="meta">schedule · 8000 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Etiqueta<input data-k="label" value="A CONTINUACIÓN"></label><label>Día<input data-k="dayLabel" value="HOY"></label><label>Filas<input data-k="rows" value="21:00|HISTORIAS DE BARRIO|EN VIVO;22:00|ENTREVISTA DEL JUEVES|ESTRENO;23:00|RESUMEN DE LA SEMANA|REPETICIÓN" placeholder="rows"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/engagement.html">
+  <header>
+    <h2>Comentario, votación y meta</h2>
+    <span class="meta">engagement · 8000 ms · loop · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Módulos<input data-k="modules" value="comentario;votacion;meta" placeholder="multienum"></label><label>Usuario<input data-k="handle" value="@ESPECTADOR"></label><label>Comentario<input data-k="comment" value=""></label><label>Opción A<input data-k="pollA" value="SÍ"></label><label>Opción B<input data-k="pollB" value="NO"></label><label>Porcentaje A<input data-k="pollValue" value="66" placeholder="number"></label><label>Rótulo de meta<input data-k="goalLabel" value="META DEL MES"></label><label>Progreso<input data-k="goalValue" value="78" placeholder="number"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/sponsor.html">
+  <header>
+    <h2>Sponsor</h2>
+    <span class="meta">sponsor · 8000 ms · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Rótulo<input data-k="label" value="PRESENTADO POR"></label><label>Logo del sponsor<input data-k="logo" value="" placeholder="image"></label><p class="nota">Única excepción al fondo negro: placa marfil para que respire cualquier logo ajeno.</p></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/ticker.html">
+  <header>
+    <h2>Ticker</h2>
+    <span class="meta">ticker · 18000 ms · loop · con alfa</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Etiqueta<input data-k="label" value="AHORA"></label><label>Mensajes<input data-k="items" value="PRÓXIMO PROGRAMA 21:00;ESCRIBE CON #FRATV;SUSCRÍBETE AL CANAL" placeholder="textlist"></label><label>Velocidad<input data-k="speed" value="18" placeholder="number"></label><p class="nota">Va de borde a borde: única excepción al área segura. El texto se recorta en el borde de la etiqueta.</p></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo transparente</p>
+    </div>
+  </div>
+</section>
+<section class="rec" data-file="resources/end-credits.html">
+  <header>
+    <h2>End Credits</h2>
+    <span class="meta">end-credits · 22000 ms · loop · opaco</span>
+  </header>
+  <div class="cuerpo">
+    <div class="campos"><label>Créditos<input data-k="rows" value="DIRECCIÓN|PABLO HIDALGO;PRODUCCIÓN|EQUIPO FRATV;CÁMARA|NOMBRE APELLIDO;MONTAJE|NOMBRE APELLIDO" placeholder="rows"></label><label>Velocidad<input data-k="speed" value="22" placeholder="number"></label></div>
+    <div class="salida">
+      <code class="url"></code>
+      <div class="acciones">
+        <button class="copiar">Copiar URL para OBS</button>
+        <button class="abrir">Ver</button>
+      </div>
+      <p class="tam">Tamaño en OBS: <b>1920 × 1080</b> · fondo opaco, va detrás de todo</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  var BASE = location.origin + location.pathname.replace(/[^/]*$/, '');
+
+  function urlDe(rec) {
+    var p = new URLSearchParams();
+    rec.querySelectorAll('[data-k]').forEach(function (el) {
+      if (el.value !== '') p.set(el.dataset.k, el.value);
+    });
+    p.set('tema', document.getElementById('tema').value);
+    p.set('tipo', document.getElementById('tipo').value);
+    if (document.getElementById('safe').value === '1') p.set('safe', '1');
+    return BASE + rec.dataset.file + '?' + p.toString();
+  }
+
+  function pintar() {
+    document.querySelectorAll('.rec').forEach(function (rec) {
+      rec.querySelector('.url').textContent = urlDe(rec);
+    });
+  }
+
+  document.addEventListener('input', pintar);
+  document.addEventListener('change', pintar);
+
+  document.addEventListener('click', function (e) {
+    var rec = e.target.closest('.rec');
+    if (!rec) return;
+    if (e.target.classList.contains('copiar')) {
+      navigator.clipboard.writeText(urlDe(rec));
+      e.target.textContent = 'Copiada';
+      e.target.classList.add('ok');
+      setTimeout(function () { e.target.textContent = 'Copiar URL para OBS'; e.target.classList.remove('ok'); }, 1400);
+    }
+    if (e.target.classList.contains('abrir')) window.open(urlDe(rec), '_blank');
+  });
+
+  pintar();
+</script>
+</body></html>

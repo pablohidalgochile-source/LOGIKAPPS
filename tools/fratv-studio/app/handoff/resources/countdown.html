@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Cuenta regresiva</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: var(--safe-top) var(--safe-x) var(--safe-bottom); border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .caja { position: absolute; background: var(--fr-plate); border-radius: var(--fr-radius-plate);
+          display: flex; align-items: center; }
+  /* Reloj largo */
+  .largo { right: var(--safe-x); top: var(--safe-flag); gap:calc(31 * var(--fr-u)); padding:calc(28 * var(--fr-u)) calc(38 * var(--fr-u)); }
+  .largo .reloj { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(59 * var(--fr-u));
+                  letter-spacing: .06em; color: var(--fr-text); font-variant-numeric: tabular-nums; }
+  .largo .rotulo { font-family: var(--fr-font-mono); font-size:calc(20 * var(--fr-u)); letter-spacing: .16em;
+                   line-height: 1.5; color: var(--fr-text-dim); max-width: 7em; }
+  /* Pastilla corta */
+  .corto { right: var(--safe-x); top: 32%; gap:calc(28 * var(--fr-u)); padding:calc(24 * var(--fr-u)) calc(32 * var(--fr-u));
+           background: var(--fr-accent); border-radius: var(--fr-radius-pill); }
+  .corto .reloj { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(45 * var(--fr-u));
+                  color: var(--fr-on-accent); font-variant-numeric: tabular-nums; }
+  .corto .rotulo { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(22 * var(--fr-u));
+                   letter-spacing: .18em; color: var(--fr-on-accent); }
+  /* Barra de bloque */
+  .barra { left: var(--safe-x); bottom: var(--safe-bottom); width: 34%; flex-direction: column; align-items: stretch;
+           gap:calc(19 * var(--fr-u)); padding:calc(28 * var(--fr-u)) calc(38 * var(--fr-u)); }
+  .barra .fila { display: flex; justify-content: space-between; align-items: baseline; }
+  .barra .rotulo { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(22 * var(--fr-u));
+                   letter-spacing: .16em; color: var(--fr-text-dim); }
+  .barra .reloj { font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(38 * var(--fr-u));
+                  color: var(--fr-text); font-variant-numeric: tabular-nums; }
+  .barra .riel { height:calc(14 * var(--fr-u)); border-radius:calc(9 * var(--fr-u)); background: var(--fr-hairline); overflow: hidden; }
+  .barra .riel i { display: block; height: 100%; width: 0%; background: var(--fr-accent); border-radius:calc(9 * var(--fr-u)); }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="caja largo" data-v="largo">
+    <span class="reloj" data-field="reloj">00:04:58</span>
+    <span class="rotulo" data-field="caption">PARA EMPEZAR</span>
+  </div>
+
+  <div class="caja corto" data-v="corto" hidden>
+    <span class="rotulo" data-field="caption">PARA EMPEZAR</span>
+    <span class="reloj" data-field="reloj">04:58</span>
+  </div>
+
+  <div class="caja barra" data-v="barra" hidden>
+    <div class="fila">
+      <span class="rotulo" data-field="caption">PARA EMPEZAR</span>
+      <span class="reloj" data-field="reloj">04:58</span>
+    </div>
+    <div class="riel"><i></i></div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+var q = new URLSearchParams(location.search);
+var v = q.get('variant') || 'largo';
+document.querySelectorAll('[data-v]').forEach(function (el) { el.hidden = el.dataset.v !== v; });
+
+var api = window.FRATVRuntime.create({ id: 'countdown', durationMs: 0, loop: true, alpha: true });
+
+/* La cuenta corre fuera de las animaciones: no debe romper seek(). */
+var objetivo = q.get('target') ? new Date(q.get('target')).getTime() : Date.now() + 298000;
+var total = Math.max(1, objetivo - Date.now());
+var pad = function (n) { return String(n).padStart(2, '0'); };
+
+function pintar() {
+  var falta = Math.max(0, objetivo - Date.now());
+  var s = Math.floor(falta / 1000);
+  var largo = pad(Math.floor(s / 3600)) + ':' + pad(Math.floor(s / 60) % 60) + ':' + pad(s % 60);
+  var corto = pad(Math.floor(s / 60)) + ':' + pad(s % 60);
+  document.querySelectorAll('[data-field="reloj"]').forEach(function (el) {
+    el.textContent = el.closest('.largo') ? largo : corto;
+  });
+  var riel = document.querySelector('.riel i');
+  if (riel) riel.style.width = (100 - (falta / total) * 100).toFixed(2) + '%';
+}
+pintar();
+setInterval(pintar, 1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+{
+  "date": "2026-11-05",
+  "files": [
+    {
+      "module": "JAVITA",
+      "version": "0.3.0",
+      "source": "hits-core.mjs",
+      "path": "public/vendor/javita/hits-core.mjs",
+      "sha256": "a26c4cf1f0c088985e144bbafa5d633ac9443410bce5a8516780baf76e5b31f2"
+    },
+    {
+      "module": "JAVITA",
+      "version": "0.3.0",
+      "source": "music.mjs",
+      "path": "public/vendor/javita/music.mjs",
+      "sha256": "1a4182821df1a1e9f10987ee4e0611a3998b94c7785ad87189cf09173b41226a"
+    },
+    {
+      "module": "JAVITA",
+      "version": "0.3.0",
+      "source": "projects.mjs",
+      "path": "public/vendor/javita/projects.mjs",
+      "sha256": "dfd32f9adb7d5627dae59e96d2932fa0af0f8c41231b12d19d1368102ed7fefd"
+    },
+    {
+      "module": "OpenSheetMusicDisplay",
+      "version": "1.9.2",
+      "path": "public/vendor/opensheetmusicdisplay.min.js",
+      "sha256": "54d8e763a75559f78308d09b7bf36cd33f538a280c3c816b34355240335d6630"
+    },
+    {
+      "module": "OpenSheetMusicDisplay",
+      "version": "1.9.2",
+      "path": "public/vendor/LICENSE-opensheetmusicdisplay",
+      "sha256": "261655f10cf6b90bd062fbe3c7fa4dd03e0324fdfc4b53a3c7d626e3aec694a8"
+    },
+    {
+      "module": "Contrapista",
+      "version": "0.3",
+      "source": "engine.py",
+      "path": "vendor/contrapista/engine.py",
+      "source_sha256": "eebd748fb30233aec3b3d3b60fd608984ae1bb77b002da307eb3e2ff0e0ef8e4",
+      "sha256": "eebd748fb30233aec3b3d3b60fd608984ae1bb77b002da307eb3e2ff0e0ef8e4",
+      "adaptations": "Sin cambios."
+    },
+    {
+      "module": "Contrapista",
+      "version": "0.3",
+      "source": "music.py",
+      "path": "vendor/contrapista/music.py",
+      "source_sha256": "8ceb53ea56915ecc6aac698d518b4493f96894aa042ca78159e6ce6779240227",
+      "sha256": "8ceb53ea56915ecc6aac698d518b4493f96894aa042ca78159e6ce6779240227",
+      "adaptations": "Sin cambios."
+    },
+    {
+      "module": "Contrapista",
+      "version": "0.3",
+      "source": "ableton.py",
+      "path": "vendor/contrapista/ableton.py",
+      "source_sha256": "11f66e510bbafac9a426c52ec03ad19cdb1cbb74bde26cac11bab90ec198e201",
+      "sha256": "11f66e510bbafac9a426c52ec03ad19cdb1cbb74bde26cac11bab90ec198e201",
+      "adaptations": "Sin cambios."
+    },
+    {
+      "module": "Contrapista",
+      "version": "0.3",
+      "source": "ai.py",
+      "path": "vendor/contrapista/ai.py",
+      "source_sha256": "116b8528c7acae7781c78824c095ca20bfd0a0cd51a82136f8b5260e8564ffc2",
+      "sha256": "ab48a346549898e0ed8faa25d06762e1e38121544394cf3b83b521fffc741a64",
+      "adaptations": "Rutas de runtime/modelos por entorno; ningún cambio de algoritmo."
+    },
+    {
+      "module": "Contrapista",
+      "version": "0.3",
+      "source": "ai_worker.py",
+      "path": "vendor/contrapista/ai_worker.py",
+      "source_sha256": "152dc22addd3a035ba090c2090583d7f6085315d90260a95a0ac634a6fcfd384",
+      "sha256": "b229466f0d32e4e80f93c48ac1d032dbdd578fd57c78e363190c6edf6bbcba77",
+      "adaptations": "Rutas de runtime/modelos por entorno; ningún cambio de algoritmo."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "generation.ts",
+      "path": "vendor/magic/source/generation.ts",
+      "sha256": "c82ababeb872af00401ad107ea26db4f05cdbdc817e16382cbfe2019ae4501de",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "bridge.ts",
+      "path": "vendor/magic/source/bridge.ts",
+      "sha256": "f57eef1391f447d39cb8538cfa67e0b322a430f5fa6c2c5a95a2052c4ad8b617",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "music-knowledge.ts",
+      "path": "vendor/magic/source/music-knowledge.ts",
+      "sha256": "629ae86c798d234bb0408ea33355ffdeefb77a7ed5dd175abd5fbf36caecc593",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "music-recipes.ts",
+      "path": "vendor/magic/source/music-recipes.ts",
+      "sha256": "60debbecba6d9d3ae7c055e7904f5090d43e48b4fd1006eca5e2d5c6aa85ebce",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "workspace.ts",
+      "path": "vendor/magic/source/workspace.ts",
+      "sha256": "a2fff21c1cc4810af43d54e3325c09022122614e020817a7e01701ab27e47abf",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "source": "library.ts",
+      "path": "vendor/magic/source/library.ts",
+      "sha256": "9eabce08ab0701411d7dc504e22ab0f3bbdb8220ce3a4211be58108b54395907",
+      "adaptations": "Copia sin cambios; generación y biblioteca revisadas."
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "path": "vendor/magic/engine.mjs",
+      "sha256": "34ec4d06d84ef691450588341c81c18f6c14a6b578fa4be627b449a31781f5a0"
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "path": "public/vendor/magic-contracts.mjs",
+      "sha256": "aa3b1b79d4351da31f6014d8b4c9742ed07358b84b6b778df5d5dbb819c4c1b9"
+    },
+    {
+      "module": "MAGIC MUSIC PROMPT",
+      "version": "0.1.0",
+      "knowledgeVersion": "2026-11-05.1",
+      "path": "public/vendor/magic-recipes.json",
+      "sha256": "12f55b352149fd2b200ec7575776c9a657c38711611ba22cbdc8ee52ae280b48"
+    }
+  ]
+}

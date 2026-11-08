@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "streaming",
+  "name": "Pack Fraternidad / Streaming",
+  "version": "0.1.0-beta",
+  "archiveName": "LOGIKAPPS-Pack-Streaming-0.1.0-beta.zip",
+  "guide": "GUIA.html",
+  "tools": [
+    {
+      "id": "pack-streaming-fratv",
+      "name": "FRATV Studio y relojes OBS",
+      "version": "0.2.0 · kit actualizado",
+      "description": "Editor de 35 recursos, cuatro temporizadores y dock de control para OBS.",
+      "requirements": "Apple Silicon · Node 22.18+, Chrome, FFmpeg y OBS por separado. Conserva las escenas existentes; consulta la guía.",
+      "category": "creative",
+      "icon": "film",
+      "kind": "download",
+      "connectKind": "command",
+      "stage": "prototype",
+      "logoPending": false,
+      "url": "https://github.com/pablohidalgochile-source/LOGIKAPPS/releases/download/v0.7.0-beta.1/LOGIKAPPS-Pack-Streaming-0.1.0-beta.zip"
+    }
+  ],
+  "sources": [
+    {
+      "folder": "fratv-studio",
+      "target": "FRATV-Studio"
+    }
+  ]
+}

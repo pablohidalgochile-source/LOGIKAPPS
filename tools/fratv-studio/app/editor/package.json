@@ -1,0 +1,36 @@
+{
+  "name": "fratv-overlay-editor",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5178 --strictPort",
+    "test": "node --experimental-strip-types --test tests/model.test.ts tests/projects.test.ts",
+    "test:browser": "node tests/browser.mjs",
+    "test:server": "node --test server/server.test.mjs",
+    "test:projects": "node tests/projects-browser.mjs",
+    "test:production": "node tests/production-browser.mjs",
+    "test:pilots": "node tests/pilots-browser.mjs",
+    "test:fraternidad": "node tests/fraternidad-catalog.mjs",
+    "test:fraternidad-production": "node server/fraternidad-browser.mjs",
+    "test:clock-rounding": "node server/clock-rounding-browser.mjs",
+    "test:fraternidad-editor": "node tests/fraternidad-editor.mjs",
+    "test:group-control": "node server/group-control-browser.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  }
+}

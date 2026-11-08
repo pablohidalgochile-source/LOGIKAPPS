@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #08070C; }
+  a { color: #B72A3A; }
+  a:hover { color: #F5F1E8; }
+
+  /* 1a · cortina lateral */
+  @keyframes a-tile { 0%,3% { clip-path:inset(0 100% 0 0) } 14%,70% { clip-path:inset(0 0 0 0) } 84%,100% { clip-path:inset(0 0 0 100%) } }
+  @keyframes a-f    { 0%,9% { clip-path:inset(0 100% 0 0) } 20%,66% { clip-path:inset(0 0 0 0) } 80%,100% { clip-path:inset(0 0 0 100%) } }
+  @keyframes a-play { 0%,15% { clip-path:inset(0 100% 0 0) } 26%,62% { clip-path:inset(0 0 0 0) } 76%,100% { clip-path:inset(0 0 0 100%) } }
+  @keyframes a-word { 0%,24% { clip-path:inset(0 100% 0 0) } 36%,58% { clip-path:inset(0 0 0 0) } 70%,100% { clip-path:inset(0 0 0 100%) } }
+
+  /* 1b · el contenedor primero */
+  @keyframes b-tile { 0%,2% { opacity:0; transform:scale(.94) } 14%,72% { opacity:1; transform:scale(1) } 88%,100% { opacity:0; transform:scale(1) } }
+  @keyframes b-in   { 0%,12% { clip-path:inset(100% 0 0 0) } 26%,68% { clip-path:inset(0 0 0 0) } 82%,100% { clip-path:inset(100% 0 0 0) } }
+  @keyframes b-word { 0%,26% { clip-path:inset(0 100% 0 0); opacity:0 } 38%,62% { clip-path:inset(0 0 0 0); opacity:1 } 76%,100% { clip-path:inset(0 0 0 0); opacity:0 } }
+
+  /* 1c · una sola inclinación */
+  @keyframes c-fade  { 0%,4% { opacity:0 } 16%,72% { opacity:1 } 86%,100% { opacity:0 } }
+  @keyframes c-fade2 { 0%,10% { opacity:0 } 22%,70% { opacity:1 } 84%,100% { opacity:0 } }
+  @keyframes c-tilt  { 0%,18% { opacity:0; transform:rotate(0deg) } 26% { opacity:1; transform:rotate(0deg) } 34% { opacity:1; transform:rotate(5deg) } 46%,68% { opacity:1; transform:rotate(0deg) } 82%,100% { opacity:0; transform:rotate(0deg) } }
+  @keyframes c-word  { 0%,36% { opacity:0 } 46%,64% { opacity:1 } 78%,100% { opacity:0 } }
+
+  /* 1d · calado que crece */
+  @keyframes d-tile { 0%,3% { opacity:0 } 12%,74% { opacity:1 } 88%,100% { opacity:0 } }
+  @keyframes d-f    { 0%,12% { opacity:0; transform:scale(.84) } 24%,70% { opacity:1; transform:scale(1) } 84%,100% { opacity:0; transform:scale(1) } }
+  @keyframes d-play { 0%,20% { opacity:0; transform:scale(.82) } 32%,66% { opacity:1; transform:scale(1) } 80%,100% { opacity:0; transform:scale(1) } }
+  @keyframes d-word { 0%,34% { opacity:0 } 44%,62% { opacity:1 } 76%,100% { opacity:0 } }
+</style>
+</helmet>
+<div style="width:1720px;margin:0 auto;padding:64px 60px 110px;font-family:Poppins,system-ui,sans-serif;color:#F5F1E8;background:#08070C;box-sizing:border-box">
+
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;border-bottom:1px solid rgba(245,241,232,0.16);padding-bottom:24px">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#B72A3A;text-transform:uppercase">Logo Ident · cuatro opciones</div>
+      <div style="font-size:44px;font-weight:700;letter-spacing:-0.02em;margin-top:10px;line-height:1">El play no se mueve de su sitio</div>
+      <div style="font-size:15px;color:rgba(245,241,232,0.62);margin-top:8px;max-width:900px;text-wrap:pretty">Sin entrada ni salida del personaje y sin traslación: el play siempre está en su posición oficial. Lo que cambia es <b>cómo aparece la marca a su alrededor</b>. Las cuatro terminan exactamente en el lockup del master y salen limpias a alfa.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(245,241,232,0.5);text-align:right;flex-shrink:0">
+      <div>CICLO 6,5 S · 60 FPS</div>
+      <div>SIN BLUR NI FILTROS</div>
+      <div style="color:#B72A3A">ELIGE UNA</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:36px">
+
+    <div id="1a" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:4px 7px">1a</div>
+          <div style="font-size:18px;font-weight:600">Cortina lateral</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">CLIP-PATH · 4 TIEMPOS</div>
+      </div>
+      <div style="position:relative;aspect-ratio:16/9;background:#08070C;display:flex;align-items:center;justify-content:center">
+        <div style="position:relative;width:78%;aspect-ratio:8/3">
+          <div style="position:absolute;inset:0;animation:a-tile 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:a-f 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:a-play 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path><g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:a-word 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block">
+              <text x="650" y="333" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165"><tspan fill="#F5F1E8">FRA</tspan><tspan fill="#B72A3A">TV</tspan></text>
+              <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#F5F1E8">CONTENIDO DIGITAL HUMANO</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">Un barrido invisible cruza el cuadro y va descubriendo contenedor, F, play y wordmark en cuatro tiempos. El play se revela, no llega. Es la más televisiva y la que mejor dialoga con el stinger, que usa el mismo gesto.</div>
+    </div>
+
+    <div id="1b" style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#F5F1E8;background:#B72A3A;border-radius:4px;padding:4px 7px">1b</div>
+          <div style="font-size:18px;font-weight:600">El contenedor primero</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">ESCALA + MÁSCARA VERTICAL</div>
+      </div>
+      <div style="position:relative;aspect-ratio:16/9;background:#08070C;display:flex;align-items:center;justify-content:center">
+        <div style="position:relative;width:78%;aspect-ratio:8/3">
+          <div style="position:absolute;inset:0;animation:b-tile 6.5s cubic-bezier(.22,.9,.24,1) infinite;transform-origin:18.75% 50%">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:b-in 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block">
+              <g transform="translate(90 195) scale(.75)">
+                <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+                <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+              </g>
+            </svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:b-word 6.5s cubic-bezier(.3,0,.15,1) infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block">
+              <text x="650" y="333" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165"><tspan fill="#F5F1E8">FRA</tspan><tspan fill="#B72A3A">TV</tspan></text>
+              <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#F5F1E8">CONTENIDO DIGITAL HUMANO</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">El contenedor crece un 6 % y se asienta; el interior emerge de abajo hacia arriba como si el contenedor lo revelara. Un solo gesto, muy limpio y muy corto: la opción más segura para usar mil veces sin cansar.</div>
+    </div>
+
+    <div id="1c" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:4px 7px">1c</div>
+          <div style="font-size:18px;font-weight:600">Una sola inclinación</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">ROTACIÓN 5° EN SU EJE</div>
+      </div>
+      <div style="position:relative;aspect-ratio:16/9;background:#08070C;display:flex;align-items:center;justify-content:center">
+        <div style="position:relative;width:78%;aspect-ratio:8/3">
+          <div style="position:absolute;inset:0;animation:c-fade 6.5s ease infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:c-fade2 6.5s ease infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:c-tilt 6.5s cubic-bezier(.34,.8,.2,1) infinite;transform-origin:23.1% 50%">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path><g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:c-word 6.5s ease infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block">
+              <text x="650" y="333" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165"><tspan fill="#F5F1E8">FRA</tspan><tspan fill="#B72A3A">TV</tspan></text>
+              <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#F5F1E8">CONTENIDO DIGITAL HUMANO</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">La marca aparece por opacidad y el único movimiento del ident es la inclinación de 5° del play sobre su propio eje, que da paso al wordmark. Conserva el personaje sin desplazarlo: es la que más se parece al brief original con tu restricción aplicada.</div>
+    </div>
+
+    <div id="1d" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:20px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:12px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:4px 7px">1d</div>
+          <div style="font-size:18px;font-weight:600">Asentado</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">ESCALA EN EL PROPIO CENTRO</div>
+      </div>
+      <div style="position:relative;aspect-ratio:16/9;background:#08070C;display:flex;align-items:center;justify-content:center">
+        <div style="position:relative;width:78%;aspect-ratio:8/3">
+          <div style="position:absolute;inset:0;animation:d-tile 6.5s ease infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:d-f 6.5s cubic-bezier(.22,.9,.24,1) infinite;transform-origin:11.4% 50%">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:d-play 6.5s cubic-bezier(.22,.9,.24,1) infinite;transform-origin:23.1% 50%">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path><g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></svg>
+          </div>
+          <div style="position:absolute;inset:0;animation:d-word 6.5s ease infinite">
+            <svg viewBox="0 0 1600 600" style="width:100%;display:block">
+              <text x="650" y="333" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-size="165"><tspan fill="#F5F1E8">FRA</tspan><tspan fill="#B72A3A">TV</tspan></text>
+              <text x="657" y="406" font-family="Avenir Next,Arial,sans-serif" font-size="27" font-weight="700" letter-spacing="5" fill="#F5F1E8">CONTENIDO DIGITAL HUMANO</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">Cada pieza se asienta escalando desde su propio centro —F al 84 %, play al 82 %— sin recorrer ni un píxel. Da sensación de ensamblaje y funciona bien en versiones muy cortas, tipo Logo Ident Short de 0,8 s.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:36px;padding-top:26px;border-top:1px solid rgba(245,241,232,0.16);display:grid;grid-template-columns:1fr 1fr;gap:40px">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">MI RECOMENDACIÓN</div>
+      <div style="font-size:13.5px;line-height:1.7;color:rgba(245,241,232,0.68);margin-top:12px;text-wrap:pretty"><a href="#1b">1b</a> como ident de uso diario: un gesto, sin desplazamientos, imposible de cansar y muy corta de recortar para el Short. <a href="#1a">1a</a> como ident de programa, porque comparte el barrido con el stinger y encadena las dos piezas. <a href="#1c">1c</a> si quieres conservar algo del personaje sin que se mueva de sitio; <a href="#1d">1d</a> es la más neutra de las cuatro.</div>
+    </div>
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">CONSECUENCIA SOBRE LO YA APROBADO</div>
+      <div style="font-size:13.5px;line-height:1.7;color:rgba(245,241,232,0.68);margin-top:12px;text-wrap:pretty">Con esta restricción caen las tres entradas y las tres salidas de los storyboards: el anfitrión, el curioso, el director, la despedida, el último en salir y el guía dependían todos del desplazamiento del play. La permanencia tranquila sigue válida solo si acepta la inclinación en el eje. Dime cuál de las cuatro adopto y reescribo el paquete completo con ese lenguaje.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -639,3 +639,38 @@ footer a:hover { color: var(--acid); }
   html { scroll-behavior: auto; }
   * { transition: none !important; }
 }
+
+/* Local Shazam assistant shares the Sets surfaces and actions. */
+.shazam-scanner { padding-bottom: 28px; margin-bottom: 28px; border-bottom: 1px solid #cecec6; }
+.shazam-scanner .section-kicker { color: #594078; }
+.shazam-scanner h2 { font-size: 25px; line-height: 1.15; margin: 12px 0; }
+.shazam-scanner p { color: #56565b; font-size: 14px; line-height: 1.6; }
+.shazam-scanner small { display: block; color: #56565b; font-size: 12px; line-height: 1.6; }
+.shazam-setup { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 16px 0; }
+.shazam-setup > a, .shazam-setup > button { font-size: 12px; }
+.shazam-setup > a:last-child { text-decoration: underline; text-underline-offset: 3px; }
+.shazam-setup > button:not(.sample-btn) { background: var(--panel-2); border: 1px solid var(--line); color: var(--paper); padding: 10px 14px; cursor: pointer; }
+.shazam-controls select { display: block; width: 100%; margin: 10px 0 16px; padding: 12px; background: var(--panel-2); color: var(--paper); border: 1px solid var(--line); font: inherit; }
+.shazam-scanner .shazam-problem { color: #843b0c; }
+.shazam-job { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.shazam-job strong { overflow-wrap: anywhere; }
+.shazam-job progress { width: 100%; height: 8px; accent-color: var(--acid); }
+.shazam-job details { margin: 16px 0; font-size: 13px; }
+
+/* Set review workspace: shares Track Hunt typography, acid and dark surfaces. */
+.review-open{margin-top:16px;padding:14px;background:var(--acid);color:#111;border:0;cursor:pointer;font-weight:800;width:100%}
+.set-review-shade{position:fixed;inset:0;z-index:2000;background:#000b;padding:24px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.set-review{background:#101112;color:#eee;border:1px solid #3d4237;width:min(1180px,100%);max-height:94vh;overflow:auto;padding:28px;box-shadow:0 20px 100px #000;font-family:var(--font-body,Arial,sans-serif);text-align:left;transform:none}
+.set-review header{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.set-review h2{font-size:25px;margin:10px 0}.set-review h3{font-size:18px;color:#f4f4e9}.set-review p,.set-review small{color:#b6b8ae;font-size:13px;line-height:1.6}.set-review .section-kicker{color:var(--acid)}
+.set-review section{margin:26px 0;padding-top:18px;border-top:1px solid #34382e}.set-review button{cursor:pointer;background:#23281c;color:#ecf4df;border:1px solid #59673e;padding:10px;font:inherit;font-size:12px}.set-review button:disabled{opacity:.4;cursor:not-allowed}.set-review button:focus-visible,.set-review input:focus-visible,.set-review select:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+.review-stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}.review-stats span{background:#1c2118;padding:14px;color:#ccc;font-size:13px}.review-stats b{color:var(--acid);font-size:24px;margin-right:6px}.set-review .review-save{color:#c3e78b}
+.review-timeline{position:relative;height:58px;background:repeating-linear-gradient(90deg,#1c2118 0,#1c2118 9.9%,#3d4237 10%);margin:25px 8px 0}.set-review .timeline-mark{position:absolute;top:4px;width:8px;height:24px;padding:0;background:var(--acid);border:0;transform:translateX(-50%)}.set-review .timeline-mark.unknown{top:34px;height:18px;background:#e7a545}.set-review .timeline-mark.rejected{background:#888}.timeline-axis{display:flex;justify-content:space-between;font-size:12px;color:#a9ae9e;margin-top:8px}
+.review-range-inputs,.review-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.set-review input,.set-review select{display:block;background:#191c17;color:#f0f2eb;border:1px solid #4a503e;padding:10px;width:100%;font:inherit;font-size:14px}.set-review label{color:#acb2a2;font-size:12px;min-width:0}.review-range-inputs input{width:130px}.review-filters input{flex:1;min-width:180px}.review-filters select{width:auto}.review-gaps{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0}.review-message{color:var(--acid);position:sticky;top:0;background:#101112;padding:12px 0;z-index:2;min-height:25px}.review-row{padding:18px 0;border-bottom:1px solid #32362c}.review-row-meta{display:flex;gap:14px;align-items:center;font-size:12px;color:#b5bba9}.review-edit{display:grid;grid-template-columns:1fr 1.5fr 180px auto;gap:10px;align-items:end}.set-review .review-original{font-size:12px;color:#929a85}.set-review footer{font-size:12px;color:#a1a892;margin-top:25px}.set-review-shade .set-review *{box-sizing:border-box}
+@media(max-width:700px){.set-review-shade{padding:5px}.set-review{padding:18px;max-height:98vh}.review-edit{grid-template-columns:1fr}.review-stats span{flex:1;min-width:130px}.set-review header{gap:10px}.set-review h2{font-size:20px}}
+
+/* One navigation component across every Track Hunt module. */
+.app-navigation{grid-template-columns:auto minmax(0,1fr) auto;gap:22px;padding-inline:3.2vw;background:rgba(10,10,12,.96)}
+.app-navigation .brand{white-space:nowrap;font-size:16px}.app-navigation .brand-mark{padding:12px 9px 10px;font-size:12px}.app-navigation .nav-links{justify-content:center;gap:clamp(12px,1.45vw,25px);line-height:1.4;white-space:nowrap}.app-navigation .nav-links a{padding:12px 0}.app-navigation .nav-links a[aria-current=page]{color:var(--acid);box-shadow:inset 0 -2px var(--acid)}
+#top,#workflow,#results,#legal{scroll-margin-top:125px}
+@media(max-width:1250px){.app-navigation{grid-template-columns:1fr auto;gap:0;padding-top:12px}.app-navigation .nav-links{display:flex;grid-column:1/-1;grid-row:2;justify-content:flex-start;overflow-x:auto;padding-block:4px;gap:22px}.app-navigation .deezer-status{grid-column:2;grid-row:1}.app-navigation .brand>span:last-child{font-size:14px}}
+@media(max-width:600px){.app-navigation{padding-inline:15px}.app-navigation .brand>span:last-child{font-size:12px;white-space:normal}.app-navigation .nav-links{gap:20px;font-size:11px}.app-navigation .nav-links a{padding-block:12px}.app-navigation .deezer-status{font-size:9px;padding:10px}.app-navigation .brand-mark{padding:9px 7px}}

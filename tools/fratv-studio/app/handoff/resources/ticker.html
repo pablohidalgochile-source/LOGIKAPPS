@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>FRATV · Ticker</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fratv-aspectos.css">
+<style>
+  /* Valores por defecto. El runtime los sobrescribe; NUNCA escribir un hex más abajo. */
+  :root {
+    /* ===== Escala y áreas seguras — NO escribir px desnudos más abajo. =====
+       Todo el paquete fue dibujado contra un ancho de 1920. --fr-u convierte
+       esas medidas a la fracción de ancho que les corresponde, así el mismo
+       archivo sirve en 16:9, 9:16, 1:1 y 4:5. En 16:9 el resultado es idéntico
+       al diseño original; en vertical la gráfica pesa más, que es lo correcto
+       para un teléfono. El runtime pone data-aspecto en :root. */
+    --fr-u: calc(100vw / 1920);
+    --safe-top: 5%;
+    --safe-bottom: 5%;
+    --safe-x: 5%;
+    --safe-lower: 12%;   /* línea base del lower third y del ticker */
+    --safe-flag: 5%;     /* esquina superior: mosca, badge, cuenta regresiva */
+
+    --fr-accent: #B72A3A;
+    --fr-on-accent: #F5F1E8;
+    --fr-plate: rgba(16,11,24,.94);
+    --fr-surface: #100B18;
+    --fr-text: #F5F1E8;
+    --fr-text-dim: rgba(245,241,232,.72);
+    --fr-hairline: rgba(245,241,232,.18);
+    --fr-radius-plate:calc(14 * var(--fr-u));
+    --fr-radius-pill:calc(22 * var(--fr-u));
+    --fr-radius-chip:calc(7 * var(--fr-u));
+    --fr-font-display: 'Poppins', system-ui, sans-serif;
+    --fr-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+    --fr-font-wordmark: 'Arial Rounded MT Bold', 'Poppins', sans-serif;
+    /* Número, no medida: así el formato puede cambiarlo y --fr-u lo convierte. */
+    --fr-ticker-n: 96;
+    --fr-ticker-alto: calc(var(--fr-ticker-n) * var(--fr-u));
+    /* La velocidad se compensa por formato: en un cuadro angosto cada titular
+       pasa menos tiempo a la vista, así que la marquesina tiene que ir más
+       lenta para que el tiempo de lectura sea el mismo. 1.45 sale de igualar
+       la permanencia en pantalla entre 1920 y 1080 de ancho; redondeado a 1.5. */
+    --fr-ticker-seg: 18;
+    --fr-ticker-k: 1;
+    --fr-ticker-vel: calc(var(--fr-ticker-seg) * var(--fr-ticker-k) * 1s);
+    --fr-ticker-abajo: 0px;
+  }
+  /* Ajustes de formato propios de este recurso. Los genéricos
+     (--fr-u y las áreas seguras) viven en fratv-aspectos.css. */
+  :root[data-aspecto="9:16"] { --fr-ticker-n: 150; --fr-ticker-k: 1.5; --fr-ticker-abajo: var(--safe-bottom); }
+  :root[data-aspecto="1:1"] { --fr-ticker-n: 120; --fr-ticker-k: 1.2; --fr-ticker-abajo: var(--safe-bottom); }
+  :root[data-aspecto="4:5"] { --fr-ticker-n: 132; --fr-ticker-k: 1.3; --fr-ticker-abajo: var(--safe-bottom); }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 100vw; height: 100vh; background: transparent; overflow: hidden; }
+
+  .stage { position: relative; width: 100%; height: 100%; }
+
+  /* Guías de área segura: solo con ?safe=1 */
+  .safe { position: absolute; inset: var(--safe-top) var(--safe-x) var(--safe-bottom); border:1px dashed var(--fr-accent); opacity: 0; }
+  :root[data-safe="1"] .safe { opacity: .55; }
+
+  [hidden] { display: none !important; }
+
+
+  .ticker { position: absolute; left: 0; right: 0; bottom: var(--fr-ticker-abajo); height: var(--fr-ticker-alto);
+            display: flex; align-items: stretch; background: var(--fr-plate); }
+  /* La etiqueta va en su propia capa: el texto se recorta en su borde derecho. */
+  .etiqueta { position: relative; z-index: 2; flex-shrink: 0;
+              background: var(--fr-accent); color: var(--fr-on-accent);
+              display: flex; align-items: center; padding:0 calc(33 * var(--fr-u));
+              font-family: var(--fr-font-mono); font-weight: 700; font-size:calc(22 * var(--fr-u)); letter-spacing: .16em; }
+  .marquesina { position: relative; flex: 1; overflow: hidden; display: flex; align-items: center; }
+  .pista { display: flex; white-space: nowrap; animation: corre var(--fr-ticker-vel) linear infinite; }
+  .pista span { font-family: var(--fr-font-display); font-weight: 500; font-size:calc(30 * var(--fr-u));
+                color: var(--fr-text); padding:0 calc(56 * var(--fr-u)); }
+  .pista span::after { content: '\00b7'; color: var(--fr-accent); margin-left:calc(56 * var(--fr-u)); }
+  @keyframes corre { 0% { transform: translateX(0) } 100% { transform: translateX(-50%) } }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="safe"></div>
+  <div class="ticker">
+    <div class="etiqueta" data-field="label">AHORA</div>
+    <div class="marquesina"><div class="pista" id="pista"></div></div>
+  </div>
+</div>
+
+<script src="fratv-runtime.js"></script>
+<script>
+var q = new URLSearchParams(location.search);
+var vel = parseInt(q.get('speed'), 10); if (isNaN(vel)) vel = 18;
+document.documentElement.style.setProperty('--fr-ticker-seg', vel);
+/* ?alto= se da en medidas de diseño (contra 1920); --fr-u lo convierte. */
+if (q.get('alto')) document.documentElement.style.setProperty('--fr-ticker-n', parseFloat(q.get('alto')));
+
+var items = q.get('items')
+  ? q.get('items').split(';')
+  : ['PR\u00d3XIMO PROGRAMA 21:00', 'ESCRIBE CON #FRATV', 'SUSCR\u00cdBETE AL CANAL'];
+
+/* Contenido duplicado: el -50 % cierra el ciclo sin salto. */
+var pista = document.getElementById('pista');
+function pintar() { items.forEach(function (t) { var s = document.createElement('span'); s.textContent = t; pista.appendChild(s); }); }
+pintar(); pintar();
+
+window.FRATVRuntime.create({ id: 'ticker', durationMs: vel * 1000, loop: true, alpha: true });
+</script>
+</body>
+</html>

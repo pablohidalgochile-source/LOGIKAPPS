@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #08070C; }
+  a { color: #B72A3A; }
+  a:hover { color: #F5F1E8; }
+  @keyframes fr-dot { 0%,100% { opacity:1 } 50% { opacity:.25 } }
+  @keyframes fr-lt { 0%,4% { clip-path:inset(0 100% 0 0) } 14%,84% { clip-path:inset(0 0 0 0) } 94%,100% { clip-path:inset(0 0 0 100%) } }
+  @keyframes fr-txt { 0%,12% { opacity:0; transform:translateY(8px) } 24%,82% { opacity:1; transform:translateY(0) } 90%,100% { opacity:0; transform:translateY(0) } }
+  @keyframes fr-bar { 0%,100% { transform:scaleY(.22) } 50% { transform:scaleY(1) } }
+  @keyframes fr-soon { 0%,8% { opacity:0 } 20%,86% { opacity:1 } 96%,100% { opacity:0 } }
+</style>
+</helmet>
+<div style="width:1720px;margin:0 auto;padding:64px 60px 110px;font-family:Poppins,system-ui,sans-serif;color:#F5F1E8;background:#08070C;box-sizing:border-box">
+
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px;border-bottom:1px solid rgba(245,241,232,0.16);padding-bottom:24px">
+    <div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.22em;color:#B72A3A;text-transform:uppercase">Set cerrado · seis versiones, ninguna más</div>
+      <div style="font-size:44px;font-weight:700;letter-spacing:-0.02em;margin-top:10px;line-height:1">La marca definida</div>
+      <div style="font-size:15px;color:rgba(245,241,232,0.62);margin-top:8px;max-width:900px;text-wrap:pretty">Las cinco versiones que elegiste más el oficial con contenedor rojo. Cada una tiene un uso asignado y un fondo donde manda; no son alternativas a elegir, son un sistema donde cada pieza cubre un caso. Nada nuevo se agrega sin sacar algo.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:rgba(245,241,232,0.5);text-align:right;flex-shrink:0">
+      <div>ROJO #B72A3A · NEGRO #100B18 · BLANCO #F5F1E8</div>
+      <div>F ×1,3 SIN CONTENEDOR · MASTER V8 CON CONTENEDOR</div>
+      <div style="color:#B72A3A">104 · 48 · 20 PX REALES</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:38px">
+
+    <div id="v1" style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#F5F1E8;background:#B72A3A;border-radius:4px;padding:3px 7px">V1</div>
+          <div style="font-size:18px;font-weight:600">Principal</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">MOSCA · FONDOS OSCUROS</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#1b1920 0 26px,#232028 26px 52px);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="56 162 430 276" style="width:74%;display:block">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#0C0B12;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <svg viewBox="56 162 430 276" style="width:104px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:48px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:20px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path></g></g>
+        </svg>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">Todo en blanco con el TV en rojo. La más neutra: no compite con ningún contenido y es la que mejor aguanta al 70 % de opacidad. Bajo 24 px se suprime el TV.</div>
+    </div>
+
+    <div id="v2" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:3px 7px">V2</div>
+          <div style="font-size:18px;font-weight:600">Bicolor</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">REDES · MINIATURAS · PERFILES</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#1b1920 0 26px,#232028 26px 52px);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="56 162 430 276" style="width:74%;display:block">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#0C0B12;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <svg viewBox="56 162 430 276" style="width:104px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:48px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:20px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path></g></g>
+        </svg>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">F blanca y play rojo con el TV calado en blanco. Es la que más dice “marca” a tamaño chico, porque el rojo aparece en la forma más reconocible del sistema.</div>
+    </div>
+
+    <div id="v3" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:3px 7px">V3</div>
+          <div style="font-size:18px;font-weight:600">Invertida</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">APERTURAS · STINGER · GRAN TAMAÑO</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#1b1920 0 26px,#232028 26px 52px);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="56 162 430 276" style="width:74%;display:block">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#B72A3A" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#0C0B12;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <svg viewBox="56 162 430 276" style="width:104px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#B72A3A" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:48px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#B72A3A" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path><g fill="none" stroke="#B72A3A" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:20px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#B72A3A" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path></g></g>
+        </svg>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">F roja y play blanco. Máxima presencia de marca: reservada para aperturas, cortinillas y usos grandes. A 20 px la F roja pierde peso, así que no va como mosca.</div>
+    </div>
+
+    <div id="v4" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:3px 7px">V4</div>
+          <div style="font-size:18px;font-weight:600">Sobre claro</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">SPONSORS · IMPRESIÓN · VIDEO CLARO</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#e6e2d8 0 26px,#f5f1e8 26px 52px);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="56 162 430 276" style="width:74%;display:block">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#F5F1E8;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <svg viewBox="56 162 430 276" style="width:104px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:48px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+        </svg>
+        <svg viewBox="56 162 430 276" style="width:20px;flex-shrink:0">
+          <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+          <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path></g></g>
+        </svg>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">F negra y play rojo con TV blanco. La única para fondos claros, sobreexpuestos e impresión. No usar sobre negro: la F desaparece.</div>
+    </div>
+
+    <div id="v5" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:3px 7px">V5</div>
+          <div style="font-size:18px;font-weight:600">Placa negra</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">VIDEO IMPREDECIBLE · HUD · LOWER THIRDS</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#2e2b34 0 26px,#3a3642 26px 52px);display:flex;align-items:center;justify-content:center">
+        <div style="background:#100B18;border-radius:13%/17%;padding:6% 7%;width:74%;box-sizing:border-box">
+          <svg viewBox="56 162 430 276" style="width:100%;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+          </svg>
+        </div>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#0C0B12;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <div style="background:#100B18;border-radius:13px;padding:9px 11px;flex-shrink:0;border:1px solid rgba(245,241,232,0.08)">
+          <svg viewBox="56 162 430 276" style="width:104px;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path><g fill="none" stroke="#F5F1E8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g></g></g>
+          </svg>
+        </div>
+        <div style="background:#100B18;border-radius:7px;padding:5px 6px;flex-shrink:0;border:1px solid rgba(245,241,232,0.08)">
+          <svg viewBox="56 162 430 276" style="width:48px;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path></g></g>
+          </svg>
+        </div>
+        <div style="background:#100B18;border-radius:4px;padding:3px 4px;flex-shrink:0;border:1px solid rgba(245,241,232,0.08)">
+          <svg viewBox="56 162 430 276" style="width:20px;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#B72A3A"></path></g></g>
+          </svg>
+        </div>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">La V2 sobre placa negra de esquinas suaves. Garantiza lectura sobre cualquier imagen sin volver al contenedor rojo, y es la que se ancla en HUD y lower thirds.</div>
+    </div>
+
+    <div id="v6" style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:18px 22px;border-bottom:1px solid rgba(245,241,232,0.12)">
+        <div style="display:flex;align-items:baseline;gap:11px">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.14em;color:#B72A3A;border:1px solid rgba(183,42,58,0.5);border-radius:4px;padding:3px 7px">V6</div>
+          <div style="font-size:18px;font-weight:600">Oficial · contenedor rojo</div>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:rgba(245,241,232,0.45);margin-top:9px">MASTER V8 · FIRMA INSTITUCIONAL · APP · FAVICON</div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/3;background:repeating-linear-gradient(118deg,#1b1920 0 26px,#232028 26px 52px);display:flex;align-items:center;justify-content:center">
+        <svg viewBox="40 40 520 520" style="width:62%;display:block">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+      </div>
+      <div style="padding:20px 22px;display:flex;align-items:center;gap:20px;justify-content:center;background:#0C0B12;border-bottom:1px solid rgba(245,241,232,0.1)">
+        <svg viewBox="40 40 520 520" style="width:104px;height:104px;flex-shrink:0">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+        <svg viewBox="40 40 520 520" style="width:48px;height:48px;flex-shrink:0">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+          </g>
+        </svg>
+        <svg viewBox="40 40 520 520" style="width:20px;height:20px;flex-shrink:0">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+          </g>
+        </svg>
+      </div>
+      <div style="padding:16px 22px;font-size:12.5px;line-height:1.6;color:rgba(245,241,232,0.62);text-wrap:pretty">El master V8 intacto: contenedor rojo, F y play negros, TV en el color del contenedor. Firma institucional, ícono de aplicación y favicon. A 20 px se suprime el TV.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:38px;border:1px solid rgba(245,241,232,0.16);border-radius:14px;overflow:hidden">
+    <div style="padding:18px 24px;border-bottom:1px solid rgba(245,241,232,0.12);display:flex;justify-content:space-between;align-items:baseline;gap:24px">
+      <div style="font-size:18px;font-weight:600">Cuál usar y dónde</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">UNA REGLA POR CASO · SIN EXCEPCIONES</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(245,241,232,0.12)">
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V1 PRINCIPAL</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Mosca permanente en las cuatro esquinas. Escenas oscuras, 70–100 % de opacidad.</div>
+      </div>
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V2 BICOLOR</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Avatares, miniaturas, íconos de redes y cualquier uso donde la marca deba gritar su nombre.</div>
+      </div>
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V3 INVERTIDA</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Aperturas, cortinillas, pantallas completas. Nunca bajo 48 px.</div>
+      </div>
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V4 SOBRE CLARO</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Sponsors, documentos, merchandising y video sobreexpuesto. Única versión para fondos claros.</div>
+      </div>
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V5 PLACA</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Cuando no controlamos la imagen: HUD, lower thirds, marcadores, alertas.</div>
+      </div>
+      <div style="background:#0C0B12;padding:20px 18px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">V6 OFICIAL</div>
+        <div style="font-size:12.5px;line-height:1.65;color:rgba(245,241,232,0.68);margin-top:10px">Firma institucional, ícono de app, favicon, documentos y todo lo legal o contractual.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:52px;border-bottom:1px solid rgba(245,241,232,0.14);padding-bottom:14px;display:flex;align-items:baseline;gap:16px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#B72A3A">L</div>
+    <div style="font-size:26px;font-weight:600">Logotipo solo y firma horizontal</div>
+    <div style="font-size:13.5px;color:rgba(245,241,232,0.55)">FRATV + CONTENIDO DIGITAL HUMANO</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:26px">
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">L1 · LOGOTIPO SOBRE OSCURO</div>
+      <div style="padding:44px 30px;background:#0C0B12;display:flex;flex-direction:column;align-items:center">
+        <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:60px;font-weight:700;line-height:1;letter-spacing:0.01em"><span style="color:#F5F1E8">FRA</span><span style="color:#B72A3A">TV</span></div>
+        <div style="font-family:Poppins,sans-serif;font-size:11px;font-weight:700;letter-spacing:6.4px;color:#F5F1E8;margin-top:13px">CONTENIDO DIGITAL HUMANO</div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">L2 · LOGOTIPO SOBRE CLARO</div>
+      <div style="padding:44px 30px;background:#F5F1E8;display:flex;flex-direction:column;align-items:center">
+        <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:60px;font-weight:700;line-height:1;letter-spacing:0.01em"><span style="color:#100B18">FRA</span><span style="color:#B72A3A">TV</span></div>
+        <div style="font-family:Poppins,sans-serif;font-size:11px;font-weight:700;letter-spacing:6.4px;color:rgba(16,11,24,0.78);margin-top:13px">CONTENIDO DIGITAL HUMANO</div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">L3 · UNA TINTA</div>
+      <div style="padding:44px 30px;background:repeating-linear-gradient(118deg,#1b1920 0 24px,#232028 24px 48px);display:flex;flex-direction:column;align-items:center">
+        <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:60px;font-weight:700;line-height:1;letter-spacing:0.01em;color:#F5F1E8">FRATV</div>
+        <div style="font-family:Poppins,sans-serif;font-size:11px;font-weight:700;letter-spacing:6.4px;color:rgba(245,241,232,0.8);margin-top:13px">CONTENIDO DIGITAL HUMANO</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-top:24px">
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">FIRMA HORIZONTAL · SÍMBOLO + LOGOTIPO</div>
+      <div style="padding:48px 44px;background:#0C0B12;display:flex;align-items:center;justify-content:center;gap:34px">
+        <svg viewBox="40 40 520 520" style="width:118px;height:118px;flex-shrink:0">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+        <div>
+          <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:64px;font-weight:700;line-height:1;letter-spacing:0.01em"><span style="color:#F5F1E8">FRA</span><span style="color:#B72A3A">TV</span></div>
+          <div style="font-family:Poppins,sans-serif;font-size:11.5px;font-weight:700;letter-spacing:6.8px;color:#F5F1E8;margin-top:13px">CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">FIRMA VERTICAL · 9:16 Y 1:1</div>
+      <div style="padding:34px;background:#0C0B12;display:flex;flex-direction:column;align-items:center;gap:18px">
+        <svg viewBox="40 40 520 520" style="width:104px;height:104px">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+        <div style="text-align:center">
+          <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:42px;font-weight:700;line-height:1;letter-spacing:0.01em"><span style="color:#F5F1E8">FRA</span><span style="color:#B72A3A">TV</span></div>
+          <div style="font-family:Poppins,sans-serif;font-size:8.5px;font-weight:700;letter-spacing:4.4px;color:#F5F1E8;margin-top:10px">CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:52px;border-bottom:1px solid rgba(245,241,232,0.14);padding-bottom:14px;display:flex;align-items:baseline;gap:16px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#B72A3A">A</div>
+    <div style="font-size:26px;font-weight:600">Logo alternativo · logotipo en contenedor</div>
+    <div style="font-size:13.5px;color:rgba(245,241,232,0.55)">Las tres tintas, mismo radio proporcional</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:26px">
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">A1 · CONTENEDOR ROJO</div>
+      <div style="padding:40px 26px;background:repeating-linear-gradient(118deg,#1b1920 0 24px,#232028 24px 48px);display:flex;align-items:center;justify-content:center">
+        <div style="background:#B72A3A;border-radius:24px;padding:20px 30px 22px;text-align:center">
+          <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:44px;font-weight:700;line-height:1;color:#F5F1E8">FRATV</div>
+          <div style="font-family:Poppins,sans-serif;font-size:9px;font-weight:700;letter-spacing:4.6px;color:rgba(245,241,232,0.9);margin-top:9px">CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">A2 · CONTENEDOR NEGRO</div>
+      <div style="padding:40px 26px;background:repeating-linear-gradient(118deg,#1b1920 0 24px,#232028 24px 48px);display:flex;align-items:center;justify-content:center">
+        <div style="background:#100B18;border-radius:24px;padding:20px 30px 22px;text-align:center">
+          <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:44px;font-weight:700;line-height:1"><span style="color:#F5F1E8">FRA</span><span style="color:#B72A3A">TV</span></div>
+          <div style="font-family:Poppins,sans-serif;font-size:9px;font-weight:700;letter-spacing:4.6px;color:rgba(245,241,232,0.82);margin-top:9px">CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">A3 · CONTENEDOR BLANCO</div>
+      <div style="padding:40px 26px;background:repeating-linear-gradient(118deg,#2e2b34 0 24px,#3a3642 24px 48px);display:flex;align-items:center;justify-content:center">
+        <div style="background:#F5F1E8;border-radius:24px;padding:20px 30px 22px;text-align:center">
+          <div style="font-family:'Arial Rounded MT Bold',Poppins,sans-serif;font-size:44px;font-weight:700;line-height:1"><span style="color:#100B18">FRA</span><span style="color:#B72A3A">TV</span></div>
+          <div style="font-family:Poppins,sans-serif;font-size:9px;font-weight:700;letter-spacing:4.6px;color:rgba(16,11,24,0.72);margin-top:9px">CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:52px;border-bottom:1px solid rgba(245,241,232,0.14);padding-bottom:14px;display:flex;align-items:baseline;gap:16px">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.18em;color:#B72A3A">R</div>
+    <div style="font-size:26px;font-weight:600">Accesorios listos para OBS</div>
+    <div style="font-size:13.5px;color:rgba(245,241,232,0.55)">Uno por fuente de navegador · textos reemplazables</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:0.72fr 1fr;gap:24px;margin-top:26px;align-items:start">
+    <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">R01 · EN VIVO</div>
+      <div style="padding:40px 26px;background:repeating-linear-gradient(118deg,#1b1920 0 22px,#232028 22px 44px);display:flex;flex-direction:column;align-items:center;gap:18px">
+        <div style="display:flex;align-items:center;gap:11px;background:#B72A3A;border-radius:12px;padding:10px 18px">
+          <div style="width:10px;height:10px;border-radius:50%;background:#F5F1E8;animation:fr-dot 1.5s ease-in-out infinite"></div>
+          <div style="font-family:Poppins,sans-serif;font-size:15px;font-weight:700;letter-spacing:0.22em;color:#F5F1E8">EN VIVO</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;background:rgba(16,11,24,0.92);border-radius:12px;padding:10px 18px 10px 14px">
+          <div style="width:9px;height:9px;border-radius:50%;background:#B72A3A;animation:fr-dot 1.5s ease-in-out infinite"></div>
+          <div style="font-family:Poppins,sans-serif;font-size:13px;font-weight:700;letter-spacing:0.2em;color:#F5F1E8">EN VIVO</div>
+          <div style="width:1px;height:15px;background:rgba(245,241,232,0.22)"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.1em;color:rgba(245,241,232,0.72)">01:24:07</div>
+          <div style="display:flex;align-items:flex-end;gap:3px;height:14px;margin-left:4px">
+            <div style="width:3px;height:100%;background:#B72A3A;transform-origin:bottom;animation:fr-bar .85s ease-in-out infinite"></div>
+            <div style="width:3px;height:100%;background:#B72A3A;transform-origin:bottom;animation:fr-bar .85s ease-in-out .12s infinite"></div>
+            <div style="width:3px;height:100%;background:rgba(245,241,232,0.5);transform-origin:bottom;animation:fr-bar .85s ease-in-out .24s infinite"></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:14px 20px;font-size:12px;line-height:1.6;color:rgba(245,241,232,0.6);text-wrap:pretty">Dos versiones: pastilla roja plena para esquina libre, y placa negra con reloj y audio cuando el fondo es impredecible.</div>
+    </div>
+
+    <div style="border:1px solid rgba(183,42,58,0.55);border-radius:14px;overflow:hidden">
+      <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">R02 · EN BREVE COMIENZA · PANTALLA COMPLETA 1920×1080</div>
+      <div style="position:relative;aspect-ratio:16/9;background:#100B18;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px">
+        <div style="position:absolute;left:0;right:0;top:0;height:5px;background:#B72A3A"></div>
+        <svg viewBox="40 40 520 520" style="width:11%;display:block;animation:fr-soon 7s ease infinite">
+          <rect x="55" y="55" width="490" height="490" rx="134" fill="#B72A3A"></rect>
+          <g transform="translate(90 195) scale(.75)">
+            <path d="M42 250V30H204M42 138H174" fill="none" stroke="#100B18" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path>
+            <path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#100B18"></path>
+            <g fill="none" stroke="#B72A3A" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M301 112H347M324 112V170"></path><path d="M354 114L370 167L388 114"></path></g>
+          </g>
+        </svg>
+        <div style="text-align:center;animation:fr-soon 7s ease .15s infinite">
+          <div style="font-family:Poppins,sans-serif;font-size:34px;font-weight:700;letter-spacing:-0.01em;line-height:1.1;color:#F5F1E8">EN BREVE COMIENZA</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.28em;color:#B72A3A;margin-top:14px">GRACIAS POR ACOMPAÑARNOS</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;animation:fr-soon 7s ease .3s infinite">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:26px;font-weight:700;letter-spacing:0.08em;color:#F5F1E8">00:04:58</div>
+          <div style="width:1px;height:26px;background:rgba(245,241,232,0.2)"></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;color:rgba(245,241,232,0.6);line-height:1.6">@FRATV<br>CONTENIDO DIGITAL HUMANO</div>
+        </div>
+      </div>
+      <div style="padding:14px 20px;font-size:12px;line-height:1.6;color:rgba(245,241,232,0.6);text-wrap:pretty">Cortinilla de espera con cuenta regresiva. Fondo negro pleno con filete rojo superior; funciona igual sobre transparencia si se quita el fondo.</div>
+    </div>
+  </div>
+
+  <div style="border:1px solid rgba(245,241,232,0.14);border-radius:14px;overflow:hidden;margin-top:24px">
+    <div style="padding:16px 20px;border-bottom:1px solid rgba(245,241,232,0.12);display:flex;justify-content:space-between;align-items:baseline;gap:20px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.16em;color:#B72A3A">R03 · LOWER THIRD · ENTRADA POR BARRIDO</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:0.14em;color:rgba(245,241,232,0.45)">NOMBRE · CARGO · REEMPLAZABLES</div>
+    </div>
+    <div style="position:relative;aspect-ratio:16/6;background:repeating-linear-gradient(118deg,#1b1920 0 28px,#232028 28px 56px);overflow:hidden">
+      <div style="position:absolute;left:5%;bottom:22%;display:flex;align-items:stretch;border-radius:14px;overflow:hidden;animation:fr-lt 9s cubic-bezier(.3,0,.2,1) infinite">
+        <div style="background:#B72A3A;display:flex;align-items:center;padding:0 18px">
+          <svg viewBox="56 162 430 276" style="width:46px;display:block">
+            <g transform="translate(60 166.5) scale(1.3) translate(-101.25 -197.25)"><g transform="translate(90 195) scale(.75)"><path d="M42 250V30H204M42 138H174" fill="none" stroke="#F5F1E8" stroke-width="54" stroke-linecap="round" stroke-linejoin="round"></path></g></g>
+            <g transform="translate(21 0)"><g transform="translate(90 195) scale(.75)"><path d="M268 17Q252 7 252 30V250Q252 273 270 263L484 153Q504 140 484 127Z" fill="#F5F1E8"></path></g></g>
+          </svg>
+        </div>
+        <div style="background:rgba(16,11,24,0.94);padding:17px 34px 19px">
+          <div style="font-family:Poppins,sans-serif;font-size:33px;font-weight:600;letter-spacing:-0.01em;line-height:1;color:#F5F1E8;animation:fr-txt 9s ease infinite">PABLO HIDALGO</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:0.2em;color:rgba(245,241,232,0.72);margin-top:11px;animation:fr-txt 9s ease .12s infinite">CONDUCTOR · FRATV</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:14px 20px;font-size:12px;line-height:1.6;color:rgba(245,241,232,0.6);text-wrap:pretty">Bloque rojo con la marca, placa negra con nombre en blanco y cargo en mono. Entra por barrido lateral, sale por el mismo lado. Nunca rojo sobre negro en el texto.</div>
+  </div>
+
+  <div style="margin-top:34px;padding:28px 30px;border:1px solid rgba(183,42,58,0.5);border-radius:14px;background:rgba(183,42,58,0.08)">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:#B72A3A">DÓNDE QUEDAMOS</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:34px;margin-top:18px">
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.78);text-wrap:pretty"><b style="color:#F5F1E8">Esto es el set cerrado.</b> Seis versiones, seis usos. Todo lo demás —las metamorfosis, los identes, las cadenas de controles— queda como exploración archivada y no vuelve al sistema salvo que lo pidas.</div>
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.78);text-wrap:pretty"><b style="color:#F5F1E8">Falta una decisión de fondo:</b> la F un 30 % mayor cambia la relación F↔play del master V8. Si la apruebas, V1 a V5 son masters nuevos y V6 queda como firma histórica e institucional. Si no, ajusto V1 a V5 a la proporción original.</div>
+      <div style="font-size:13px;line-height:1.7;color:rgba(245,241,232,0.78);text-wrap:pretty"><b style="color:#B72A3A">Siguiente paso, cuando digas.</b> Con el set cerrado aplico estas seis al paquete broadcast y a los overlays de OBS, y preparo un solo ident de marca en vez de cinco. Dime si apruebas la proporción y arranco.</div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

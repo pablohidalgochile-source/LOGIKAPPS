@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Track Hunt · Reconocer YouTube",
+  "version": "0.3.1",
+  "minimum_chrome_version": "116",
+  "description": "Identifica fragmentos de la pestaña YouTube elegida, sin sonido, y envía resultados al asistente local.",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAj9q3FP6LMrETJ0d+fMCIfx/Tt2CegUP3DUI5FBMIThg1sGu1jJ+g8K2UlB25Pd/j1CsdEsb6u+T3pu97O9tW93mKNhlvnUCnYqLaQSZ2u3X6/N/vg/kUEZY6lNaAhX7JPZZY47vV2nQNmsIgfAoSDjKtiRgZjc61fv+2VnXuI8TWYbnC7BjLLhquoJWOIb8OZSwBgNeIIBh65b8p0YQiUylXWPxWT9CvD/bHcDPDq2LVbEQx4evrf7rPgVVSSgTkcSpTgT1rtwGNanarFRwPrPhwdk4XAeC39s0zMbpeXX2LtTkDsNgAiAREVn9Jz2/x0F5g4TD/OwL09e3ao1UfMwIDAQAB",
+  "permissions": [
+    "activeTab",
+    "tabCapture",
+    "offscreen",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:43871/*"
+  ],
+  "background": {
+    "service_worker": "worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Track Hunt · Identificar este set"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src http://127.0.0.1:43871"
+  }
+}

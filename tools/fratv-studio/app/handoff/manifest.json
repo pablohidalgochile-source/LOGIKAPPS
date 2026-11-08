@@ -1,0 +1,897 @@
+{
+  "$schema": "./schemas/manifest.schema.json",
+  "version": "1.0.0",
+  "fps": 60,
+  "aspects": {
+    "16:9": {
+      "w": 1920,
+      "h": 1080,
+      "designWidth": 1920,
+      "safeAreas": {
+        "top": "5%",
+        "bottom": "5%",
+        "x": "5%",
+        "lower": "12%",
+        "flag": "5%"
+      }
+    },
+    "9:16": {
+      "w": 1080,
+      "h": 1920,
+      "designWidth": 1000,
+      "safeAreas": {
+        "top": "12%",
+        "bottom": "22%",
+        "x": "6%",
+        "lower": "25%",
+        "flag": "14%"
+      }
+    },
+    "1:1": {
+      "w": 1080,
+      "h": 1080,
+      "designWidth": 1150,
+      "safeAreas": {
+        "top": "6%",
+        "bottom": "6%",
+        "x": "6%",
+        "lower": "13%",
+        "flag": "7%"
+      }
+    },
+    "4:5": {
+      "w": 1080,
+      "h": 1350,
+      "designWidth": 1100,
+      "safeAreas": {
+        "top": "7%",
+        "bottom": "10%",
+        "x": "6%",
+        "lower": "16%",
+        "flag": "8%"
+      }
+    }
+  },
+  "resources": [
+    {
+      "id": "ident-long",
+      "family": "marca",
+      "name": "Logo Ident",
+      "file": "resources/ident-long.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 1900,
+      "loop": false,
+      "alpha": true,
+      "effects": "allowed",
+      "audio": [
+        "enter",
+        "accent"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "variant",
+          "label": "Entrada",
+          "type": "enum",
+          "options": [
+            "1a-cortina",
+            "1b-contenedor",
+            "1c-inclinacion",
+            "1d-asentado"
+          ],
+          "default": "1b-contenedor"
+        },
+        {
+          "key": "tagline",
+          "label": "Bajada",
+          "type": "text",
+          "default": "CONTENIDO DIGITAL HUMANO",
+          "max": 32
+        }
+      ],
+      "notes": "El play no entra, no sale y no se desplaza. Pose final = SVG maestro. Cuatro entradas aprobadas al mismo lockup: 1a ident de programa, 1b uso diario (por defecto), 1c con personaje, 1d base del Short. Una transmision usa una sola de principio a fin."
+    },
+    {
+      "id": "ident-short",
+      "family": "marca",
+      "name": "Logo Ident Short",
+      "file": "resources/ident-short.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 900,
+      "loop": false,
+      "alpha": true,
+      "effects": "allowed",
+      "audio": [
+        "accent"
+      ],
+      "safeArea": "title",
+      "fields": [],
+      "notes": "Recorte de la entrada 1d (Asentado). Misma pose final."
+    },
+    {
+      "id": "stinger",
+      "family": "marca",
+      "name": "Stinger de transición",
+      "file": "resources/stinger.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 800,
+      "loop": false,
+      "alpha": true,
+      "effects": "allowed",
+      "audio": [
+        "enter"
+      ],
+      "safeArea": "none",
+      "fields": [],
+      "notes": "Cubre por completo el cuadro al 50 % del recorrido. Ahi corta OBS. Necesita canal alfa: fuera del barrido debe dejar ver la escena, o la transicion pinta un fondo opaco sobre toda la mezcla."
+    },
+    {
+      "id": "flag",
+      "family": "estado",
+      "name": "Mosca de canal",
+      "file": "resources/flag.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 0,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "variant",
+          "label": "Variante",
+          "type": "enum",
+          "options": [
+            "marfil",
+            "rojo",
+            "negro"
+          ],
+          "default": "marfil"
+        }
+      ]
+    },
+    {
+      "id": "flag-evento",
+      "family": "estado",
+      "name": "Mosca con evento",
+      "file": "resources/flag-evento.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 0,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "logo",
+          "label": "Logo del evento",
+          "type": "text",
+          "default": "../assets/eventos/fraternidad-horizontal-blanco.png"
+        },
+        {
+          "key": "alto",
+          "label": "Alto del logo",
+          "type": "text",
+          "default": "76px"
+        }
+      ],
+      "notes": "Coproduccion: la marca del canal manda y la del evento acompaña. El logo se pasa por URL."
+    },
+    {
+      "id": "live-badge",
+      "family": "estado",
+      "name": "EN VIVO",
+      "file": "resources/live-badge.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 1500,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "EN VIVO",
+          "max": 12
+        },
+        {
+          "key": "variant",
+          "label": "Variante",
+          "type": "enum",
+          "options": [
+            "pastilla",
+            "reloj",
+            "audio"
+          ],
+          "default": "pastilla"
+        },
+        {
+          "key": "clock",
+          "label": "Reloj",
+          "type": "clock",
+          "default": "auto"
+        }
+      ]
+    },
+    {
+      "id": "countdown",
+      "family": "estado",
+      "name": "Cuenta regresiva",
+      "file": "resources/countdown.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 0,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [
+        "exit"
+      ],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "target",
+          "label": "Hora objetivo",
+          "type": "datetime"
+        },
+        {
+          "key": "caption",
+          "label": "Rótulo",
+          "type": "text",
+          "default": "PARA EMPEZAR",
+          "max": 18
+        },
+        {
+          "key": "variant",
+          "label": "Variante",
+          "type": "enum",
+          "options": [
+            "largo",
+            "corto",
+            "barra"
+          ],
+          "default": "largo"
+        }
+      ]
+    },
+    {
+      "id": "bumper-in",
+      "family": "cortinilla",
+      "name": "EN BREVE COMIENZA",
+      "file": "resources/bumper-in.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 7000,
+      "loop": true,
+      "alpha": false,
+      "effects": "allowed",
+      "audio": [
+        "loop",
+        "accent"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "title",
+          "label": "Título",
+          "type": "text",
+          "default": "EN BREVE COMIENZA",
+          "max": 28
+        },
+        {
+          "key": "subtitle",
+          "label": "Subtítulo",
+          "type": "text",
+          "default": "GRACIAS POR ACOMPAÑARNOS",
+          "max": 36
+        },
+        {
+          "key": "clock",
+          "label": "Cuenta regresiva",
+          "type": "clock"
+        },
+        {
+          "key": "handle",
+          "label": "Usuario",
+          "type": "text",
+          "default": "@FRATV",
+          "max": 20
+        }
+      ]
+    },
+    {
+      "id": "bumper-out",
+      "family": "cortinilla",
+      "name": "GRACIAS POR VER",
+      "file": "resources/bumper-out.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 7000,
+      "loop": true,
+      "alpha": false,
+      "effects": "allowed",
+      "audio": [
+        "loop",
+        "exit"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "title",
+          "label": "Título",
+          "type": "text",
+          "default": "GRACIAS POR VER",
+          "max": 28
+        },
+        {
+          "key": "subtitle",
+          "label": "Subtítulo",
+          "type": "text",
+          "default": "NOS VEMOS EN EL PRÓXIMO PROGRAMA",
+          "max": 40
+        },
+        {
+          "key": "socials",
+          "label": "Redes",
+          "type": "textlist",
+          "default": [
+            "@FRATV",
+            "YOUTUBE · TWITCH · TIKTOK"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bumper-evento",
+      "family": "cortinilla",
+      "name": "Cortinilla de evento",
+      "file": "resources/bumper-evento.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 7000,
+      "loop": true,
+      "alpha": false,
+      "effects": "allowed",
+      "audio": [
+        "loop",
+        "accent"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "logo",
+          "label": "Logo del evento",
+          "type": "text",
+          "default": "../assets/eventos/fraternidad-insignia.png"
+        },
+        {
+          "key": "alto",
+          "label": "Alto del logo",
+          "type": "text",
+          "default": "300px"
+        },
+        {
+          "key": "presenta",
+          "label": "Rótulo",
+          "type": "text",
+          "default": "FRATV PRESENTA",
+          "max": 24
+        },
+        {
+          "key": "titulo",
+          "label": "Título",
+          "type": "text",
+          "default": "CASTING 2026",
+          "max": 28
+        },
+        {
+          "key": "subtitulo",
+          "label": "Subtítulo",
+          "type": "text",
+          "default": "CAMPUS CENTRAL · 21:00",
+          "max": 40
+        }
+      ],
+      "notes": "El evento manda y el canal firma abajo. Fondo opaco: va en su propia escena."
+    },
+    {
+      "id": "lower-third",
+      "family": "informacion",
+      "name": "Lower Third",
+      "file": "resources/lower-third.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 9000,
+      "loop": false,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [
+        "enter",
+        "exit"
+      ],
+      "safeArea": "action",
+      "cues": [
+        "enter",
+        "hold",
+        "exit"
+      ],
+      "fields": [
+        {
+          "key": "name",
+          "label": "Nombre",
+          "type": "text",
+          "default": "PABLO HIDALGO",
+          "max": 24
+        },
+        {
+          "key": "role",
+          "label": "Cargo",
+          "type": "text",
+          "default": "CONDUCTOR · FRATV",
+          "max": 32
+        },
+        {
+          "key": "topic",
+          "label": "Tema",
+          "type": "text",
+          "default": "",
+          "max": 48,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "lower-third-evento",
+      "family": "informacion",
+      "name": "Lower Third con evento",
+      "file": "resources/lower-third-evento.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 9000,
+      "loop": false,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [
+        "enter",
+        "exit"
+      ],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "logo",
+          "label": "Logo del evento",
+          "type": "text",
+          "default": "../assets/eventos/fraternidad-horizontal-blanco.png"
+        },
+        {
+          "key": "alto",
+          "label": "Alto del logo",
+          "type": "text",
+          "default": "64px"
+        },
+        {
+          "key": "name",
+          "label": "Nombre",
+          "type": "text",
+          "default": "NOMBRE APELLIDO",
+          "max": 24
+        },
+        {
+          "key": "role",
+          "label": "Cargo",
+          "type": "text",
+          "default": "CARGO · FRATERNIDAD",
+          "max": 32
+        },
+        {
+          "key": "topic",
+          "label": "Tema",
+          "type": "text",
+          "default": "",
+          "max": 48,
+          "optional": true
+        }
+      ],
+      "notes": "El bloque de marca lleva el logo del evento. El canal firma desde la mosca."
+    },
+    {
+      "id": "program-title",
+      "family": "informacion",
+      "name": "Título de programa",
+      "file": "resources/program-title.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "effects": "allowed",
+      "audio": [
+        "enter"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "kicker",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "NUEVO EPISODIO",
+          "max": 18
+        },
+        {
+          "key": "title",
+          "label": "Título",
+          "type": "textarea",
+          "default": "HISTORIAS\\nDE BARRIO",
+          "max": 40
+        },
+        {
+          "key": "meta",
+          "label": "Datos",
+          "type": "text",
+          "default": "JUEVES · 21:00 · @FRATV",
+          "max": 36
+        }
+      ]
+    },
+    {
+      "id": "schedule",
+      "family": "informacion",
+      "name": "A continuación y programación",
+      "file": "resources/schedule.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [
+        "enter"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "A CONTINUACIÓN",
+          "max": 20
+        },
+        {
+          "key": "dayLabel",
+          "label": "Día",
+          "type": "text",
+          "default": "HOY",
+          "max": 12
+        },
+        {
+          "key": "rows",
+          "label": "Filas",
+          "type": "rows",
+          "max": 5,
+          "schema": [
+            {
+              "key": "time"
+            },
+            {
+              "key": "title"
+            },
+            {
+              "key": "tag"
+            }
+          ],
+          "default": [
+            [
+              "21:00",
+              "HISTORIAS DE BARRIO",
+              "EN VIVO"
+            ],
+            [
+              "22:00",
+              "ENTREVISTA DEL JUEVES",
+              "ESTRENO"
+            ],
+            [
+              "23:00",
+              "RESUMEN DE LA SEMANA",
+              "REPETICIÓN"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engagement",
+      "family": "interaccion",
+      "name": "Comentario, votación y meta",
+      "file": "resources/engagement.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 8000,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [
+        "accent"
+      ],
+      "safeArea": "action",
+      "fields": [
+        {
+          "key": "modules",
+          "label": "Módulos",
+          "type": "multienum",
+          "options": [
+            "comentario",
+            "votacion",
+            "meta"
+          ],
+          "default": [
+            "comentario",
+            "votacion",
+            "meta"
+          ]
+        },
+        {
+          "key": "handle",
+          "label": "Usuario",
+          "type": "text",
+          "default": "@ESPECTADOR",
+          "max": 20
+        },
+        {
+          "key": "comment",
+          "label": "Comentario",
+          "type": "textarea",
+          "max": 90
+        },
+        {
+          "key": "pollA",
+          "label": "Opción A",
+          "type": "text",
+          "default": "SÍ"
+        },
+        {
+          "key": "pollB",
+          "label": "Opción B",
+          "type": "text",
+          "default": "NO"
+        },
+        {
+          "key": "pollValue",
+          "label": "Porcentaje A",
+          "type": "number",
+          "min": 0,
+          "max": 100,
+          "default": 66
+        },
+        {
+          "key": "goalLabel",
+          "label": "Rótulo de meta",
+          "type": "text",
+          "default": "META DEL MES"
+        },
+        {
+          "key": "goalValue",
+          "label": "Progreso",
+          "type": "number",
+          "min": 0,
+          "max": 100,
+          "default": 78
+        }
+      ]
+    },
+    {
+      "id": "sponsor",
+      "family": "comercial",
+      "name": "Sponsor",
+      "file": "resources/sponsor.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 8000,
+      "loop": false,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [],
+      "safeArea": "action",
+      "themeOverride": {
+        "surface": "ivory",
+        "text": "ink"
+      },
+      "fields": [
+        {
+          "key": "label",
+          "label": "Rótulo",
+          "type": "text",
+          "default": "PRESENTADO POR",
+          "max": 20
+        },
+        {
+          "key": "logo",
+          "label": "Logo del sponsor",
+          "type": "image"
+        }
+      ],
+      "notes": "Única excepción al fondo negro: placa marfil para que respire cualquier logo ajeno."
+    },
+    {
+      "id": "ticker",
+      "family": "comercial",
+      "name": "Ticker",
+      "file": "resources/ticker.html",
+      "aspects": [
+        "16:9",
+        "9:16"
+      ],
+      "durationMs": 18000,
+      "loop": true,
+      "alpha": true,
+      "effects": "restricted",
+      "audio": [],
+      "safeArea": "none",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Etiqueta",
+          "type": "text",
+          "default": "AHORA",
+          "max": 12
+        },
+        {
+          "key": "items",
+          "label": "Mensajes",
+          "type": "textlist",
+          "default": [
+            "PRÓXIMO PROGRAMA 21:00",
+            "ESCRIBE CON #FRATV",
+            "SUSCRÍBETE AL CANAL"
+          ]
+        },
+        {
+          "key": "speed",
+          "label": "Velocidad",
+          "type": "number",
+          "min": 8,
+          "max": 40,
+          "default": 18,
+          "unit": "s"
+        }
+      ],
+      "notes": "Va de borde a borde: única excepción al área segura. El texto se recorta en el borde de la etiqueta."
+    },
+    {
+      "id": "end-credits",
+      "family": "cierre",
+      "name": "End Credits",
+      "file": "resources/end-credits.html",
+      "aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:5"
+      ],
+      "durationMs": 22000,
+      "loop": true,
+      "alpha": false,
+      "effects": "allowed",
+      "audio": [
+        "loop"
+      ],
+      "safeArea": "title",
+      "fields": [
+        {
+          "key": "rows",
+          "label": "Créditos",
+          "type": "rows",
+          "schema": [
+            {
+              "key": "role"
+            },
+            {
+              "key": "name"
+            }
+          ],
+          "default": [
+            [
+              "DIRECCIÓN",
+              "PABLO HIDALGO"
+            ],
+            [
+              "PRODUCCIÓN",
+              "EQUIPO FRATV"
+            ],
+            [
+              "CÁMARA",
+              "NOMBRE APELLIDO"
+            ],
+            [
+              "MONTAJE",
+              "NOMBRE APELLIDO"
+            ]
+          ]
+        },
+        {
+          "key": "speed",
+          "label": "Velocidad",
+          "type": "number",
+          "min": 12,
+          "max": 60,
+          "default": 22,
+          "unit": "s"
+        }
+      ]
+    }
+  ],
+  "aspectsNote": "designWidth es el divisor de --fr-u: las medidas de los recursos se escriben contra un ancho de 1920 y se dividen por este número. En 16:9 coincide con el ancho real, así que el diseño horizontal no se altera. Los valores reales viven en resources/fratv-aspectos.css; esto es el espejo para la app, y los dos tienen que coincidir."
+}
